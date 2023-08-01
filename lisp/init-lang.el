@@ -63,7 +63,8 @@
            ))
       (add-to-list 'treesit-language-source-alist grammar)
       (unless (treesit-language-available-p (car grammar))
-        (treesit-install-language-grammar (car grammar) (car treesit-extra-load-path)))))
+        ;; (treesit-install-language-grammar (car grammar) (car treesit-extra-load-path))
+        (treesit-install-language-grammar (car grammar)))))
   :init
   (setq
    treesit-extra-load-path (list (no-littering-expand-var-file-name "tree-sitter")))

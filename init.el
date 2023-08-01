@@ -34,7 +34,7 @@
  '(("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
    ("nongnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
    ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/"))
- package-quickstart t
+ package-quickstart nil
  use-package-always-defer t
  use-package-always-ensure t
  use-package-expand-minimally t

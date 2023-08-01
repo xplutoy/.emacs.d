@@ -66,25 +66,6 @@
   :init (smart-hungry-delete-add-default-hooks)
   )
 
-(use-package holymotion
-  :ensure nil
-  :load-path "site-lisp/holymotion"
-  :hook ((prog-mode conf-mode) . holymotion-mode)
-  :bind (:map holymotion-mode-map
-              ([remap next-line]          . holymotion-next-line)
-              ([remap previous-line]      . holymotion-previous-line)
-              ([remap forward-word]       . holymotion-forward-word)
-              ([remap backward-word]      . holymotion-backward-word)
-              ([remap forward-sentence]   . holymotion-forward-sentence)
-              ([remap backward-sentence]  . holymotion-backward-sentence)
-              ([remap beginning-of-defun] . holymotion-backward-beginning-of-defun)
-              ([remap end-of-defun]       . holymotion-forward-end-of-defun)
-              )
-  :config
-  (holymotion-make-motion
-   holymotion-forward-end-of-defun #'end-of-defun)
-  )
-
 (use-package sis
   :defer 1
   :init
@@ -100,14 +81,12 @@
    sis-auto-refresh-seconds nil
    sis-inline-tighten-tail-rule 'all)
   :config
-  (cond
-   (-is-mac
-    (sis-ism-lazyman-config
-     "com.apple.keylayout.US"
-     "com.sogou.inputmethod.sogou.pinyin"))
-   (-is-win
-    (sis-ism-lazyman-config nil t 'w32))
-   )
+  (when -is-mac
+      (sis-ism-lazyman-config
+       "com.apple.keylayout.US"
+       "com.sogou.inputmethod.sogou.pinyin"))
+  (when -is-win
+      (sis-ism-lazyman-config nil t 'w32))
   (sis-global-inline-mode 1)
   (sis-global-context-mode 1)
   (sis-global-respect-mode 1)
