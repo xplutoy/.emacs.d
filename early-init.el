@@ -26,7 +26,7 @@
         (height . 36)
         (tool-bar-lines . 0)
         (menu-bar-lines . 0)
-        (alpha-background . 97)
+        ;; (alpha-background . 97)
         (undecorated-round . t)
         (vertical-scroll-bars . nil)))
 

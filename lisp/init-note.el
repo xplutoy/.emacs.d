@@ -76,7 +76,7 @@
 
   ;; org-cite
   (org-cite-global-bibliography
-   (list (expand-file-name "references.bib" yx/doc-dir)))
+   (list (expand-file-name "references.bib" yx/org-dir)))
 
   :config
   (add-hook
