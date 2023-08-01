@@ -21,21 +21,21 @@
   (setq
    mail-sources
    '((imap
-       :server "imap.qq.com"
-       :port 993
-       :user "yangxue.wk@foxmail.com"
-       :mailbox "INBOX"
-       :fetchflag "\\Seen"
-       :stream tls
-       :dontexpunge t)
+      :server "imap.qq.com"
+      :port 993
+      :user "yangxue.wk@foxmail.com"
+      :mailbox "INBOX"
+      :fetchflag "\\Seen"
+      :stream tls
+      :dontexpunge t)
      (imap
-       :server "imap.qq.com"
-       :port 993
-       :user "yangxue.cs@foxmail.com"
-       :mailbox "INBOX"
-       :fetchflag "\\Seen"
-       :stream tls
-       :dontexpunge t)
+      :server "imap.qq.com"
+      :port 993
+      :user "yangxue.cs@foxmail.com"
+      :mailbox "INBOX"
+      :fetchflag "\\Seen"
+      :stream tls
+      :dontexpunge t)
      ))
   (setq
    gnus-select-method '(nnnil "")
@@ -149,12 +149,6 @@
    gnus-group-line-format "%M%S%p%P %0{%5y%} %P%1{%G%}\n")
 
   (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
-
-  (with-eval-after-load 'gnus-topic
-    (setq gnus-topic-topology
-          '(("Gnus" visible)
-            (("资讯" visible nil nil))))
-    )
   )
 
 

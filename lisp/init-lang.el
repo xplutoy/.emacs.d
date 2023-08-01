@@ -168,7 +168,6 @@
     c++-ts-mode
     julia-ts-mode
     python-ts-mode
-    emacs-lisp-mode
     ) . combobulate-mode)
   )
 
