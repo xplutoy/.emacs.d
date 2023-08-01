@@ -53,7 +53,7 @@
 
  "M-<left>"   'winner-undo
  "M-<right>"  'winner-redo
- "M-<return>" 'toggle-frame-maximized
+ "M-<f10>"    'toggle-frame-maximized
  "M-r"        'consult-recent-file
  "M-o"        'ace-window
  "C-'"        'vterm-toggle-cd
