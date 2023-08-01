@@ -46,6 +46,7 @@
   )
 
 (use-package treesit
+  :unless -is-win
   :ensure nil
   :preface
   (defun yx/setup-install-grammars ()

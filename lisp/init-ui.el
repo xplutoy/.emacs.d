@@ -5,7 +5,7 @@
 (defvar yx/variable-pitch-font "Latin Modern Roman")
 
 (defun yx/setup-fonts ()
-  (set-face-attribute 'default nil :family yx/default-font :height 160)
+  (set-face-attribute 'default nil :family yx/default-font :height 150)
   (set-face-attribute 'fixed-pitch nil :family yx/fixed-pitch-font)
   (set-face-attribute 'fixed-pitch-serif nil :family yx/fixed-pitch-serif-font)
   (set-face-attribute 'variable-pitch nil :family yx/variable-pitch-font)
