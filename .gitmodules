@@ -1,0 +1,15 @@
+[submodule "site-lisp/color-rg"]
+	path = site-lisp/color-rg
+	url = https://github.com/manateelazycat/color-rg.git
+[submodule "site-lisp/combobulate"]
+	path = site-lisp/combobulate
+	url = https://github.com/mickeynp/combobulate.git
+[submodule "site-lisp/emacs-eat"]
+	path = site-lisp/emacs-eat
+	url = https://codeberg.org/akib/emacs-eat.git
+[submodule "site-lisp/crux-yx"]
+	path = site-lisp/crux-yx
+	url = https://github.com/xplutoy/crux-yx.git
+[submodule "site-lisp/eshell-git-prompt-yx"]
+	path = site-lisp/eshell-git-prompt-yx
+	url = https://github.com/xplutoy/eshell-git-prompt-yx.git
