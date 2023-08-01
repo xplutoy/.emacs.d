@@ -40,8 +40,6 @@
  "C-}" 'enlarge-window-horizontally
  "C-^" 'enlarge-window
 
- "H-z" 'zoom
-
  [remap what-cursor-position]   'zoom                   ;C-x =
  [remap describe-bindings]      'embark-bindings        ;C-h b
  [remap list-buffers]           'ibuffer                ;C-x C-b
@@ -52,20 +50,21 @@
  [remap comment-dwim]           'evil-commentary-line   ;M-;
  [remap tab-to-tab-stop]        'consult-imenu-multi    ;M-i
  [remap zap-to-char]            'vg-quick-zap-to-char   ;M-z
- [remap customize]              'winner-undo            ;s-,
- "s-."                          'winner-redo
- "s-<return>" 'toggle-frame-maximized
- "s-;"        'flyspell-correct-wrapper
- "s-'"        'flyspell-correct-next
- "s-r"        'consult-recent-file
- "s-b"        'ibuffer
- "s-o"        'ace-window
+
+ "M-<left>"   'winner-undo
+ "M-<right>"  'winner-redo
+ "M-<return>" 'toggle-frame-maximized
+ "M-r"        'consult-recent-file
+ "M-o"        'ace-window
  "C-'"        'vterm-toggle-cd
  "C-;"        'yx/toggole-eshell
  "C-."        'embark-act
  "C-,"        'embark-dwim
 
  "M-g ;"      'goto-last-change
+
+ "C-c ;"      'flyspell-correct-wrapper
+ "C-c '"      'flyspell-correct-next
 
  "C-c v"      'magit-file-dispatch
 
