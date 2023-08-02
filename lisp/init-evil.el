@@ -87,9 +87,6 @@
  "C-c n i"    'org-roam-node-insert
  "C-c n c"    'org-roam-capture
  "C-c n j"    'org-roam-dailies-capture-today
- "C-c n r"    'consult-org-roam-search
- "C-c n b"    'consult-org-roam-backlinks
- "C-c n f"    'consult-org-roam-forward-links
  "C-c n t"    'org-transclusion-add
  "C-c n T"    'org-transclusion-add-all
 

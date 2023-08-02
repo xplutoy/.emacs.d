@@ -86,7 +86,7 @@
 
   ;; org-cite
   (org-cite-global-bibliography
-   (list (expand-file-name "references.bib" yx/org-dir)))
+   (list (expand-file-name "bibliography.bib" yx/org-dir)))
 
   :config
   (add-hook
@@ -200,7 +200,6 @@
 ;; org-roam
 (use-package org-roam
   :after org
-  :demand t
   :init
   (setq
    org-roam-directory yx/org-dir
@@ -217,7 +216,7 @@
      )
    )
   :config
-  ;; (org-roam-db-autosync-mode)
+  (org-roam-db-autosync-mode 1)
   (add-hook
    'org-roam-capture-new-node-hook
    (lambda () (org-roam-tag-add '("draft"))))
@@ -232,16 +231,6 @@
 
 (use-package org-transclusion)
 
-(use-package consult-org-roam
-  :after org-roam
-  :init
-  (require 'consult-org-roam)
-  (consult-org-roam-mode 1)
-  :custom
-  (consult-org-roam-buffer-after-buffers t)
-  (consult-org-roam-grep-func 'consult-ripgrep)
-  )
-
 ;; citar
 (use-package citar
   :config
@@ -249,25 +238,11 @@
    org-cite-insert-processor 'citar
    org-cite-follow-processor 'citar
    org-cite-activate-processor 'citar
-   citar-bibliography org-cite-global-bibliography
-   citar-notes-paths (list org-roam-directory))
+   citar-bibliography org-cite-global-bibliography)
   :hook
-  (org-mode . citar-capf-setup)
-  (LaTeX-mode . citar-capf-setup)
+  ((org-mode . citar-capf-setup)
+   (LaTeX-mode . citar-capf-setup))
   )
-(use-package citar-embark
-  :after citar embark
-  :demand t
-  :custom
-  (citar-at-point-function 'embark-act)
-  :config (citar-embark-mode)
-  )
-(use-package citar-org-roam
-  :after (citar org-roam)
-  :demand t
-  :config (citar-org-roam-mode)
-  )
-
 
 ;; ========== end ==========
 (provide 'init-note)
