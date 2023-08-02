@@ -66,33 +66,6 @@
   :init (smart-hungry-delete-add-default-hooks)
   )
 
-(use-package sis
-  :defer 1
-  :init
-  ;; C-s/r 默认优先使用英文
-  (setq
-   sis-respect-go-english-triggers
-   '(isearch-forward isearch-backward)
-   sis-respect-restore-triggers
-   '(isearch-exit isearch-abort))
-  (setq
-   sis-inline-with-other t
-   sis-other-cursor-color "#FF2121"
-   sis-auto-refresh-seconds nil
-   sis-inline-tighten-tail-rule 'all)
-  :config
-  (when -is-mac
-      (sis-ism-lazyman-config
-       "com.apple.keylayout.US"
-       "com.sogou.inputmethod.sogou.pinyin"))
-  (when -is-win
-      (sis-ism-lazyman-config nil t 'w32))
-  (sis-global-inline-mode 1)
-  (sis-global-context-mode 1)
-  (sis-global-respect-mode 1)
-  (sis-global-cursor-color-mode 1)
-  )
-
 (use-package no-littering
   :demand
   :init

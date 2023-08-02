@@ -67,6 +67,7 @@
  "C-c '"      'flyspell-correct-next
 
  "C-c v"      'magit-file-dispatch
+ "C-c V"      'magit-dispatch
 
  "C-c d"      'osx-dictionary-search-pointer
  "C-c D"      'osx-dictionary-search-input
@@ -295,10 +296,5 @@
   (evil-vimish-fold-mode-lighter " ♇")
   )
 
-(use-package evil-owl
-  :defer 1
-  :config
-  (evil-owl-mode 1)
-  )
-
+;; ========= end =====================
 (provide 'init-evil)

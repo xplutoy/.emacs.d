@@ -1,15 +1,4 @@
 ;;; -*- lexical-binding: t no-byte-compile: t -*-
-(with-eval-after-load 'org
-  (yx-comma-leader-def org-mode-map
-    "," 'org-insert-structure-template
-    "'" 'org-edit-special
-    "/" 'org-sparse-tree
-    "y" 'org-download-clipboard
-    "Y" 'org-download-screenshot
-    "b" 'org-cite-insert
-    )
-  )
-
 (use-package org
   :ensure nil
   :defer 1
@@ -184,6 +173,9 @@
   (org-download-method 'attach)
   (org-download-screenshot-method "screencapture -i %s")
   (org-download-image-dir (expand-file-name "attachs" yx/org-dir))
+  :bind (:map org-mode-map
+              ("C-c y" . org-download-clipboard)
+              ("C-c Y" . org-download-screenshot))
   )
 
 (use-package xeft
