@@ -1,24 +1,21 @@
 ;;; -*- coding: utf-8; lexical-binding: t; -*-
 (setq
- tool-bar-mode nil
- menu-bar-mode nil
  use-dialog-box nil
- scroll-bar-mode nil
  use-file-dialog nil
- inhibit-splash-screen t
- frame-resize-pixelwise t
- inhibit-startup-message t)
-
-(setq
+ inhibit-x-resources t
  inhibit-default-init t
- ffap-machine-p-known 'reject
- package-enable-at-startup nil
+ inhibit-splash-screen t
+ inhibit-startup-message t
+ inhibit-compacting-font-caches t
+ frame-resize-pixelwise t
  frame-inhibit-implied-resize t
- read-process-output-max (* 1024 1024)
- inhibit-compacting-font-caches t)
+ ffap-machine-p-known 'reject
+ read-process-output-max (* 1024 1024))
 
 (setq
  package-native-compile t
+ package-enable-at-startup nil
+ native-comp-jit-compilation nil
  native-comp-async-report-warnings-errors nil)
 
 (setq default-frame-alist

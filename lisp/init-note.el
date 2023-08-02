@@ -18,7 +18,6 @@
   (org-ellipsis "...")
   (org-num-max-level 2)
   (org-log-into-drawer t)
-  (org-pretty-entities t)
   (org-reverse-note-order t)
   (org-return-follows-link nil)
   (org-crypt-key yx/gpg-encrypt-key)
@@ -29,12 +28,23 @@
   (org-special-ctrl-a/e t)
   (org-use-speed-commands t)
   (org-fontify-quote-and-verse-blocks t)
-  (org-preview-latex-default-process 'imagemagick)
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
   (org-hide-block-startup t)
+  (org-hide-drawer-startup t)
   (org-startup-folded 'content)
   (org-startup-with-inline-images t)
+  (org-startup-with-latex-preview t)
+
+  (org-pretty-entities t)
+  (org-pretty-entities-include-sub-superscripts nil)
+
+  (org-latex-compiler "xelatex")
+  (org-latex-packages-alist '(("" "ctex" t)))
+  (plist-put org-format-latex-options :scale 2.20)
+  (org-preview-latex-default-process 'dvisvgm)
+  (org-latex-preview-ltxpng-directory
+   (expand-file-name "ltximg/" no-littering-var-directory))
 
   (org-footnote-auto-adjust t)
 

@@ -9,7 +9,7 @@
   (set-face-attribute 'fixed-pitch nil :family yx/fixed-pitch-font)
   (set-face-attribute 'fixed-pitch-serif nil :family yx/fixed-pitch-serif-font)
   (set-face-attribute 'variable-pitch nil :family yx/variable-pitch-font)
-  (setq face-font-rescale-alist '(("LXGW WenKai Mono" . 1.05))) ;; 1.05 magic number
+  (setq face-font-rescale-alist '(("LXGW WenKai Mono" . 1.0)))
   (set-fontset-font t '(#x4e00 . #x9fff) "LXGW WenKai Mono")
   (when -is-mac
     (set-fontset-font
