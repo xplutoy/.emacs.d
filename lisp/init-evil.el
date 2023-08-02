@@ -22,23 +22,13 @@
   (key-chord-define-global "ss"     'scratch-buffer)
   (key-chord-define-global "jj"     'avy-goto-char-timer)
   (key-chord-define-global "jl"     'avy-goto-line)
-  (key-chord-define-global "jk"     'evil-emacs-state)
   (key-chord-define-global "gh"     'consult-ripgrep)
   (key-chord-define-global "hh"     'color-rg-search-symbol)
-  (key-chord-define-global "ff"     'find-file)
-  (key-chord-define-global "jb"     'consult-buffer)
-  (key-chord-define-global "df"     'osx-dictionary-search-word-at-point)
   )
 
 (general-unbind flyspell-mode-map "C-," "C-." "C-;")
 
 (general-define-key
- ;; beter defaults
- "C->" 'scroll-right
- "C-<" 'scroll-left
- "C-{" 'shrink-window-horizontally
- "C-}" 'enlarge-window-horizontally
- "C-^" 'enlarge-window
 
  [remap what-cursor-position]   'zoom                   ;C-x =
  [remap describe-bindings]      'embark-bindings        ;C-h b
@@ -46,7 +36,6 @@
  [remap dabbrev-expand]         'hippie-expand          ;M-/
  [remap undo]                   'undo-only              ;C-/
  [remap kill-buffer]            'kill-buffer-and-window ;C-x k
- [remap toggle-input-method]    'sis-switch             ;C-\\
  [remap comment-dwim]           'evil-commentary-line   ;M-;
  [remap tab-to-tab-stop]        'consult-imenu-multi    ;M-i
  [remap zap-to-char]            'vg-quick-zap-to-char   ;M-z
@@ -75,8 +64,6 @@
  "C-c g"      'consult-ripgrep
  "C-c f"      'consult-find
 
- "C-c u u"    'browse-url-at-point  ;g x in evil
-
  "C-c a"      'org-agenda
  "C-c c"      'org-capture
  "C-c b"      'org-switchb
@@ -91,21 +78,14 @@
  "C-c n t"    'org-transclusion-add
  "C-c n T"    'org-transclusion-add-all
 
-
  "C-h M"      'which-key-show-major-mode
  "C-h B"      'embark-bindings-at-point
- "C-h C-f"    'find-function
- "C-h C-k"    'find-function-on-key
- "C-h C-v"    'find-variable
- "C-h C-l"    'find-library
- "C-h C-i"    'info-display-manual
  )
 
 (yx-space-leader-def
   "SPC" 'execute-extended-command-for-buffer
   "!" 'shell-command
   "/" 'consult-ripgrep
-  "u" 'universal-argument
 
   "0" 'winum-select-window-0-or-10
   "1" 'winum-select-window-1
@@ -156,13 +136,6 @@
   "vfr" 'magit-file-rename
   "vfs" 'magit-stage-file
   "vfu" 'magit-unstage-file
-  "w" '(:ignore t :which-key "windows")
-  "w,"  'winner-undo
-  "w."  'winner-redo
-  "w0"  'delete-window
-  "w1"  'delete-other-windows
-  "w2"  'split-window-vertically
-  "w3"  'split-window-horizontally
   "s" '(:ignore t :which-key "search")
   "sg"  'color-rg-search-symbol
   "sh"  'color-rg-search-input
@@ -170,10 +143,6 @@
   "sk"  'color-rg-search-input-in-project
   "s,"  'color-rg-search-symbol-in-current-file
   "s."  'color-rg-search-input-in-current-file
-  "T" '(:ignore t :which-key "Taggol")
-  "Tsl" 'so-long-minor-mode
-  "Thi" 'hi-lock-mode
-  "Thl" 'hl-line-mode
   "t" '(:ignore t :which-key "tabbar && tabline")
   "tt"  'tab-bar-mode
   "tn"  'tab-bar-new
@@ -230,20 +199,15 @@
   :hook (after-init . evil-mode)
   :init
   (setq
-   evil-move-beyond-eol t
-   evil-default-state 'emacs
-   evil-shift-width tab-width
    evil-want-fine-undo t
    evil-want-C-u-scroll t
+   evil-move-beyond-eol t
    evil-want-C-w-delete nil
    evil-want-integration t
    evil-want-keybinding nil
-   evil-want-Y-yank-to-eol t
+   evil-default-state 'emacs
    evil-undo-system 'undo-redo
-   evil-magic 'very-magic
-   evil-search-module 'evil-search
    evil-respect-visual-line-mode t
-   evil-ex-search-vim-style-regexp t
    evil-disable-insert-state-bindings t
    )
   :config
@@ -273,16 +237,6 @@
            "M-." 'xref-find-definitions
            "gD"  'devdocs-lookup
            )
-  (:states 'insert
-           "C-a" 'move-beginning-of-line
-           "C-y" 'yank
-           "C-k" 'kill-line
-           "C-w" 'kill-region
-           "C-g" 'evil-normal-state)
-  (evil-ex-completion-map "C-a" 'move-beginning-of-line
-                          "C-b" 'backward-char
-                          "M-n" 'next-complete-history-element
-                          "M-p" 'previous-complete-history-element)
   )
 
 (use-package evil-commentary
