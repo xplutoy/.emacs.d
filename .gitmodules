@@ -13,3 +13,6 @@
 [submodule "site-lisp/eshell-git-prompt-yx"]
 	path = site-lisp/eshell-git-prompt-yx
 	url = https://github.com/xplutoy/eshell-git-prompt-yx.git
+[submodule "site-lisp/awesome-tray"]
+	path = site-lisp/awesome-tray
+	url = https://github.com/manateelazycat/awesome-tray.git

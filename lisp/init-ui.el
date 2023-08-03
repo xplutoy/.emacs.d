@@ -51,22 +51,14 @@
   :hook (after-init . minions-mode)
   )
 
-(setq column-number-mode t)
-(use-package doom-modeline
-  :hook (after-init . doom-modeline-mode)
-  :init
+(use-package awesome-tray
+  :load-path "site-lisp/awesome-tray"
+  :demand t
+  :config
   (setq
-   doom-modeline-icon t
-   doom-modeline-height 1
-   doom-modeline-modal-icon t
-   doom-modeline-project-detection 'project)
+   awesome-tray-active-modules
+   '("evil" "belong" "file-path" "buffer-name" "mode-name"))
+  (awesome-tray-mode 1)
   )
-
-(use-package nerd-icons)
-(use-package nerd-icons-dired
-  :hook (dired-mode . nerd-icons-dired-mode))
-(use-package nerd-icons-ibuffer
-  :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
-
 
 (provide 'init-ui)
