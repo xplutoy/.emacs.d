@@ -102,22 +102,7 @@
   (setq
    aw-scope 'frame
    aw-background nil
-   aw-minibuffer-flag t
-   aw-dispatch-always t
    aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-  )
-
-(use-package winum
-  :defer 1
-  :init
-  (setq winum-scope 'frame-local
-        winum-format " [%s] "
-        winum-auto-assign-0-to-minibuffer t
-        winum-ignored-buffers-regexp '("^\\*Help.*")
-        )
-  :config
-  (winum-set-keymap-prefix nil)
-  (winum-mode 1)
   )
 
 ;; zoom
