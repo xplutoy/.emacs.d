@@ -1,24 +1,9 @@
 ;;; -*- coding: utf-8; lexical-binding: t; -*-
-(use-package general
-  :config
-  (general-evil-setup)
-  (general-auto-unbind-keys)
-  (general-create-definer yx-space-leader-def
-    :states '(normal visual insert emacs)
-    :prefix "SPC"
-    :non-normal-prefix "M-SPC")
-  (general-create-definer yx-comma-leader-def
-    :states '(normal visual insert emacs)
-    :major-modes t
-    :prefix ","
-    :non-normal-prefix "M-,"
-    )
-  )
-
 (use-package key-chord
   :init
   (key-chord-mode 1)
   (key-chord-define-global "zz"     'zoom)
+  (key-chord-define-global "vv"     'magit-file-dispatch)
   (key-chord-define-global "ss"     'scratch-buffer)
   (key-chord-define-global "jj"     'avy-goto-char-timer)
   (key-chord-define-global "jl"     'avy-goto-line)
@@ -26,177 +11,53 @@
   (key-chord-define-global "hh"     'color-rg-search-symbol)
   )
 
-(general-unbind flyspell-mode-map "C-," "C-." "C-;")
-
-(general-define-key
-
- [remap what-cursor-position]   'zoom                   ;C-x =
- [remap describe-bindings]      'embark-bindings        ;C-h b
- [remap list-buffers]           'ibuffer                ;C-x C-b
- [remap dabbrev-expand]         'hippie-expand          ;M-/
- [remap undo]                   'undo-only              ;C-/
- [remap kill-buffer]            'kill-buffer-and-window ;C-x k
- [remap comment-dwim]           'evil-commentary-line   ;M-;
- [remap tab-to-tab-stop]        'consult-imenu-multi    ;M-i
- [remap zap-to-char]            'vg-quick-zap-to-char   ;M-z
-
- "M-<left>"   'winner-undo
- "M-<right>"  'winner-redo
- "M-<f10>"    'toggle-frame-maximized
- "M-r"        'consult-recent-file
- "M-o"        'ace-window
- "C-'"        'vterm-toggle-cd
- "C-;"        'yx/toggole-eshell
- "C-."        'embark-act
- "C-,"        'embark-dwim
-
- "M-g ;"      'goto-last-change
-
- "C-c ;"      'flyspell-correct-wrapper
- "C-c '"      'flyspell-correct-next
-
- "C-c v"      'magit-file-dispatch
- "C-c V"      'magit-dispatch
-
- "C-c d"      'osx-dictionary-search-pointer
- "C-c D"      'osx-dictionary-search-input
-
- "C-c g"      'consult-ripgrep
- "C-c f"      'consult-find
-
- "C-c a"      'org-agenda
- "C-c c"      'org-capture
- "C-c b"      'org-switchb
- "C-c l"      'org-store-link
- "C-c t"      'org-show-todo-tree
-
- "C-c n l"    'org-roam-buffer-toggle
- "C-c n n"    'org-roam-node-find
- "C-c n i"    'org-roam-node-insert
- "C-c n c"    'org-roam-capture
- "C-c n j"    'org-roam-dailies-capture-today
- "C-c n t"    'org-transclusion-add
- "C-c n T"    'org-transclusion-add-all
-
- "C-h M"      'which-key-show-major-mode
- "C-h B"      'embark-bindings-at-point
+(bind-keys
+ ("C-'"        . vterm-toggle-cd)
+ ("C-;"        . yx/toggole-eshell)
+ ("C-."        . embark-act)
+ ("C-,"        . embark-dwim)
+ ("C-/"        . undo-only)
+ ("M-i"        . consult-imenu-multi)
+ ("M-z"        . vg-quick-zap-to-char)
+ ("M-;"        . evil-commentary-line)
+ ("M-<left>"   . winner-undo)
+ ("M-<right>"  . winner-redo)
+ ("M-<f10>"    . toggle-frame-maximized)
+ ("M-r"        . consult-recent-file)
+ ("M-o"        . ace-window)
+ ("M-g ;"      . goto-last-change)
+ ("M-s g"      . color-rg-search-symbol)
+ ("M-s G"      . color-rg-search-input)
+ ("M-s p"      . color-rg-search-symbol-in-project)
+ ("M-s P"      . color-rg-search-input-in-project)
+ ("M-s ,"      . color-rg-search-symbol-in-current-file)
+ ("M-s ."      . color-rg-search-input-in-current-file)
+ ("C-c ;"      . flyspell-correct-wrapper)
+ ("C-c '"      . flyspell-correct-next)
+ ("C-c v"      . magit-file-dispatch)
+ ("C-c V"      . magit-dispatch)
+ ("C-c d"      . osx-dictionary-search-pointer)
+ ("C-c D"      . osx-dictionary-search-input)
+ ("C-c g"      . consult-ripgrep)
+ ("C-c f"      . consult-find)
+ ("C-c a"      . org-agenda)
+ ("C-c c"      . org-capture)
+ ("C-c b"      . org-switchb)
+ ("C-c l"      . org-store-link)
+ ("C-c t"      . org-show-todo-tree)
+ ("C-c n l"    . org-roam-buffer-toggle)
+ ("C-c n n"    . org-roam-node-find)
+ ("C-c n i"    . org-roam-node-insert)
+ ("C-c n c"    . org-roam-capture)
+ ("C-c n j"    . org-roam-dailies-capture-today)
+ ("C-c n t"    . org-transclusion-add)
+ ("C-c n T"    . org-transclusion-add-all)
+ ("C-h b"      . embark-bindings)
+ ("C-h M"      . which-key-show-major-mode)
+ ("C-h B"      . embark-bindings-at-point)
  )
 
-(yx-space-leader-def
-  "SPC" 'execute-extended-command-for-buffer
-  "!" 'shell-command
-  "/" 'consult-ripgrep
-
-  "0" 'winum-select-window-0-or-10
-  "1" 'winum-select-window-1
-  "2" 'winum-select-window-2
-  "3" 'winum-select-window-3
-  "4" 'winum-select-window-4
-  "5" 'winum-select-window-5
-  "6" 'winum-select-window-6
-  "7" 'winum-select-window-7
-  "8" 'winum-select-window-8
-  "9" 'winum-select-window-9
-  "f" '(:ignore t :which-key "file/buffer")
-  "ff"  'find-file
-  "ft"  'find-file-other-tab
-  "fo"  'find-file-other-window
-  "fO"  'crux-open-with
-  "fr"  'rename-visited-file
-  "fF"  'crux-sudo-edit
-  "fE"  'crux-reopen-as-root
-  "fk"  'kill-current-buffer
-  "fK"  'crux-kill-other-buffers
-  "fD"  'crux-delete-file-and-buffer
-  "j" '(:ignore t :which-key "jump(in buffer)")
-  "j;"  'evil-goto-last-change
-  "jj"  'evil-avy-goto-char-timer
-  "jw"  'evil-avy-goto-word-or-subword-1
-  "jl"  'consult-line
-  "jL"  'consult-line-multi
-  "ji"  'consult-imenu
-  "jo"  'consult-outline
-  "jm"  'consult-mark
-  "jM"  'consult-global-mark
-  "v" '(:ignore t :which-key "magit")
-  "vs"  'magit-status
-  "vb"  'magit-blame
-  "vd"  'magit-diff-buffer-file
-  "vp"  'magit-pull-branch
-  "vP"  'magit-push-current
-  "vr"  'magit-rebase
-  "vv"  'magit-dispatch
-  "vl" '(:ignore t :which-key "log")
-  "vlc" 'magit-log-current
-  "vlf" 'magit-log-buffer-file
-  "vf" '(:ignore t :which-key "file")
-  "vff" 'magit-file-dispatch
-  "vfc" 'magit-file-checkout
-  "vfd" 'magit-file-delete
-  "vfr" 'magit-file-rename
-  "vfs" 'magit-stage-file
-  "vfu" 'magit-unstage-file
-  "s" '(:ignore t :which-key "search")
-  "sg"  'color-rg-search-symbol
-  "sh"  'color-rg-search-input
-  "sj"  'color-rg-search-symbol-in-project
-  "sk"  'color-rg-search-input-in-project
-  "s,"  'color-rg-search-symbol-in-current-file
-  "s."  'color-rg-search-input-in-current-file
-  "t" '(:ignore t :which-key "tabbar && tabline")
-  "tt"  'tab-bar-mode
-  "tn"  'tab-bar-new
-  "tc"  'tab-bar-close
-  "tl"  'tab-line-mode
-  "p" '(:ignore t :which-key "project")
-  "pp"  'project-switch-project
-  "pb"  'project-switch-to-buffer
-  "pd"  'project-find-dir
-  "pf"  'project-find-file
-  "p!"  'project-shell-command
-  "p&"  'project-async-shell-command
-  "pe"  'project-eshell
-  "pr"  'project-query-replace-regexp
-  "pg"  'project-find-regexp
-  "px"  'project-execute-extended-command
-  "r" '(:ignore t :which-key "register & bookmark")
-  "rj"  'jump-to-register
-  "ri"  'insert-register
-  "rS"  'copy-to-register
-  "rs"  'consult-register-store
-  "rl"  'consult-register-load
-  "rr"  'consult-register
-  "rb"  'consult-bookmark
-  )
-
-(yx-comma-leader-def prog-mode-map
-  "d" '(:ignore t :which-key "code docs")
-  "de" 'eldoc
-  "dd" 'devdocs-lookup
-  "g" '(:ignore t :which-key "code navigate")
-  "gg" 'consult-xref
-  "gf" 'consult-flymake
-  "gs" 'consult-eglot-symbols
-  "gd" 'xref-find-definitions
-  "gr" 'xref-find-references
-  "go" 'xref-find-definitions-other-window
-  "e" '(:ignore t :which-key "code action")
-  "ef" 'eglot-format
-  "er" 'eglot-rename
-  "eh" 'eglot-help-at-point
-  "ea" 'eglot-code-actions
-  "en" 'flymake-goto-next-erroer
-  "ep" 'flymake-goto-prev-error
-  "eb" 'flymake-show-buffer-diagnostics
-  "eB" 'flymake-show-project-diagnostics
-  "h" '(:ignore t :which-key "code hilight")
-  "hh" 'symbol-overlay-put
-  "hc" 'symbol-overlay-remove-all
-  "ht" 'hl-todo-occur
-  )
-
 (use-package evil
-  :hook (after-init . evil-mode)
   :init
   (setq
    evil-want-fine-undo t
@@ -210,6 +71,8 @@
    evil-respect-visual-line-mode t
    evil-disable-insert-state-bindings t
    )
+  :hook
+  (after-init . evil-mode)
   :config
   (defvar yx-initial-evil-state-setup
     '((conf-mode . normal)
@@ -220,23 +83,68 @@
     "Default evil state per major mode.")
   (dolist (p yx-initial-evil-state-setup)
     (evil-set-initial-state (car p) (cdr p)))
-
-  (general-def 'normal org-mode-map
+  (evil-define-key 'normal org-mode-map
     [tab]   'org-cycle
     [S-tab] 'org-shifttab)
-  :general
-  (:states '(normal visual)
-           "C-." nil  ;; unbind evil-repeat-pop
-           ;; more emacs style
-           "C-p" 'previous-line
-           "C-n" 'next-line
-           "C-a" 'move-beginning-of-line
-           "C-e" 'end-of-line
-           "C-y" 'yank
-           "C-w" 'kill-region
-           "M-." 'xref-find-definitions
-           "gD"  'devdocs-lookup
-           )
+  (keymap-unset evil-normal-state-map "C-.")
+  (evil-define-key '(normal visual insert) 'global
+    "\C-p"  'previous-line
+    "\C-n"  'next-line
+    "\C-a"  'move-beginning-of-line
+    "\C-e"  'end-of-line
+    "\C-y"  'yank
+    "\C-w"  'kill-region
+    "\M-."  'xref-find-definitions
+    )
+  ;; leader-key <SPC>
+  (evil-define-key '(normal visual) 'global
+    (kbd "SPC")
+    (define-keymap
+      "SPC"  'execute-extended-command-for-buffer
+      "!"    'shell-command
+      "/"    'consult-ripgrep
+
+      "f f"  'find-file
+      "f t"  'find-file-other-tab
+      "f o"  'find-file-other-window
+      "f O"  'crux-open-with
+      "f r"  'rename-visited-file
+      "f F"  'crux-sudo-edit
+      "f E"  'crux-reopen-as-root
+      "f k"  'kill-current-buffer
+      "f K"  'crux-kill-other-buffers
+      "f D"  'crux-delete-file-and-buffer
+
+      "j j"  'evil-avy-goto-char-timer
+      "j w"  'evil-avy-goto-word-or-subword-1
+      "j l"  'consult-line
+      "j L"  'consult-line-multi
+      "j i"  'consult-imenu
+      "j o"  'consult-outline
+      "j m"  'consult-mark
+      "j M"  'consult-global-mark
+
+      "g g"  'consult-xref
+      "g f"  'consult-flymake
+      "g s"  'consult-eglot-symbols
+      "g d"  'xref-find-definitions
+      "g r"  'xref-find-references
+      "g o"  'xref-find-definitions-other-window
+
+      "e f"  'eglot-format
+      "e r"  'eglot-rename
+      "e h"  'eglot-help-at-point
+      "e a"  'eglot-code-actions
+      "e n"  'flymake-goto-next-erroer
+      "e p"  'flymake-goto-prev-error
+      "e b"  'flymake-show-buffer-diagnostics
+      "e B"  'flymake-show-project-diagnostics
+
+      "h h"  'symbol-overlay-put
+      "h c"  'symbol-overlay-remove-all
+      "h t"  'hl-todo-occur
+      )
+    )
   )
 
 (use-package evil-commentary

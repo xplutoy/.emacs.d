@@ -163,11 +163,17 @@
 
 ;; flyspell
 (setq
- ;; ispell-program-name "enchant-2" ;; lag
  ispell-program-name "hunspell"
  ispell-local-dictionary "en_US"
  ispell-local-dictionary-alist '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8))
  ispell-hunspell-dictionary-alist ispell-local-dictionary-alist)
+(with-eval-after-load 'flyspell
+  (bind-keys
+   :map flyspell-mode-map
+   ("C-," . nil)
+   ("C-." . nil)
+   ("C-;" . nil))
+  )
 
 ;; font-lock
 (setq

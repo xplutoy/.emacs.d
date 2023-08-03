@@ -171,8 +171,6 @@
     ) . combobulate-mode)
   )
 
-(use-package devdocs)
-
 ;; lisp
 (use-package elisp-autofmt
   :commands (elisp-autofmt-mode elisp-autofmt-buffer)
