@@ -103,15 +103,13 @@
     'org-document-info-keyword))
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((emacs-lisp . t) (python . t) (R . t) (julia . t) (org .t)))
+   '((emacs-lisp . t)
+     (python . t)
+     (R . t)
+     (julia . t)
+     (org .t)
+     (latex . t)))
   (org-crypt-use-before-save-magic)
-  (dolist (ele '(("sh" . "src shell")
-                 ("el" . "src emacs-lisp")
-                 ("py" . "src python")
-                 ("R"  . "src R")
-                 ("o"  . "src org")
-                 ("jl" . "src julia")))
-    (add-to-list 'org-structure-template-alist ele))
   )
 
 (use-package org-super-agenda
