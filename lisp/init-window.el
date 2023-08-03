@@ -14,17 +14,6 @@
  switch-to-buffer-obey-display-actions t
  switch-to-buffer-in-dedicated-window nil
  switch-to-buffer-preserve-window-point t
- display-buffer-base-action
- '((display-buffer-same-window
-    display-buffer-reuse-window
-    display-buffer-in-previous-window
-    display-buffer-reuse-mode-window
-    display-buffer-below-selected
-    display-buffer-pop-up-window)
-   (reusable-frames . t)
-   (window-min-width . 30)
-   (window-height . 15)
-   )
  )
 
 (setq

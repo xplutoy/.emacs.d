@@ -165,7 +165,8 @@
 (setq
  ispell-program-name "hunspell"
  ispell-local-dictionary "en_US"
- ispell-local-dictionary-alist '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8))
+ ispell-local-dictionary-alist
+ '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8))
  ispell-hunspell-dictionary-alist ispell-local-dictionary-alist)
 (with-eval-after-load 'flyspell
   (bind-keys
@@ -185,7 +186,12 @@
 ;; savehist
 (setq
  history-delete-duplicates t
- savehist-additional-variables '(mark-ring global-mark-ring search-ring regexp-search-ring extended-command-history))
+ savehist-additional-variables
+ '(mark-ring
+   global-mark-ring
+   search-ring
+   regexp-search-ring
+   extended-command-history))
 (add-hook 'after-init-hook 'savehist-mode)
 
 ;; emacs session
@@ -194,15 +200,14 @@
  desktop-restore-eager 5
  desktop-auto-save-timeout 60
  desktop-load-locked-desktop 'check-pid)
-;; (add-hook 'emacs-startup-hook 'desktop-read)
-;; (add-hook 'emacs-startup-hook 'desktop-save-mode)
 
 ;; midnight-mode
 (setq
  midnight-period 36000
  clean-buffer-list-delay-general 1
  clean-buffer-list-kill-regexps '(".*")
- clean-buffer-list-kill-never-buffer-names '("*eshell*" "*scratch*" "*server*" "*vterm*" "*Group*"))
+ clean-buffer-list-kill-never-buffer-names
+ '("*eshell*" "*scratch*" "*vterm*" "*Group*"))
 (add-hook 'after-init-hook 'midnight-mode)
 (with-eval-after-load 'midnight
   (midnight-delay-set 'midnight-delay 60))

@@ -50,7 +50,7 @@ any directory proferred by `consult-dir'."
    eshell-hist-ignoredups t
    eshell-error-if-no-glob t
    eshell-save-history-on-exit t
-   eshell-prefer-lisp-functions nil
+   eshell-prefer-lisp-functions t
    eshell-scroll-to-bottom-on-input 'all
    eshell-destroy-buffer-when-process-dies t
    )
@@ -67,9 +67,8 @@ any directory proferred by `consult-dir'."
      (eshell/alias "dd"   "dired $1")
      (eshell/alias "ff"   "find-file $1")
      (eshell/alias "fo"   "find-file-other-windows $1")
-     (eshell/alias "gs"   "git status")
-     (eshell/alias "gd"   "magit-diff-unstaged")
-     (eshell/alias "gds"  "magit-diff-staged")
+     (eshell/alias "gs"   "magit-status")
+     (eshell/alias "gv"   "magit-dispatch")
      (eshell/alias "ll"   "ls -AlohG --color=always")
      )
    )
