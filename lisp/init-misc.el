@@ -5,6 +5,11 @@
   (setq gcmh-high-cons-threshold (* 128 1024 1024))
   (gcmh-mode 1))
 
+(use-package server
+  :ensure nil
+  :commands (server-running-p)
+  :config (or (server-running-p) (server-mode)))
+
 (when (featurep 'xwidget-internal)
   (use-package xwidget
     :ensure nil
@@ -17,9 +22,14 @@
   :defer 1
   :load-path "site-lisp/crux-yx"
   :config
-  (add-hook 'eww-mode-hook
-            (lambda ()
-              (setq-local imenu-create-index-function 'unpackaged/imenu-eww-headings))))
+  (add-hook
+   'eww-mode-hook
+   (lambda ()
+     (setq-local
+      imenu-create-index-function
+      'unpackaged/imenu-eww-headings))
+   )
+  )
 
 (use-package benchmark-init
   :disabled
@@ -56,14 +66,6 @@
   :defer 1
   :config
   (move-text-default-bindings)
-  )
-
-(use-package smart-hungry-delete
-  :bind (:map prog-mode-map
-              ([remap backward-delete-char-untabify] . smart-hungry-delete-backward-char)
-              ([remap delete-backward-char] . smart-hungry-delete-backward-char)
-              ([remap delete-char] . smart-hungry-delete-backward-char))
-  :init (smart-hungry-delete-add-default-hooks)
   )
 
 (use-package no-littering
