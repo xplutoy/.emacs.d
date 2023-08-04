@@ -192,6 +192,9 @@
               ("M-n"     . code-cells-forward-cell))
   )
 
+;; emacs-jupyter
+(use-package jupyter)
+
 ;; python
 (add-hook
  'python-ts-mode-hook
@@ -212,7 +215,8 @@
 (use-package pyvenv)
 (use-package pyvenv-auto
   :hook (python-ts-mode . pyvenv-auto-run))
-(use-package poetry)
+(use-package poetry
+  :hook (python-ts-mode . poetry-tracking-mode))
 
 ;; Julia
 (use-package julia-mode)

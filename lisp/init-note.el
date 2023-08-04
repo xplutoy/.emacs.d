@@ -108,7 +108,8 @@
      (R . t)
      (julia . t)
      (org .t)
-     (latex . t)))
+     (latex . t)
+     (jupyter . t)))
   (org-crypt-use-before-save-magic)
   )
 

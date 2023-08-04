@@ -13,6 +13,7 @@
  read-process-output-max (* 1024 1024))
 
 (setq
+ byte-compile-warnings nil
  package-native-compile t
  package-enable-at-startup nil
  native-comp-jit-compilation nil
