@@ -64,6 +64,7 @@ any directory proferred by `consult-dir'."
       eshell-visual-subcommands
       '(("git" "log" "diff" "show")))
 
+     (eshell/alias "q"    "exit")
      (eshell/alias "dd"   "dired $1")
      (eshell/alias "ff"   "find-file $1")
      (eshell/alias "fo"   "find-file-other-windows $1")
