@@ -99,7 +99,17 @@
 ;; dict
 (use-package osx-dictionary
   :if -is-mac
-  :defer 1)
+  :bind (("C-c D" . osx-dictionary-search-input)
+         ("C-c d" . osx-dictionary-search-pointer))
+  )
+
+(use-package fanyi
+  :unless -is-mac
+  :bind (("C-c D" . fanyi-dwim)
+         ("C-c d" . fanyi-dwim2))
+  :custom
+  (fanyi-providers '(fanyi-haici-provider))
+  )
 
 (provide 'init-misc)
 ;;; init-misc.el ends here

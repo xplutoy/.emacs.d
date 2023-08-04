@@ -36,8 +36,6 @@
  ("C-c '"      . flyspell-correct-next)
  ("C-c v"      . magit-file-dispatch)
  ("C-c V"      . magit-dispatch)
- ("C-c d"      . osx-dictionary-search-pointer)
- ("C-c D"      . osx-dictionary-search-input)
  ("C-c g"      . consult-ripgrep)
  ("C-c f"      . consult-find)
  ("C-c a"      . org-agenda)
