@@ -217,7 +217,8 @@
  python-shell-interpreter-args "console --simple-prompt"
  python-shell-completion-native-disabled-interpreters '("ipython" "jupyter"))
 
-(use-package pyvenv)
+(use-package pyvenv
+  :init (pyvenv-activate "~/workspace/.venv/"))
 (use-package pyvenv-auto
   :hook (python-ts-mode . pyvenv-auto-run))
 (use-package poetry
