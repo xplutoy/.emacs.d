@@ -115,6 +115,16 @@
   (org-crypt-use-before-save-magic)
   )
 
+;; @see https://emacs-china.org/t/org-mode/22313 解决org中文行内格式的问题
+(with-eval-after-load 'org
+  (font-lock-add-keywords
+   'org-mode
+   '(("\\cc\\( \\)[/+*_=~][^a-zA-Z0-9/+*_=~\n]+?[/+*_=~]\\( \\)?\\cc?"
+      (1 (prog1 () (compose-region (match-beginning 1) (match-end 1) ""))))
+     ("\\cc?\\( \\)?[/+*_=~][^a-zA-Z0-9/+*_=~\n]+?[/+*_=~]\\( \\)\\cc"
+      (2 (prog1 () (compose-region (match-beginning 2) (match-end 2) "")))))
+   'append))
+
 (use-package org-super-agenda
   :init
   (setq
