@@ -185,18 +185,31 @@
   :bind (:map code-cells-mode-map
               ("M-p"     . code-cells-backward-cell)
               ("M-n"     . code-cells-forward-cell))
+  :config
+  (with-eval-after-load 'jupyter
+    (defalias 'adopt-jupyter-eval-region (apply-partially 'jupyter-eval-region nil))
+    (setq code-cells-eval-region-commands
+          '((jupyter-repl-interaction-mode . adopt-jupyter-eval-region)
+            (python-ts-mode . python-shell-send-region)
+            (emacs-lisp-mode . eval-region)
+            (lisp-interaction-mode . eval-region))
+          )
+    )
   )
 
 (use-package jupyter
   :after org
   :demand t
   :config
+  (setq jupyter-eval-use-overlays nil)
   ;; @see https://github.com/emacs-jupyter/jupyter/issues/478
-  (setf (alist-get "julia" org-src-lang-modes nil nil #'equal) 'julia-ts)
+  (setf (alist-get "julia" org-src-lang-modes nil nil #'equal)  'julia-ts)
   (setf (alist-get "python" org-src-lang-modes nil nil #'equal) 'python-ts)
   )
 
 ;; python
+(defvar yx/default-python-env "~/workspace/.venv/")
+
 (add-hook
  'python-ts-mode-hook
  (lambda()
@@ -212,13 +225,13 @@
  python-shell-dedicated t
  python-skeleton-autoinsert t
  python-indent-guess-indent-offset-verbose nil
- python-shell-virtualenv-root "~/workspace/.venv/"
+ python-shell-virtualenv-root yx/default-python-env
  python-shell-interpreter "jupyter"
  python-shell-interpreter-args "console --simple-prompt"
  python-shell-completion-native-disabled-interpreters '("ipython" "jupyter"))
 
 (use-package pyvenv
-  :init (pyvenv-activate "~/workspace/.venv/"))
+  :init (pyvenv-activate yx/default-python-env))
 (use-package pyvenv-auto
   :hook (python-ts-mode . pyvenv-auto-run))
 (use-package poetry
