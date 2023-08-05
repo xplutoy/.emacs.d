@@ -192,8 +192,14 @@
               ("M-n"     . code-cells-forward-cell))
   )
 
-;; emacs-jupyter
-(use-package jupyter)
+(use-package jupyter
+  :after org
+  :demand t
+  :config
+  ;; @see https://github.com/emacs-jupyter/jupyter/issues/478
+  (setf (alist-get "julia" org-src-lang-modes nil nil #'equal) 'julia-ts)
+  (setf (alist-get "python" org-src-lang-modes nil nil #'equal) 'python-ts)
+  )
 
 ;; python
 (add-hook
@@ -209,12 +215,19 @@
 
 (setq
  python-shell-dedicated t
+ python-indent-guess-indent-offset-verbose nil
  python-shell-interpreter "ipython"
  python-shell-interpreter-args "-i --simple-prompt")
 
-(use-package pyvenv)
+(use-package pyvenv
+  :demand t
+  :config
+  (pyvenv-activate "~/workspace/.venv/")
+  )
+
 (use-package pyvenv-auto
   :hook (python-ts-mode . pyvenv-auto-run))
+
 (use-package poetry
   :hook (python-ts-mode . poetry-tracking-mode))
 
