@@ -44,6 +44,7 @@
 
   (org-src-fontify-natively t)
   (org-src-tab-acts-natively t)
+  (org-confirm-babel-evaluate nil)
   (org-src-preserve-indentation nil)
   (org-src-window-setup 'split-window-right)
   (org-src-ask-before-returning-to-edit-buffer nil)
@@ -55,11 +56,12 @@
    (expand-file-name "inbox.org" org-directory))
   (org-capture-templates
    '(("t" "task"  entry (file+headline org-default-notes-file "Tasks")
-      "* TODO [#B] %?\nAdded: %U\n" :prepend t :kill-buffer t)
+      "* TODO [#B] %?\n" :prepend t :kill-buffer t)
      ("i" "idea"  entry (file+headline org-default-notes-file "Someday/Maybe")
-      "* IDEA [#C] %?\nAdded: %U\n" :prepend t :kill-buffer t)
+      "* WAIT [#C] %?\n" :prepend t :kill-buffer t)
      ("h" "habit" entry (file+headline org-default-notes-file "Habits")
-      "* NEXT [#B] %?\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n" :prepend t :kill-buffer t))
+      "* NEXT [#B] %?\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"
+      :prepend t :kill-buffer t))
    )
 
   (org-agenda-files

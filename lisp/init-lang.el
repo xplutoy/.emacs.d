@@ -95,6 +95,7 @@
   )
 
 (use-package tempel
+  :defer 1
   :bind  (("M-=" . tempel-complete)
           ("M-*" . tempel-insert))
   :init
@@ -104,7 +105,8 @@
                       completion-at-point-functions)))
   (add-hook 'prog-mode-hook 'tempel-setup-capf)
   (add-hook 'text-mode-hook 'tempel-setup-capf)
-  )
+  :config
+  (global-tempel-abbrev-mode))
 (use-package tempel-collection)
 
 ;; project
@@ -177,17 +179,10 @@
   :hook (emacs-lisp-mode . elisp-autofmt-mode))
 
 (use-package code-cells
-  :hook ((python-ts-mode julia-ts-mode) . code-cells-mode-maybe)
-  :custom
-  code-cells-eval-region-commands
-  '((python-ts-mode . python-shell-send-region)
-    (jupyter-repl-interaction-mode . jupyter-eval-region))
-  code-cells-convert-ipynb-style
-  '(("pandoc" "--to" "ipynb" "--from" "org")
-    ("pandoc" "--to" "org" "--from" "ipynb")
-    org-mode)
+  :hook ((julia-ts-mode
+          python-ts-mode
+          emacs-lisp-mode) . code-cells-mode-maybe)
   :bind (:map code-cells-mode-map
-              ("C-c C-r" . code-cells-eval)
               ("M-p"     . code-cells-backward-cell)
               ("M-n"     . code-cells-forward-cell))
   )
@@ -215,19 +210,16 @@
 
 (setq
  python-shell-dedicated t
+ python-skeleton-autoinsert t
  python-indent-guess-indent-offset-verbose nil
- python-shell-interpreter "ipython"
- python-shell-interpreter-args "-i --simple-prompt")
+ python-shell-virtualenv-root "~/workspace/.venv/"
+ python-shell-interpreter "jupyter"
+ python-shell-interpreter-args "console --simple-prompt"
+ python-shell-completion-native-disabled-interpreters '("ipython" "jupyter"))
 
-(use-package pyvenv
-  :demand t
-  :config
-  (pyvenv-activate "~/workspace/.venv/")
-  )
-
+(use-package pyvenv)
 (use-package pyvenv-auto
   :hook (python-ts-mode . pyvenv-auto-run))
-
 (use-package poetry
   :hook (python-ts-mode . poetry-tracking-mode))
 
