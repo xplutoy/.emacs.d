@@ -50,7 +50,6 @@
   (org-src-ask-before-returning-to-edit-buffer nil)
 
   (org-modules '(org-habit org-tempo))
-  (org-habit-graph-column 60)
 
   (org-default-notes-file
    (expand-file-name "inbox.org" org-directory))
@@ -69,6 +68,7 @@
     org-default-notes-file
     (expand-file-name "life.org" yx/org-dir)))
   (org-agenda-span 'day)
+  (org-agenda-tags-column 0)
   (org-agenda-compact-blocks t)
   (org-agenda-include-deadlines t)
   (org-agenda-skip-deadline-if-done t)

@@ -253,6 +253,11 @@
   :hook (julia-ts-mode . julia-snail-mode)
   )
 
+;; R
+(use-package ess-r-mode
+  :ensure ess
+  )
+
 ;; yaml
 (use-package yaml-mode)
 

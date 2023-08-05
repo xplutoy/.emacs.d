@@ -91,6 +91,7 @@
   (setq
    aw-scope 'frame
    aw-background nil
+   aw-dispatch-always t
    aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   )
 
