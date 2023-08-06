@@ -177,7 +177,7 @@
   :hook (emacs-lisp-mode . elisp-autofmt-mode))
 
 (use-package code-cells
-  :hook ((julia-ts-mode
+  :hook ((julia-mode
           python-ts-mode
           emacs-lisp-mode) . code-cells-mode-maybe)
   :bind (:map code-cells-mode-map
@@ -202,7 +202,6 @@
   :config
   (setq jupyter-eval-use-overlays nil)
   ;; @see https://github.com/emacs-jupyter/jupyter/issues/478
-  (setf (alist-get "julia" org-src-lang-modes nil nil #'equal)  'julia-ts)
   (setf (alist-get "python" org-src-lang-modes nil nil #'equal) 'python-ts)
   )
 
@@ -245,7 +244,6 @@
   )
 
 (use-package julia-snail
-  :disabled
   :custom
   (julia-snail-terminal-type :eat)
   (julia-snail-extensions '(ob-julia formatter))
@@ -254,7 +252,6 @@
 
 ;; R/julia
 (use-package ess-site
-  :hook (julia-mode . ess-julia-mode)
   :ensure ess
   )
 
