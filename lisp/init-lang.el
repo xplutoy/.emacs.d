@@ -73,7 +73,6 @@
       (mapping
        '((c-mode . c-ts-mode)
          (c++-mode . c++-ts-mode)
-         (julia-mode . julia-ts-mode)
          (python-mode . python-ts-mode)))
     (add-to-list 'major-mode-remap-alist mapping))
   :config
@@ -168,7 +167,6 @@
   :hook
   ((c-ts-mode
     c++-ts-mode
-    julia-ts-mode
     python-ts-mode
     ) . combobulate-mode)
   )
@@ -240,23 +238,23 @@
 
 ;; Julia
 (use-package julia-mode)
-(use-package julia-ts-mode
-  :mode "\\.jl$")
-
 (use-package eglot-jl
   :init
   (with-eval-after-load 'eglot
     (eglot-jl-init))
   )
+
 (use-package julia-snail
+  :disabled
   :custom
   (julia-snail-terminal-type :eat)
   (julia-snail-extensions '(ob-julia formatter))
-  :hook (julia-ts-mode . julia-snail-mode)
+  :hook (julia-mode . julia-snail-mode)
   )
 
-;; R
-(use-package ess-r-mode
+;; R/julia
+(use-package ess-site
+  :hook (julia-mode . ess-julia-mode)
   :ensure ess
   )
 
