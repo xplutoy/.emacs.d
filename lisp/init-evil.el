@@ -3,12 +3,9 @@
   :init
   (key-chord-mode 1)
   (key-chord-define-global "zz"     'zoom)
-  (key-chord-define-global "vv"     'magit-file-dispatch)
-  (key-chord-define-global "ss"     'scratch-buffer)
   (key-chord-define-global "jj"     'avy-goto-char-timer)
+  (key-chord-define-global "ji"     'consult-imenu)
   (key-chord-define-global "jl"     'avy-goto-line)
-  (key-chord-define-global "gh"     'consult-ripgrep)
-  (key-chord-define-global "hh"     'color-rg-search-symbol)
   )
 
 (bind-keys
