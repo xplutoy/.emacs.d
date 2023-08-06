@@ -186,15 +186,16 @@
               ("M-p"     . code-cells-backward-cell)
               ("M-n"     . code-cells-forward-cell))
   :config
+  (setq code-cells-eval-region-commands
+        '((python-ts-mode . python-shell-send-region)
+          (emacs-lisp-mode . eval-region)))
   (with-eval-after-load 'jupyter
     (defalias 'adopt-jupyter-eval-region (apply-partially 'jupyter-eval-region nil))
-    (setq code-cells-eval-region-commands
-          '((jupyter-repl-interaction-mode . adopt-jupyter-eval-region)
-            (python-ts-mode . python-shell-send-region)
-            (emacs-lisp-mode . eval-region)
-            (lisp-interaction-mode . eval-region))
-          )
-    )
+    (add-to-list 'code-cells-eval-region-commands
+                 '(jupyter-repl-interaction-mode . adopt-jupyter-eval-region)))
+  (with-eval-after-load 'julia-snail
+    (add-to-list 'code-cells-eval-region-commands
+                 '(julia-snail-mode . julia-snail-send-code-cell)))
   )
 
 (use-package jupyter
@@ -250,6 +251,7 @@
 (use-package julia-snail
   :custom
   (julia-snail-terminal-type :eat)
+  (julia-snail-extensions '(ob-julia formatter))
   :hook (julia-ts-mode . julia-snail-mode)
   )
 
