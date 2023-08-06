@@ -116,4 +116,5 @@
         '(cape-file cape-symbol cape-dabbrev cape-dict cape-abbrev))
   )
 
-(provide 'init-compl)
+;; %% end
+(provide 'init-comp)

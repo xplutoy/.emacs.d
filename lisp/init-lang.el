@@ -171,11 +171,6 @@
     ) . combobulate-mode)
   )
 
-;; lisp
-(use-package elisp-autofmt
-  :commands (elisp-autofmt-mode elisp-autofmt-buffer)
-  :hook (emacs-lisp-mode . elisp-autofmt-mode))
-
 (use-package code-cells
   :hook ((julia-mode
           python-ts-mode

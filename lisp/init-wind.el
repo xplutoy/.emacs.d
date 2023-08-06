@@ -181,4 +181,4 @@
   (burly-tabs-mode 1)
   )
 
-(provide 'init-window)
+(provide 'init-wind)

@@ -45,18 +45,14 @@
 ;; (add-hook 'after-init-hook 'benchmark-init/deactivate)
 
 (require 'init-ui)
-(require 'init-basic)
-(require 'init-compl)
+(require 'init-base)
+(require 'init-comp)
 (require 'init-evil)
 (require 'init-misc)
-(require 'init-window)
+(require 'init-wind)
+(require 'init-term)
 (require 'init-note)
-(require 'init-tex)
-(require 'init-mail)
 (require 'init-lang)
-(require 'init-eshell)
-(require 'init-erc)
-(require 'init-elfeed)
-
+(require 'init-mail)
 
 ;;; init.el ends here

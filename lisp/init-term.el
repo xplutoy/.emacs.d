@@ -120,4 +120,4 @@ any directory proferred by `consult-dir'."
    eat-enable-yank-to-terminal t)
   )
 
-(provide 'init-eshell)
+(provide 'init-term)

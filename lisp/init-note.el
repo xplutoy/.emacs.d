@@ -1,4 +1,5 @@
 ;;; -*- lexical-binding: t no-byte-compile: t -*-
+;; %% org
 (use-package org
   :ensure nil
   :defer 1
@@ -115,16 +116,7 @@
   (org-crypt-use-before-save-magic)
   )
 
-;; @see https://emacs-china.org/t/org-mode/22313 解决org中文行内格式的问题
-(with-eval-after-load 'org
-  (font-lock-add-keywords
-   'org-mode
-   '(("\\cc\\( \\)[/+*_=~][^a-zA-Z0-9/+*_=~\n]+?[/+*_=~]\\( \\)?\\cc?"
-      (1 (prog1 () (compose-region (match-beginning 1) (match-end 1) ""))))
-     ("\\cc?\\( \\)?[/+*_=~][^a-zA-Z0-9/+*_=~\n]+?[/+*_=~]\\( \\)\\cc"
-      (2 (prog1 () (compose-region (match-beginning 2) (match-end 2) "")))))
-   'append))
-
+;; %% org+
 (use-package org-super-agenda
   :init
   (setq
@@ -189,18 +181,7 @@
               ("C-c Y" . org-download-screenshot))
   )
 
-(use-package xeft
-  :defer 2
-  :init
-  (setq
-   xeft-directory yx/org-dir
-   xeft-recursive 'follow-symlinks
-   xeft-ignore-extension '("gpg" "asc" "bib")
-   xeft-title-function 'file-name-nondirectory
-   xeft-database (no-littering-expand-var-file-name "xeft"))
-  )
-
-;; org-roam
+;; %% org-roam notes
 (use-package org-roam
   :after org
   :init
@@ -232,9 +213,55 @@
     )
   )
 
+(use-package xeft
+  :init
+  (setq
+   xeft-directory yx/org-dir
+   xeft-recursive 'follow-symlinks
+   xeft-ignore-extension '("gpg" "asc" "bib")
+   xeft-title-function 'file-name-nondirectory
+   xeft-database (no-littering-expand-var-file-name "xeft"))
+  )
+
 (use-package org-transclusion)
 
-;; citar
+;; %% latex
+(use-package tex
+  :ensure auctex
+  :mode (("\\.tex\\'" . LaTeX-mode))
+  :config
+  (setq-default
+   Tex-master nil
+   TeX-engine 'xetex)
+  (setq
+   TeX-auto-save t
+   TeX-parse-self t
+   TeX-view-program-selection
+   '((output-pdf "pdf-tools"))
+   TeX-view-program-list
+   '(("pdf-tools" "TeX-pdf-tools-sync-view")))
+  (setq reftex-plug-into-AUCTeX t)
+  (mapc (lambda (mode)
+          (add-hook 'LaTeX-mode-hook mode))
+        (list
+         'flyspell-mode
+         'TeX-PDF-mode
+         'turn-on-reftex
+         'LaTeX-math-mode
+         'TeX-source-correlate-mode))
+  (add-hook 'TeX-after-comilation-finished-functions
+            'TeX-revert-document-buffer)
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs '(latex-mode "texlab")))
+  )
+
+(use-package cdlatex
+  :hook
+  ((LaTeX-mode . turn-on-cdlatex)
+   (org-mode   . turn-on-org-cdlatex))
+  )
+
+;; %% citar
 (use-package citar
   :config
   (setq
@@ -247,5 +274,5 @@
    (LaTeX-mode . citar-capf-setup))
   )
 
-;; ========== end ==========
+;; %% end
 (provide 'init-note)

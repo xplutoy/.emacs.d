@@ -37,7 +37,7 @@
  auto-save-no-message t
  auto-save-visited-interval 30)
 
-;; backup
+;; %% backup
 (setq
  version-control t
  backup-by-copying t
@@ -55,7 +55,7 @@
  uniquify-ignore-buffers-re "^\\*"
  uniquify-buffer-name-style 'post-forward-angle-brackets)
 
-;; line number
+;; %% line number
 (setq
  display-line-numbers-type 'visual
  display-line-numbers-width-start t)
@@ -263,4 +263,4 @@
 (with-current-buffer "*scratch*"
   (emacs-lock-mode 'kill))
 
-(provide 'init-basic)
+(provide 'init-base)
