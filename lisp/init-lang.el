@@ -179,7 +179,7 @@
 
 (use-package jupyter
   :after org
-  :demand t
+  :demand
   :config
   (setq jupyter-eval-use-overlays nil)
   ;; @see https://github.com/emacs-jupyter/jupyter/issues/478

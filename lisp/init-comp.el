@@ -1,22 +1,23 @@
 ;;; -*- coding: utf-8; lexical-binding: t; -*-
 (use-package vertico
-  :demand t
+  :demand
   :config
   (setq vertico-resize nil)
 
   (vertico-mode 1)
   (vertico-mouse-mode 1)
   (vertico-indexed-mode 1)
-  :bind ( :map vertico-map
-          ("C-q" . vertico-quick-insert)
-          ("RET" . vertico-directory-enter)
-          ("DEL" . vertico-directory-delete-char))
+  :bind (:map vertico-map
+              ("C-q" . vertico-quick-insert)
+              ("RET" . vertico-directory-enter)
+              ("DEL" . vertico-directory-delete-char))
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)
   )
 
 (use-package orderless
-  :init
-  (setq completion-styles '(orderless basic)))
+  :custom
+  (completion-styles '(orderless basic))
+  )
 
 (use-package embark
   :custom
@@ -62,16 +63,12 @@
          ("M-r" . consult-history))
   )
 
-;; consult-*** ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package consult-dir
   :bind (("C-x C-d" . consult-dir)
          :map vertico-map
          ("C-x C-d" . consult-dir)
-         ("C-x C-j" . consult-dir-jump-file)))
-(use-package consult-project-extra
-  :bind
-  (("C-c p f" . consult-project-extra-find)
-   ("C-c p o" . consult-project-extra-find-other-window)))
+         ("C-x C-j" . consult-dir-jump-file))
+  )
 
 (use-package consult-eglot
   :bind (("M-s s" . consult-eglot-symbols))

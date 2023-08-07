@@ -1,4 +1,5 @@
 ;;; -*- coding: utf-8; lexical-binding: t; -*-
+;; %% 全局按键
 (use-package key-chord
   :init
   (key-chord-mode 1)
@@ -152,8 +153,6 @@
 (use-package vimish-fold)
 (use-package evil-vimish-fold
   :hook (prog-mode . evil-vimish-fold-mode)
-  :custom
-  (evil-vimish-fold-mode-lighter " ♇")
   )
 
 ;; %% end

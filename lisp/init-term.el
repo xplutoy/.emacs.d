@@ -104,7 +104,7 @@ any directory proferred by `consult-dir'."
 
 (use-package eshell-vterm
   :after vterm
-  :demand t
+  :demand
   :config
   (eshell-vterm-mode)
   (defalias 'eshell/v 'eshell-exec-visual))

@@ -121,7 +121,7 @@
   :init
   (setq
    org-super-agenda-groups
-   '((:name "🐝 Today"
+   '((:name "🐝 Today!"
             :time-grid t
             :deadline today
             :scheduled today)

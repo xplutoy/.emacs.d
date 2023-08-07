@@ -53,7 +53,7 @@
 
 (use-package awesome-tray
   :load-path "site-lisp/awesome-tray"
-  :demand t
+  :demand
   :config
   (setq
    awesome-tray-active-modules
