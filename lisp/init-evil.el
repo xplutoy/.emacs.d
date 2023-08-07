@@ -9,6 +9,10 @@
   )
 
 (bind-keys
+ ("s-,"     . winner-undo)
+ ("s-."     . winner-redo)
+ ("s-<"     . previous-buffer)
+ ("s->"     . next-buffer)
  ("C-'"     . vterm-toggle-cd)
  ("C-;"     . yx/toggole-eshell)
  ("C-."     . embark-act)
