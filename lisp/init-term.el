@@ -81,7 +81,10 @@ any directory proferred by `consult-dir'."
   (setq eshell-prompt-function 'eshell-git-prompt-multiline)
   )
 
-(use-package pcmpl-args :defer 1)
+(use-package pcmpl-args
+  :after eshell
+  :demand
+  )
 
 (use-package vterm
   :unless -is-win
@@ -100,7 +103,8 @@ any directory proferred by `consult-dir'."
   :after vterm
   :custom
   (vterm-toggle-hide-method 'delete-window)
-  (vterm-toggle-cd-auto-create-buffer nil))
+  (vterm-toggle-cd-auto-create-buffer nil)
+  )
 
 (use-package eshell-vterm
   :after vterm
@@ -110,7 +114,6 @@ any directory proferred by `consult-dir'."
   (defalias 'eshell/v 'eshell-exec-visual))
 
 (use-package eat
-  :defer 1
   :load-path "site-lisp/emacs-eat"
   :hook ((eshell-load . eat-eshell-mode)
          (eshell-load . eat-eshell-visual-command-mode))

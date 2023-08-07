@@ -19,6 +19,7 @@
    (t "xdg-open"))
   )
 
+(menu-bar-mode -1)
 (prefer-coding-system 'utf-8)
 (set-language-environment 'utf-8)
 (set-default-coding-systems 'utf-8)
@@ -41,8 +42,9 @@
  package-gnupghome-dir (expand-file-name "gnupg" package-user-dir))
 (package-initialize)
 
-;; (benchmark-init/activate)
-;; (add-hook 'after-init-hook 'benchmark-init/deactivate)
+(use-package benchmark-init)
+(benchmark-init/activate)
+(add-hook 'after-init-hook 'benchmark-init/deactivate)
 
 (require 'init-ui)
 (require 'init-base)

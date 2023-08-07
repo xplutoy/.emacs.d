@@ -62,7 +62,7 @@
 
 ;; recentf
 (setq
- recentf-max-saved-items 500
+ recentf-max-saved-items 100
  recentf-auto-cleanup 'never
  recentf-exclude
  '("COMMIT_MSG"
@@ -151,12 +151,11 @@
 
 ;; doc-view
 (setq
- doc-view-resolution 720)
+ doc-view-resolution 1024)
 
 ;; eww
 (setq
  eww-auto-rename-buffer 'title
- eww-search-prefix "https://www.bing.com/?q="
  browse-url-browser-function 'eww-browse-url)
 (with-eval-after-load 'eww
   (add-hook 'eww-after-render-hook 'eww-readable))
@@ -176,13 +175,6 @@
    ("C-;" . nil))
   )
 
-;; font-lock
-(setq
- jit-lock-defer-time 0.25
- jit-lock-chunk-size 4096
- jit-lock-stealth-time 0.5)
-(setq-default jit-lock-contextually t)
-
 ;; savehist
 (setq
  history-delete-duplicates t
@@ -200,17 +192,6 @@
  desktop-restore-eager 5
  desktop-auto-save-timeout 60
  desktop-load-locked-desktop 'check-pid)
-
-;; midnight-mode
-(setq
- midnight-period 36000
- clean-buffer-list-delay-general 1
- clean-buffer-list-kill-regexps '(".*")
- clean-buffer-list-kill-never-buffer-names
- '("*eshell*" "*scratch*" "*vterm*" "*Group*"))
-(add-hook 'after-init-hook 'midnight-mode)
-(with-eval-after-load 'midnight
-  (midnight-delay-set 'midnight-delay 60))
 
 ;; time-stamp
 (add-hook 'before-save-hook 'time-stamp)

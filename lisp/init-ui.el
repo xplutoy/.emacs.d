@@ -11,10 +11,6 @@
   (set-face-attribute 'variable-pitch nil :family yx/variable-pitch-font)
   (setq face-font-rescale-alist '(("LXGW WenKai Mono" . 1.0)))
   (set-fontset-font t '(#x4e00 . #x9fff) "LXGW WenKai Mono")
-  (when -is-mac
-    (set-fontset-font
-     t 'symbol
-     (font-spec :family "Apple Color Emoji") nil 'prepend))
   )
 
 (if (daemonp)
@@ -34,7 +30,6 @@
 (use-package ef-themes
   :init
   (setq
-   ef-themes-to-toggle '(ef-light ef-night)
    ef-themes-headings
    '((0 . (variable-pitch 1.3))
      (1 . (regular 1.25))

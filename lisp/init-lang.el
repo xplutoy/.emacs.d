@@ -24,9 +24,6 @@
  ediff-window-setup-function 'ediff-setup-windows-plain
  ediff-split-window-function 'split-window-horizontally)
 
-(with-eval-after-load 'hideshow
-  (keymap-set hs-minor-mode-map "C-<return>" 'hs-toggle-hiding))
-
 (use-package eglot
   :ensure nil
   :init
@@ -74,7 +71,7 @@
   )
 
 (use-package reformatter
-  :defer 1
+  :defer 2
   :config
   ;; python
   (reformatter-define python-isort
@@ -93,10 +90,6 @@
           ("M-*" . tempel-insert))
   )
 (use-package tempel-collection)
-
-;; project
-(with-eval-after-load "project"
-  (keymap-set project-prefix-map "m" 'magit))
 
 ;; diff-hl
 (use-package diff-hl
@@ -117,10 +110,8 @@
 
 ;; aggressive-indent
 (use-package aggressive-indent
-  :hook
-  (((emacs-lisp-mode python-mode julia-mode) . aggressive-indent-mode)
-   (find-file . (lambda ()
-                  (if (> (buffer-size) (* 3000 80)) (aggressive-indent-mode -1))))))
+  :hook (prog-mode . aggressive-indent-mode)
+  )
 
 ;; indent-guide
 (use-package indent-guide
@@ -142,8 +133,7 @@
   :load-path "site-lisp/color-rg"
   :init
   (setq color-rg-search-no-ignore-file nil
-        color-rg-mac-load-path-from-shell nil
-        )
+        color-rg-mac-load-path-from-shell nil)
   )
 
 (use-package combobulate
@@ -186,7 +176,7 @@
   (setf (alist-get "python" org-src-lang-modes nil nil #'equal) 'python-ts)
   )
 
-;; python
+;; %% python
 (defvar yx/default-python-env "~/workspace/.venv/")
 
 (add-hook
@@ -209,14 +199,19 @@
  python-shell-interpreter-args "console --simple-prompt"
  python-shell-completion-native-disabled-interpreters '("ipython" "jupyter"))
 
+;; %% pyvenv
 (use-package pyvenv
-  :init (pyvenv-activate yx/default-python-env))
+  :defer 2
+  :config
+  (pyvenv-activate yx/default-python-env)
+  )
+
 (use-package pyvenv-auto
   :hook (python-ts-mode . pyvenv-auto-run))
 (use-package poetry
   :hook (python-ts-mode . poetry-tracking-mode))
 
-;; Julia
+;; %% Julia
 (use-package julia-mode)
 (use-package eglot-jl
   :init
@@ -245,7 +240,7 @@
  (lambda()
    (setq sh-indentation 2
          sh-basic-offset 2)
-   (electric-indent-mode -1)
+   (electric-pair-mode -1)
    (ansi-color-for-comint-mode-on)
    (compilation-shell-minor-mode 1)
    )
@@ -265,4 +260,5 @@
 (setq imaxima-use-maxima-mode-flag t)
 (add-to-list 'auto-mode-alist '("\\.ma[cx]\\'" . maxima-mode))
 
+;; %% end
 (provide 'init-lang)
