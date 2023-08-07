@@ -5,9 +5,7 @@
    (hl-line-mode 1)
    (hs-minor-mode 1)
    (show-paren-mode 1)
-   (flyspell-prog-mode)
    (electric-pair-mode 1)
-   (which-function-mode 1)
    (display-line-numbers-mode 1)
    (electric-indent-local-mode 1)
    (setq-local
