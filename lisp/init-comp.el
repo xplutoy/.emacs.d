@@ -96,11 +96,6 @@
               ("SPC"   . corfu-insert-separator))
   )
 
-(use-package corfu-terminal
-  :unless (display-graphic-p)
-  :config
-  (corfu-terminal-mode +1))
-
 (use-package cape
   :init
   (setq cape-dabbrev-min-length 2)

@@ -31,11 +31,6 @@
    )
   )
 
-(use-package benchmark-init
-  :disabled
-  :config
-  (add-hook 'after-init-hook 'benchmark-init/deactivate))
-
 (use-package which-key
   :defer 1
   :init
@@ -62,12 +57,6 @@
          ([remap mark-sexp] . easy-mark))
   )
 
-(use-package move-text
-  :defer 1
-  :config
-  (move-text-default-bindings)
-  )
-
 (use-package no-littering
   :demand
   :init
@@ -82,11 +71,6 @@
   (no-littering-theme-backups)
   )
 
-(use-package flyspell-correct
-  :after flyspell
-  :bind (:map flyspell-mode-map
-              ("s-;" . flyspell-correct-wrapper))
-  )
 (use-package jinx
   :bind (("M-$" . jinx-correct)
          ("C-M-$" . jinx-languages))
