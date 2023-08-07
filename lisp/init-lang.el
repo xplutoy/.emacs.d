@@ -90,11 +90,10 @@
   )
 
 (use-package tempel
-  :defer 1
+  :hook (after-init . global-tempel-abbrev-mode)
   :bind  (("M-=" . tempel-complete)
           ("M-*" . tempel-insert))
-  :config
-  (global-tempel-abbrev-mode))
+  )
 (use-package tempel-collection)
 
 ;; project
