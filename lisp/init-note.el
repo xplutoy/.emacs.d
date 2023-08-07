@@ -213,16 +213,6 @@
     )
   )
 
-(use-package xeft
-  :init
-  (setq
-   xeft-directory yx/org-dir
-   xeft-recursive 'follow-symlinks
-   xeft-ignore-extension '("gpg" "asc" "bib")
-   xeft-title-function 'file-name-nondirectory
-   xeft-database (no-littering-expand-var-file-name "xeft"))
-  )
-
 (use-package org-transclusion)
 
 ;; %% latex
