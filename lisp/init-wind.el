@@ -112,12 +112,13 @@
    popper-group-function #'popper-group-by-directory)
   (setq popper-reference-buffers
         '("\\*Ibuffer\\*"
+          "^\\*Compile"
           "\\*Backtrace\\*"
           "\\*evil-registers\\*"
-          "\\*evil-owl\\*"
           "\\*shell.*\\*$" shell-mode
           "\\*eshell.*\\*$" eshell-mode
           "\\*term.*\\*$" term-mode
+          "\\*vterm.*\\*$" vterm-mode
           "\\*julia\\*$"
           "\\*color-rg\\*$"
           "\\*Python\\*$"
@@ -175,10 +176,5 @@
   (shackle-mode 1)
   )
 
-(use-package burly
-  :defer 1
-  :config
-  (burly-tabs-mode 1)
-  )
-
+;; %% end
 (provide 'init-wind)

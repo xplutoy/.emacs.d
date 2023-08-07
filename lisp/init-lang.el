@@ -54,14 +54,10 @@
     (interactive)
     (dolist
         (grammar
-         '((r "https://github.com/r-lib/tree-sitter-r")
-           (c "https://github.com/tree-sitter/tree-sitter-c/")
+         '((c "https://github.com/tree-sitter/tree-sitter-c/")
            (cpp "https://github.com/tree-sitter/tree-sitter-cpp/")
-           (rust "https://github.com/tree-sitter/tree-sitter-rust")
-           (elisp "https://github.com/Wilfred/tree-sitter-elisp")
            (julia "https://github.com/tree-sitter/tree-sitter-julia")
-           (python "https://github.com/tree-sitter/tree-sitter-python")
-           ))
+           (python "https://github.com/tree-sitter/tree-sitter-python")))
       (add-to-list 'treesit-language-source-alist grammar)
       (unless (treesit-language-available-p (car grammar))
         ;; (treesit-install-language-grammar (car grammar) (car treesit-extra-load-path))
@@ -97,13 +93,6 @@
   :defer 1
   :bind  (("M-=" . tempel-complete)
           ("M-*" . tempel-insert))
-  :init
-  (defun tempel-setup-capf ()
-    (setq-local completion-at-point-functions
-                (cons 'tempel-expand
-                      completion-at-point-functions)))
-  (add-hook 'prog-mode-hook 'tempel-setup-capf)
-  (add-hook 'text-mode-hook 'tempel-setup-capf)
   :config
   (global-tempel-abbrev-mode))
 (use-package tempel-collection)

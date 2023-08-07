@@ -77,7 +77,7 @@
   :bind (("M-s s" . consult-eglot-symbols))
   )
 
-;; corfu ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; %% corfu
 (use-package corfu
   :custom
   (corfu-auto t)
@@ -101,19 +101,12 @@
   :config
   (corfu-terminal-mode +1))
 
-;; cape
 (use-package cape
-  :after corfu
-  :defer 1
-  :bind (("C-c p p" . completion-at-point-functions)
-         ("C-c p d" . cape-dict)
-         ("C-c p f" . cape-file)
-         ("C-c p s" . cape-symbol)
-         )
   :init
-  (setq cape-dabbrev-min-length 2
-        completion-at-point-functions
-        '(cape-file cape-symbol cape-dabbrev cape-dict cape-abbrev))
+  (setq cape-dabbrev-min-length 2)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-symbol)
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   )
 
 ;; %% end

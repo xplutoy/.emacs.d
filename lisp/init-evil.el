@@ -50,6 +50,7 @@
  ("C-h B"   . embark-bindings-at-point)
  )
 
+;; %% evil
 (use-package evil
   :init
   (setq
@@ -151,5 +152,5 @@
   (evil-vimish-fold-mode-lighter " ♇")
   )
 
-;; ========= end =====================
+;; %% end
 (provide 'init-evil)
