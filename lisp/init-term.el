@@ -1,10 +1,7 @@
 ;;; -*- coding: utf-8; lexical-binding: t; -*-
-(defun yx/toggole-eshell ()
-  (interactive)
-  (if (equal major-mode 'eshell-mode)
-      (quit-window)
-    (eshell))
-  )
+(defun eshell/gst (&rest args)
+  (magit-status (pop args) nil)
+  (eshell/echo))
 
 (defun eshell/sudo-open (filename)
   "Open a file as root in Eshell"
@@ -16,33 +13,6 @@
       (concat "/sudo::" qual-filename)))
     )
   )
-
-;; @https://karthinks.com/software/jumping-directories-in-eshell/
-(defun eshell/z (&optional regexp)
-  "Navigate to a previously visited directory in eshell, or to
-any directory proferred by `consult-dir'."
-  (let ((eshell-dirs (delete-dups
-                      (mapcar 'abbreviate-file-name
-                              (ring-elements eshell-last-dir-ring)))))
-    (cond
-     ((and (not regexp) (featurep 'consult-dir))
-      (let* ((consult-dir--source-eshell
-              `( :name "Eshell"
-                 :narrow ?e
-                 :category file
-                 :face consult-file
-                 :items ,eshell-dirs))
-             (consult-dir-sources (cons consult-dir--source-eshell
-                                        consult-dir-sources)))
-        (eshell/cd (substring-no-properties
-                    (consult-dir--pick "Switch directory: ")))))
-     (t (eshell/cd (if regexp (eshell-find-previous-directory regexp)
-                     (completing-read "cd: " eshell-dirs))))))
-  )
-
-(defun eshell/gst (&rest args)
-  (magit-status (pop args) nil)
-  (eshell/echo))
 
 (use-package eshell
   :init
@@ -65,15 +35,16 @@ any directory proferred by `consult-dir'."
       '(("git" "log" "diff" "show")))
 
      (eshell/alias "q"    "exit")
-     (eshell/alias "dd"   "dired $1")
-     (eshell/alias "ff"   "find-file $1")
-     (eshell/alias "fo"   "find-file-other-windows $1")
+     (eshell/alias "r"    "consult-recent-file")
+     (eshell/alias "d"    "dired $1")
+     (eshell/alias "f"    "find-file $1")
      (eshell/alias "gs"   "magit-status")
      (eshell/alias "gv"   "magit-dispatch")
      (eshell/alias "ll"   "ls -AlohG --color=always")
      )
    )
   )
+
 (use-package eshell-git-prompt-yx
   :load-path "site-lisp/eshell-git-prompt-yx"
   :autoload eshell-git-prompt-multiline

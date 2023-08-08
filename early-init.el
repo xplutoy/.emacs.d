@@ -16,7 +16,7 @@
  byte-compile-warnings nil
  package-native-compile t
  package-enable-at-startup nil
- native-comp-jit-compilation nil
+ native-comp-jit-compilation t
  native-comp-async-report-warnings-errors nil)
 
 (setq default-frame-alist
