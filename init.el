@@ -8,16 +8,9 @@
 (defvar yx/gpg-sign-key "67B86CB8A5630C51!")
 (defvar yx/gpg-encrypt-key "8B1F9B207AF00BCF!")
 
-(defconst -is-mac (eq system-type 'darwin))
-(defconst -is-win (eq system-type 'windows-nt))
+(defconst -is-mac   (eq system-type 'darwin))
+(defconst -is-win   (eq system-type 'windows-nt))
 (defconst -is-linux (eq system-type 'gnu/linux))
-
-(defconst -os-default-opener
-  (cond
-   (-is-mac "open")
-   (-is-win "start")
-   (t "xdg-open"))
-  )
 
 (menu-bar-mode -1)
 (prefer-coding-system 'utf-8)

@@ -21,13 +21,16 @@
  window-divider-default-places 'bottom-only)
 (add-hook 'after-init-hook 'window-divider-mode)
 
-;; tabbar
+;; %% tabbar
 (setq
  tab-bar-tab-hints t
+ tab-bar-new-button-show nil
+ tab-bar-close-button-show nil
+ tab-bar-new-tab-choice "*scratch*"
  tab-bar-select-tab-modifiers '(super))
 (add-hook 'after-init-hook 'tab-bar-history-mode)
 
-;; ibuffer
+;; %% ibuffer
 (setq
  ibuffer-expert t
  ibuffer-display-summary nil
@@ -44,6 +47,7 @@
   :init
   :hook (ibuffer . ibuffer-vc-set-filter-groups-by-vc-root))
 
+;; %% dired
 (use-package dired
   :ensure nil
   :custom
@@ -53,12 +57,7 @@
   (dired-recursive-copies 'always)
   (dired-auto-revert-buffer 'dired-buffer-stale-p)
   (dired-kill-when-opening-new-dired-buffer t)
-  (dired-listing-switches
-   "-l --almost-all --human-readable --group-directories-first --no-group")
-  (dired-guess-shell-alist-user
-   '(("\\.pdf\\'" -os-default-opener)
-     ("\\.png\\'" -os-default-opener)
-     ("\\.jpg\\'" -os-default-opener)))
+  (dired-listing-switches "-alGgh")
   :config
   (put 'dired-find-alternate-file 'disabled nil)
   (add-hook 'dired-mode-hook

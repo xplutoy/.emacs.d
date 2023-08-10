@@ -29,7 +29,9 @@
   :init
   (setq
    eglot-autoshutdown t
-   eglot-extend-to-xref t)
+   eglot-extend-to-xref t
+   eglot-report-progress nil
+   )
   :hook ((c-mode
           c-ts-mode
           R-mode
