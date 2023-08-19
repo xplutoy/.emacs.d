@@ -117,6 +117,10 @@
   )
 
 ;; %% org+
+(use-package org-ql
+  :after org
+  )
+
 (use-package org-super-agenda
   :init
   (setq
