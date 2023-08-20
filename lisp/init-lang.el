@@ -77,12 +77,10 @@
   :config
   ;; python
   (reformatter-define python-isort
-    :program "isort"
-    :args '("--stdout" "--atomic" "-"))
+    :program "isort" :args '("--stdout" "--atomic" "-"))
   (add-hook 'python-ts-mode-hook 'python-isort-on-save-mode)
   (reformatter-define python-black
-    :program "black"
-    :args '("-"))
+    :program "black" :args '("-"))
   (add-hook 'python-ts-mode-hook 'python-black-on-save-mode)
   )
 
@@ -157,6 +155,7 @@
     ) . combobulate-mode)
   )
 
+;; %% jupyter
 (use-package code-cells
   :hook ((julia-mode
           python-ts-mode
@@ -236,7 +235,7 @@
   :hook (julia-mode . julia-snail-mode)
   )
 
-;; R/julia
+;; %% R/julia
 (use-package ess-site
   :ensure ess
   )
@@ -262,7 +261,7 @@
   (add-to-list 'auto-mode-alist '("\\.?vim\\(rc\\)?\\'" . vimrc-mode))
   )
 
-;; maxima
+;; %% maxima
 (autoload 'maxima-mode "maxima" "Maxima mode" t)
 (autoload 'imaxima "imaxima" "Frontend for maxima with Image support" t)
 (autoload 'maxima "maxima" "Maxima interaction" t)

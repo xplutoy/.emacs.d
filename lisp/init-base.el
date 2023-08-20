@@ -49,7 +49,7 @@
 ;; eldoc
 (setq eldoc-echo-area-use-multiline-p nil)
 
-;; uniquify
+;; %% uniquify
 (setq
  uniquify-strip-common-suffix t
  uniquify-after-kill-buffer-p t
@@ -61,7 +61,7 @@
  display-line-numbers-type 'visual
  display-line-numbers-width-start t)
 
-;; recentf
+;; %% recentf
 (setq
  recentf-max-saved-items 100
  recentf-auto-cleanup 'never
@@ -79,7 +79,7 @@
  show-trailing-whitespace nil
  whitespace-action '(auto-clean))
 
-;; xref
+;; %% xref
 (setq
  xref-search-program
  (cond
@@ -90,7 +90,7 @@
  xref-show-xrefs-function 'xref-show-definitions-completing-read
  xref-show-definitions-function 'xref-show-definitions-completing-read)
 
-;; completion
+;; %% completion
 (setq
  completions-detailed t
  completion-ignore-case t
@@ -125,7 +125,7 @@
  auth-sources (list (expand-file-name "authinfo.gpg" user-emacs-directory))
  epa-file-select-keys yx/gpg-encrypt-key)
 
-;; mouse
+;; %% mouse
 (setq
  mouse-yank-at-point t
  mouse-wheel-tilt-scroll t
@@ -136,7 +136,7 @@
  mouse-wheel-scroll-amount-horizontal 2
  mouse-wheel-scroll-amount '(2 ((shift) . hscroll)))
 
-;; scroll
+;; %% scroll
 (setq
  scroll-step 1
  scroll-margin 1
@@ -156,7 +156,7 @@
 (with-eval-after-load 'eww
   (add-hook 'eww-after-render-hook 'eww-readable))
 
-;; flyspell
+;; %% flyspell
 (setq
  ispell-program-name "hunspell"
  ispell-local-dictionary "en_US"
@@ -171,7 +171,7 @@
    ("C-;" . nil))
   )
 
-;; savehist
+;; %% savehist
 (setq
  history-delete-duplicates t
  savehist-additional-variables
@@ -182,7 +182,7 @@
    extended-command-history))
 (add-hook 'after-init-hook 'savehist-mode)
 
-;; emacs session
+;; %% session
 (setq
  desktop-save t
  desktop-restore-eager 5
@@ -192,7 +192,7 @@
 ;; time-stamp
 (add-hook 'before-save-hook 'time-stamp)
 
-;; calendar
+;; %% calendar
 (setq
  calendar-latitude 30.67
  calendar-longitude 104.07
