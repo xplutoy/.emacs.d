@@ -77,6 +77,7 @@
     )
   )
 
+;; %% dired+
 (use-package diredfl
   :hook (dired-mode . diredfl-mode)
   :config
@@ -92,6 +93,17 @@
   :after dired
   :bind (:map dired-mode-map
               ("/" . dired-filter-mode))
+  )
+
+;; %% sr-speedbar
+(use-package sr-speedbar
+  :defer 2
+  :load-path "site-lisp/sr-speedbar-yx"
+  :init
+  (setq
+   speedbar-use-images nil
+   sr-speedbar-width 30
+   sr-speedbar-skip-other-window-p t)
   )
 
 (use-package ace-window

@@ -31,8 +31,7 @@
      (setq
       eshell-visual-commands
       '("vim" "ssh" "tail" "top" "htop" "tmux" "less" "more")
-      eshell-visual-subcommands
-      '(("git" "log" "diff" "show")))
+      eshell-visual-subcommands '(("git" "log" "diff" "show")))
 
      (eshell/alias "q"    "exit")
      (eshell/alias "r"    "consult-recent-file")

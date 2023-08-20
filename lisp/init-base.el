@@ -47,7 +47,9 @@
  delete-old-versions t)
 
 ;; eldoc
-(setq eldoc-echo-area-use-multiline-p nil)
+(setq
+ eldoc-echo-area-use-multiline-p 3
+ eldoc-echo-area-display-truncation-message nil)
 
 ;; %% uniquify
 (setq
@@ -144,7 +146,6 @@
  fast-but-imprecise-scrolling t
  scroll-preserve-screen-position 'always)
 
-
 ;; doc-view
 (setq
  doc-view-resolution 1024)
@@ -189,8 +190,15 @@
  desktop-auto-save-timeout 60
  desktop-load-locked-desktop 'check-pid)
 
-;; time-stamp
-(add-hook 'before-save-hook 'time-stamp)
+;; %% tramp speed up
+(setq
+ tramp-verbose 1
+ tramp-default-method "ssh"
+ remote-file-name-inhibit-cache nil)
+(setq vc-ignore-dir-regexp
+      (format "%s\\|%s"
+              vc-ignore-dir-regexp
+              tramp-file-name-regexp))
 
 ;; %% calendar
 (setq

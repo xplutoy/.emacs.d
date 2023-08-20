@@ -4,6 +4,7 @@
  (lambda ()
    (hl-line-mode 1)
    (hs-minor-mode 1)
+   (semantic-mode 1)
    (show-paren-mode 1)
    (electric-pair-mode 1)
    (display-line-numbers-mode 1)
