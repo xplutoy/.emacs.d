@@ -19,16 +19,14 @@
  native-comp-jit-compilation t
  native-comp-async-report-warnings-errors nil)
 
-(setq default-frame-alist
-      '((width . 90)
-        (height . 36)
-        (tool-bar-lines . 0)
-        (menu-bar-lines . 0)
-        ;; (alpha-background . 97)
-        (undecorated-round . t)
-        (vertical-scroll-bars . nil)))
-
-(setq initial-frame-alist '((alpha . 0.97)))
+(setq
+ default-frame-alist
+ '((width . 90)
+   (height . 36)
+   (tool-bar-lines . 0)
+   (menu-bar-lines . 0)
+   (undecorated-round . t)
+   (vertical-scroll-bars . nil)))
 
 (let ((old-file-name-handler-alist file-name-handler-alist))
   (setq-default file-name-handler-alist nil)

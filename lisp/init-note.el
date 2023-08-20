@@ -233,7 +233,7 @@
    TeX-view-program-selection
    '((output-pdf "pdf-tools"))
    TeX-view-program-list
-   '(("pdf-tools" "TeX-pdf-tools-sync-view")))
+   '(("pdf-tools" TeX-pdf-tools-sync-view)))
   (setq reftex-plug-into-AUCTeX t)
   (mapc (lambda (mode)
           (add-hook 'LaTeX-mode-hook mode))

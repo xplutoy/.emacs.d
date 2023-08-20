@@ -87,9 +87,17 @@
   )
 
 (use-package tempel
-  :hook (after-init . global-tempel-abbrev-mode)
-  :bind  (("M-=" . tempel-complete)
-          ("M-*" . tempel-insert))
+  :bind
+  ("M-*" . tempel-insert)
+  ("M-=" . tempel-complete)
+  :init
+  (defun tempel-setup-capf ()
+    (setq-local completion-at-point-functions
+                (cons 'tempel-expand
+                      completion-at-point-functions)))
+  (add-hook 'prog-mode-hook 'tempel-setup-capf)
+  (add-hook 'text-mode-hook 'tempel-setup-capf)
+  (add-hook 'prog-mode-hook 'tempel-abbrev-mode)
   )
 (use-package tempel-collection)
 

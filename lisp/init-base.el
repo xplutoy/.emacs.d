@@ -3,6 +3,7 @@
  tab-width 2
  abbrev-mode t
  fill-column 88
+ line-spacing 0.1
  truncate-lines t
  indent-tabs-mode nil
  require-final-newline t
@@ -65,14 +66,9 @@
  recentf-max-saved-items 100
  recentf-auto-cleanup 'never
  recentf-exclude
- '("COMMIT_MSG"
-   "COMMIT_EDITMSG"
-   "/Downloads/"
+ '(".*\\.cache.*" "^/.*" "^/ssh:"
+   "COMMIT_MSG" "COMMIT_EDITMSG" "/Downloads/" "/elpa/"
    "\\.\\(?:gz\\|gif\\|svg\\|png\\|jpe?g\\|bmp\\|xpm\\)$"
-   ".*\\.cache.*"
-   "^/.*"
-   "^/ssh:"
-   "/elpa/"
    file-remote-p))
 (add-hook 'after-init-hook 'recentf-mode)
 
@@ -203,14 +199,21 @@
  calendar-mode-line-format nil
  calendar-mark-diary-entries-flag t)
 
-;; os specific settings stay here
-(when -is-mac
+;; %% os specific settings stay here
+(cond
+ (-is-mac
   (setq
-   ns-use-thin-smoothing t
+   mac-option-modifier 'meta
    mac-command-modifier 'super
    ns-function-modifier 'hyper
+   ns-use-thin-smoothing t
    ns-use-native-fullscreen nil
    insert-directory-program "gls"))
+ (-is-win
+  (setq
+   w32-apps-modifier 'hyper
+   w32-lwindow-modifier 'super))
+ )
 
 (add-hook
  #'text-mode

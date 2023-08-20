@@ -59,12 +59,22 @@
   (dired-kill-when-opening-new-dired-buffer t)
   (dired-listing-switches "-alGgh")
   :config
+  (add-hook
+   'dired-mode-hook
+   (lambda ()
+     (hl-line-mode)
+     (dired-omit-mode)
+     (dired-hide-details-mode)))
   (put 'dired-find-alternate-file 'disabled nil)
-  (add-hook 'dired-mode-hook
-            (lambda ()
-              (hl-line-mode)
-              (dired-omit-mode)
-              (dired-hide-details-mode)))
+  (let ((cmd (cond (-is-win "start")
+                   (-is-mac "open")
+                   (-is-linux "xdg-open")
+                   (t ""))))
+    (setq dired-guess-shell-alist-user
+          `(("\\.\\(?:mp4\\|mkv\\|avi\\|rmvb\\)\\'" ,cmd)
+            ("\\.\\(?:jpg\\|jpeg\\|png\\|gif\\|xpm\\)\\'" ,cmd)
+            ("\\.\\(?:pdf\\|docx\\|djvu\\|csv\\|tex\\|html\\)\\'" ,cmd)))
+    )
   )
 
 (use-package diredfl

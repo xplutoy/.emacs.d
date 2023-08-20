@@ -21,7 +21,6 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
 (require 'package)
-(require 'use-package)
 (setq
  package-archives
  '(("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
@@ -33,7 +32,10 @@
  use-package-expand-minimally t
  package-user-dir (expand-file-name "elpa" yx/var-dir)
  package-gnupghome-dir (expand-file-name "gnupg" package-user-dir))
-(package-initialize)
+(unless (bound-and-true-p package--initialized)
+  (package-initialize))
+
+(require 'use-package)
 
 (use-package benchmark-init)
 (benchmark-init/activate)
