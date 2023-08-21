@@ -77,6 +77,11 @@
   (org-agenda-window-setup 'current-window)
 
   ;; org-cite
+  (org-cite-csl-styles-dir
+   (expand-file-name "~/Zotero/styles/"))
+  (org-cite-export-processors
+   '((latex biblatex)
+     (t . (csl "ieee.csl"))))
   (org-cite-global-bibliography
    (list (expand-file-name "bibliography.bib" yx/org-dir)))
 
@@ -262,6 +267,7 @@
    org-cite-insert-processor 'citar
    org-cite-follow-processor 'citar
    org-cite-activate-processor 'citar
+   citar-at-point-function 'embark-act
    citar-bibliography org-cite-global-bibliography)
   :hook
   ((org-mode . citar-capf-setup)

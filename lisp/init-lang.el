@@ -52,8 +52,8 @@
     (interactive)
     (dolist
         (grammar
-         '((c "https://github.com/tree-sitter/tree-sitter-c/")
-           (cpp "https://github.com/tree-sitter/tree-sitter-cpp/")
+         '((c "https://github.com/tree-sitter/tree-sitter-c")
+           (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
            (julia "https://github.com/tree-sitter/tree-sitter-julia")
            (python "https://github.com/tree-sitter/tree-sitter-python")))
       (add-to-list 'treesit-language-source-alist grammar)
@@ -62,7 +62,8 @@
         (treesit-install-language-grammar (car grammar)))))
   :init
   (setq
-   treesit-extra-load-path (list (no-littering-expand-var-file-name "tree-sitter")))
+   treesit-extra-load-path (list (no-littering-expand-var-file-name "tree-sitter"))
+   treesit-load-name-override-list '((c++ "libtree-sitter-cpp")))
   (dolist
       (mapping
        '((c-mode . c-ts-mode)
