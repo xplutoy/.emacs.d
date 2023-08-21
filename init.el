@@ -30,6 +30,7 @@
  use-package-always-defer t
  use-package-always-ensure t
  use-package-expand-minimally t
+ package-install-upgrade-built-in nil
  package-user-dir (expand-file-name "elpa" yx/var-dir)
  package-gnupghome-dir (expand-file-name "gnupg" package-user-dir))
 (unless (bound-and-true-p package--initialized)
