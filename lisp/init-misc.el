@@ -69,6 +69,8 @@
     )
   :config
   (no-littering-theme-backups)
+  (setq auto-insert-directory
+        (expand-file-name "templates/" no-littering-etc-directory))
   )
 
 (use-package jinx

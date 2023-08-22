@@ -91,6 +91,8 @@
   ("M-*" . tempel-insert)
   ("M-=" . tempel-complete)
   :init
+  (setq tempel-path
+        (expand-file-name "templates/tempel.eld" no-littering-etc-directory))
   (defun tempel-setup-capf ()
     (setq-local completion-at-point-functions
                 (cons 'tempel-expand
@@ -99,7 +101,6 @@
   (add-hook 'text-mode-hook 'tempel-setup-capf)
   (add-hook 'prog-mode-hook 'tempel-abbrev-mode)
   )
-(use-package tempel-collection)
 
 ;; diff-hl
 (use-package diff-hl
