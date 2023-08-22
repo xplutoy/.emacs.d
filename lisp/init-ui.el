@@ -52,7 +52,7 @@
   :config
   (setq
    awesome-tray-active-modules
-   '("evil" "belong" "buffer-name" "mode-name" "git"))
+   '("evil" "belong" "location-or-page" "buffer-name" "mode-name" "git"))
   (awesome-tray-mode 1)
   )
 

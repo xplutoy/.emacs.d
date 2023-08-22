@@ -16,6 +16,7 @@
  view-read-only t
  use-short-answers t
  line-move-visual nil
+ system-time-locale "C"
  hl-line-sticky-flag nil
  auto-revert-verbose nil
  require-final-newline t
@@ -29,9 +30,6 @@
  backward-delete-char-untabify-method 'hungry
  sentence-end-double-space nil
  sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
-
-(setq system-time-locale "C")
-(format-time-string "%Y-%m-%d %a")
 
 ;; %% auto save
 (setq
@@ -127,7 +125,8 @@
    try-complete-file-name-partially
    try-expand-dabbrev
    try-expand-dabbrev-from-kill
-   try-expand-dabbrev-all-buffers))
+   try-expand-dabbrev-all-buffers)
+ )
 
 ;; %% isearch
 (setq
@@ -197,8 +196,10 @@
 (setq
  desktop-save t
  desktop-restore-eager 5
+ desktop-restore-frames nil
  desktop-auto-save-timeout 60
  desktop-load-locked-desktop 'check-pid)
+(add-hook 'after-init-hook 'desktop-save-mode)
 
 ;; %% tramp speed up
 (setq
