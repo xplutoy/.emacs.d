@@ -1,32 +1,47 @@
 ;;; -*- coding: utf-8; lexical-binding: t; -*-
+;; %% doc-view
 (setq
- elfeed-feeds
- '(("https://www.inference.vc/rss" ai)
-   ("https://spaces.ac.cn/feed" ai webkit)
-   ("https://ruder.io/rss/index.rss" ai)
-   ("https://www.juliabloggers.com/feed/" julia)
-   ("http://www.ruanyifeng.com/blog/atom.xml" tech)
-   ("https://egh0bww1.com/rss.xml" emacs)
-   ("https://planet.emacslife.com/atom.xml" emacs)
-   ("https://sachachua.com/blog/category/emacs/feed/" emacs))
- )
+ doc-view-continuous t
+ doc-view-resolution 1024)
 
-(defun elfeed-eww-browse ()
-  "Wrapper to open eww and mark elfeed as read"
-  (interactive)
-  (let ((link (elfeed-entry-link elfeed-show-entry)))
-    (when link
-      (eww-browse-url link))))
+(use-package pdf-tools)
 
+;; %% elfeed
 (use-package elfeed
+  :custom
+  (elfeed-feeds
+   '(("https://www.inference.vc/rss" +ai)
+     ("https://spaces.ac.cn/feed" +ai +webkit)
+     ("https://ruder.io/rss/index.rss" +ai)
+     ("https://www.juliabloggers.com/feed/" +julia)
+     ("http://www.ruanyifeng.com/blog/atom.xml" +tech)
+     ("https://egh0bww1.com/rss.xml" emacs)
+     ("https://planet.emacslife.com/atom.xml" +emacs)
+     ("https://sachachua.com/blog/category/emacs/feed/" +emacs)))
+  :preface
+  (defun yx/elfeed-eww-browse ()
+    "Wrapper to open eww and mark elfeed as read"
+    (interactive)
+    (let ((link (elfeed-entry-link elfeed-show-entry)))
+      (when link
+        (eww-browse-url link)))
+    )
+  (defun yx/elfeed-kill-entry ()
+    "Like `elfeed-kill-entry' but pop elfeed search"
+    (interactive)
+    (elfeed-kill-buffer)
+    (switch-to-buffer "*elfeed-search*")
+    )
   :config
   (bind-keys
    :map elfeed-show-mode-map
-   ("B" . elfeed-eww-browse)
-   ("q" . (lambda ()
-            "Switch to *elfeed-search* buffer."
-            (interactive)
-            (switch-to-buffer "*elfeed-search*"))))
+   ("B" . yx/elfeed-eww-browse)
+   ("q" . yx/elfeed-kill-entry)
+   )
+
+  (add-hook
+   'elfeed-new-entry-hook
+   (elfeed-make-tagger :before "4 weeks ago" :remove 'unread))
   )
 
 (use-package elfeed-webkit
@@ -39,4 +54,4 @@
               ("W" . elfeed-webkit-toggle))
   )
 
-(provide 'init-elfeed)
+(provide 'init-read)

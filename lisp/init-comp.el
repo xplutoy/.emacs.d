@@ -8,7 +8,7 @@
   (vertico-mouse-mode 1)
   (vertico-indexed-mode 1)
   :bind (:map vertico-map
-              ("C-q" . vertico-quick-insert)
+              ("s-q" . vertico-quick-insert)
               ("RET" . vertico-directory-enter)
               ("DEL" . vertico-directory-delete-char))
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)

@@ -19,6 +19,7 @@
  native-comp-jit-compilation t
  native-comp-async-report-warnings-errors nil)
 
+;; %% 默认frame设置
 (setq
  default-frame-alist
  '((width . 90)
@@ -28,6 +29,7 @@
    (undecorated-round . t)
    (vertical-scroll-bars . nil)))
 
+;; %% 文件句柄
 (let ((old-file-name-handler-alist file-name-handler-alist))
   (setq-default file-name-handler-alist nil)
   (defun yx/restore-file-name-handler-alist ()
@@ -37,6 +39,7 @@
      inhibit-trace nil))
   (add-hook #'emacs-startup-hook #'yx/restore-file-name-handler-alist))
 
+;; %% 启动时尽量不要垃圾回收
 (setq
  gc-cons-percentage 0.6
  gc-cons-threshold (* 128 1024 1024))
@@ -49,6 +52,19 @@
 
 (tooltip-mode -1)
 
+;; %% 启动界面更平滑
+(setq-default
+ inhibit-message t
+ inhibit-redisplay t)
+(add-hook
+ 'window-setup-hook
+ (lambda ()
+   (setq-default
+    inhibit-message nil
+    inhibit-redisplay nil)
+   (redisplay)))
+
+;; %% 设置eln缓存目录
 (when (fboundp 'startup-redirect-eln-cache)
   (startup-redirect-eln-cache
    (convert-standard-filename
@@ -56,4 +72,4 @@
 
 (defun display-startup-echo-area-message ()
   (message nil))
-;;; early-init.el ends here
+;; %% early-init.el ends here

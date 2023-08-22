@@ -33,10 +33,21 @@
 (setq system-time-locale "C")
 (format-time-string "%Y-%m-%d %a")
 
-;; auto save
+;; %% auto save
 (setq
  auto-save-no-message t
  auto-save-visited-interval 30)
+
+;; %% auto-insert
+(setq
+ auto-insert-query nil
+ auto-insert-alist nil)
+(add-hook 'after-init-hook 'auto-insert-mode)
+(define-auto-insert "\\.el$" 'yx/auto-insert-el-header)
+
+(setq
+ time-stamp-pattern "10/^;; Last Modified: <%%>$")
+(add-hook 'before-save-hook 'time-stamp)
 
 ;; %% backup
 (setq
@@ -46,7 +57,7 @@
  kept-old-versions 2
  delete-old-versions t)
 
-;; eldoc
+;; %% eldoc
 (setq
  eldoc-echo-area-use-multiline-p 3
  eldoc-echo-area-display-truncation-message nil)
@@ -75,7 +86,7 @@
 (add-hook 'after-init-hook 'recentf-mode)
 
 
-;; whitespace
+;; %% whitespace
 (setq
  whitespace-line-column nil
  show-trailing-whitespace nil
@@ -106,6 +117,10 @@
  completion-auto-select 'second-tab)
 
 (setq
+ save-abbrevs 'silently
+ abbrev-suggest-hint-threshold 3)
+
+(setq
  hippie-expand-max-buffers 10
  hippie-expand-try-functions-list
  '(try-complete-file-name
@@ -114,14 +129,14 @@
    try-expand-dabbrev-from-kill
    try-expand-dabbrev-all-buffers))
 
-;; isearch
+;; %% isearch
 (setq
  isearch-lazy-count t
  isearch-allow-motion t
  apropos-sort-by-scores t
  lazy-highlight-no-delay-length 3)
 
-;; epa
+;; %% epa
 (setq
  epa-pinentry-mode 'loopback
  auth-sources (list (expand-file-name "authinfo.gpg" user-emacs-directory))
@@ -146,11 +161,7 @@
  fast-but-imprecise-scrolling t
  scroll-preserve-screen-position 'always)
 
-;; doc-view
-(setq
- doc-view-resolution 1024)
-
-;; eww
+;; %% eww
 (setq
  eww-auto-rename-buffer 'title
  browse-url-browser-function 'eww-browse-url)
@@ -159,17 +170,16 @@
 
 ;; %% flyspell
 (setq
+ ispell-dictionary "english"
  ispell-program-name "hunspell"
  ispell-local-dictionary "en_US"
  ispell-local-dictionary-alist
  '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8))
  ispell-hunspell-dictionary-alist ispell-local-dictionary-alist)
 (with-eval-after-load 'flyspell
-  (bind-keys
-   :map flyspell-mode-map
-   ("C-," . nil)
-   ("C-." . nil)
-   ("C-;" . nil))
+  (keymap-unset flyspell-mode-map "C-,")
+  (keymap-unset flyspell-mode-map "C-.")
+  (keymap-unset flyspell-mode-map "C-;")
   )
 
 ;; %% savehist
@@ -223,6 +233,7 @@
    w32-lwindow-modifier 'super))
  )
 
+;; %% hook
 (add-hook
  #'text-mode
  (lambda ()

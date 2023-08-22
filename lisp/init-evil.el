@@ -62,8 +62,8 @@
    evil-want-fine-undo t
    evil-want-C-u-scroll t
    evil-move-beyond-eol t
-   evil-want-C-w-delete nil
    evil-want-integration t
+   evil-want-C-w-delete nil
    evil-want-keybinding nil
    evil-default-state 'emacs
    evil-undo-system 'undo-redo

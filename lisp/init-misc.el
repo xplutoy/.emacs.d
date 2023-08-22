@@ -81,7 +81,6 @@
 (use-package flyspell-correct
   :after flyspell)
 
-(use-package pdf-tools)
 (use-package emacsql-sqlite-builtin)
 
 ;; dict

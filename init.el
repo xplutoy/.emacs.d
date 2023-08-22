@@ -52,5 +52,7 @@
 (require 'init-note)
 (require 'init-lang)
 (require 'init-mail)
+(require 'init-read)
+(require 'init-temp)
 
 ;;; init.el ends here
