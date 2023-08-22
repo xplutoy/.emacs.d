@@ -42,9 +42,10 @@
  auto-insert-alist nil)
 (add-hook 'after-init-hook 'auto-insert-mode)
 (define-auto-insert "\\.el$" 'yx/auto-insert-el-header)
+(define-auto-insert "\\.py$" "default-py.py")
 
 (setq
- time-stamp-pattern "10/^;; Last Modified: <%%>$")
+ time-stamp-pattern "10/^[#;/\+]+ Last Modified: <%%>$")
 (add-hook 'before-save-hook 'time-stamp)
 
 ;; %% backup
