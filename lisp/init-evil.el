@@ -59,6 +59,7 @@
  ("C-x c k" . citre-jump-back)
  ("C-x c p" . citre-peek)
  ("C-x c a" . citre-ace-peek)
+ ("C-x c r" . citre-peek-references)
  ("C-x c u" . citre-update-this-tags-file)
  ("C-h b"   . embark-bindings)
  ("C-h M"   . which-key-show-major-mode)

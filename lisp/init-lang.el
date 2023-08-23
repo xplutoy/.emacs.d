@@ -72,7 +72,11 @@
   :hook (dired-mode . diff-hl-dired-mode)
   )
 
-(use-package magit)
+(use-package magit
+  :hook
+  (magit-pre-refresh  . diff-hl-magit-pre-refresh)
+  (magit-post-refresh . diff-hl-magit-post-refresh)
+  )
 
 ;; %% indent
 (use-package aggressive-indent
@@ -172,12 +176,9 @@
   (require 'citre-config)
   :config
   (setq
-   citre-tags-file-global-cache-dir
-   (expand-file-name "ctags" no-littering-var-directory)
-   citre-prompt-language-for-ctags-command t
    citre-use-project-root-when-creating-tags t
-   citre-default-create-tags-file-location 'global-cache
    citre-auto-enable-citre-mode-modes '(prog-mode)
+   citre-default-create-tags-file-location 'global-cache
    )
   )
 
