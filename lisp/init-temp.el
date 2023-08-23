@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-22 22:24:06
-;; Last Modified: <2023-08-23 15:49:07 yx>
+;; Last Modified: <2023-08-23 18:39:58 yx>
 
 ;;; Licence GPLV3
 
@@ -30,40 +30,32 @@
 \\usepackage{graphicx}
 \\usepackage{hyperref}
 \\usepackage{mathrsfs}
-
 \\usepackage{amsthm}
-
-\\usepackage{geometry}
-
+\\usepackage{geometry}\n
 \\linespread{1.5}
-\\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
-
+\\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}\n
 \\newtheorem{theorem}{定理}[section]
 \\newtheorem{definition}[theorem]{定义}
 \\newtheorem{lemma}[theorem]{引理}
 \\newtheorem{corollary}[theorem]{推论}
 \\newtheorem{example}[theorem]{例}
-\\newtheorem{proposition}[theorem]{命题}
-
+\\newtheorem{proposition}[theorem]{命题}\n
 \\title{\\Huge{\\textbf{"
   (skeleton-read "Title: ")
   "}}}
-\\author{杨雪}
-\\date{\\today}
-
-\\begin{document}
-
-\\maketitle
-
+\\author{"
+  (user-full-name)
+  "}
+\\date{\\today}\n
+\\begin{document}\n
+\\maketitle\n
 % 前言
 \\pagenumbering{roman}
-\\setcounter{page}{1}
-
+\\setcounter{page}{1}\n
 \\begin{center}
 \\Huge\\textbf{前言}
 \\end{center}~\\
-
-这里是前言部分
+\n这里是前言
 ~\\\\
 \\begin{flushright}
 \\begin{tabular}{c}
@@ -71,24 +63,17 @@ xplutoyz\\
 \\today
 \\end{tabular}
 \\end{flushright}
-
 % 目录
 \\newpage
 \\pagenumbering{Roman}
 \\setcounter{page}{1}
 \\tableofcontents
-
 % 正文
 \\newpage
 \\setcounter{page}{1}
-\\pagenumbering{arabic}
-
-\\chapter{第一章}
-
-\\section{第一小结}
-
-\\chapter{第二章}
-
+\\pagenumbering{arabic}\n
+\\chapter{第一章}\n
+\\section{第一小结}\n\n
 \\end{document}"
   )
 

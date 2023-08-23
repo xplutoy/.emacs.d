@@ -1,4 +1,5 @@
 ;;; -*- coding: utf-8; lexical-binding: t; -*-
+;; %% prog-mode misc
 (add-hook
  #'prog-mode-hook
  (lambda ()
@@ -25,22 +26,72 @@
  ediff-window-setup-function 'ediff-setup-windows-plain
  ediff-split-window-function 'split-window-horizontally)
 
-(use-package eglot
-  :ensure nil
+;; %% formatter & linter & profiler
+(use-package reformatter
+  :defer 2
+  :config
+  ;; python
+  (reformatter-define python-isort
+    :program "isort" :args '("--stdout" "--atomic" "-"))
+  (add-hook 'python-ts-mode-hook 'python-isort-on-save-mode)
+  (reformatter-define python-black
+    :program "black" :args '("-"))
+  (add-hook 'python-ts-mode-hook 'python-black-on-save-mode)
+  )
+
+;; %% code snippet
+(use-package tempel
+  :defer 2
+  :bind
+  (("M-+" . tempel-insert)
+   ("M-=" . tempel-complete)
+   :map tempel-map
+   ("M-]" . tempel-next)
+   ("M-[" . tempel-previous))
+  :hook
+  ((prog-mode text-mode) . tempel-setup-capf)
   :init
-  (setq
-   eglot-autoshutdown t
-   eglot-extend-to-xref t
-   eglot-report-progress nil
-   )
-  :hook ((c-mode
-          c-ts-mode
-          R-mode
-          python-mode
-          python-ts-mode
-          julia-mode
-          julia-ts-mode
-          LaTeX-mode) . eglot-ensure)
+  (setq tempel-path
+        (expand-file-name "templates/tempel.eld" no-littering-etc-directory))
+  (defun tempel-setup-capf ()
+    (setq-local completion-at-point-functions
+                (cons 'tempel-expand
+                      completion-at-point-functions)))
+  :config
+  (global-tempel-abbrev-mode)
+  )
+
+;; %% version control
+(use-package diff-hl
+  :defer 2
+  :config
+  (setq diff-hl-disable-on-remote t)
+  (global-diff-hl-mode 1)
+  :hook (dired-mode . diff-hl-dired-mode)
+  )
+
+(use-package magit)
+
+;; %% indent
+(use-package aggressive-indent
+  :hook (prog-mode . aggressive-indent-mode)
+  )
+
+(use-package indent-guide
+  :init
+  (setq indent-guide-recursive nil)
+  :hook (prog-mode . indent-guide-mode)
+  )
+
+;; %% symbol highlight
+(use-package hl-todo
+  :hook (prog-mode . hl-todo-mode))
+
+(use-package symbol-overlay
+  :hook (prog-mode . symbol-overlay-mode))
+
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode)
   )
 
 (use-package treesit
@@ -74,76 +125,7 @@
   (yx/setup-install-grammars)
   )
 
-(use-package reformatter
-  :defer 2
-  :config
-  ;; python
-  (reformatter-define python-isort
-    :program "isort" :args '("--stdout" "--atomic" "-"))
-  (add-hook 'python-ts-mode-hook 'python-isort-on-save-mode)
-  (reformatter-define python-black
-    :program "black" :args '("-"))
-  (add-hook 'python-ts-mode-hook 'python-black-on-save-mode)
-  )
-
-(use-package tempel
-  :defer 2
-  :bind
-  (("M-+" . tempel-insert)
-   ("M-=" . tempel-complete)
-   :map tempel-map
-   ("M-]" . tempel-next)
-   ("M-[" . tempel-previous))
-  :hook
-  ((prog-mode text-mode) . tempel-setup-capf)
-  :init
-  (setq tempel-path
-        (expand-file-name "templates/tempel.eld" no-littering-etc-directory))
-  (defun tempel-setup-capf ()
-    (setq-local completion-at-point-functions
-                (cons 'tempel-expand
-                      completion-at-point-functions)))
-  :config
-  (global-tempel-abbrev-mode)
-  )
-
-;; diff-hl
-(use-package diff-hl
-  :defer 2
-  :config
-  (setq diff-hl-disable-on-remote t)
-  (global-diff-hl-mode 1)
-  :hook (dired-mode . diff-hl-dired-mode)
-  )
-
-(use-package hl-todo
-  :hook (prog-mode . hl-todo-mode))
-
-;; rainbow-delimiters
-(use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode)
-  )
-
-;; aggressive-indent
-(use-package aggressive-indent
-  :hook (prog-mode . aggressive-indent-mode)
-  )
-
-;; indent-guide
-(use-package indent-guide
-  :init
-  (setq indent-guide-recursive nil)
-  :hook (prog-mode . indent-guide-mode)
-  )
-
-;; symbol-overlay
-(use-package symbol-overlay
-  :hook (prog-mode . symbol-overlay-mode)
-  )
-
-;; magit
-(use-package magit)
-
+;; %% code navigate and search
 (use-package color-rg
   :defer 2
   :load-path "site-lisp/color-rg"
@@ -163,9 +145,42 @@
     ) . combobulate-mode)
   )
 
+;; %% lsp
+(use-package eglot
+  :ensure nil
+  :init
+  (setq
+   eglot-autoshutdown t
+   eglot-extend-to-xref t
+   eglot-report-progress nil
+   )
+  :hook ((c-mode
+          c-ts-mode
+          R-mode
+          python-mode
+          python-ts-mode
+          julia-mode
+          julia-ts-mode
+          LaTeX-mode) . eglot-ensure)
+  )
+
+;; %% citre
+(use-package citre
+  :init
+  (require 'citre-config)
+  :config
+  (setq
+   citre-tags-file-global-cache-dir
+   (expand-file-name "ctags" no-littering-var-directory)
+   citre-prompt-language-for-ctags-command t
+   citre-use-project-root-when-creating-tags t
+   citre-default-create-tags-file-location 'global-cache
+   citre-auto-enable-citre-mode-modes '(prog-mode)
+   )
+  )
+
 ;; %% emacs-lisp
 (define-auto-insert "\\.el$" 'yx/auto-insert-el-header)
-
 
 ;; %% c/c++
 (setq c-basic-offset 4
@@ -179,6 +194,15 @@
   'yx/auto-insert-c-header)
 
 ;; %% jupyter
+(use-package jupyter
+  :after org
+  :demand
+  :config
+  (setq jupyter-eval-use-overlays nil)
+  ;; @see https://github.com/emacs-jupyter/jupyter/issues/478
+  (setf (alist-get "python" org-src-lang-modes nil nil #'equal) 'python-ts)
+  )
+
 (use-package code-cells
   :hook ((julia-mode
           python-ts-mode
@@ -197,15 +221,6 @@
   (with-eval-after-load 'julia-snail
     (add-to-list 'code-cells-eval-region-commands
                  '(julia-snail-mode . julia-snail-send-code-cell)))
-  )
-
-(use-package jupyter
-  :after org
-  :demand
-  :config
-  (setq jupyter-eval-use-overlays nil)
-  ;; @see https://github.com/emacs-jupyter/jupyter/issues/478
-  (setf (alist-get "python" org-src-lang-modes nil nil #'equal) 'python-ts)
   )
 
 ;; %% python
@@ -232,7 +247,6 @@
 
 (define-auto-insert "\\.py$" 'yx/auto-insert-common-header)
 
-;; %% pyvenv
 (use-package pyvenv
   :defer 2
   :config

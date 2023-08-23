@@ -2,9 +2,18 @@
 ;; %% doc-view
 (setq
  doc-view-continuous t
- doc-view-resolution 1024)
+ doc-view-resolution 300)
 
-(use-package pdf-tools)
+(use-package pdf-tools
+  :if (display-graphic-p)
+  :hook
+  (pdf-tools-enabled . pdf-isearch-minor-mode)
+  :init
+  (setq
+   pdf-view-use-scaling t
+   pdf-view-use-imagemagick nil)
+  (pdf-loader-install)
+  )
 
 ;; %% elfeed
 (use-package elfeed
