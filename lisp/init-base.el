@@ -41,11 +41,9 @@
  auto-insert-query nil
  auto-insert-alist nil)
 (add-hook 'after-init-hook 'auto-insert-mode)
-(define-auto-insert "\\.el$" 'yx/auto-insert-el-header)
-(define-auto-insert "\\.py$" "default-py.py")
 
 (setq
- time-stamp-pattern "10/^[#;/\+]+ Last Modified: <%%>$")
+ time-stamp-pattern "10/^[@#;\*].*[Mm]odified: <%%>$")
 (add-hook 'before-save-hook 'time-stamp)
 
 ;; %% backup
@@ -200,7 +198,7 @@
  desktop-restore-frames nil
  desktop-auto-save-timeout 60
  desktop-load-locked-desktop 'check-pid)
-(add-hook 'after-init-hook 'desktop-save-mode)
+;; (add-hook 'after-init-hook 'desktop-save-mode)
 
 ;; %% tramp speed up
 (setq

@@ -87,9 +87,15 @@
   )
 
 (use-package tempel
+  :defer 2
   :bind
-  ("M-*" . tempel-insert)
-  ("M-=" . tempel-complete)
+  (("M-+" . tempel-insert)
+   ("M-=" . tempel-complete)
+   :map tempel-map
+   ("M-]" . tempel-next)
+   ("M-[" . tempel-previous))
+  :hook
+  ((prog-mode text-mode) . tempel-setup-capf)
   :init
   (setq tempel-path
         (expand-file-name "templates/tempel.eld" no-littering-etc-directory))
@@ -97,9 +103,8 @@
     (setq-local completion-at-point-functions
                 (cons 'tempel-expand
                       completion-at-point-functions)))
-  (add-hook 'prog-mode-hook 'tempel-setup-capf)
-  (add-hook 'text-mode-hook 'tempel-setup-capf)
-  (add-hook 'prog-mode-hook 'tempel-abbrev-mode)
+  :config
+  (global-tempel-abbrev-mode)
   )
 
 ;; diff-hl
@@ -158,6 +163,21 @@
     ) . combobulate-mode)
   )
 
+;; %% emacs-lisp
+(define-auto-insert "\\.el$" 'yx/auto-insert-el-header)
+
+
+;; %% c/c++
+(setq c-basic-offset 4
+      c-default-style "linux")
+(define-auto-insert
+  "\\.\\([Hh]\\|hh\\|hpp\\|hxx\\|h\\+\\+\\)\\'"
+  'yx/auto-insert-h-header
+  )
+(define-auto-insert
+  "\\.\\([Cc]\\|cc\\|cpp\\|cxx\\|c\\+\\+\\)\\'"
+  'yx/auto-insert-c-header)
+
 ;; %% jupyter
 (use-package code-cells
   :hook ((julia-mode
@@ -198,9 +218,8 @@
     tab-width 2
     python-indent-offset 4
     imenu-create-index-function 'python-imenu-create-flat-index
-    )
-   (semantic-mode 1)
-   ))
+    ))
+ )
 
 (setq
  python-shell-dedicated t
@@ -211,6 +230,8 @@
  python-shell-interpreter-args "console --simple-prompt"
  python-shell-completion-native-disabled-interpreters '("ipython" "jupyter"))
 
+(define-auto-insert "\\.py$" 'yx/auto-insert-common-header)
+
 ;; %% pyvenv
 (use-package pyvenv
   :defer 2
@@ -220,6 +241,7 @@
 
 (use-package pyvenv-auto
   :hook (python-ts-mode . pyvenv-auto-run))
+
 (use-package poetry
   :hook (python-ts-mode . poetry-tracking-mode))
 
@@ -230,6 +252,8 @@
   (with-eval-after-load 'eglot
     (eglot-jl-init))
   )
+
+(define-auto-insert "\\.jl$" 'yx/auto-insert-common-header)
 
 (use-package julia-snail
   :custom
@@ -242,11 +266,9 @@
 (use-package ess-site
   :ensure ess
   )
+(define-auto-insert "\\.R$" 'yx/auto-insert-common-header)
 
-;; yaml
-(use-package yaml-mode)
-
-;; sh-script
+;; %% misc lang
 (add-hook
  'sh-mode-hook
  (lambda()
@@ -258,7 +280,8 @@
    )
  )
 
-;; vim-script
+(use-package yaml-mode)
+
 (use-package vimrc-mode
   :init
   (add-to-list 'auto-mode-alist '("\\.?vim\\(rc\\)?\\'" . vimrc-mode))

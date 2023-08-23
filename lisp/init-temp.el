@@ -3,22 +3,9 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-22 22:24:06
-;; Last Modified: <2023-08-23 01:14:08 yx>
+;; Last Modified: <2023-08-23 15:49:07 yx>
 
-;;; Licence
-
-;; This program is free software; you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU General Public License for more details.
-
-;; You should have received a copy of the GNU General Public License
-;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+;;; Licence GPLV3
 
 ;;; Commentary:
 
@@ -105,15 +92,64 @@ xplutoyz\\
 \\end{document}"
   )
 
+;; %% .h file header sketeton for autoinsert
+(define-skeleton yx/auto-insert-h-header ""
+  (replace-regexp-in-string
+   "[^A-Z0-9]" "_"
+   (string-replace "+" "P"
+                   (upcase
+                    (file-name-nondirectory buffer-file-name))))
+  "/**\n***************************************************"
+  "\n* @author: "
+  (user-full-name)
+  "\n* @date: "
+  (format-time-string "%F %T")
+  "\n* @brief: "
+  (skeleton-read "brief: ")
+  "\n* @modified: <>"
+  "\n**************************************************\n*/"
+  "\n\n#ifndef " str \n "#define " str
+  "\n\n" @ _
+  "\n\n#endif"
+  )
+
+;; %% c header sketeton for autoinsert
+(define-skeleton yx/auto-insert-c-header ""
+  nil
+  "/**\n***************************************************"
+  "\n* @author: "
+  (user-full-name)
+  "\n* @date: "
+  (format-time-string "%F %T")
+  "\n* @modified: <>"
+  "\n**************************************************\n*/"
+  "\n\n" @ _ "\n"
+  )
+
+;; %% common (#) header sketeton for autoinsert
+(define-skeleton yx/auto-insert-common-header ""
+  nil
+  "# --------------------------------------------------"
+  "\n# Author: "
+  (user-full-name)
+  "\n# Date: "
+  (format-time-string "%F %T")
+  "\n# Modified: <>\n#"
+  "\n# Description: "
+  (skeleton-read "Description: ")
+  "\n#\n#\n"
+  "# --------------------------------------------------"
+  "\n\n\n" @ _
+  )
+
 ;; %% el-file-header skeleton for autoinsert
-(define-skeleton yx/auto-insert-el-header  "Insert el-file-header" nil
+(define-skeleton yx/auto-insert-el-header  "" nil
   ";;; "
   (file-name-nondirectory
    (buffer-file-name))
   " --- "
   (skeleton-read "Descriptions: ")
-  "  "
-  "-*- lexical-binding: t; -*-"
+  "  -*- lexical-binding: t; -*-"
   '(setq lexical-binding t)
   "\n\n;; Author: "
   (user-full-name)
@@ -127,35 +163,13 @@ xplutoyz\\
   ", all right reserved."
   "\n;; Created: "
   (format-time-string "%F %T")
-  "\n;; Last Modified: <>"
-  "\n\n;;; Licence"
-  "
-;;
-;; This program is free software; you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU General Public License for more details.
-
-;; You should have received a copy of the GNU General Public License
-;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-;;; Commentary:
-
-;; " _ "
-
-;;; Code:
-
-
-(provide '"
+  "\n;; Modified: <>"
+  "\n;; Licence: GPLv3"
+  "\n\n;;; Commentary:\n\n;; " @ _
+  "\n\n;;; Code:\n\n(provide '"
   (file-name-base
    (buffer-file-name))
-  ")
-;;; "
+  ")\n;;; "
   (file-name-nondirectory
    (buffer-file-name))
   " ends here

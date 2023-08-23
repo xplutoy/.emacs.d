@@ -26,6 +26,7 @@
  ("M-r"     . consult-recent-file)
  ("M-o"     . ace-window)
  ("M-g ;"   . goto-last-change)
+ ("M-s l"   . consult-focus-lines)
  ("M-s g"   . color-rg-search-symbol)
  ("M-s G"   . color-rg-search-input)
  ("M-s p"   . color-rg-search-symbol-in-project)

@@ -8,6 +8,8 @@ prog-mode
 python-base-mode
 
 (for "for " p " in " p ":" n> q)
+(main "if __name__=='__main__':" n> q)
+(header "#!/usr/bin/env python" n "# -*- coding: utf-8 -*-" n n)
 
 emacs-lisp-mode
 
