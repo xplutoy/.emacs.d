@@ -93,10 +93,10 @@
 (setq
  xref-search-program
  (cond
-  ((executable-find "ugrep")
-   'ugrep)
-  ((executable-find "rg")
-   'ripgrep))
+  ((executable-find "ugrep") 'ugrep)
+  ((executable-find "rg") 'ripgrep)
+  (t 'grep)))
+(setq
  xref-show-xrefs-function 'xref-show-definitions-completing-read
  xref-show-definitions-function 'xref-show-definitions-completing-read)
 

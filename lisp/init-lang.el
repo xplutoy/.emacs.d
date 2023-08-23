@@ -67,6 +67,8 @@
   :config
   (setq diff-hl-disable-on-remote t)
   (global-diff-hl-mode 1)
+  (diff-hl-flydiff-mode 1)
+  (global-diff-hl-show-hunk-mouse-mode 1)
   :hook (dired-mode . diff-hl-dired-mode)
   )
 
