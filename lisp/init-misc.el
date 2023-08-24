@@ -1,9 +1,26 @@
 ;;; -*- coding: utf-8; lexical-binding: t; -*-
+;; %% misc
 (use-package gcmh
   :defer 1
   :config
   (setq gcmh-high-cons-threshold (* 128 1024 1024))
   (gcmh-mode 1))
+
+(use-package no-littering
+  :demand
+  :init
+  (setq no-littering-var-directory yx/var-dir
+        no-littering-etc-directory yx/etc-dir
+        )
+  (with-eval-after-load 'recentf
+    (add-to-list 'recentf-exclude
+                 (recentf-expand-file-name no-littering-var-directory))
+    )
+  :config
+  (no-littering-theme-backups)
+  (setq auto-insert-directory
+        (expand-file-name "templates/" no-littering-etc-directory))
+  )
 
 (use-package server
   :ensure nil
@@ -18,6 +35,10 @@
     )
   )
 
+(use-package posframe)
+(use-package emacsql-sqlite-builtin)
+
+;; %% auxiliary tool
 (use-package crux-yx
   :defer 1
   :load-path "site-lisp/crux-yx"
@@ -44,35 +65,26 @@
   (which-key-mode 1)
   )
 
+(use-package goggles
+  :hook ((text-mode prog-mode) . goggles-mode)
+  :config
+  (setq-default goggles-pulse t)
+  )
+
+
+;; %% edit enhencement
 (use-package avy
   :init
   (setq avy-style 'at
         avy-timeout-seconds 0.8)
   )
 
-(use-package posframe)
-
 (use-package easy-kill
   :bind (([remap kill-ring-save] . easy-kill)
          ([remap mark-sexp] . easy-mark))
   )
 
-(use-package no-littering
-  :demand
-  :init
-  (setq no-littering-var-directory yx/var-dir
-        no-littering-etc-directory yx/etc-dir
-        )
-  (with-eval-after-load 'recentf
-    (add-to-list 'recentf-exclude
-                 (recentf-expand-file-name no-littering-var-directory))
-    )
-  :config
-  (no-littering-theme-backups)
-  (setq auto-insert-directory
-        (expand-file-name "templates/" no-littering-etc-directory))
-  )
-
+;; %% spell
 (use-package jinx
   :bind (("M-$" . jinx-correct)
          ("C-M-$" . jinx-languages))
@@ -83,9 +95,7 @@
 (use-package flyspell-correct
   :after flyspell)
 
-(use-package emacsql-sqlite-builtin)
-
-;; dict
+;; %% chinese
 (use-package osx-dictionary
   :if -is-mac
   :bind (("C-c D" . osx-dictionary-search-input)
@@ -100,5 +110,6 @@
   (fanyi-providers '(fanyi-haici-provider))
   )
 
+;; %% end
 (provide 'init-misc)
 ;;; init-misc.el ends here

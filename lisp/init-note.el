@@ -43,6 +43,9 @@
   (org-tag-alist '(("crypt" . ?c) ("project" . ?p)))
   (org-tags-exclude-from-inheritance '(project crypt))
 
+  (org-refile-use-outline-path 'file)
+  (org-outline-path-complete-in-steps nil)
+
   (org-src-fontify-natively t)
   (org-src-tab-acts-natively t)
   (org-confirm-babel-evaluate nil)

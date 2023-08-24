@@ -8,7 +8,7 @@
   (vertico-mouse-mode 1)
   (vertico-indexed-mode 1)
   :bind (:map vertico-map
-              ("s-q" . vertico-quick-insert)
+              ("M-q" . vertico-quick-insert)
               ("RET" . vertico-directory-enter)
               ("DEL" . vertico-directory-delete-char))
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)
@@ -16,7 +16,8 @@
 
 (use-package orderless
   :custom
-  (completion-styles '(orderless basic))
+  (completion-styles '(substring orderless basic))
+  (completion-category-overrides '((file (styles basic partical-completion))))
   )
 
 (use-package embark
@@ -56,8 +57,8 @@
          ("M-#"     . consult-register-load)
          ("M-'"     . consult-register-store)
          ("C-M-#"   . consult-register)
-         ("M-g m"   . consult-mark)
-         ("M-g M"   . consult-global-mark)
+         :map org-mode-map
+         ("M-g o"   . consult-org-heading)
          :map minibuffer-local-map
          ("M-s" . consult-history)
          ("M-r" . consult-history))

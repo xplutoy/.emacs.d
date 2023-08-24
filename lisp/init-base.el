@@ -245,7 +245,8 @@
     word-wrap-by-category t
     truncate-lines nil)
    (visual-line-mode 1)
-   (goto-address-mode 1)))
+   (goto-address-mode 1))
+ )
 
 (add-hook
  #'after-init-hook
@@ -259,7 +260,8 @@
    (auto-save-visited-mode 1)
    (global-auto-revert-mode 1)
    (windmove-default-keybindings)
-   (pixel-scroll-precision-mode 1)))
+   (pixel-scroll-precision-mode 1))
+ )
 
 (put 'narrow-to-page 'disabled nil)
 (put 'narrow-to-defun 'disabled nil)

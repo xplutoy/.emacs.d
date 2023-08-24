@@ -27,6 +27,10 @@
  ("M-r"     . consult-recent-file)
  ("M-o"     . ace-window)
  ("M-g ;"   . goto-last-change)
+ ("M-g f"   . consult-flymake)
+ ("M-g o"   . consult-outline)
+ ("M-g m"   . consult-mark)
+ ("M-g M"   . consult-global-mark)
  ("M-s l"   . consult-focus-lines)
  ("M-s g"   . color-rg-search-symbol)
  ("M-s G"   . color-rg-search-input)
@@ -135,7 +139,6 @@
       "j M"  'consult-global-mark
 
       "g g"  'consult-xref
-      "g f"  'consult-flymake
       "g s"  'consult-eglot-symbols
       "g d"  'xref-find-definitions
       "g r"  'xref-find-references
