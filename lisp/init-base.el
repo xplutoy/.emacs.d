@@ -1,4 +1,18 @@
-;;; -*- coding: utf-8; lexical-binding: t; -*-
+;;; init-base.el --- basic  -*- lexical-binding: t; -*-
+
+;; Author: yangxue <yangxue.cs@foxmail.com>
+;; Copyright (C) 2023, yangxue, all right reserved.
+;; Created: 2023-08-24 23:02:02
+;; Modified: <2023-08-24 23:04:22 yx>
+;; Licence: GPLv3
+
+;;; Commentary:
+
+;; better defaults
+
+;;; Code:
+
+;; %% basic
 (setq-default
  tab-width 2
  abbrev-mode t
@@ -271,4 +285,6 @@
 (with-current-buffer "*scratch*"
   (emacs-lock-mode 'kill))
 
+;; %% end
 (provide 'init-base)
+;;; init-base.el ends here

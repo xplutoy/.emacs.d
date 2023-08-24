@@ -1,4 +1,17 @@
-;;; -*- lexical-binding: t no-byte-compile: t -*-
+;;; init-note.el --- org note  -*- lexical-binding: t; -*-
+
+;; Author: yangxue <yangxue.cs@foxmail.com>
+;; Copyright (C) 2023, yangxue, all right reserved.
+;; Created: 2023-08-24 23:00:59
+;; Modified: <2023-08-24 23:04:40 yx>
+;; Licence: GPLv3
+
+;;; Commentary:
+
+;; note
+
+;;; Code:
+
 ;; %% org
 (use-package org
   :ensure nil
@@ -267,3 +280,4 @@
 
 ;; %% end
 (provide 'init-note)
+;;; init-note.el ends here

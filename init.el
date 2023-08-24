@@ -1,4 +1,18 @@
-;;; init.el --- emacs init.el. -*- coding: utf-8; lexical-binding: t; -*-
+;;; init.el --- init  -*- lexical-binding: t; -*-
+
+;; Author: yangxue <yangxue.cs@foxmail.com>
+;; Copyright (C) 2023, yangxue, all right reserved.
+;; Created: 2023-08-24 23:13:09
+;; Modified: <2023-08-24 23:14:48 yx>
+;; Licence: GPLv3
+
+;;; Commentary:
+
+;; init
+
+;;; Code:
+
+;; %%
 (setq user-full-name "yangxue")
 (setq user-mail-address "yangxue.cs@foxmail.com")
 
@@ -20,6 +34,7 @@
 (load custom-file 'noerror)
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
+;; %% package init
 (require 'package)
 (setq
  package-archives
@@ -35,13 +50,14 @@
  package-gnupghome-dir (expand-file-name "gnupg" package-user-dir))
 (unless (bound-and-true-p package--initialized)
   (package-initialize))
-
 (require 'use-package)
 
+;; %% benchmark
 (use-package benchmark-init)
 (benchmark-init/activate)
 (add-hook 'after-init-hook 'benchmark-init/deactivate)
 
+;; %% submodule
 (require 'init-ui)
 (require 'init-base)
 (require 'init-comp)

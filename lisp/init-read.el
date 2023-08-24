@@ -1,4 +1,17 @@
-;;; -*- coding: utf-8; lexical-binding: t; -*-
+;;; init-read.el --- reader  -*- lexical-binding: t; -*-
+
+;; Author: yangxue <yangxue.cs@foxmail.com>
+;; Copyright (C) 2023, yangxue, all right reserved.
+;; Created: 2023-08-24 23:05:22
+;; Modified: <2023-08-24 23:05:45 yx>
+;; Licence: GPLv3
+
+;;; Commentary:
+
+;; reader
+
+;;; Code:
+
 ;; %% doc-view
 (setq
  doc-view-continuous t
@@ -71,3 +84,4 @@
   )
 
 (provide 'init-read)
+;;; init-read.el ends here

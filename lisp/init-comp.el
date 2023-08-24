@@ -1,4 +1,18 @@
-;;; -*- coding: utf-8; lexical-binding: t; -*-
+;;; init-comp.el --- minibuffer  -*- lexical-binding: t; -*-
+
+;; Author: yangxue <yangxue.cs@foxmail.com>
+;; Copyright (C) 2023, yangxue, all right reserved.
+;; Created: 2023-08-24 22:58:30
+;; Modified: <2023-08-24 23:04:55 yx>
+;; Licence: GPLv3
+
+;;; Commentary:
+
+;; minibuffer
+
+;;; Code:
+
+;; %%
 (use-package vertico
   :demand
   :config
@@ -20,6 +34,7 @@
   (completion-category-overrides '((file (styles basic partical-completion))))
   )
 
+;; %% embark
 (use-package embark
   :custom
   (embark-selection-indicator nil)
@@ -31,6 +46,7 @@
 (use-package embark-consult
   :hook (embark-collect-mode . consult-preview-at-point-mode))
 
+;; %% consult
 (use-package consult
   :init
   (setq xref-show-xrefs-function #'consult-xref
@@ -104,3 +120,4 @@
 
 ;; %% end
 (provide 'init-comp)
+;;; init-comp ends here

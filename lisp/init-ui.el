@@ -1,4 +1,18 @@
-;;; -*- coding: utf-8; lexical-binding: t; -*-
+;;; init-ui.el --- ui  -*- lexical-binding: t; -*-
+
+;; Author: yangxue <yangxue.cs@foxmail.com>
+;; Copyright (C) 2023, yangxue, all right reserved.
+;; Created: 2023-08-24 23:08:08
+;; Modified: <2023-08-24 23:09:55 yx>
+;; Licence: GPLv3
+
+;;; Commentary:
+
+;; ui
+
+;;; Code:
+
+;; %% font
 (defvar yx/default-font "Cascadia Code PL")
 (defvar yx/fixed-pitch-font "JetBrains Mono NL")
 (defvar yx/fixed-pitch-serif-font "Latin Modern Mono")
@@ -20,6 +34,7 @@
        (with-selected-frame frame (yx/setup-fonts))))
   (yx/setup-fonts))
 
+;; %% theme
 (add-hook
  'prog-mode-hook
  (lambda ()
@@ -42,6 +57,7 @@
   (ef-themes-select 'ef-light)
   )
 
+;; %% modeline
 (use-package minions
   :hook (after-init . minions-mode)
   )
@@ -56,4 +72,6 @@
   (awesome-tray-mode 1)
   )
 
+;; %% end
 (provide 'init-ui)
+;;; init-ui.el ends here

@@ -1,4 +1,17 @@
-;;; -*- coding: utf-8; lexical-binding: t; -*-
+;;; init-evil.el --- keymap  -*- lexical-binding: t; -*-
+
+;; Author: yangxue <yangxue.cs@foxmail.com>
+;; Copyright (C) 2023, yangxue, all right reserved.
+;; Created: 2023-08-24 23:00:08
+;; Modified: <2023-08-24 23:04:01 yx>
+;; Licence: GPLv3
+
+;;; Commentary:
+
+;; keymap
+
+;;; Code:
+
 ;; %% 全局按键
 (use-package key-chord
   :init
@@ -171,3 +184,4 @@
 
 ;; %% end
 (provide 'init-evil)
+;;; init-evil.el ends here

@@ -1,4 +1,18 @@
-;;; -*- coding: utf-8; lexical-binding: t; -*-
+;;; init-wind.el --- windows  -*- lexical-binding: t; -*-
+
+;; Author: yangxue <yangxue.cs@foxmail.com>
+;; Copyright (C) 2023, yangxue, all right reserved.
+;; Created: 2023-08-24 23:06:35
+;; Modified: <2023-08-24 23:07:50 yx>
+;; Licence: GPLv3
+
+;;; Commentary:
+
+;; window buffer frame
+
+;;; Code:
+
+;; %%
 (setq
  winner-dont-bind-my-keys t
  winner-boring-buffers-regexp "^\\*")
@@ -199,3 +213,4 @@
 
 ;; %% end
 (provide 'init-wind)
+;;; init-wind.el ends here

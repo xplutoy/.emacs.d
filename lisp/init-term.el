@@ -1,4 +1,18 @@
-;;; -*- coding: utf-8; lexical-binding: t; -*-
+;;; init-term.el --- terminal  -*- lexical-binding: t; -*-
+
+;; Author: yangxue <yangxue.cs@foxmail.com>
+;; Copyright (C) 2023, yangxue, all right reserved.
+;; Created: 2023-08-24 23:10:40
+;; Modified: <2023-08-24 23:12:37 yx>
+;; Licence: GPLv3
+
+;;; Commentary:
+
+;; terminal shell
+
+;;; Code:
+
+;; %% eshell
 (defun eshell/gst (&rest args)
   (magit-status (pop args) nil)
   (eshell/echo))
@@ -56,6 +70,7 @@
   :demand
   )
 
+;; %% vterm
 (use-package vterm
   :unless -is-win
   :bind (:map vterm-mode-map
@@ -83,6 +98,7 @@
   (eshell-vterm-mode)
   (defalias 'eshell/v 'eshell-exec-visual))
 
+;; %% eat
 (use-package eat
   :load-path "site-lisp/emacs-eat"
   :hook ((eshell-load . eat-eshell-mode)
@@ -93,4 +109,6 @@
    eat-enable-yank-to-terminal t)
   )
 
+;; %% end
 (provide 'init-term)
+;;; init-term.el ends here

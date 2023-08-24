@@ -1,4 +1,17 @@
-;;; -*- coding: utf-8; lexical-binding: t; -*-
+;;; init-lang.el --- ide  -*- lexical-binding: t; -*-
+
+;; Author: yangxue <yangxue.cs@foxmail.com>
+;; Copyright (C) 2023, yangxue, all right reserved.
+;; Created: 2023-08-24 22:57:16
+;; Modified: <2023-08-24 22:57:53 yx>
+;; Licence: GPLv3
+
+;;; Commentary:
+
+;; ide
+
+;;; Code:
+
 ;; %% prog-mode misc
 (add-hook
  #'prog-mode-hook

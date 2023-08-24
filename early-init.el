@@ -1,4 +1,18 @@
-;;; -*- coding: utf-8; lexical-binding: t; -*-
+;;; early-init.el ---   -*- lexical-binding: t; -*-
+
+;; Author: yangxue <yangxue.cs@foxmail.com>
+;; Copyright (C) 2023, yangxue, all right reserved.
+;; Created: 2023-08-24 23:15:44
+;; Modified: <2023-08-24 23:16:45 yx>
+;; Licence: GPLv3
+
+;;; Commentary:
+
+;;
+
+;;; Code:
+
+;; %% misc
 (setq
  use-dialog-box nil
  use-file-dialog nil
@@ -72,4 +86,6 @@
 
 (defun display-startup-echo-area-message ()
   (message nil))
-;; %% early-init.el ends here
+
+;; %%
+;;; early-init.el ends here

@@ -1,4 +1,17 @@
-;;; -*- lexical-binding: t no-byte-compile: t -*-
+;;; init-mail.el --- mail  -*- lexical-binding: t; -*-
+
+;; Author: yangxue <yangxue.cs@foxmail.com>
+;; Copyright (C) 2023, yangxue, all right reserved.
+;; Created: 2023-08-24 22:52:27
+;; Modified: <2023-08-24 22:54:51 yx>
+;; Licence: GPLv3
+
+;;; Commentary:
+
+;; mail settings
+
+;;; Code:
+
 (setq
  message-confirm-send t
  message-from-style 'angles
@@ -93,6 +106,7 @@
    gnus-cache-remove-articles '(read)
    gnus-cacheable-groups "^\\(nntp\\|nnimap\\)"
    gnus-cache-enter-articles '(ticked dormant unread))
+
   (setq
    nnrss-ignore-article-fields '(description guid pubData dc:creator link))
 
