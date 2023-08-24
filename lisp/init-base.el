@@ -93,8 +93,8 @@
 (setq
  xref-search-program
  (cond
-  ((executable-find "ugrep") 'ugrep)
   ((executable-find "rg") 'ripgrep)
+  ((executable-find "ugrep") 'ugrep)
   (t 'grep)))
 (setq
  xref-show-xrefs-function 'xref-show-definitions-completing-read
@@ -136,9 +136,12 @@
 
 ;; %% epa
 (setq
+ auth-sources
+ (list
+  (expand-file-name "etc/authinfo.gpg" user-emacs-directory))
  epa-pinentry-mode 'loopback
- auth-sources (list (expand-file-name "authinfo.gpg" user-emacs-directory))
- epa-file-select-keys yx/gpg-encrypt-key)
+ epa-file-select-keys yx/gpg-encrypt-key
+ )
 
 ;; %% mouse
 (setq

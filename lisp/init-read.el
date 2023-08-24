@@ -15,18 +15,31 @@
   (pdf-loader-install)
   )
 
+;; %% olivetti
+(use-package olivetti
+  :hook (org-mode . olivetti-mode)
+  :init
+  (setq
+   olivetti-body-width 0.65
+   olivetti-minimum-body-width 72)
+  :config
+  (keymap-unset olivetti-mode-map "C-c |")
+  (keymap-unset olivetti-mode-map "C-c {")
+  (keymap-unset olivetti-mode-map "C-c }")
+  )
+
 ;; %% elfeed
 (use-package elfeed
   :custom
   (elfeed-feeds
-   '(("https://www.inference.vc/rss" +ai)
-     ("https://spaces.ac.cn/feed" +ai +webkit)
-     ("https://ruder.io/rss/index.rss" +ai)
-     ("https://www.juliabloggers.com/feed/" +julia)
-     ("http://www.ruanyifeng.com/blog/atom.xml" +tech)
+   '(("https://www.inference.vc/rss" ai)
+     ("https://spaces.ac.cn/feed" ai webkit)
+     ("https://ruder.io/rss/index.rss" ai)
+     ("https://www.juliabloggers.com/feed/" julia)
+     ("http://www.ruanyifeng.com/blog/atom.xml" tech)
      ("https://egh0bww1.com/rss.xml" emacs)
-     ("https://planet.emacslife.com/atom.xml" +emacs)
-     ("https://sachachua.com/blog/category/emacs/feed/" +emacs)))
+     ("https://planet.emacslife.com/atom.xml" emacs)
+     ("https://sachachua.com/blog/category/emacs/feed/" emacs)))
   :preface
   (defun yx/elfeed-eww-browse ()
     "Wrapper to open eww and mark elfeed as read"
@@ -41,16 +54,10 @@
     (elfeed-kill-buffer)
     (switch-to-buffer "*elfeed-search*")
     )
-  :config
-  (bind-keys
-   :map elfeed-show-mode-map
-   ("B" . yx/elfeed-eww-browse)
-   ("q" . yx/elfeed-kill-entry)
-   )
-
-  (add-hook
-   'elfeed-new-entry-hook
-   (elfeed-make-tagger :before "4 weeks ago" :remove 'unread))
+  :hook (elfeed-show . olivetti-mode)
+  :bind (:map elfeed-show-mode-map
+              ("B" . yx/elfeed-eww-browse)
+              ("q" . yx/elfeed-kill-entry))
   )
 
 (use-package elfeed-webkit

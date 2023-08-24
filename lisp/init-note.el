@@ -154,18 +154,6 @@
   :hook (org-mode . valign-mode)
   )
 
-(use-package olivetti
-  :hook (org-mode . olivetti-mode)
-  :init
-  (setq
-   olivetti-body-width 0.65
-   olivetti-minimum-body-width 72)
-  :config
-  (keymap-unset olivetti-mode-map "C-c |")
-  (keymap-unset olivetti-mode-map "C-c {")
-  (keymap-unset olivetti-mode-map "C-c }")
-  )
-
 (use-package org-appear
   :hook (org-mode . org-appear-mode)
   :custom

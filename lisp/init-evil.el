@@ -14,6 +14,7 @@
  ("s-."     . winner-redo)
  ("s-<"     . previous-buffer)
  ("s->"     . next-buffer)
+ ("s-k"     . crux-kill-other-buffers)
  ("s-<f10>" . toggle-frame-maximized)
  ("C-'"     . vterm-toggle-cd)
  ("C-;"     . crux-yx/toggle-eshell)
