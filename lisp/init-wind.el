@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-08-24 23:07:50 yx>
+;; Modified: <2023-08-25 11:31:56 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -69,6 +69,7 @@
   (dired-mouse-drag-files t)
   (dired-omit-files "^\\..*$")
   (dired-recursive-copies 'always)
+  (dired-guess-shell-alist-user yx/default-open-program)
   (dired-auto-revert-buffer 'dired-buffer-stale-p)
   (dired-kill-when-opening-new-dired-buffer t)
   (dired-listing-switches "-alGgh")
@@ -80,15 +81,6 @@
      (dired-omit-mode)
      (dired-hide-details-mode)))
   (put 'dired-find-alternate-file 'disabled nil)
-  (let ((cmd (cond (-is-win "start")
-                   (-is-mac "open")
-                   (-is-linux "xdg-open")
-                   (t ""))))
-    (setq dired-guess-shell-alist-user
-          `(("\\.\\(?:mp4\\|mkv\\|avi\\|rmvb\\)\\'" ,cmd)
-            ("\\.\\(?:jpg\\|jpeg\\|png\\|gif\\|xpm\\)\\'" ,cmd)
-            ("\\.\\(?:pdf\\|docx\\|djvu\\|csv\\|tex\\|html\\)\\'" ,cmd)))
-    )
   )
 
 ;; %% dired+

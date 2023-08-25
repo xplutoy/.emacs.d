@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-08-24 22:56:45 yx>
+;; Modified: <2023-08-25 12:56:18 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -109,6 +109,33 @@
   :after flyspell)
 
 ;; %% chinese
+(use-package cal-china-x
+  :defer 2
+  :config
+  (setq cal-china-x-general-holidays
+        '((holiday-lunar 1 15   "元宵节")
+          (holiday-fixed 3 8    "妇女节")
+          (holiday-fixed 3 12   "植树节")
+          (holiday-fixed 5 4    "青年节")
+          (holiday-fixed 6 1    "儿童节")
+          (holiday-lunar 7 7    "七夕节")
+          (holiday-lunar 9 9    "重阳节")
+          (holiday-fixed 9 10   "教师节"))
+        holiday-other-holidays
+        '((holiday-fixed 2 14   "情人节")
+          (holiday-fixed 4 1    "愚人节")
+          (holiday-fixed 12 25  "圣诞节")
+          (holiday-float 5 0 2  "母亲节")
+          (holiday-float 6 0 3  "父亲节")
+          (holiday-float 11 4 4 "感恩节"))
+        )
+  (setq cal-china-x-important-holidays cal-china-x-chinese-holidays)
+  (setq calendar-holidays (append
+                           holiday-other-holidays
+                           cal-china-x-general-holidays
+                           cal-china-x-important-holidays))
+  )
+
 (use-package osx-dictionary
   :if -is-mac
   :bind (("C-c D" . osx-dictionary-search-input)

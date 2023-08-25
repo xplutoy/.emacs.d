@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2023-08-24 23:14:48 yx>
+;; Modified: <2023-08-25 11:29:21 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -25,6 +25,13 @@
 (defconst -is-mac   (eq system-type 'darwin))
 (defconst -is-win   (eq system-type 'windows-nt))
 (defconst -is-linux (eq system-type 'gnu/linux))
+
+(defvar yx/default-open-program
+  (cond (-is-win "start")
+        (-is-mac "open")
+        (-is-linux "xdg-open")
+        (t ""))
+  )
 
 (menu-bar-mode -1)
 (prefer-coding-system 'utf-8)
