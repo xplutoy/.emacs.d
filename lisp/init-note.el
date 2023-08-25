@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-08-24 23:04:40 yx>
+;; Modified: <2023-08-25 15:43:02 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -202,22 +202,23 @@
    org-roam-directory yx/org-dir
    org-roam-database-connector 'sqlite-builtin
    org-roam-completion-everywhere t
+   org-roam-dailies-directory "daily/"
    org-roam-capture-templates
    '(("d" "default" plain "%?"
-      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
+      :target (file+head "%<%Y%m%d>-${slug}.org" "#+title: ${title}")
       :unnarrowed t)
      ("p" "post" plain "%?"
-      :target (file+head "blog/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
-      :unnarrowed t
-      :immediate-finish)
-     )
+      :target (file+head "blog/%<%Y%m%d>-${slug}.org" "#+title: ${title}")
+      :unnarrowed t :immediate-finish t))
+   org-roam-dailies-capture-templates
+   '(("d" "default" entry "* %<%m-%d %p>: %?"
+      :target (file+head "%<%Y>.org" "#+title: %<%Y>年琐记\n")
+      :unnarrowed t))
    )
   :config
   (org-roam-db-autosync-mode 1)
-  (add-hook
-   'org-roam-capture-new-node-hook
-   (lambda () (org-roam-tag-add '("draft"))))
   )
+
 (use-package org-roam-ui
   :after org-roam
   :init

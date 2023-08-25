@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-08-24 23:04:55 yx>
+;; Modified: <2023-08-25 13:02:54 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -31,7 +31,7 @@
 (use-package orderless
   :custom
   (completion-styles '(substring orderless basic))
-  (completion-category-overrides '((file (styles basic partical-completion))))
+  (completion-category-overrides '((file (styles basic partial-completion))))
   )
 
 ;; %% embark
