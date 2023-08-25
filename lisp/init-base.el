@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-08-25 12:55:18 yx>
+;; Modified: <2023-08-25 17:17:58 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -228,14 +228,20 @@
               vc-ignore-dir-regexp
               tramp-file-name-regexp))
 
-;; %% calendar
+;; %% calendar && diary
 (setq
+ diary-number-of-entries 7)
+
+(setq
+ calendar-date-style 'iso
  calendar-latitude +30.67
  calendar-longitude +104.07
  calendar-week-start-day 1
  calendar-mode-line-format nil
  calendar-mark-holidays-flag t
- calendar-mark-diary-entries-flag t)
+ calendar-mark-diary-entries-flag t
+ calendar-view-diary-initially-flag t)
+(add-hook 'calendar-today-visible-hook 'calendar-mark-today)
 
 ;; %% os specific settings stay here
 (cond

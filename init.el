@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2023-08-25 11:29:21 yx>
+;; Modified: <2023-08-25 19:02:10 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -19,6 +19,7 @@
 (defvar yx/org-dir "~/dotdocs/yx-slip-notes/")
 (defvar yx/etc-dir "~/.emacs.d/etc/")
 (defvar yx/var-dir "~/.emacs.d/.cache/")
+(defvar yx/zotero-dir "~/Zotero/")
 (defvar yx/gpg-sign-key "67B86CB8A5630C51!")
 (defvar yx/gpg-encrypt-key "8B1F9B207AF00BCF!")
 

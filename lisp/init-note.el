@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-08-25 15:43:02 yx>
+;; Modified: <2023-08-26 01:02:20 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -80,21 +80,39 @@
       :prepend t :kill-buffer t))
    )
 
-  (org-agenda-files
-   (list
-    org-default-notes-file
-    (expand-file-name "life.org" yx/org-dir)))
+  (org-tag-alist
+   '((:startgroup . nil)
+     ("@work" . ?w) ("@home" . ?h) ("@society" . ?s) ("bugfix" . ?b)
+     (:endgroup)  ;用作任务管理的tag
+     (:startgroup . nil)
+     ("programing" . ?p) ("math" . ?m) ("academe" . ?a) ("technology" . ?t)
+     (:endgroup)  ;用作笔记的内容tag
+     ))
+  (org-fast-tag-selection-single-key t)
+
+  (org-todo-keywords
+   '((sequence "TODO(t!)" "NEXT(n!)" "HOLD(h@/!)" "|" "DONE(d@/!)")))
+  (org-enforce-todo-dependencies t)
+
+  (org-agenda-files `(,org-default-notes-file))
   (org-agenda-span 'day)
   (org-agenda-tags-column 0)
   (org-agenda-compact-blocks t)
+  (org-agenda-include-diary t)
   (org-agenda-include-deadlines t)
   (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-scheduled-if-done t)
+  (org-agenda-skip-scheduled-delay-if-deadline t)
   (org-agenda-window-setup 'current-window)
+  (org-agenda-use-time-grid t)
+  (org-agenda-time-grid
+   '((daily today require-timed)
+     (300 600 900 1200 1500 1800 2100 2400)
+     "......" "----------------------------------------"))
 
   ;; org-cite
   (org-cite-csl-styles-dir
-   (expand-file-name "~/Zotero/styles/"))
+   (expand-file-name "styles/" yx/zotero-dir))
   (org-cite-export-processors
    '((latex biblatex)
      (t . (csl "ieee.csl"))))
@@ -146,15 +164,15 @@
   :init
   (setq
    org-super-agenda-groups
-   '((:name "🐝 Today!"
+   '((:name "今日待办"
             :time-grid t
-            :deadline today
-            :scheduled today)
-     (:name "🐬 Important!"
+            :deadline today)
+     (:name "重要待办"
             :priority "A")
-     (:name "🦇 Overdue!"
-            :deadline past
-            :scheduled past)
+     (:name "逾期事项"
+            :deadline past)
+     (:name "受阻事项"
+            :todo ("HOLD"))
      (:auto-category t))
    )
   :hook (org-mode . org-super-agenda-mode)
@@ -162,8 +180,9 @@
 
 (use-package org-modern
   :after org
-  :hook ((org-mode . org-modern-mode)
-         (org-agenda-finalize . org-modern-agenda))
+  :hook
+  (org-mode . org-modern-mode)
+  (org-agenda-finalize . org-modern-agenda)
   )
 
 (use-package valign
