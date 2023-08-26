@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-08-26 01:02:20 yx>
+;; Modified: <2023-08-27 00:17:16 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -15,7 +15,7 @@
 ;; %% org
 (use-package org
   :ensure nil
-  :defer 1
+  :defer 2
   :custom
   (org-directory yx/org-dir)
   (org-ellipsis "...")
@@ -57,6 +57,8 @@
   (org-tags-exclude-from-inheritance '(project crypt))
 
   (org-refile-use-outline-path 'file)
+  (org-goto-max-level 3)
+  (org-goto-interface 'outline-path-completion)
   (org-outline-path-complete-in-steps nil)
 
   (org-src-fontify-natively t)
@@ -120,6 +122,7 @@
    (list (expand-file-name "bibliography.bib" yx/org-dir)))
 
   :config
+  (key-chord-define org-mode-map "jh" 'avy-org-goto-heading-timer)
   (add-hook
    'org-mode-hook
    (lambda ()
@@ -179,7 +182,6 @@
   )
 
 (use-package org-modern
-  :after org
   :hook
   (org-mode . org-modern-mode)
   (org-agenda-finalize . org-modern-agenda)
@@ -216,6 +218,7 @@
 ;; %% org-roam notes
 (use-package org-roam
   :after org
+  :demand t
   :init
   (setq
    org-roam-directory yx/org-dir
@@ -239,7 +242,6 @@
   )
 
 (use-package org-roam-ui
-  :after org-roam
   :init
   (when (featurep 'xwidget-internal)
     (setq org-roam-ui-browser-function 'xwidget-webkit-browse-url)
@@ -286,16 +288,38 @@
 
 ;; %% citar
 (use-package citar
-  :config
-  (setq
-   org-cite-insert-processor 'citar
-   org-cite-follow-processor 'citar
-   org-cite-activate-processor 'citar
-   citar-at-point-function 'embark-act
-   citar-bibliography org-cite-global-bibliography)
+  :after org
+  :demand t
+  :custom
+  (org-cite-insert-processor 'citar)
+  (org-cite-follow-processor 'citar)
+  (org-cite-activate-processor 'citar)
+  (citar-notes-paths `(,yx/org-dir))
+  (citar-library-paths `(,yx/zotero-dir))
+  (citar-at-point-function 'embark-act)
+  (citar-bibliography org-cite-global-bibliography)
   :hook
-  ((org-mode . citar-capf-setup)
-   (LaTeX-mode . citar-capf-setup))
+  (org-mode . citar-capf-setup)
+  (LaTeX-mode . citar-capf-setup)
+  )
+
+(use-package citar-org-roam
+  :after (citar org-roam)
+  :demand t
+  :custom
+  (citar-org-roam-subdir "literature_notes")
+  (citar-org-roam-note-title-template "${title}")
+  (citar-org-roam-capture-template-key "l")
+  :config
+  (add-to-list
+   'org-roam-capture-templates
+   '("l" "literature" plain "%?"
+     :target
+     (file+head
+      "literature_notes/%<%Y%m%d>-${citar-citekey}.org"
+      "#+title: ${citar-citekey}: ${note-title}\n#+created: %U\n#+modified: <>\n\n")
+     :unnarrowed t))
+  (citar-org-roam-mode 1)
   )
 
 ;; %% end

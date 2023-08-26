@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-08-25 13:02:54 yx>
+;; Modified: <2023-08-27 00:09:44 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -14,10 +14,8 @@
 
 ;; %%
 (use-package vertico
-  :demand
-  :config
+  :init
   (setq vertico-resize nil)
-
   (vertico-mode 1)
   (vertico-mouse-mode 1)
   (vertico-indexed-mode 1)
@@ -44,23 +42,21 @@
                        embark-isearch-highlight-indicator))
   )
 (use-package embark-consult
+  :after embark
   :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 ;; %% consult
 (use-package consult
-  :init
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
-
   :config
-  (setq consult-ripgrep-args
-        (concat consult-ripgrep-args " --hidden"))
+  (setq
+   xref-show-xrefs-function #'consult-xref
+   xref-show-definitions-function #'consult-xref
+   consult-ripgrep-args (concat consult-ripgrep-args " --hidden"))
   (consult-customize
    consult-theme
    :preview-key '(:debounce 0.2 any)
    consult-ripgrep consult-git-grep consult-recent-file consult-xref
    :preview-key '(:debounce 0.4 any))
-
   :bind (([remap goto-line]                     . consult-goto-line)
          ([remap switch-to-buffer]              . consult-buffer)
          ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
@@ -81,6 +77,7 @@
   )
 
 (use-package consult-dir
+  :after consult
   :bind (("C-x C-d" . consult-dir)
          :map vertico-map
          ("C-x C-d" . consult-dir)
@@ -88,11 +85,13 @@
   )
 
 (use-package consult-eglot
+  :after consult
   :bind (("M-s s" . consult-eglot-symbols))
   )
 
 ;; %% corfu
 (use-package corfu
+  :hook ((text-mode prog-mode) . corfu-mode)
   :custom
   (corfu-auto t)
   (corfu-preselect 'valid)
@@ -102,20 +101,41 @@
   (corfu-history-mode 1)
   (corfu-indexed-mode 1)
   (corfu-popupinfo-mode 1)
-  :hook ((text-mode prog-mode) . corfu-mode)
   :bind (:map corfu-map
               ("TAB"   . corfu-next)
               ("S-TAB" . corfu-previous)
-              ("C-q"   . corfu-quick-insert)
+              ("M-q"   . corfu-quick-insert)
               ("SPC"   . corfu-insert-separator))
   )
 
 (use-package cape
+  :hook
+  (org-mode . yx/cape-capf-setup-org)
+  (LaTeX-mode . yx/cape-capf-setup-latex)
+  (eshell-mode . yx/cape-capf-setup-eshell)
   :init
-  (setq cape-dabbrev-min-length 2)
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  (add-to-list 'completion-at-point-functions #'cape-symbol)
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (setq cape-dabbrev-min-length 3)
+  (dolist (ele '(cape-dict
+                 cape-dabbrev
+                 cape-symbol
+                 cape-abbrev
+                 cape-file))
+    (add-to-list 'completion-at-point-functions ele))
+  :preface
+  (defun yx/cape-capf-setup-org ()
+    (dolist (ele '((cape-super-capf 'cape-dict 'cape-dabbrev)
+                   cape-elisp-block
+                   cape-tex))
+      (add-to-list 'completion-at-point-functions ele)))
+  (defun yx/cape-capf-setup-latex ()
+    (dolist (ele '(cape-dict
+                   cape-tex))
+      (add-to-list 'completion-at-point-functions ele)))
+  (defun yx/cape-capf-setup-eshell ()
+    (dolist (ele '(cape-history
+                   cape-elisp-symbol
+                   cape-file))
+      (add-to-list 'completion-at-point-functions ele)))
   )
 
 ;; %% end

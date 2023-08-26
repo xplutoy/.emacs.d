@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-08-24 23:04:01 yx>
+;; Modified: <2023-08-26 23:01:25 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -86,6 +86,8 @@
 
 ;; %% evil
 (use-package evil
+  :hook
+  (after-init . evil-mode)
   :init
   (setq
    evil-want-fine-undo t
@@ -99,8 +101,6 @@
    evil-respect-visual-line-mode t
    evil-disable-insert-state-bindings t
    )
-  :hook
-  (after-init . evil-mode)
   :config
   (defvar yx-initial-evil-state-setup
     '((conf-mode . normal)
@@ -174,12 +174,19 @@
   )
 
 (use-package evil-commentary
+  :after evil
   :hook (prog-mode . evil-commentary-mode)
   )
 
 (use-package vimish-fold)
 (use-package evil-vimish-fold
+  :after evil
   :hook (prog-mode . evil-vimish-fold-mode)
+  )
+
+(use-package evil-surround
+  :after evil
+  :hook (prog-mode . turn-on-evil-surround-mode)
   )
 
 ;; %% end

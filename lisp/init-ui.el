@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-08-24 23:09:55 yx>
+;; Modified: <2023-08-27 00:11:50 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -59,12 +59,13 @@
 
 ;; %% modeline
 (use-package minions
+  :demand t
   :hook (after-init . minions-mode)
   )
 
 (use-package awesome-tray
+  :demand t
   :load-path "site-lisp/awesome-tray"
-  :demand
   :config
   (setq
    awesome-tray-active-modules

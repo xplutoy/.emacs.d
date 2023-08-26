@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-08-25 17:17:58 yx>
+;; Modified: <2023-08-26 01:35:13 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -39,18 +39,23 @@
  initial-scratch-message ""
  delete-by-moving-to-trash t
  set-mark-command-repeat-pop t
+ disabled-command-function nil
  show-paren-context-when-offscreen t
  compilation-scroll-output 'first-error
  backward-delete-char-untabify-method 'hungry
  sentence-end-double-space nil
  sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
 
-;; %% auto save
+;; %% autosave
 (setq
  auto-save-no-message t
  auto-save-visited-interval 30)
 
-;; %% auto-insert
+;; %% autorevert
+(customize-set-variable 'auto-revert-use-notify nil)
+(add-hook 'after-init-hook 'global-auto-revert-mode)
+
+;; %% autoinsert
 (setq
  auto-insert-query nil
  auto-insert-alist nil)
@@ -281,14 +286,9 @@
    (auto-compression-mode 1)
    (delete-selection-mode 1)
    (auto-save-visited-mode 1)
-   (global-auto-revert-mode 1)
    (windmove-default-keybindings)
    (pixel-scroll-precision-mode 1))
  )
-
-(put 'narrow-to-page 'disabled nil)
-(put 'narrow-to-defun 'disabled nil)
-(put 'narrow-to-region 'disabled nil)
 
 ;; never kill scratch
 (with-current-buffer "*scratch*"

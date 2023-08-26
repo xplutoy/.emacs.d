@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-08-25 00:20:19 yx>
+;; Modified: <2023-08-27 00:14:40 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -97,9 +97,9 @@
   )
 
 (use-package indent-guide
-  :init
-  (setq indent-guide-recursive nil)
   :hook (prog-mode . indent-guide-mode)
+  :custom
+  (indent-guide-recursive nil)
   )
 
 ;; %% symbol highlight
@@ -138,6 +138,7 @@
       (mapping
        '((c-mode . c-ts-mode)
          (c++-mode . c++-ts-mode)
+         (c-or-c++-mode . c-or-c++-ts-mode)
          (python-mode . python-ts-mode)))
     (add-to-list 'major-mode-remap-alist mapping))
   :config
@@ -146,16 +147,15 @@
 
 ;; %% code navigate and search
 (use-package color-rg
-  :defer 2
   :load-path "site-lisp/color-rg"
-  :init
-  (setq color-rg-search-no-ignore-file nil
-        color-rg-mac-load-path-from-shell nil)
+  :defer 2
+  :custom
+  (color-rg-search-no-ignore-file nil)
+  (color-rg-mac-load-path-from-shell nil)
   )
 
 (use-package combobulate
   :ensure nil
-  :after treesit
   :load-path "site-lisp/combobulate"
   :hook
   ((c-ts-mode
@@ -212,7 +212,7 @@
 ;; %% jupyter
 (use-package jupyter
   :after org
-  :demand
+  :demand t
   :config
   (setq jupyter-eval-use-overlays nil)
   ;; @see https://github.com/emacs-jupyter/jupyter/issues/478
@@ -277,6 +277,9 @@
 
 ;; %% Julia
 (use-package julia-mode)
+(use-package julia-ts-mode
+  :mode "\\.jl$")
+
 (use-package eglot-jl
   :init
   (with-eval-after-load 'eglot
@@ -289,7 +292,9 @@
   :custom
   (julia-snail-terminal-type :eat)
   (julia-snail-extensions '(ob-julia formatter))
-  :hook (julia-mode . julia-snail-mode)
+  :hook
+  (julia-mode . julia-snail-mode)
+  (julia-ts-mode . julia-snail-mode)
   )
 
 ;; %% R/julia

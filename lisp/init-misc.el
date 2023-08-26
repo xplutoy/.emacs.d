@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-08-25 12:56:18 yx>
+;; Modified: <2023-08-26 23:22:54 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -14,13 +14,12 @@
 
 ;; %% misc
 (use-package gcmh
-  :defer 1
-  :config
-  (setq gcmh-high-cons-threshold (* 128 1024 1024))
-  (gcmh-mode 1))
+  :hook (after-init . gcmh-mode)
+  :custom
+  (gcmh-high-cons-threshold (* 128 1024 1024))
+  )
 
 (use-package no-littering
-  :demand
   :init
   (setq no-littering-var-directory yx/var-dir
         no-littering-etc-directory yx/etc-dir
@@ -36,6 +35,7 @@
   )
 
 (use-package server
+  :defer 2
   :ensure nil
   :commands (server-running-p)
   :config (or (server-running-p) (server-mode)))
@@ -53,7 +53,7 @@
 
 ;; %% auxiliary tool
 (use-package crux-yx
-  :defer 1
+  :defer 2
   :load-path "site-lisp/crux-yx"
   :config
   (add-hook
@@ -66,7 +66,7 @@
   )
 
 (use-package which-key
-  :defer 1
+  :defer 2
   :init
   (setq
    which-key-idle-delay 1.5
@@ -90,12 +90,16 @@
   :init
   (setq avy-style 'at
         avy-timeout-seconds 0.8)
+  :bind (:map isearch-mode-map
+              ("C-'" . avy-isearch))
   )
 
 (use-package easy-kill
   :bind (([remap kill-ring-save] . easy-kill)
          ([remap mark-sexp] . easy-mark))
   )
+
+(use-package vundo)
 
 ;; %% spell
 (use-package jinx
@@ -106,7 +110,8 @@
   )
 
 (use-package flyspell-correct
-  :after flyspell)
+  :after flyspell
+  )
 
 ;; %% chinese
 (use-package cal-china-x
