@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-08-27 00:11:50 yx>
+;; Modified: <2023-08-27 04:58:19 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -41,6 +41,11 @@
    (setq buffer-face-mode-face 'fixed-pitch)
    (buffer-face-mode))
  )
+
+(setq
+ window-divider-default-bottom-width 1
+ window-divider-default-places 'bottom-only)
+(add-hook 'after-init-hook 'window-divider-mode)
 
 (use-package ef-themes
   :init

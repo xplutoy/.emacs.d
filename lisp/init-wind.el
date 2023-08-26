@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-08-25 11:31:56 yx>
+;; Modified: <2023-08-27 05:18:46 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -30,11 +30,6 @@
  switch-to-buffer-preserve-window-point t
  )
 
-(setq
- window-divider-default-bottom-width 1
- window-divider-default-places 'bottom-only)
-(add-hook 'after-init-hook 'window-divider-mode)
-
 ;; %% tabbar
 (setq
  tab-bar-tab-hints t
@@ -43,23 +38,6 @@
  tab-bar-new-tab-choice "*scratch*"
  tab-bar-select-tab-modifiers '(super))
 (add-hook 'after-init-hook 'tab-bar-history-mode)
-
-;; %% ibuffer
-(setq
- ibuffer-expert t
- ibuffer-display-summary nil
- ibuffer-show-empty-filter-groups nil
- ;; ibuffer-never-show-predicates '("^\\*")
- )
- (add-hook
-  'ibuffer-mode-hook
-  (lambda ()
-    (ibuffer-do-sort-by-recency)
-    (ibuffer-auto-mode 1)))
-
-(use-package ibuffer-vc
-  :init
-  :hook (ibuffer . ibuffer-vc-set-filter-groups-by-vc-root))
 
 ;; %% dired
 (use-package dired
@@ -101,7 +79,6 @@
               ("/" . dired-filter-mode))
   )
 
-;; %% sr-speedbar
 (use-package sr-speedbar
   :defer 2
   :load-path "site-lisp/sr-speedbar-yx"
@@ -113,7 +90,6 @@
   )
 
 (use-package ace-window
-  :defer 1
   :init
   (setq
    aw-scope 'frame
@@ -122,14 +98,44 @@
    aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   )
 
-;; zoom
+;; %% buffer manager
 (use-package zoom
   :custom
   (zoom-size '(0.618 . 0.618))
   )
 
+(use-package midnight
+  :ensure nil
+  :defer 5
+  :custom
+  (midnight-delay 10800)
+  (clean-buffer-list-kill-regexps '(".*"))
+  (clean-buffer-list-kill-never-regexps
+   '("^\\*scratch\\*$"
+     "^\\*Messages\\*$"
+     "^\\*Summary.*\\*$"
+     "^\\*Group\\*$"))
+  :config
+  (midnight-mode t))
+
+(setq
+ ibuffer-expert t
+ ibuffer-display-summary nil
+ ibuffer-show-empty-filter-groups nil
+ ;; ibuffer-never-show-predicates '("^\\*")
+ )
+(add-hook
+ 'ibuffer-mode-hook
+ (lambda ()
+   (ibuffer-do-sort-by-recency)
+   (ibuffer-auto-mode 1)))
+
+(use-package ibuffer-vc
+  :init
+  :hook (ibuffer . ibuffer-vc-set-filter-groups-by-vc-root))
+
 (use-package popper
-  :defer 1
+  :defer 2
   :bind (("C-`" . popper-toggle-latest)
          ("M-`" . popper-cycle)
          ("C-M-`" . popper-toggle-type))
@@ -159,7 +165,7 @@
   )
 
 (use-package shackle
-  :defer 1
+  :defer 2
   :custom
   (shackle-default-size 0.4)
   (shackle-select-reused-windows t)

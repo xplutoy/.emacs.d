@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-08-27 00:09:44 yx>
+;; Modified: <2023-08-27 04:29:34 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -123,18 +123,18 @@
     (add-to-list 'completion-at-point-functions ele))
   :preface
   (defun yx/cape-capf-setup-org ()
-    (dolist (ele '((cape-super-capf 'cape-dict 'cape-dabbrev)
-                   cape-elisp-block
-                   cape-tex))
+    (dolist (ele (list
+                  (cape-super-capf 'cape-dabbrev 'cape-dict)
+                  'cape-tex))
       (add-to-list 'completion-at-point-functions ele)))
   (defun yx/cape-capf-setup-latex ()
     (dolist (ele '(cape-dict
                    cape-tex))
       (add-to-list 'completion-at-point-functions ele)))
   (defun yx/cape-capf-setup-eshell ()
-    (dolist (ele '(cape-history
-                   cape-elisp-symbol
-                   cape-file))
+    (dolist (ele '(cape-elisp-symbol
+                   cape-file
+                   cape-history))
       (add-to-list 'completion-at-point-functions ele)))
   )
 

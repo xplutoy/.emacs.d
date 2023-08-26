@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-08-27 00:17:16 yx>
+;; Modified: <2023-08-27 02:50:17 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -42,16 +42,20 @@
   (org-pretty-entities t)
   (org-pretty-entities-include-sub-superscripts nil)
 
+  (org-refile-targets
+   '((nil :maxlevel . 3)
+     (org-agenda-files :maxlevel . 3)))
+
   (org-latex-compiler "xelatex")
   (org-latex-packages-alist '(("" "ctex" t)))
-  (plist-put org-format-latex-options :scale 2.20)
   (org-preview-latex-default-process 'dvisvgm)
+  (plist-put org-format-latex-options :scale 1.5)
   (org-latex-preview-ltxpng-directory
    (expand-file-name "ltximg/" no-littering-var-directory))
 
   (org-footnote-auto-adjust t)
 
-  (org-tags-column 0)
+  (org-tags-column -96)
   (org-auto-align-tags nil)
   (org-tag-alist '(("crypt" . ?c) ("project" . ?p)))
   (org-tags-exclude-from-inheritance '(project crypt))
@@ -98,7 +102,7 @@
 
   (org-agenda-files `(,org-default-notes-file))
   (org-agenda-span 'day)
-  (org-agenda-tags-column 0)
+  (org-agenda-remove-tags t)
   (org-agenda-compact-blocks t)
   (org-agenda-include-diary t)
   (org-agenda-include-deadlines t)
@@ -205,14 +209,15 @@
 (use-package org-download
   :after org
   :commands
-  (org-download-clipboard org-download-screenshot)
+  (org-download-screenshot)
   :custom
-  (org-download-method 'attach)
+  (org-download-heading-lvl nil)
   (org-download-screenshot-method "screencapture -i %s")
-  (org-download-image-dir (expand-file-name "attachs" yx/org-dir))
+  (org-download-image-dir
+   (expand-file-name (concat org-attach-directory "images/") yx/org-dir))
+  :hook (dired-mode . org-download-enable)
   :bind (:map org-mode-map
-              ("C-c y" . org-download-clipboard)
-              ("C-c Y" . org-download-screenshot))
+              ("C-S-y" . org-download-screenshot))
   )
 
 ;; %% org-roam notes
@@ -222,6 +227,7 @@
   :init
   (setq
    org-roam-directory yx/org-dir
+   org-roam-db-update-on-save t
    org-roam-database-connector 'sqlite-builtin
    org-roam-completion-everywhere t
    org-roam-dailies-directory "daily/"
@@ -316,8 +322,8 @@
    '("l" "literature" plain "%?"
      :target
      (file+head
-      "literature_notes/%<%Y%m%d>-${citar-citekey}.org"
-      "#+title: ${citar-citekey}: ${note-title}\n#+created: %U\n#+modified: <>\n\n")
+      "%(expand-file-name (or citar-org-roam-subdir \"\") org-roam-directory)/%<%Y%m%d>-${citar-citekey}.org"
+      "#+title: 文献笔记: ${note-title}\n#+created: %U\n#+modified: <>\n\n")
      :unnarrowed t))
   (citar-org-roam-mode 1)
   )

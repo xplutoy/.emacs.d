@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-08-26 23:22:54 yx>
+;; Modified: <2023-08-27 03:48:39 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -92,6 +92,20 @@
         avy-timeout-seconds 0.8)
   :bind (:map isearch-mode-map
               ("C-'" . avy-isearch))
+  :config
+  (defun avy-action-mark-to-char (pt)
+    (activate-mark)
+    (goto-char pt))
+  (defun avy-action-embark (pt)
+    (unwind-protect
+        (save-excursion
+          (goto-char pt)
+          (embark-act))
+      (select-window
+       (cdr (ring-ref avy-ring 0))))
+    t)
+  (setf (alist-get ?  avy-dispatch-alist) 'avy-action-mark-to-char)
+  (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark)
   )
 
 (use-package easy-kill
