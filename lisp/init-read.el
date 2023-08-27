@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2023-08-24 23:05:45 yx>
+;; Modified: <2023-08-27 19:14:42 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -33,12 +33,10 @@
   :hook (org-mode . olivetti-mode)
   :init
   (setq
-   olivetti-body-width 0.65
-   olivetti-minimum-body-width 72)
-  :config
-  (keymap-unset olivetti-mode-map "C-c |")
-  (keymap-unset olivetti-mode-map "C-c {")
-  (keymap-unset olivetti-mode-map "C-c }")
+   olivetti-mode-map nil
+   olivetti-body-width 0.66
+   olivetti-minimum-body-width (+ fill-column 2)
+   )
   )
 
 ;; %% elfeed

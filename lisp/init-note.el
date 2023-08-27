@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-08-27 02:50:17 yx>
+;; Modified: <2023-08-27 22:29:31 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -30,7 +30,7 @@
   (org-special-ctrl-k t)
   (org-special-ctrl-a/e t)
   (org-use-speed-commands t)
-  (org-fontify-quote-and-verse-blocks t)
+  (org-M-RET-may-split-line nil)
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
   (org-hide-block-startup t)
@@ -41,6 +41,10 @@
 
   (org-pretty-entities t)
   (org-pretty-entities-include-sub-superscripts nil)
+
+  (org-fontify-done-headline t)
+  (org-fontify-whole-heading-line t)
+  (org-fontify-quote-and-verse-blocks t)
 
   (org-refile-targets
    '((nil :maxlevel . 3)
@@ -54,11 +58,6 @@
    (expand-file-name "ltximg/" no-littering-var-directory))
 
   (org-footnote-auto-adjust t)
-
-  (org-tags-column -96)
-  (org-auto-align-tags nil)
-  (org-tag-alist '(("crypt" . ?c) ("project" . ?p)))
-  (org-tags-exclude-from-inheritance '(project crypt))
 
   (org-refile-use-outline-path 'file)
   (org-goto-max-level 3)
@@ -74,35 +73,43 @@
 
   (org-modules '(org-habit org-tempo))
 
+  ;; tag
+  (org-auto-align-tags t)
+  (org-tags-column (- 2 fill-column))
+  (org-tags-exclude-from-inheritance '(project crypt))
+  (org-tag-persistent-alist (quote
+                             ((:startgroup . nil)
+                              ("@work" . ?w) ("@home" . ?h) ("@society" . ?s)
+                              (:endgroup . nil)
+                              (:Startgroup . nil)
+                              ("math" . ?m) ("academe" . ?a) ("technology" . ?t)
+                              (:endgroup . nil)
+                              ("crypt" . ?c) ("project" . ?p) ("bugfix" . ?b) ("urgent" . ?u))))
+  (org-fast-tag-selection-single-key t)
+
+  ;; todo
+  (org-todo-keywords
+   '((sequence "TODO(t!)" "NEXT(n!)" "HOLD(h@/!)" "|" "DONE(d@/!)")))
+  (org-todo-repeat-to-state "NEXT")
+  (org-enforce-todo-dependencies t)
+
   (org-default-notes-file
    (expand-file-name "inbox.org" org-directory))
   (org-capture-templates
-   '(("t" "task"  entry (file+headline org-default-notes-file "Tasks")
+   '(("t" "Task"  entry (file+headline org-default-notes-file "Task")
       "* TODO [#B] %?\n" :prepend t :kill-buffer t)
-     ("i" "idea"  entry (file+headline org-default-notes-file "Someday/Maybe")
-      "* WAIT [#C] %?\n" :prepend t :kill-buffer t)
-     ("h" "habit" entry (file+headline org-default-notes-file "Habits")
-      "* NEXT [#B] %?\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"
-      :prepend t :kill-buffer t))
+     ("s" "Someday"  entry (file+headline org-default-notes-file "Someday/Maybe")
+      "* HOLD [#C] %?\n" :prepend t :kill-buffer t)
+     ("r" "Research"  entry (file+headline org-default-notes-file "Research")
+      "* TODO [#B] %?\n" :prepend t :kill-buffer t)
+     ("h" "Habit" entry (file+headline org-default-notes-file "Habit")
+      "* NEXT [#B] %?\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n" :prepend t :kill-buffer t))
    )
 
-  (org-tag-alist
-   '((:startgroup . nil)
-     ("@work" . ?w) ("@home" . ?h) ("@society" . ?s) ("bugfix" . ?b)
-     (:endgroup)  ;用作任务管理的tag
-     (:startgroup . nil)
-     ("programing" . ?p) ("math" . ?m) ("academe" . ?a) ("technology" . ?t)
-     (:endgroup)  ;用作笔记的内容tag
-     ))
-  (org-fast-tag-selection-single-key t)
 
-  (org-todo-keywords
-   '((sequence "TODO(t!)" "NEXT(n!)" "HOLD(h@/!)" "|" "DONE(d@/!)")))
-  (org-enforce-todo-dependencies t)
-
-  (org-agenda-files `(,org-default-notes-file))
   (org-agenda-span 'day)
-  (org-agenda-remove-tags t)
+  (org-agenda-files `(,org-default-notes-file))
+  (org-agenda-tags-column org-tags-column)
   (org-agenda-compact-blocks t)
   (org-agenda-include-diary t)
   (org-agenda-include-deadlines t)
@@ -110,12 +117,19 @@
   (org-agenda-skip-scheduled-if-done t)
   (org-agenda-skip-scheduled-delay-if-deadline t)
   (org-agenda-window-setup 'current-window)
+  (org-agenda-inhibit-startup t)
+  (org-agenda-use-tag-inheritance nil)
   (org-agenda-use-time-grid t)
   (org-agenda-time-grid
-   '((daily today require-timed)
-     (300 600 900 1200 1500 1800 2100 2400)
-     "......" "----------------------------------------"))
+   (quote ((daily today require-timed)
+           (300 600 900 1200 1500 1800 2100 2400)
+           "------" "——————————————————————————————")))
+  (org-agenda-current-time-string "now ——————————————————————————")
 
+  ;; org-clock
+  (org-clock-persist t)
+  (org-clock-in-resume t)
+  (org-clock-out-when-done t)
   ;; org-cite
   (org-cite-csl-styles-dir
    (expand-file-name "styles/" yx/zotero-dir))
@@ -160,6 +174,7 @@
      (latex . t)
      (jupyter . t)))
   (org-crypt-use-before-save-magic)
+  (org-clock-persistence-insinuate)
   )
 
 ;; %% org+
@@ -171,16 +186,15 @@
   :init
   (setq
    org-super-agenda-groups
-   '((:name "今日待办"
+   '((:name "Today"
             :time-grid t
             :deadline today)
-     (:name "重要待办"
-            :priority "A")
-     (:name "逾期事项"
+     (:name "Important"
+            :priority>= "A")
+     (:name "Overdue"
             :deadline past)
-     (:name "受阻事项"
-            :todo ("HOLD"))
-     (:auto-category t))
+     (:todo "HOLD")
+     (:auto-planning t))
    )
   :hook (org-mode . org-super-agenda-mode)
   )
@@ -220,6 +234,8 @@
               ("C-S-y" . org-download-screenshot))
   )
 
+(use-package org-web-tools)
+
 ;; %% org-roam notes
 (use-package org-roam
   :after org
@@ -230,7 +246,7 @@
    org-roam-db-update-on-save t
    org-roam-database-connector 'sqlite-builtin
    org-roam-completion-everywhere t
-   org-roam-dailies-directory "daily/"
+   org-roam-dailies-directory "journal/"
    org-roam-capture-templates
    '(("d" "default" plain "%?"
       :target (file+head "%<%Y%m%d>-${slug}.org" "#+title: ${title}")

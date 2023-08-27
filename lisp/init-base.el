@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-08-26 01:35:13 yx>
+;; Modified: <2023-08-27 15:06:38 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,7 +16,7 @@
 (setq-default
  tab-width 2
  abbrev-mode t
- fill-column 88
+ fill-column 78
  line-spacing 0.1
  truncate-lines t
  indent-tabs-mode nil

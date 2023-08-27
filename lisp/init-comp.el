@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-08-27 04:29:34 yx>
+;; Modified: <2023-08-27 05:44:34 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -28,8 +28,10 @@
 
 (use-package orderless
   :custom
-  (completion-styles '(substring orderless basic))
-  (completion-category-overrides '((file (styles basic partial-completion))))
+  (completion-styles '(orderless basic))
+  (completion-category-overrides
+   '((file (styles basic partial-completion))
+     (eglot (styles orderless basic))))
   )
 
 ;; %% embark
@@ -55,7 +57,10 @@
   (consult-customize
    consult-theme
    :preview-key '(:debounce 0.2 any)
-   consult-ripgrep consult-git-grep consult-recent-file consult-xref
+   consult-ripgrep
+   consult-git-grep
+   consult-recent-file
+   consult-xref
    :preview-key '(:debounce 0.4 any))
   :bind (([remap goto-line]                     . consult-goto-line)
          ([remap switch-to-buffer]              . consult-buffer)
@@ -123,9 +128,8 @@
     (add-to-list 'completion-at-point-functions ele))
   :preface
   (defun yx/cape-capf-setup-org ()
-    (dolist (ele (list
-                  (cape-super-capf 'cape-dabbrev 'cape-dict)
-                  'cape-tex))
+    (dolist (ele `(,(cape-super-capf 'cape-dabbrev 'cape-dict)
+                   cape-tex))
       (add-to-list 'completion-at-point-functions ele)))
   (defun yx/cape-capf-setup-latex ()
     (dolist (ele '(cape-dict
