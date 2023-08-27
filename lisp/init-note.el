@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-08-27 22:29:31 yx>
+;; Modified: <2023-08-28 01:39:26 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -33,9 +33,9 @@
   (org-M-RET-may-split-line nil)
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
+  (org-startup-folded t)
   (org-hide-block-startup t)
   (org-hide-drawer-startup t)
-  (org-startup-folded 'content)
   (org-startup-with-inline-images t)
   (org-startup-with-latex-preview t)
 
@@ -89,7 +89,7 @@
 
   ;; todo
   (org-todo-keywords
-   '((sequence "TODO(t!)" "NEXT(n!)" "HOLD(h@/!)" "|" "DONE(d@/!)")))
+   '((sequence "TODO(t!)" "SOMEDAY(s!)" "NEXT(n!)" "HOLD(h@/!)" "|" "CANCELED(c@/!)" "DONE(d!)")))
   (org-todo-repeat-to-state "NEXT")
   (org-enforce-todo-dependencies t)
 
@@ -99,7 +99,7 @@
    '(("t" "Task"  entry (file+headline org-default-notes-file "Task")
       "* TODO [#B] %?\n" :prepend t :kill-buffer t)
      ("s" "Someday"  entry (file+headline org-default-notes-file "Someday/Maybe")
-      "* HOLD [#C] %?\n" :prepend t :kill-buffer t)
+      "* SOMEDAY [#C] %?\n" :prepend t :kill-buffer t)
      ("r" "Research"  entry (file+headline org-default-notes-file "Research")
       "* TODO [#B] %?\n" :prepend t :kill-buffer t)
      ("h" "Habit" entry (file+headline org-default-notes-file "Habit")
@@ -193,7 +193,7 @@
             :priority>= "A")
      (:name "Overdue"
             :deadline past)
-     (:todo "HOLD")
+     (:todo "HOLD" :todo "SOMEDAY")
      (:auto-planning t))
    )
   :hook (org-mode . org-super-agenda-mode)

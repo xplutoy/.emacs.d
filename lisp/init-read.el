@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2023-08-27 19:14:42 yx>
+;; Modified: <2023-08-28 01:49:54 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -30,7 +30,9 @@
 
 ;; %% olivetti
 (use-package olivetti
-  :hook (org-mode . olivetti-mode)
+  :hook ((org-mode
+          org-agenda-mode
+          ) . olivetti-mode)
   :init
   (setq
    olivetti-mode-map nil
@@ -46,8 +48,9 @@
    '(("https://www.inference.vc/rss" ai)
      ("https://spaces.ac.cn/feed" ai webkit)
      ("https://ruder.io/rss/index.rss" ai)
+     ("https://yihui.org/en/index.xml" R)
      ("https://www.juliabloggers.com/feed/" julia)
-     ("http://www.ruanyifeng.com/blog/atom.xml" tech)
+     ("http://www.ruanyifeng.com/blog/atom.xml" tech webkit)
      ("https://egh0bww1.com/rss.xml" emacs)
      ("https://planet.emacslife.com/atom.xml" emacs)
      ("https://sachachua.com/blog/category/emacs/feed/" emacs)))

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-08-27 00:14:40 yx>
+;; Modified: <2023-08-28 02:31:06 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -197,6 +197,7 @@
 
 ;; %% emacs-lisp
 (define-auto-insert "\\.el$" 'yx/auto-insert-el-header)
+(add-hook 'emacs-lisp-mode-hook 'prettify-symbols-mode)
 
 ;; %% c/c++
 (setq c-basic-offset 4
