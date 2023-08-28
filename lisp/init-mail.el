@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:52:27
-;; Modified: <2023-08-28 15:49:32 yx>
+;; Modified: <2023-08-29 04:07:53 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -128,14 +128,14 @@
   :hook (gnus-select-group . gnus-group-set-timestamp)
   :config
   (setq
-   gnus-sum-thread-tree-root            "◎ "
-   gnus-sum-thread-tree-false-root      "◌ "
-   gnus-sum-thread-tree-single-indent   "= "
+   gnus-sum-thread-tree-root            "◉ "
+   gnus-sum-thread-tree-false-root      "◎ "
+   gnus-sum-thread-tree-single-indent   "◌ "
    gnus-sum-thread-tree-vertical        "| "
    gnus-sum-thread-tree-indent          "  "
    gnus-sum-thread-tree-leaf-with-other "+-> "
    gnus-sum-thread-tree-single-leaf     "`-> "
-   gnus-summary-line-format "%4P %U%R%z%B%[%-10,10f%] %s\n")
+   gnus-summary-line-format "%U%R%z%B%[%4L: %-10,10f%] %s\n")
   (setq
    gnus-summary-make-false-root 'adopt
    gnus-summary-ignore-duplicates t
@@ -170,7 +170,7 @@
 
   (setq
    gnus-group-sort-function '(gnus-group-sort-by-method)
-   gnus-group-line-format "%M%S%p%P %0{%5y%} %P%1{%G%}\n")
+   gnus-group-line-format "%M%S%p%P %0{%5y%} %B%{%G%}\n")
 
   (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
   )

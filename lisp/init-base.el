@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-08-28 23:30:55 yx>
+;; Modified: <2023-08-29 02:29:43 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -88,7 +88,8 @@
 ;; %% line number
 (setq
  display-line-numbers-type 'visual
- display-line-numbers-width-start t)
+ display-line-numbers-width-start t
+ )
 
 ;; %% recentf
 (setq
