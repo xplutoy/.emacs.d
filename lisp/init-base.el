@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-08-27 15:06:38 yx>
+;; Modified: <2023-08-28 23:30:55 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -234,18 +234,24 @@
               tramp-file-name-regexp))
 
 ;; %% calendar && diary
-(setq
- diary-number-of-entries 7)
 
 (setq
- calendar-date-style 'iso
+ diary-number-of-entries 7
+ diary-file (expand-file-name "diary" yx/org-dir))
+
+(setq
  calendar-latitude +30.67
  calendar-longitude +104.07
+ calendar-date-style 'iso
  calendar-week-start-day 1
  calendar-mode-line-format nil
  calendar-mark-holidays-flag t
  calendar-mark-diary-entries-flag t
- calendar-view-diary-initially-flag t)
+ calendar-view-diary-initially-flag t
+ calendar-chinese-celestial-stem
+ ["甲" "乙" "丙" "丁" "戊" "己" "庚" "辛" "壬" "癸"]
+ calendar-chinese-terrestrial-branch
+ ["子" "丑" "寅" "卯" "辰" "巳" "午" "未" "申" "酉" "戌" "亥"])
 (add-hook 'calendar-today-visible-hook 'calendar-mark-today)
 
 ;; %% os specific settings stay here

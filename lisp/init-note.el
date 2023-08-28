@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-08-28 01:39:26 yx>
+;; Modified: <2023-08-28 23:35:38 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -81,10 +81,12 @@
                              ((:startgroup . nil)
                               ("@work" . ?w) ("@home" . ?h) ("@society" . ?s)
                               (:endgroup . nil)
-                              (:Startgroup . nil)
-                              ("math" . ?m) ("academe" . ?a) ("technology" . ?t)
+                              (:startgroup . nil)
+                              ("math" . ?m) ("AI" . ?a) ("technology" . ?t)
                               (:endgroup . nil)
-                              ("crypt" . ?c) ("project" . ?p) ("bugfix" . ?b) ("urgent" . ?u))))
+                              ("crypt" . ?c) ("project" . ?p)
+                              ("bugfix" . ?b) ("urgent" . ?u)
+                              )))
   (org-fast-tag-selection-single-key t)
 
   ;; todo
@@ -106,25 +108,29 @@
       "* NEXT [#B] %?\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n" :prepend t :kill-buffer t))
    )
 
+  (org-stuck-projects '("+project/-DONE-CANCELED"
+                        ("TODO" "NEXT" "SOMEDAY")
+                        nil ""))
 
   (org-agenda-span 'day)
   (org-agenda-files `(,org-default-notes-file))
   (org-agenda-tags-column org-tags-column)
   (org-agenda-compact-blocks t)
-  (org-agenda-include-diary t)
   (org-agenda-include-deadlines t)
   (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-scheduled-if-done t)
   (org-agenda-skip-scheduled-delay-if-deadline t)
   (org-agenda-window-setup 'current-window)
-  (org-agenda-inhibit-startup t)
   (org-agenda-use-tag-inheritance nil)
   (org-agenda-use-time-grid t)
-  (org-agenda-time-grid
-   (quote ((daily today require-timed)
-           (300 600 900 1200 1500 1800 2100 2400)
-           "------" "——————————————————————————————")))
-  (org-agenda-current-time-string "now ——————————————————————————")
+  (org-agenda-time-grid (quote ((daily today require-timed)
+                                (300 600 900 1200 1500 1800 2100 2400)
+                                "......"
+                                "---------------------------------")))
+  (org-agenda-include-diary t)
+  (org-agenda-format-date 'yx/org-agenda-format-date-aligned)
+  (org-agenda-scheduled-leaders '("&计划  " "&拖%02d  "))
+  (org-agenda-deadline-leaders '("&截止  " "&剩%02d  " "&逾%02d  "))
 
   ;; org-clock
   (org-clock-persist t)
@@ -138,6 +144,9 @@
      (t . (csl "ieee.csl"))))
   (org-cite-global-bibliography
    (list (expand-file-name "bibliography.bib" yx/org-dir)))
+  ;; org-attach
+  (org-attach-store-link-p 'attach)
+  (org-attach-sync-delete-empty-dir t)
 
   :config
   (key-chord-define org-mode-map "jh" 'avy-org-goto-heading-timer)
@@ -175,6 +184,30 @@
      (jupyter . t)))
   (org-crypt-use-before-save-magic)
   (org-clock-persistence-insinuate)
+
+  :preface
+  (defun yx/org-agenda-format-date-aligned (date)
+    "Format a DATE string for display in the daily/weekly agenda, or timeline.
+      This function makes sure that dates are aligned for easy reading."
+    (require 'cal-iso)
+    (require 'cal-china-x)
+    (let* ((dayname (aref cal-china-x-days
+                          (calendar-day-of-week date)))
+           (day (cadr date))
+           (month (car date))
+           (year (nth 2 date))
+           (cn-date (calendar-chinese-from-absolute (calendar-absolute-from-gregorian date)))
+           (cn-month (cl-caddr cn-date))
+           (cn-day (cl-cadddr cn-date))
+           (cn-month-string (concat (aref cal-china-x-month-name
+                                          (1- (floor cn-month)))
+                                    (if (integerp cn-month)
+                                        ""
+                                      "[闰]")))
+           (cn-day-string (aref cal-china-x-day-name
+                                (1- cn-day))))
+      (format "%04d-%02d-%02d 周%-8s 农历%s%s" year month
+              day dayname cn-month-string cn-day-string)))
   )
 
 ;; %% org+
@@ -190,6 +223,7 @@
             :time-grid t
             :deadline today)
      (:name "Important"
+            :tag "urgent"
             :priority>= "A")
      (:name "Overdue"
             :deadline past)

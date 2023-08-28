@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-08-28 02:31:06 yx>
+;; Modified: <2023-08-28 02:36:16 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,6 +16,7 @@
 (add-hook
  #'prog-mode-hook
  (lambda ()
+   (subword-mode 1)
    (hl-line-mode 1)
    (hs-minor-mode 1)
    (semantic-mode 1)

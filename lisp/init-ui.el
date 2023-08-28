@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-08-27 04:58:19 yx>
+;; Modified: <2023-08-29 02:09:48 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -47,19 +47,35 @@
  window-divider-default-places 'bottom-only)
 (add-hook 'after-init-hook 'window-divider-mode)
 
-(use-package ef-themes
-  :init
-  (setq
-   ef-themes-headings
-   '((0 . (variable-pitch 1.3))
-     (1 . (regular 1.25))
-     (2 . (variable-pitch 1.15))
-     (3 . (1.1))
-     (4 . (1.05))
-     (agenda-date . (variable-pitch 1.25))
-     (agenda-structure . (variable-pitch 1.25))
-     (t . (t))))
-  (ef-themes-select 'ef-light)
+(setq
+ modus-themes-headings
+ '((agenda-date . (variable-pitch 1.3))
+   (agenda-structure . (variable-pitch 1.8))
+   (t . (regular 1.15)))
+ modus-themes-italic-constructs t
+ modus-themes-themes-common-palette-overrides
+ '((fringe unspecifield)
+   (fg-line-number-inactive "gray50")
+   (bg-line-number-inactive unspecifield)
+   (fg-line-number-active cyan-cooler)
+   (bg-line-number-active unspecifield))
+ )
+
+(custom-set-faces
+ '(mode-line ((t :box (:style released-button)))))
+
+(require-theme 'modus-themes)
+
+(use-package circadian
+  :demand t
+  :config
+  (setq circadian-themes
+	      '(("19:30" . modus-vivendi)
+          ("06:39" . modus-operandi)))
+  (add-hook 'circadian-after-load-theme-hook
+            (lambda (dummy)
+              (awesome-tray-enable)))
+  (circadian-setup)
   )
 
 ;; %% modeline
@@ -77,6 +93,7 @@
    '("evil" "belong" "location-or-page" "buffer-name" "mode-name" "git"))
   (awesome-tray-mode 1)
   )
+
 
 ;; %% end
 (provide 'init-ui)

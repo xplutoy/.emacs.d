@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2023-08-26 23:09:55 yx>
+;; Modified: <2023-08-28 23:39:12 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,7 +16,7 @@
 (setq user-full-name "yangxue")
 (setq user-mail-address "yangxue.cs@foxmail.com")
 
-(defvar yx/org-dir "~/dotdocs/yx-slip-notes/")
+(defvar yx/org-dir "~/yxdocs/yx-slip-notes/")
 (defvar yx/etc-dir "~/.emacs.d/etc/")
 (defvar yx/var-dir "~/.emacs.d/.cache/")
 (defvar yx/zotero-dir "~/Zotero/")
@@ -34,6 +34,7 @@
         (t ""))
   )
 
+
 (menu-bar-mode -1)
 (prefer-coding-system 'utf-8)
 (set-language-environment 'utf-8)
@@ -41,6 +42,8 @@
 (setq custom-file (expand-file-name "custom.el" yx/etc-dir))
 (load custom-file 'noerror)
 (add-to-list 'load-path "~/.emacs.d/lisp/")
+
+(require 'init-help)
 
 ;; %% package init
 (require 'package)

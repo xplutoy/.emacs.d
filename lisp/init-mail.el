@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:52:27
-;; Modified: <2023-08-24 22:54:51 yx>
+;; Modified: <2023-08-28 15:49:32 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -13,6 +13,13 @@
 ;;; Code:
 
 (setq
+ gnus-home-directory "~/.gnus.d/"
+ gnus-default-directory gnus-home-directory
+ mm-default-directory gnus-home-directory
+ message-directory (expand-file-name "Mail/" gnus-home-directory))
+
+(setq
+ read-mail-command 'gnus
  message-confirm-send t
  message-from-style 'angles
  message-kill-buffer-on-exit t
@@ -24,8 +31,11 @@
  message-send-mail-function 'message-send-mail-with-sendmail
  )
 
-(setq mml-default-sign-method "pgpmime")
-(setq mml-secure-openpgp-sign-with-sender t)
+(setq mm-inline-large-images t)
+
+(setq
+ mml-default-sign-method "pgpmime"
+ mml-secure-openpgp-sign-with-sender t)
 
 (use-package gnus
   :commands (gnus)
@@ -94,9 +104,9 @@
    gnus-save-killed-list nil
    gnus-read-active-file nil
    gnus-use-dribble-file t
+   gnus-always-read-dribble-file t
    gnus-message-archive-group nil
    gnus-inhibit-user-auto-expire t
-   gnus-always-read-dribble-file t
    gnus-search-use-parsed-queries t
    gnus-article-browse-delete-temp t
    gnus-check-new-newsgroups 'ask-server

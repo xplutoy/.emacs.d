@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2023-08-26 01:10:31 yx>
+;; Modified: <2023-08-29 02:00:12 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -14,10 +14,10 @@
 
 ;; %% misc
 (setq
+ debug-on-error t
  use-dialog-box nil
  use-file-dialog nil
  inhibit-x-resources t
- inhibit-default-init t
  inhibit-splash-screen t
  inhibit-startup-message t
  inhibit-compacting-font-caches t
@@ -65,8 +65,6 @@
    (setq
     gc-cons-percentage 0.1
     gc-cons-threshold (* 16 1024 1024))))
-
-(add-hook 'after-init-hook #'garbage-collect t)
 
 ;; %% 启动界面更平滑
 (setq-default
