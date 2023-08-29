@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-08-27 05:44:34 yx>
+;; Modified: <2023-08-29 15:15:04 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -28,7 +28,7 @@
 
 (use-package orderless
   :custom
-  (completion-styles '(orderless basic))
+  (completion-styles '(orderless basic flex))
   (completion-category-overrides
    '((file (styles basic partial-completion))
      (eglot (styles orderless basic))))

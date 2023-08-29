@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-08-28 02:36:16 yx>
+;; Modified: <2023-08-29 17:29:33 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -27,6 +27,7 @@
    (setq-local
     whitespace-style
     '(face trailing lines-char space-before-tab space-after-tab)
+    require-final-newline t
     show-trailing-whitespace t)
    (whitespace-mode 1)
    (local-set-key (kbd "RET") 'newline-and-indent)
@@ -78,12 +79,13 @@
 ;; %% version control
 (use-package diff-hl
   :defer 2
+  :hook (dired-mode . diff-hl-dired-mode)
   :config
   (setq diff-hl-disable-on-remote t)
+
   (global-diff-hl-mode 1)
   (diff-hl-flydiff-mode 1)
   (global-diff-hl-show-hunk-mouse-mode 1)
-  :hook (dired-mode . diff-hl-dired-mode)
   )
 
 (use-package magit
@@ -104,8 +106,36 @@
   )
 
 ;; %% symbol highlight
+(use-package rainbow-mode
+  :custom
+  (rainbow-x-colors nil)
+  :hook (emacs-lisp . rainbow-mode))
+
 (use-package hl-todo
-  :hook (prog-mode . hl-todo-mode))
+  :hook (prog-mode . hl-todo-mode)
+  :bind (:map hl-todo-mode-map
+              ("C-c t t" . hl-todo-occur)
+              ("C-c t g" . hl-todo-rgrep)
+              ("C-c t i" . hl-todo-insert)
+              ("C-c t n" . hl-todo-next)
+              ("C-c t p" . hl-todo-previous))
+  :config
+  (setq hl-todo-keyword-faces
+        '(("HOLD"  . "#d0bf8f")
+          ("TODO"  . "#cc9393")
+          ("NEXT"  . "#dca3a3")
+          ("OKAY"  . "#7cb8bb")
+          ("DONT"  . "#5f7f5f")
+          ("FAIL"  . "#8c5353")
+          ("DONE"  . "#afd8af")
+          ("NOTE"  . "#d0bf8f")
+          ("HACK"  . "#d0bf8f")
+          ("FIXME" . "#cc9393")
+          ("ISSUE" . "#e45649")
+          ("TRICK" . "#d0bf8f")
+          ("DEBUG" . "#7cb8bb")
+          ))
+  )
 
 (use-package symbol-overlay
   :hook (prog-mode . symbol-overlay-mode))

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-08-26 23:01:25 yx>
+;; Modified: <2023-08-29 17:00:38 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -69,10 +69,6 @@
  ("C-c n j" . org-roam-dailies-capture-today)
  ("C-c n t" . org-transclusion-add)
  ("C-c n T" . org-transclusion-add-all)
- ("C-c t t" . hl-todo-occur)
- ("C-c t n" . hl-todo-next)
- ("C-c t p" . hl-todo-previous)
- ("C-c t i" . hl-todo-insert)
  ("C-x c j" . citre-jump)
  ("C-x c k" . citre-jump-back)
  ("C-x c p" . citre-peek)

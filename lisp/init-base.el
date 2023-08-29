@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-08-29 12:16:19 yx>
+;; Modified: <2023-08-29 16:39:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -12,7 +12,7 @@
 
 ;;; Code:
 
-;; %% basic
+;; %%
 (setq-default
  tab-width 2
  abbrev-mode t
@@ -20,42 +20,39 @@
  line-spacing 0.1
  truncate-lines t
  indent-tabs-mode nil
- require-final-newline t
  bidi-display-reordering nil
  tab-always-indent 'complete)
 
 (setq
  track-eol t
- visible-bell nil
  view-read-only t
- use-short-answers t
  line-move-visual nil
- system-time-locale "C"
- hl-line-sticky-flag nil
- auto-revert-verbose nil
- require-final-newline t
- confirm-kill-processes nil
  find-file-visit-truename t
- initial-scratch-message ""
  delete-by-moving-to-trash t
  set-mark-command-repeat-pop t
- disabled-command-function nil
  show-paren-context-when-offscreen t
  compilation-scroll-output 'first-error
  backward-delete-char-untabify-method 'hungry
  sentence-end-double-space nil
  sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
 
-;; %% autosave
+;; %% quiet
+visible-bell nil
+use-short-answers t
+hl-line-sticky-flag nil
+auto-revert-verbose nil
+initial-scratch-message ""
+confirm-kill-processes nil
+disabled-command-function nil
+
+;; %% auto
 (setq
  auto-save-no-message t
  auto-save-visited-interval 30)
 
-;; %% autorevert
 (customize-set-variable 'auto-revert-use-notify nil)
 (add-hook 'after-init-hook 'global-auto-revert-mode)
 
-;; %% autoinsert
 (setq
  auto-insert-query nil
  auto-insert-alist nil
@@ -95,6 +92,9 @@
  display-line-numbers-width-start t
  )
 
+;; re-builder
+(setq reb-re-syntax 'string)
+
 ;; %% recentf
 (setq
  recentf-max-saved-items 50
@@ -107,7 +107,7 @@
  )
 
 (with-eval-after-load 'recentf
-  (add-to-list 'recentf-exclude 
+  (add-to-list 'recentf-exclude
                (recentf-expand-file-name no-littering-var-directory)))
 (add-hook 'after-init-hook 'recentf-mode)
 

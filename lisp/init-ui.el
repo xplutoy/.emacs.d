@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-08-29 06:47:57 yx>
+;; Modified: <2023-08-29 13:44:56 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -42,19 +42,23 @@
    (buffer-face-mode))
  )
 
-(setq
- window-divider-default-bottom-width 1
- window-divider-default-places 'bottom-only)
+(setq-default fringes-outside-margins t)
+(setq window-divider-default-bottom-width 1
+      window-divider-default-places 'bottom-only)
 (add-hook 'after-init-hook 'window-divider-mode)
 
 (setq
  modus-themes-headings
  '((agenda-date . (variable-pitch 1.3))
    (agenda-structure . (variable-pitch 1.8))
-   (t . (regular 1.15)))
+   (0 . (variable-pitch 1.5))
+   (1 . (variable-pitch 1.2))
+   (t . (regular 1.1)))
  modus-themes-italic-constructs t
- modus-themes-themes-common-palette-overrides
+ modus-themes-common-palette-overrides
  '((fringe unspecifield)
+   (bg-heading-1 bg-dim)
+   (fg-heading-1 fg-main)
    (fg-line-number-active fg-main)
    (bg-line-number-active unspecifield)
    (fg-line-number-inactive "gray50")
