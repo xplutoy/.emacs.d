@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-08-29 17:57:11 yx>
+;; Modified: <2023-08-30 02:37:32 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -247,7 +247,7 @@
 
 (setq
  diary-number-of-entries 7
- diary-file (expand-file-name "diary" yx/org-dir))
+ diary-file (expand-file-name "diary.org" yx/org-dir))
 
 (setq
  calendar-latitude +30.67
@@ -257,7 +257,6 @@
  calendar-mode-line-format nil
  calendar-mark-holidays-flag t
  calendar-mark-diary-entries-flag t
- calendar-view-diary-initially-flag t
  calendar-chinese-celestial-stem
  ["甲" "乙" "丙" "丁" "戊" "己" "庚" "辛" "壬" "癸"]
  calendar-chinese-terrestrial-branch

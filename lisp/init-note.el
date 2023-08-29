@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-08-29 22:42:41 yx>
+;; Modified: <2023-08-30 05:16:34 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,6 +16,7 @@
 (use-package org
   :ensure nil
   :defer 2
+  :autoload (org-calendar-holiday)
   :custom
   (org-directory yx/org-dir)
   (org-ellipsis "...")
@@ -97,26 +98,30 @@
 
   (org-default-notes-file
    (expand-file-name "inbox.org" org-directory))
+
   (org-capture-templates
    '(("t" "Task"  entry (file+headline org-default-notes-file "Task")
-      "* TODO [#B] %?\n" :prepend t :immediate-finish t)
+      "* TODO [#B] %?\nSCHEDULED: %(org-insert-time-stamp (current-time) t)" :prepend t)
      ("s" "Someday"  entry (file+headline org-default-notes-file "Someday/Maybe")
-      "* SOMEDAY [#C] %?\n" :prepend t :immediate-finish t)
-     ("r" "Research"  entry (file+headline org-default-notes-file "Research")
-      "* TODO [#B] %?\n" :prepend t :immediate-finish t)
+      "* SOMEDAY [#C] %?\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"12/30\"))" :prepend t)
      ("h" "Habit" entry (file+headline org-default-notes-file "Habit")
-      "* NEXT [#B] %?\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n" :prepend t :immediate-finish t))
+      "* NEXT [#B] %?\nSCHEDULED: \<%(format-time-string (string ?% ?F ?  ?% ?a) (current-time)) .+1d/7d\>\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n" :prepend t))
    )
+
 
   (org-stuck-projects '("+project/-DONE-CANCELED"
                         ("TODO" "NEXT" "SOMEDAY")
                         nil ""))
 
+  (org-scheduled-past-days 36500)
+  (org-deadline-warning-days 365)
+
+  (org-habit-show-all-today nil)
+
   (org-agenda-span 'day)
   (org-agenda-files `(,org-default-notes-file))
-  (org-agenda-tags-column org-tags-column)
   (org-agenda-compact-blocks t)
-  (org-habit-show-all-today nil)
+  (org-agenda-remove-tags t)
   (org-agenda-include-deadlines t)
   (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-scheduled-if-done t)
@@ -228,7 +233,7 @@
             :priority>= "A")
      (:name "Overdue"
             :deadline past)
-     (:todo "HOLD" :todo "SOMEDAY")
+     (:todo ("HOLD" "SOMEDAY"))
      (:auto-planning t))
    )
   :hook (org-mode . org-super-agenda-mode)
