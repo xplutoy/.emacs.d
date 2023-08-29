@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-08-28 15:12:31 yx>
+;; Modified: <2023-08-29 11:59:01 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -17,21 +17,6 @@
   :hook (after-init . gcmh-mode)
   :custom
   (gcmh-high-cons-threshold (* 128 1024 1024))
-  )
-
-(use-package no-littering
-  :init
-  (setq no-littering-var-directory yx/var-dir
-        no-littering-etc-directory yx/etc-dir
-        )
-  (with-eval-after-load 'recentf
-    (add-to-list 'recentf-exclude
-                 (recentf-expand-file-name no-littering-var-directory))
-    )
-  :config
-  (no-littering-theme-backups)
-  (setq auto-insert-directory
-        (expand-file-name "templates/" no-littering-etc-directory))
   )
 
 (use-package server
@@ -86,6 +71,8 @@
 
 
 ;; %% edit enhencement
+(use-package vundo)
+
 (use-package avy
   :init
   (setq avy-style 'at
@@ -113,7 +100,16 @@
          ([remap mark-sexp] . easy-mark))
   )
 
-(use-package vundo)
+(use-package drag-stuff
+  :hook (prog-mode . yx/drag-stuff-setup)
+  :preface
+  (defun yx/drag-stuff-setup ()
+    (keymap-local-set "s-<up>" 'drag-stuff-up)
+    (keymap-local-set "s-<down>" 'drag-stuff-down)
+    (keymap-local-set "s-<left>" 'drag-stuff-left)
+    (keymap-local-set "s-<right>" 'drag-stuff-right)
+    )
+  )
 
 ;; %% spell
 (use-package jinx

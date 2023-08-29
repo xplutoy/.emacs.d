@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-08-29 02:29:43 yx>
+;; Modified: <2023-08-29 12:16:19 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -58,11 +58,15 @@
 ;; %% autoinsert
 (setq
  auto-insert-query nil
- auto-insert-alist nil)
+ auto-insert-alist nil
+ auto-insert-directory
+ (expand-file-name "templates/" no-littering-etc-directory))
+
 (add-hook 'after-init-hook 'auto-insert-mode)
 
 (setq
  time-stamp-pattern "10/^[@#;\*].*[Mm]odified: <%%>$")
+
 (add-hook 'before-save-hook 'time-stamp)
 
 ;; %% backup
@@ -93,15 +97,19 @@
 
 ;; %% recentf
 (setq
- recentf-max-saved-items 100
+ recentf-max-saved-items 50
  recentf-auto-cleanup 'never
  recentf-exclude
  '(".*\\.cache.*" "^/.*" "^/ssh:"
    "COMMIT_MSG" "COMMIT_EDITMSG" "/Downloads/" "/elpa/"
    "\\.\\(?:gz\\|gif\\|svg\\|png\\|jpe?g\\|bmp\\|xpm\\)$"
-   file-remote-p))
-(add-hook 'after-init-hook 'recentf-mode)
+   file-remote-p)
+ )
 
+(with-eval-after-load 'recentf
+  (add-to-list 'recentf-exclude 
+               (recentf-expand-file-name no-littering-var-directory)))
+(add-hook 'after-init-hook 'recentf-mode)
 
 ;; %% whitespace
 (setq

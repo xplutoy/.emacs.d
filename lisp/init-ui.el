@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-08-29 02:33:23 yx>
+;; Modified: <2023-08-29 06:47:57 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -55,10 +55,10 @@
  modus-themes-italic-constructs t
  modus-themes-themes-common-palette-overrides
  '((fringe unspecifield)
+   (fg-line-number-active fg-main)
+   (bg-line-number-active unspecifield)
    (fg-line-number-inactive "gray50")
-   (bg-line-number-inactive unspecifield)
-   (fg-line-number-active cyan-cooler)
-   (bg-line-number-active unspecifield))
+   (bg-line-number-inactive unspecifield))
  )
 
 (custom-set-faces

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2023-08-28 23:39:12 yx>
+;; Modified: <2023-08-29 12:21:09 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -67,6 +67,17 @@
 (use-package benchmark-init)
 (benchmark-init/activate)
 (add-hook 'after-init-hook 'benchmark-init/deactivate)
+
+;; %% no-littering
+(use-package no-littering
+  :demand t
+  :init
+  (setq no-littering-var-directory yx/var-dir
+        no-littering-etc-directory yx/etc-dir
+        )
+  :config
+  (no-littering-theme-backups)
+  )
 
 ;; %% submodule
 (require 'init-ui)
