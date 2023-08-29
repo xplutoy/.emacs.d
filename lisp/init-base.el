@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-08-29 16:39:37 yx>
+;; Modified: <2023-08-29 17:57:11 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -37,13 +37,14 @@
  sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
 
 ;; %% quiet
-visible-bell nil
-use-short-answers t
-hl-line-sticky-flag nil
-auto-revert-verbose nil
-initial-scratch-message ""
-confirm-kill-processes nil
-disabled-command-function nil
+(setq
+ visible-bell nil
+ use-short-answers t
+ hl-line-sticky-flag nil
+ auto-revert-verbose nil
+ initial-scratch-message ""
+ confirm-kill-processes nil
+ disabled-command-function nil)
 
 ;; %% auto
 (setq

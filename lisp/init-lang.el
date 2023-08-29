@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-08-29 17:29:33 yx>
+;; Modified: <2023-08-29 17:35:16 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -113,12 +113,6 @@
 
 (use-package hl-todo
   :hook (prog-mode . hl-todo-mode)
-  :bind (:map hl-todo-mode-map
-              ("C-c t t" . hl-todo-occur)
-              ("C-c t g" . hl-todo-rgrep)
-              ("C-c t i" . hl-todo-insert)
-              ("C-c t n" . hl-todo-next)
-              ("C-c t p" . hl-todo-previous))
   :config
   (setq hl-todo-keyword-faces
         '(("HOLD"  . "#d0bf8f")
@@ -135,6 +129,13 @@
           ("TRICK" . "#d0bf8f")
           ("DEBUG" . "#7cb8bb")
           ))
+  :bind
+  (:map hl-todo-mode-map
+        ("C-c t t" . hl-todo-occur)
+        ("C-c t g" . hl-todo-rgrep)
+        ("C-c t i" . hl-todo-insert)
+        ("C-c t n" . hl-todo-next)
+        ("C-c t p" . hl-todo-previous))
   )
 
 (use-package symbol-overlay

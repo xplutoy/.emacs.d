@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2023-08-29 16:34:35 yx>
+;; Modified: <2023-08-29 21:52:44 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -36,7 +36,7 @@
 
 
 (menu-bar-mode -1)
-system-time-locale "C"
+(setq system-time-locale "C")
 (prefer-coding-system 'utf-8)
 (set-language-environment 'utf-8)
 (set-default-coding-systems 'utf-8)

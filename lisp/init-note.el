@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-08-28 23:35:38 yx>
+;; Modified: <2023-08-29 22:42:41 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -99,13 +99,13 @@
    (expand-file-name "inbox.org" org-directory))
   (org-capture-templates
    '(("t" "Task"  entry (file+headline org-default-notes-file "Task")
-      "* TODO [#B] %?\n" :prepend t :kill-buffer t)
+      "* TODO [#B] %?\n" :prepend t :immediate-finish t)
      ("s" "Someday"  entry (file+headline org-default-notes-file "Someday/Maybe")
-      "* SOMEDAY [#C] %?\n" :prepend t :kill-buffer t)
+      "* SOMEDAY [#C] %?\n" :prepend t :immediate-finish t)
      ("r" "Research"  entry (file+headline org-default-notes-file "Research")
-      "* TODO [#B] %?\n" :prepend t :kill-buffer t)
+      "* TODO [#B] %?\n" :prepend t :immediate-finish t)
      ("h" "Habit" entry (file+headline org-default-notes-file "Habit")
-      "* NEXT [#B] %?\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n" :prepend t :kill-buffer t))
+      "* NEXT [#B] %?\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n" :prepend t :immediate-finish t))
    )
 
   (org-stuck-projects '("+project/-DONE-CANCELED"
@@ -116,6 +116,7 @@
   (org-agenda-files `(,org-default-notes-file))
   (org-agenda-tags-column org-tags-column)
   (org-agenda-compact-blocks t)
+  (org-habit-show-all-today nil)
   (org-agenda-include-deadlines t)
   (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-scheduled-if-done t)
@@ -283,15 +284,12 @@
    org-roam-dailies-directory "journal/"
    org-roam-capture-templates
    '(("d" "default" plain "%?"
-      :target (file+head "%<%Y%m%d>-${slug}.org" "#+title: ${title}")
-      :unnarrowed t)
+      :target (file+head "%<%Y%m%d>-${slug}.org" "#+title: ${title}\n#+created: %U\n#+modified: <>\n\n%i%?"))
      ("p" "post" plain "%?"
-      :target (file+head "blog/%<%Y%m%d>-${slug}.org" "#+title: ${title}")
-      :unnarrowed t :immediate-finish t))
+      :target (file+head "blog/%<%Y%m%d>-${slug}.org" "#+title: ${title}\n#created: %U\n#+modified: <>\n\n%i%?")))
    org-roam-dailies-capture-templates
-   '(("d" "default" entry "* %<%m-%d %p>: %?"
-      :target (file+head "%<%Y>.org" "#+title: %<%Y>年琐记\n")
-      :unnarrowed t))
+   '(("d" "default" entry "* %<%m-%d %p>: ${title}\n\n %i%?"
+      :target (file+head "%<%Y>.org" "#+title: %<%Y>年琐记\n" :prepend t)))
    )
   :config
   (org-roam-db-autosync-mode 1)

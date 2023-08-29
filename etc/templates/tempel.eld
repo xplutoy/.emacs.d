@@ -26,6 +26,8 @@ latex-mode
 
 org-mode
 
-(src "#+begin_src " q n> r> n "#+end_src")
-(qt "#+begin_quote" n> r> n "#+end_quote")
-(elisp "#+begin_src emacs-lisp" n> r> n "#+end_src" :post (org-edit-src-code))
+(_src "src_" q "{" q "}")
+(-src "src_" q "[" q "]" "{" q "}")
+(+src "#+begin_src " q n> r> n "#+end_src")
+(+qt  "#+begin_quote" n> r> n "#+end_quote")
+(+sep "#+begin_src emacs-lisp" n> r> n "#+end_src" :post (org-edit-src-code))
