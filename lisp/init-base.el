@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-08-30 02:37:32 yx>
+;; Modified: <2023-08-30 14:04:29 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -243,11 +243,36 @@
               vc-ignore-dir-regexp
               tramp-file-name-regexp))
 
-;; %% calendar && diary
+;; %% calendar
+(setq calendar-holiday
+      '((holiday-chinese 12 30 "春节")
+        (holiday-chinese 1 1   "春节")
+        (holiday-chinese 1 2   "春节")
+        (holiday-chinese 5 5   "端午节")
+        (holiday-chinese 1 15  "元宵节")
+        (holiday-chinese 7 7   "七夕节")
+        (holiday-chinese 9 9   "重阳节")
+        (holiday-chinese 8 15  "中秋节")
+        (holiday-fixed 1 1     "元旦")
+        (holiday-fixed 10 1    "国庆节")
+        (holiday-fixed 10 2    "国庆节")
+        (holiday-fixed 10 3    "国庆节")
+        (holiday-fixed 3 8     "妇女节")
+        (holiday-fixed 3 12    "植树节")
+        (holiday-fixed 5 1     "劳动节")
+        (holiday-fixed 5 4     "青年节")
+        (holiday-fixed 6 1     "儿童节")
+        (holiday-fixed 9 10    "教师节")
+        (holiday-fixed 2 14    "情人节")
+        (holiday-fixed 4 1     "愚人节")
+        (holiday-float 5 0 2   "母亲节")
+        (holiday-float 6 0 3   "父亲节")
+        (holiday-float 11 4 4  "感恩节")
+        (holiday-fixed 12 25   "圣诞节")
+        ))
 
-(setq
- diary-number-of-entries 7
- diary-file (expand-file-name "diary.org" yx/org-dir))
+(setq diary-number-of-entries 7
+      diary-file (expand-file-name "diary.org" yx/org-dir))
 
 (setq
  calendar-latitude +30.67
@@ -261,6 +286,7 @@
  ["甲" "乙" "丙" "丁" "戊" "己" "庚" "辛" "壬" "癸"]
  calendar-chinese-terrestrial-branch
  ["子" "丑" "寅" "卯" "辰" "巳" "午" "未" "申" "酉" "戌" "亥"])
+
 (add-hook 'calendar-today-visible-hook 'calendar-mark-today)
 
 ;; %% os specific settings stay here

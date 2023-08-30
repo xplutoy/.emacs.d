@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-08-30 05:16:34 yx>
+;; Modified: <2023-08-30 13:51:54 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -26,12 +26,14 @@
   (org-return-follows-link nil)
   (org-crypt-key yx/gpg-encrypt-key)
   (org-hide-emphasis-markers t)
+  (org-cycle-separator-lines 0)
   (org-use-sub-superscripts '{})
   (org-image-actual-width '(600))
   (org-special-ctrl-k t)
   (org-special-ctrl-a/e t)
   (org-use-speed-commands t)
   (org-M-RET-may-split-line nil)
+  (org-insert-heading-respect-content nil)
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
   (org-startup-folded t)
@@ -133,16 +135,17 @@
                                 (300 600 900 1200 1500 1800 2100 2400)
                                 "......"
                                 "---------------------------------")))
+  (org-agenda-current-time-string "Now - - - - - - - - - - - - - - - - - - - - -")
   (org-agenda-include-diary t)
   (org-agenda-format-date 'yx/org-agenda-format-date-aligned)
   (org-agenda-scheduled-leaders '("&计划  " "&拖%02d  "))
   (org-agenda-deadline-leaders '("&截止  " "&剩%02d  " "&逾%02d  "))
 
-  ;; org-clock
   (org-clock-persist t)
   (org-clock-in-resume t)
   (org-clock-out-when-done t)
-  ;; org-cite
+  (org-clock-out-remove-zero-time-clocks t)
+
   (org-cite-csl-styles-dir
    (expand-file-name "styles/" yx/zotero-dir))
   (org-cite-export-processors
@@ -150,7 +153,7 @@
      (t . (csl "ieee.csl"))))
   (org-cite-global-bibliography
    (list (expand-file-name "bibliography.bib" yx/org-dir)))
-  ;; org-attach
+
   (org-attach-store-link-p 'attach)
   (org-attach-sync-delete-empty-dir t)
 
@@ -190,30 +193,6 @@
      (jupyter . t)))
   (org-crypt-use-before-save-magic)
   (org-clock-persistence-insinuate)
-
-  :preface
-  (defun yx/org-agenda-format-date-aligned (date)
-    "Format a DATE string for display in the daily/weekly agenda, or timeline.
-      This function makes sure that dates are aligned for easy reading."
-    (require 'cal-iso)
-    (require 'cal-china-x)
-    (let* ((dayname (aref cal-china-x-days
-                          (calendar-day-of-week date)))
-           (day (cadr date))
-           (month (car date))
-           (year (nth 2 date))
-           (cn-date (calendar-chinese-from-absolute (calendar-absolute-from-gregorian date)))
-           (cn-month (cl-caddr cn-date))
-           (cn-day (cl-cadddr cn-date))
-           (cn-month-string (concat (aref cal-china-x-month-name
-                                          (1- (floor cn-month)))
-                                    (if (integerp cn-month)
-                                        ""
-                                      "[闰]")))
-           (cn-day-string (aref cal-china-x-day-name
-                                (1- cn-day))))
-      (format "%04d-%02d-%02d 周%-8s 农历%s%s" year month
-              day dayname cn-month-string cn-day-string)))
   )
 
 ;; %% org+
