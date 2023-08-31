@@ -44,7 +44,6 @@
 (load custom-file 'noerror)
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
-(require 'init-help)
 
 ;; %% package init
 (require 'package)
@@ -79,6 +78,8 @@
   :config
   (no-littering-theme-backups)
   )
+
+(require 'init-help)
 
 ;; %% submodule
 (require 'init-ui)

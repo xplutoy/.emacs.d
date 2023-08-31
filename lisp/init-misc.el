@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-08-31 17:06:49 yx>
+;; Modified: <2023-08-31 22:26:31 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -39,6 +39,7 @@
 ;; %% auxiliary tool
 (use-package crux-yx
   :defer 2
+  :autoload (unpackaged/def-org-maybe-surround)
   :load-path "site-lisp/crux-yx"
   :config
   (add-hook 'eww-mode-hook

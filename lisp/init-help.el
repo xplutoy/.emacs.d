@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-28 17:41:00
-;; Modified: <2023-08-31 19:23:51 yx>
+;; Modified: <2023-08-31 21:47:00 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -13,6 +13,9 @@
 ;;; Code:
 
 (require 'tempo)
+
+(defconst yx/templates-dir
+  (expand-file-name "templates" no-littering-etc-directory))
 
 (defconst yx/cal-china-x-days
   ["日" "一" "二" "三" "四" "五" "六"])
@@ -95,7 +98,7 @@
 ;; %% yx defined tempo skeleton
 (tempo-define-template
  "yx/tex-note-tmpl"
- `(,(yx/file-contents-str (expand-file-name "math-note.tmpl.tex" yx/org-dir)))
+ `(,(yx/file-contents-str (expand-file-name "math-note.tmpl.tex" yx/templates-dir)))
  )
 
 (define-skeleton yx/latex-graphics-skl
@@ -105,7 +108,8 @@
   > "\\includegraphics[width=" @ (skeleton-read "Width: ") "]{" @ _ "}" \n
   > "\\begin{center}" > \n @)
 
-(define-skeleton yx/auto-insert-h-header ""
+(define-skeleton yx/auto-insert-h-header
+  ""
   (replace-regexp-in-string
    "[^A-Z0-9]" "_"
    (string-replace "+" "P"
@@ -125,7 +129,8 @@
   "\n\n#endif"
   )
 
-(define-skeleton yx/auto-insert-c-header ""
+(define-skeleton yx/auto-insert-c-header
+  ""
   nil
   "/**\n***************************************************"
   "\n* @author: "
@@ -137,7 +142,8 @@
   "\n\n" @ _ "\n"
   )
 
-(define-skeleton yx/auto-insert-common-header ""
+(define-skeleton yx/auto-insert-common-header
+  ""
   nil
   "# --------------------------------------------------"
   "\n# Author: "
@@ -152,7 +158,9 @@
   "\n\n\n" @ _
   )
 
-(define-skeleton yx/auto-insert-el-header  "" nil
+(define-skeleton yx/auto-insert-el-header
+  ""
+  nil
   ";;; "
   (file-name-nondirectory
    (buffer-file-name))
@@ -181,9 +189,9 @@
   ")\n;;; "
   (file-name-nondirectory
    (buffer-file-name))
-  " ends here\n")
+  " ends here\n"
+  )
 
-;; %%
 
 ;; %% end
 (provide 'init-help)

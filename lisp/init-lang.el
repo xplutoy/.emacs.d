@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-08-31 16:01:41 yx>
+;; Modified: <2023-08-31 22:05:01 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -368,8 +368,11 @@
 (use-package json-mode)
 
 (use-package vimrc-mode
-  :init
-  (add-to-list 'auto-mode-alist '("\\.?vim\\(rc\\)?\\'" . vimrc-mode))
+  :mode "\\.?vim\\(rc\\)?\\'"
+  )
+
+(use-package gnuplot-mode
+  :mode "\\.gp$"
   )
 
 ;; %% maxima

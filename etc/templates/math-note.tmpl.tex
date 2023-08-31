@@ -1,0 +1,67 @@
+\documentclass[12pt, a4paper, oneside]{ctexbook}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{mathrsfs}
+
+\usepackage{amsthm}
+
+\usepackage{geometry}
+
+\linespread{1.5}
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+
+\newtheorem{theorem}{定理}[section]
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{corollary}[theorem]{推论}
+\newtheorem{example}[theorem]{例}
+\newtheorem{proposition}[theorem]{命题}
+
+\title{{\Huge{\textbf{笔记标题}}}\\--副标题}
+\author{杨雪}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+% 前言
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+\begin{center}
+  \Huge\textbf{前言}
+\end{center}~\
+
+这里是前言部分
+~\\
+\begin{flushright}
+  \begin{tabular}{c}
+    xplutoyz\\
+    \today
+  \end{tabular}
+\end{flushright}
+
+% 目录
+\newpage
+\pagenumbering{Roman}
+\setcounter{page}{1}
+\tableofcontents
+
+% 正文
+\newpage
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+\chapter{章节标题}
+
+这里是章节前言
+
+\section{小节标题}
+
+这里是章小节内容
+
+\end{document}
