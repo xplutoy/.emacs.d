@@ -17,5 +17,5 @@
 (define-abbrev-table 'latex-mode-abbrev-table
   '(
     ("7gh" "" yx/latex-graphics-skl :count 0)
-    ("7bn" "" yx/latex-math-note-skl :count 0)
+    ("7bn" "" tempo-template-yx/tex-note-tmpl :count 0)
     ))

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-08-30 14:23:53 yx>
+;; Modified: <2023-08-31 18:32:31 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -66,6 +66,8 @@
  time-stamp-pattern "10/^[@#;\*].*[Mm]odified: <%%>$")
 
 (add-hook 'before-save-hook 'time-stamp)
+
+(setq tempo-interactive t)
 
 ;; %% backup
 (setq

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-08-31 16:26:29 yx>
+;; Modified: <2023-08-31 17:31:23 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -120,7 +120,7 @@
     '((conf-mode . normal)
       (text-mode . normal)
       (prog-mode . normal)
-      (special-mode . emacs)
+      (Info-mode . emacs)
       (color-rg-mode . emacs))
     "Default evil state per major mode.")
   (dolist (p yx-initial-evil-state-setup)

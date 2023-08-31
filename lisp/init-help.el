@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-28 17:41:00
-;; Modified: <2023-08-30 13:37:59 yx>
+;; Modified: <2023-08-31 19:23:51 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,6 +11,8 @@
 ;;
 
 ;;; Code:
+
+(require 'tempo)
 
 (defconst yx/cal-china-x-days
   ["日" "一" "二" "三" "四" "五" "六"])
@@ -23,6 +25,13 @@
    "十一" "十二" "十三" "十四" "十五" "十六" "十七" "十八" "十九"  "廿"
    "廿一" "廿二" "廿三" "廿四" "廿五" "廿六" "廿七" "廿八" "廿九" "三十"
    "卅一" "卅二" "卅三" "卅四" "卅五" "卅六" "卅七" "卅八" "卅九" "卅十"])
+
+(defun yx/file-contents-str (file)
+  "File contents to string."
+  (with-temp-buffer
+    (insert-file-contents file)
+    (buffer-string))
+  )
 
 (defun yx/org-agenda-format-date-aligned (date)
   "Format a DATE string for display in the daily/weekly agenda, or timeline.
@@ -82,6 +91,99 @@
 (defun yx/diary-sunset ()
   (elt (yx/diary-sunrise-sunset-split) 1))
 
+
+;; %% yx defined tempo skeleton
+(tempo-define-template
+ "yx/tex-note-tmpl"
+ `(,(yx/file-contents-str (expand-file-name "math-note.tmpl.tex" yx/org-dir)))
+ )
+
+(define-skeleton yx/latex-graphics-skl
+  "Insert centered picture."
+  nil
+  > "\\begin{center}" \n
+  > "\\includegraphics[width=" @ (skeleton-read "Width: ") "]{" @ _ "}" \n
+  > "\\begin{center}" > \n @)
+
+(define-skeleton yx/auto-insert-h-header ""
+  (replace-regexp-in-string
+   "[^A-Z0-9]" "_"
+   (string-replace "+" "P"
+                   (upcase
+                    (file-name-nondirectory buffer-file-name))))
+  "/**\n***************************************************"
+  "\n* @author: "
+  (user-full-name)
+  "\n* @date: "
+  (format-time-string "%F %T")
+  "\n* @brief: "
+  (skeleton-read "brief: ")
+  "\n* @modified: <>"
+  "\n**************************************************\n*/"
+  "\n\n#ifndef " str \n "#define " str
+  "\n\n" @ _
+  "\n\n#endif"
+  )
+
+(define-skeleton yx/auto-insert-c-header ""
+  nil
+  "/**\n***************************************************"
+  "\n* @author: "
+  (user-full-name)
+  "\n* @date: "
+  (format-time-string "%F %T")
+  "\n* @modified: <>"
+  "\n**************************************************\n*/"
+  "\n\n" @ _ "\n"
+  )
+
+(define-skeleton yx/auto-insert-common-header ""
+  nil
+  "# --------------------------------------------------"
+  "\n# Author: "
+  (user-full-name)
+  "\n# Date: "
+  (format-time-string "%F %T")
+  "\n# Modified: <>\n#"
+  "\n# Description: "
+  (skeleton-read "Description: ")
+  "\n#\n#\n"
+  "# --------------------------------------------------"
+  "\n\n\n" @ _
+  )
+
+(define-skeleton yx/auto-insert-el-header  "" nil
+  ";;; "
+  (file-name-nondirectory
+   (buffer-file-name))
+  " --- "
+  (skeleton-read "Descriptions: ")
+  "  -*- lexical-binding: t; -*-"
+  '(setq lexical-binding t)
+  "\n\n;; Author: "
+  (user-full-name)
+  " <"
+  (progn user-mail-address)
+  ">"
+  "\n;; Copyright (C) "
+  (format-time-string "%Y")
+  ", "
+  (user-full-name)
+  ", all right reserved."
+  "\n;; Created: "
+  (format-time-string "%F %T")
+  "\n;; Modified: <>"
+  "\n;; Licence: GPLv3"
+  "\n\n;;; Commentary:\n\n;; " @ _
+  "\n\n;;; Code:\n\n(provide '"
+  (file-name-base
+   (buffer-file-name))
+  ")\n;;; "
+  (file-name-nondirectory
+   (buffer-file-name))
+  " ends here\n")
+
+;; %%
 
 ;; %% end
 (provide 'init-help)

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2023-08-29 21:52:44 yx>
+;; Modified: <2023-08-31 19:26:14 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -92,6 +92,5 @@
 (require 'init-lang)
 (require 'init-mail)
 (require 'init-read)
-(require 'init-temp)
 
 ;;; init.el ends here
