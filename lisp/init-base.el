@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-08-30 14:04:29 yx>
+;; Modified: <2023-08-30 14:23:53 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -244,7 +244,7 @@
               tramp-file-name-regexp))
 
 ;; %% calendar
-(setq calendar-holiday
+(setq calendar-holidays
       '((holiday-chinese 12 30 "春节")
         (holiday-chinese 1 1   "春节")
         (holiday-chinese 1 2   "春节")

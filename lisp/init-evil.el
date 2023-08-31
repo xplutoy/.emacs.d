@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-08-29 17:00:38 yx>
+;; Modified: <2023-08-31 12:02:50 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,6 +11,9 @@
 ;; keymap
 
 ;;; Code:
+
+;; %% simple
+(defalias 'qrr ''query-replace-regexp)
 
 ;; %% 全局按键
 (use-package key-chord
@@ -86,13 +89,12 @@
   (after-init . evil-mode)
   :init
   (setq
-   evil-want-fine-undo t
-   evil-want-C-u-scroll t
    evil-move-beyond-eol t
    evil-want-integration t
-   evil-want-C-w-delete nil
    evil-want-keybinding nil
+   evil-want-C-u-scroll nil
    evil-default-state 'emacs
+   evil-want-fine-undo t
    evil-undo-system 'undo-redo
    evil-respect-visual-line-mode t
    evil-disable-insert-state-bindings t

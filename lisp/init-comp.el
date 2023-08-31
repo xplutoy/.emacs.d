@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-08-29 15:15:04 yx>
+;; Modified: <2023-08-31 12:46:03 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -74,8 +74,6 @@
          ("M-#"     . consult-register-load)
          ("M-'"     . consult-register-store)
          ("C-M-#"   . consult-register)
-         :map org-mode-map
-         ("M-g o"   . consult-org-heading)
          :map minibuffer-local-map
          ("M-s" . consult-history)
          ("M-r" . consult-history))

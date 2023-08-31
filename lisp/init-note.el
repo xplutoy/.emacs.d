@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-08-30 13:51:54 yx>
+;; Modified: <2023-08-31 13:21:55 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -15,7 +15,10 @@
 ;; %% org
 (use-package org
   :ensure nil
-  :defer 2
+  :defer 5
+  :bind (:map org-mode-map
+              ("RET"   . yx/org-return-dwim)
+              ("M-g o" . consult-org-heading))
   :autoload (org-calendar-holiday)
   :custom
   (org-directory yx/org-dir)
@@ -77,8 +80,8 @@
   (org-modules '(org-habit org-tempo))
 
   ;; tag
+  (org-tags-column 0)
   (org-auto-align-tags t)
-  (org-tags-column (- 2 fill-column))
   (org-tags-exclude-from-inheritance '(project crypt))
   (org-tag-persistent-alist (quote
                              ((:startgroup . nil)
@@ -190,9 +193,17 @@
      (julia . t)
      (org . t)
      (latex . t)
+     (dot . t)
+     (gnuplot . t)
+     (lisp . t)
+     (scheme . t)
      (jupyter . t)))
+  (add-hook 'org-babel-after-execute-hook
+            (lambda () (when org-inline-image-overlays
+                         (org-redisplay-inline-images))))
   (org-crypt-use-before-save-magic)
   (org-clock-persistence-insinuate)
+  (unpackaged/def-org-maybe-surround "~" "=" "*" "/" "+")
   )
 
 ;; %% org+
@@ -212,10 +223,10 @@
             :priority>= "A")
      (:name "Overdue"
             :deadline past)
-     (:todo ("HOLD" "SOMEDAY"))
+     (:todo "HOLD")
      (:auto-planning t))
    )
-  :hook (org-mode . org-super-agenda-mode)
+  :hook (org-agenda-mode . org-super-agenda-mode)
   )
 
 (use-package org-modern

@@ -2,6 +2,8 @@
 (define-abbrev-table 'global-abbrev-table
   '(;; Misc
     ("1td" "" crux-yx/insert-date :count 0)
+    ;; regexp
+    ("2bl" "^\s-*$" nil :count 1)
     ;; math/unicode symbols
     ("8in"  "∈" nil :count 1)
     ("8nin" "∉" nil :count 1)
