@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-08-31 12:46:03 yx>
+;; Modified: <2023-08-31 16:24:17 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -62,21 +62,9 @@
    consult-recent-file
    consult-xref
    :preview-key '(:debounce 0.4 any))
-  :bind (([remap goto-line]                     . consult-goto-line)
-         ([remap switch-to-buffer]              . consult-buffer)
-         ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
-         ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame)
-         ([remap yank-pop]                      . consult-yank-pop)
-         ([remap apropos]                       . consult-apropos)
-         ([remap bookmark-jump]                 . consult-bookmark)
-         ([remap imenu]                         . consult-imenu)
-         ("C-x p b" . consult-project-buffer)
-         ("M-#"     . consult-register-load)
-         ("M-'"     . consult-register-store)
-         ("C-M-#"   . consult-register)
-         :map minibuffer-local-map
-         ("M-s" . consult-history)
-         ("M-r" . consult-history))
+  :bind (:map minibuffer-local-map
+              ("M-s" . consult-history)
+              ("M-r" . consult-history))
   )
 
 (use-package consult-dir

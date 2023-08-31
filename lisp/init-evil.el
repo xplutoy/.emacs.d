@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-08-31 12:02:50 yx>
+;; Modified: <2023-08-31 16:26:29 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -26,6 +26,18 @@
   )
 
 (bind-keys
+ ([remap move-beginning-of-line]        . crux-move-beginning-of-line)
+ ([remap goto-line]                     . consult-goto-line)
+ ([remap switch-to-buffer]              . consult-buffer)
+ ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
+ ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame)
+ ([remap yank-pop]                      . consult-yank-pop)
+ ([remap apropos]                       . consult-apropos)
+ ([remap bookmark-jump]                 . consult-bookmark)
+ ([remap imenu]                         . consult-imenu)
+ )
+
+(bind-keys
  ("s-,"     . winner-undo)
  ("s-."     . winner-redo)
  ("s-<"     . previous-buffer)
@@ -37,6 +49,9 @@
  ("C-."     . embark-act)
  ("C-,"     . embark-dwim)
  ("C-/"     . undo-only)
+ ("M-#"     . consult-register-load)
+ ("M-'"     . consult-register-store)
+ ("C-M-#"   . consult-register)
  ("M-i"     . consult-imenu-multi)
  ("M-z"     . vg-quick-zap-to-char)
  ("M-;"     . evil-commentary-line)
@@ -81,6 +96,7 @@
  ("C-h b"   . embark-bindings)
  ("C-h M"   . which-key-show-major-mode)
  ("C-h B"   . embark-bindings-at-point)
+ ("C-x p b" . consult-project-buffer)
  )
 
 ;; %% evil
@@ -104,6 +120,7 @@
     '((conf-mode . normal)
       (text-mode . normal)
       (prog-mode . normal)
+      (special-mode . emacs)
       (color-rg-mode . emacs))
     "Default evil state per major mode.")
   (dolist (p yx-initial-evil-state-setup)
@@ -115,7 +132,7 @@
   (evil-define-key '(normal visual insert) 'global
     "\C-p"  'previous-line
     "\C-n"  'next-line
-    "\C-a"  'move-beginning-of-line
+    "\C-a"  'crux-move-beginning-of-line
     "\C-e"  'end-of-line
     "\C-y"  'yank
     "\C-w"  'kill-region

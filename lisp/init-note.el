@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-08-31 13:21:55 yx>
+;; Modified: <2023-08-31 16:58:52 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -17,7 +17,7 @@
   :ensure nil
   :defer 5
   :bind (:map org-mode-map
-              ("RET"   . yx/org-return-dwim)
+              ("RET"   . crux-yx/org-return-dwim)
               ("M-g o" . consult-org-heading))
   :autoload (org-calendar-holiday)
   :custom
@@ -199,8 +199,9 @@
      (scheme . t)
      (jupyter . t)))
   (add-hook 'org-babel-after-execute-hook
-            (lambda () (when org-inline-image-overlays
-                         (org-redisplay-inline-images))))
+            (lambda ()
+              (when org-inline-image-overlays
+                (org-redisplay-inline-images))))
   (org-crypt-use-before-save-magic)
   (org-clock-persistence-insinuate)
   (unpackaged/def-org-maybe-surround "~" "=" "*" "/" "+")

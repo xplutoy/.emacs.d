@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-08-29 17:35:16 yx>
+;; Modified: <2023-08-31 16:01:41 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -36,10 +36,25 @@
  )
 
 ;; ediff
-(setq
- ediff-keep-variants nil
- ediff-window-setup-function 'ediff-setup-windows-plain
- ediff-split-window-function 'split-window-horizontally)
+(setq ediff-keep-variants nil
+      ediff-window-setup-function 'ediff-setup-windows-plain
+      ediff-split-window-function 'split-window-horizontally
+      )
+
+(add-hook 'diff-mode-hook
+          (lambda ()
+            (setq-local whitespace-style
+                        '(face
+                          tabs
+                          tab-mark
+                          spaces
+                          space-mark
+                          trailing
+                          indentation::space
+                          indentation::tab
+                          newline
+                          newline-mark))
+            (whitespace-mode 1)))
 
 ;; %% formatter & linter & profiler
 (use-package reformatter
