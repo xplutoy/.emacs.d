@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-09-01 02:00:00 yx>
+;; Modified: <2023-09-01 18:02:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -58,6 +58,7 @@
      (hl-line-mode)
      (dired-omit-mode)
      (dired-hide-details-mode)))
+  (add-hook 'wdired-mode-hook 'highlight-changes-mode)
   (put 'dired-find-alternate-file 'disabled nil)
   )
 
@@ -194,12 +195,12 @@
        "^\\*Python\\*"
        "\\*Shell Command Output\\*")
       :regexp t :nonselect t :popup t :align t)
-     ((dired-mode
-       color-rg-mode
+     ((color-rg-mode
        "^\\*.* eww\\*$")
       :regexp t :select t :popup t)
      (("^magit" magit-mode
        Info-mode
+       dired-mode
        vterm-mode)
       :regexp t :select t :same t :inhibit-window-quit t)
      (("^\\*org-roam\\*$")

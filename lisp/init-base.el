@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-08-31 22:31:05 yx>
+;; Modified: <2023-09-01 19:04:39 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -27,6 +27,7 @@
  track-eol t
  view-read-only t
  line-move-visual nil
+ align-to-tab-stop nil
  find-file-visit-truename t
  delete-by-moving-to-trash t
  set-mark-command-repeat-pop t
@@ -115,10 +116,12 @@
 (add-hook 'after-init-hook 'recentf-mode)
 
 ;; %% whitespace
-(setq
- whitespace-line-column nil
- show-trailing-whitespace nil
- whitespace-action '(auto-clean))
+(setq-default whitespace-style
+              '(face spaces empty tabs newline trailing space-mark tab-mark newline-mark))
+(setq whitespace-line-column nil
+      show-trailing-whitespace nil
+      whitespace-action '(clean auto-clean)
+      )
 
 ;; %% xref
 (setq
