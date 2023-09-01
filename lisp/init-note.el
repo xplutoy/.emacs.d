@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-08-31 23:56:47 yx>
+;; Modified: <2023-09-01 02:06:50 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -18,6 +18,7 @@
   :defer 3
   :bind (:map org-mode-map
               ("RET" . crux-yx/org-return-dwim)
+              ("C-M-," . org-mark-ring-goto)
               ("M-g o" . consult-org-heading)
               ("C-x n h" . crux-yx/org-show-current-heading-tidily))
   :autoload (org-calendar-holiday)

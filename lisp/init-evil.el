@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-08-31 17:31:23 yx>
+;; Modified: <2023-09-01 02:24:43 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -27,14 +27,14 @@
 
 (bind-keys
  ([remap move-beginning-of-line]        . crux-move-beginning-of-line)
- ([remap goto-line]                     . consult-goto-line)
+ ([remap goto-line]                     . consult-goto-line) ;M-g g
  ([remap switch-to-buffer]              . consult-buffer)
  ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
  ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame)
- ([remap yank-pop]                      . consult-yank-pop)
+ ([remap yank-pop]                      . consult-yank-pop) ;M-y
  ([remap apropos]                       . consult-apropos)
- ([remap bookmark-jump]                 . consult-bookmark)
- ([remap imenu]                         . consult-imenu)
+ ([remap bookmark-jump]                 . consult-bookmark) ;C-x r b
+ ([remap imenu]                         . consult-imenu) ;M-g i
  )
 
 (bind-keys
@@ -106,10 +106,11 @@
   :init
   (setq
    evil-move-beyond-eol t
-   evil-want-integration t
    evil-want-keybinding nil
+   evil-want-integration t
    evil-want-C-u-scroll nil
    evil-default-state 'emacs
+   evil-motion-state-modes nil
    evil-want-fine-undo t
    evil-undo-system 'undo-redo
    evil-respect-visual-line-mode t
@@ -120,7 +121,6 @@
     '((conf-mode . normal)
       (text-mode . normal)
       (prog-mode . normal)
-      (Info-mode . emacs)
       (color-rg-mode . emacs))
     "Default evil state per major mode.")
   (dolist (p yx-initial-evil-state-setup)

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-08-27 05:18:46 yx>
+;; Modified: <2023-09-01 02:00:00 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -176,7 +176,6 @@
    shackle-rules
    '((("\\*Ibuffer\\*"
        "\\*Help\\*"
-       "\\*info\\*"
        "\\*[Wo]*Man.*\\*"
        "\\*Dictionary\\*"
        "\\*Flymake .*"
@@ -200,6 +199,7 @@
        "^\\*.* eww\\*$")
       :regexp t :select t :popup t)
      (("^magit" magit-mode
+       Info-mode
        vterm-mode)
       :regexp t :select t :same t :inhibit-window-quit t)
      (("^\\*org-roam\\*$")

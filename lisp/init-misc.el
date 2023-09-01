@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-08-31 22:26:31 yx>
+;; Modified: <2023-09-01 13:24:07 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -69,13 +69,17 @@
   (setq-default goggles-pulse t)
   )
 
+(use-package ace-link
+  :hook (after-init . ace-link-setup-default))
+
 ;; %% pulse the target line of navigate
 (defun yx/pulse-line (&rest _)
   "Pulse the current line."
   (pulse-momentary-highlight-one-line (point)))
 
-(dolist (command '(scroll-up-command scroll-down-command
-                                     recenter-top-bottom other-window))
+(dolist (command '(scroll-up-command
+                   scroll-down-command
+                   recenter-top-bottom other-window))
   (advice-add command :after #'yx/pulse-line))
 
 ;; %% edit enhencement
@@ -129,6 +133,15 @@
 
 (use-package flyspell-correct
   :after flyspell
+  )
+
+;; %% chinese
+(use-package sis
+  :demand t
+  :config
+  (sis-global-respect-mode 1)
+  (sis-global-inline-mode 1)
+  ;; (sis-global-context-mode 1)
   )
 
 (use-package osx-dictionary

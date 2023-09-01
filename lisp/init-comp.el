@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-08-31 16:24:17 yx>
+;; Modified: <2023-09-01 15:28:38 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -86,6 +86,7 @@
   :custom
   (corfu-auto t)
   (corfu-preselect 'valid)
+  (corfu-quit-no-match t)
   (corfu-echo-documentation nil)
   :config
   (corfu-echo-mode 1)
@@ -96,7 +97,7 @@
               ("TAB"   . corfu-next)
               ("S-TAB" . corfu-previous)
               ("M-q"   . corfu-quick-insert)
-              ("SPC"   . corfu-insert-separator))
+              ("M-SPC"   . corfu-insert-separator))
   )
 
 (use-package cape
