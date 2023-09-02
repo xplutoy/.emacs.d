@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-09-01 18:02:37 yx>
+;; Modified: <2023-09-02 22:01:20 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -148,7 +148,6 @@
         '("\\*Ibuffer\\*"
           "^\\*Compile"
           "\\*Backtrace\\*"
-          "\\*evil-registers\\*"
           "\\*shell.*\\*$" shell-mode
           "\\*eshell.*\\*$" eshell-mode
           "\\*term.*\\*$" term-mode

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2023-08-29 02:00:12 yx>
+;; Modified: <2023-09-02 20:20:06 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -27,6 +27,7 @@
  read-process-output-max (* 1024 1024))
 
 (setq
+ load-prefer-newer t
  byte-compile-warnings nil
  package-native-compile t
  package-enable-at-startup nil
@@ -58,7 +59,7 @@
 ;; %% 启动时尽量不要垃圾回收
 (setq
  gc-cons-percentage 0.6
- gc-cons-threshold (* 128 1024 1024))
+ gc-cons-threshold (* 256 1024 1024))
 (add-hook
  'after-init-hook
  (lambda ()

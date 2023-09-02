@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-09-01 19:04:39 yx>
+;; Modified: <2023-09-02 20:44:51 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -199,6 +199,7 @@
 ;; %% eww browse-url
 (setq
  eww-auto-rename-buffer 'title
+ eww-search-prefix "https://cn.bing.com/search?q="
  browse-url-browser-function 'eww-browse-url
  browse-url-browser-program yx/default-open-program)
 (with-eval-after-load 'eww

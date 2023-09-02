@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-09-01 13:24:07 yx>
+;; Modified: <2023-09-02 00:50:50 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -110,17 +110,6 @@
 (use-package easy-kill
   :bind (([remap kill-ring-save] . easy-kill)
          ([remap mark-sexp] . easy-mark))
-  )
-
-(use-package drag-stuff
-  :hook (prog-mode . yx/drag-stuff-setup)
-  :preface
-  (defun yx/drag-stuff-setup ()
-    (keymap-local-set "s-<up>" 'drag-stuff-up)
-    (keymap-local-set "s-<down>" 'drag-stuff-down)
-    (keymap-local-set "s-<left>" 'drag-stuff-left)
-    (keymap-local-set "s-<right>" 'drag-stuff-right)
-    )
   )
 
 ;; %% spell

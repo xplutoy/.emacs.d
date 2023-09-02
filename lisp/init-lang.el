@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-08-31 22:05:01 yx>
+;; Modified: <2023-09-02 20:50:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -40,6 +40,8 @@
       ediff-window-setup-function 'ediff-setup-windows-plain
       ediff-split-window-function 'split-window-horizontally
       )
+
+(add-hook 'ediff-after-quit-hook-internal 'winner-undo)
 
 (add-hook 'diff-mode-hook
           (lambda ()
@@ -350,6 +352,12 @@
   :ensure ess
   )
 (define-auto-insert "\\.R$" 'yx/auto-insert-common-header)
+
+;; %% toy langs
+(use-package geiser-chez
+  :init
+  (setq geiser-chez-binary "chez")
+  )
 
 ;; %% misc lang
 (add-hook

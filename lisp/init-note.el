@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-09-01 02:06:50 yx>
+;; Modified: <2023-09-02 23:41:29 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -79,7 +79,7 @@
   (org-src-window-setup 'split-window-right)
   (org-src-ask-before-returning-to-edit-buffer nil)
 
-  (org-modules '(org-habit org-tempo))
+  (org-modules '(ol-info ol-eww ol-gnus ol-docview org-habit org-tempo))
 
   ;; tag
   (org-tags-column 0)
@@ -265,6 +265,19 @@
   :hook (dired-mode . org-download-enable)
   :bind (:map org-mode-map
               ("C-S-y" . org-download-screenshot))
+  )
+
+(use-package org-project
+  :defer 3
+  :load-path "site-lisp/org-project-yx"
+  :custom
+  (org-project-prompt-for-project t)
+  (org-project-todos-per-project nil)
+  (org-project-todos-file org-default-notes-file)
+  (org-project-capture-template "* TODO [#B] %?\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+1d\"))\n")
+  :bind (:map project-prefix-map
+              ("t" . org-project-capture)
+              ("o" . org-project-open-todos))
   )
 
 (use-package org-web-tools)

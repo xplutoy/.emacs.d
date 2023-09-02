@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-09-01 15:28:38 yx>
+;; Modified: <2023-09-02 21:54:59 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -123,8 +123,7 @@
                    cape-tex))
       (add-to-list 'completion-at-point-functions ele)))
   (defun yx/cape-capf-setup-eshell ()
-    (dolist (ele '(cape-elisp-symbol
-                   cape-file
+    (dolist (ele '(cape-file
                    cape-history))
       (add-to-list 'completion-at-point-functions ele)))
   )
