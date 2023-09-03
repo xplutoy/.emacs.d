@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-09-02 23:41:29 yx>
+;; Modified: <2023-09-03 16:03:16 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -295,12 +295,15 @@
    org-roam-dailies-directory "journal/"
    org-roam-capture-templates
    '(("d" "default" plain "%?"
-      :target (file+head "%<%Y%m%d>-${slug}.org" "#+title: ${title}\n#+created: %U\n#+modified: <>\n\n%i%?"))
+      :target (file+head "%<%Y%m%d>-${slug}.org" "#+title: ${title}\n#+created: %U\n#+modified: <>\n\n")
+      :immediate-finish t)
      ("p" "post" plain "%?"
-      :target (file+head "blog/%<%Y%m%d>-${slug}.org" "#+title: ${title}\n#created: %U\n#+modified: <>\n\n%i%?")))
+      :target (file+head "blog/%<%Y%m%d>-${slug}.org" "#+title: ${title}\n#created: %U\n#+modified: <>\n\n")
+      :immediate-finish t))
    org-roam-dailies-capture-templates
-   '(("d" "default" entry "* %<%m-%d %p>: ${title}\n\n %i%?"
-      :target (file+head "%<%Y>.org" "#+title: %<%Y>年琐记\n" :prepend t)))
+   '(("d" "default" entry "* %<%m-%d %p>: %?\n"
+      :target (file+head "%<%Y>.org" "#+title: %<%Y>年琐记\n")
+      :prepend t))
    )
   :config
   (org-roam-db-autosync-mode 1)

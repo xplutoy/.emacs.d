@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-09-02 14:50:47 yx>
+;; Modified: <2023-09-03 16:01:57 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -38,6 +38,7 @@
  )
 
 (bind-keys
+ ("<f10>"     . org-agenda-list)
  ("s-,"       . winner-undo)
  ("s-."       . winner-redo)
  ("s-<right>" . ns-next-frame)
@@ -85,6 +86,8 @@
  ("C-c n i"   . org-roam-node-insert)
  ("C-c n c"   . org-roam-capture)
  ("C-c n j"   . org-roam-dailies-capture-today)
+ ("C-c n C-j" . org-roam-dailies-goto-today)
+ ("C-c n J"   . org-roam-dailies-goto-date)
  ("C-c n t"   . org-transclusion-add)
  ("C-c n T"   . org-transclusion-add-all)
  ("C-x c j"   . citre-jump)

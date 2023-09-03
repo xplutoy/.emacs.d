@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-09-02 20:50:37 yx>
+;; Modified: <2023-09-03 11:01:26 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -171,9 +171,10 @@
     (interactive)
     (dolist
         (grammar
-         '((c "https://github.com/tree-sitter/tree-sitter-c")
-           (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
-           (julia "https://github.com/tree-sitter/tree-sitter-julia")
+         '((c      "https://github.com/tree-sitter/tree-sitter-c")
+           (cpp    "https://github.com/tree-sitter/tree-sitter-cpp")
+           (org    "https://github.com/milisims/tree-sitter-org")
+           (julia  "https://github.com/tree-sitter/tree-sitter-julia")
            (python "https://github.com/tree-sitter/tree-sitter-python")))
       (add-to-list 'treesit-language-source-alist grammar)
       (unless (treesit-language-available-p (car grammar))
@@ -246,7 +247,10 @@
 
 ;; %% emacs-lisp
 (define-auto-insert "\\.el$" 'yx/auto-insert-el-header)
-(add-hook 'emacs-lisp-mode-hook 'prettify-symbols-mode)
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (prettify-symbols-mode)
+            (treesit-parser-create 'elisp)))
 
 ;; %% c/c++
 (setq c-basic-offset 4
