@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-09-04 16:59:18 yx>
+;; Modified: <2023-09-04 17:21:39 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,7 +16,6 @@
 (add-hook
  #'prog-mode-hook
  (lambda ()
-   (flymake-mode 1)
    (subword-mode 1)
    (hl-line-mode 1)
    (hs-minor-mode 1)
@@ -60,7 +59,7 @@
             (whitespace-mode 1)))
 
 ;; %% formatter & linter & profiler
-(setq flymake-start-on-save-buffer nil
+(setq flymake-start-on-save-buffer t
       flymake-start-on-flymake-mode nil)
 (with-eval-after-load 'flymake
   (bind-keys :map flymake-mode-map
@@ -107,21 +106,18 @@
 
 ;; %% version control
 (use-package diff-hl
-  :defer 2
-  :hook (dired-mode . diff-hl-dired-mode)
+  :hook
+  (after-init . global-diff-hl-mode)
+  (dired-mode . diff-hl-dired-mode)
+  (magit-post-refresh . diff-hl-magit-post-refresh)
   :config
   (setq diff-hl-disable-on-remote t)
-
-  (global-diff-hl-mode 1)
   (diff-hl-flydiff-mode 1)
-  (global-diff-hl-show-hunk-mouse-mode 1)
+  :bind (:map diff-hl-mode-map
+              ("<left-fringe> <mouse-1>" . diff-hl-diff-goto-hunk))
   )
 
-(use-package magit
-  :hook
-  (magit-pre-refresh  . diff-hl-magit-pre-refresh)
-  (magit-post-refresh . diff-hl-magit-post-refresh)
-  )
+(use-package magit)
 
 ;; %% indent
 (use-package aggressive-indent

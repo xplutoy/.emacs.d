@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-09-04 17:01:02 yx>
+;; Modified: <2023-09-04 17:14:56 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -87,7 +87,6 @@
  ("C-c n c"   . org-roam-capture)
  ("C-c n j"   . org-roam-dailies-capture-today)
  ("C-c n C-j" . org-roam-dailies-goto-today)
- ("C-c n J"   . org-roam-dailies-goto-date)
  ("C-c n t"   . org-transclusion-add)
  ("C-c n T"   . org-transclusion-add-all)
  ("C-x c j"   . citre-jump)

@@ -13,12 +13,12 @@
 [submodule "site-lisp/eshell-git-prompt-yx"]
 	path = site-lisp/eshell-git-prompt-yx
 	url = https://github.com/xplutoy/eshell-git-prompt-yx.git
-[submodule "site-lisp/awesome-tray"]
-	path = site-lisp/awesome-tray
-	url = https://github.com/manateelazycat/awesome-tray.git
 [submodule "site-lisp/sr-speedbar-yx"]
 	path = site-lisp/sr-speedbar-yx
 	url = https://github.com/xplutoy/sr-speedbar-yx.git
 [submodule "site-lisp/org-project-yx"]
 	path = site-lisp/org-project-yx
 	url = https://github.com/xplutoy/org-project-yx.git
+[submodule "site-lisp/awesome-tray"]
+	path = site-lisp/awesome-tray
+	url = https://github.com/manateelazycat/awesome-tray.git
