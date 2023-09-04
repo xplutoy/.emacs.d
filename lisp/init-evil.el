@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-09-04 17:14:56 yx>
+;; Modified: <2023-09-04 22:41:42 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -41,8 +41,10 @@
  ("<f10>"     . org-agenda-list)
  ("s-,"       . winner-undo)
  ("s-."       . winner-redo)
- ("s-<right>" . ns-next-frame)
- ("s-<left>"  . ns-prev-frame)
+ ("s-]"       . ns-next-frame)
+ ("s-["       . ns-prev-frame)
+ ("M-]"       . tab-next)
+ ("M-["       . tab-previous)
  ("s-k"       . crux-kill-other-buffers)
  ("C-'"       . vterm-toggle-cd)
  ("C-;"       . crux-yx/toggle-eshell)

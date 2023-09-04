@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-09-02 22:01:20 yx>
+;; Modified: <2023-09-04 22:47:00 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -37,7 +37,10 @@
  tab-bar-close-button-show nil
  tab-bar-new-tab-choice "*scratch*"
  tab-bar-select-tab-modifiers '(super))
-(add-hook 'after-init-hook 'tab-bar-history-mode)
+(add-hook 'after-init-hook
+          (lambda ()
+            (tab-bar-mode)
+            (tab-bar-history-mode)))
 
 ;; %% dired
 (use-package dired
