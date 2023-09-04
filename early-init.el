@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2023-09-02 20:20:06 yx>
+;; Modified: <2023-09-04 12:11:09 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -65,7 +65,8 @@
  (lambda ()
    (setq
     gc-cons-percentage 0.1
-    gc-cons-threshold (* 16 1024 1024))))
+    gc-cons-threshold (* 8 1024 1024))
+   (garbage-collect)))
 
 ;; %% 启动界面更平滑
 (setq-default

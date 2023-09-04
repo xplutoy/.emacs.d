@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-09-02 21:54:59 yx>
+;; Modified: <2023-09-04 16:42:16 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -73,11 +73,6 @@
          :map vertico-map
          ("C-x C-d" . consult-dir)
          ("C-x C-j" . consult-dir-jump-file))
-  )
-
-(use-package consult-eglot
-  :after consult
-  :bind (("M-s s" . consult-eglot-symbols))
   )
 
 ;; %% corfu

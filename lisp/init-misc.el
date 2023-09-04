@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-09-02 00:50:50 yx>
+;; Modified: <2023-09-04 16:12:35 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -112,6 +112,16 @@
          ([remap mark-sexp] . easy-mark))
   )
 
+(use-package drag-stuff
+  :hook ((text-mode
+          prog-mode) . drag-stuff-mode)
+  :bind (:map drag-stuff-mode-map
+              ("M-J" . drag-stuff-down)
+              ("M-K" . drag-stuff-up)
+              ("M-H" . drag-stuff-left)
+              ("M-L" . drag-stuff-right))
+  )
+
 ;; %% spell
 (use-package jinx
   :bind (("M-$" . jinx-correct)
@@ -128,8 +138,14 @@
 (use-package sis
   :demand t
   :config
-  (sis-global-respect-mode 1)
+  (add-to-list 'sis-prefix-override-keys "M-s")
+  (add-to-list 'sis-prefix-override-keys "M-g")
+
+  (when -is-win
+    (sis-ism-lazyman-config "1033" "2052" 'im-select))
+
   (sis-global-inline-mode 1)
+  (sis-global-respect-mode 1)
   ;; (sis-global-context-mode 1)
   )
 

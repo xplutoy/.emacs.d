@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-09-02 20:44:51 yx>
+;; Modified: <2023-09-04 15:20:39 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -30,6 +30,7 @@
  align-to-tab-stop nil
  find-file-visit-truename t
  delete-by-moving-to-trash t
+ bookmark-save-flag 1
  set-mark-command-repeat-pop t
  show-paren-context-when-offscreen t
  compilation-scroll-output 'first-error
@@ -46,6 +47,13 @@
  initial-scratch-message ""
  confirm-kill-processes nil
  disabled-command-function nil)
+
+;; %% font-lock
+(setq
+ jit-lock-defer-time 0
+ jit-lock-chunk-size 6000
+ jit-lock-stealth-time 0.5
+ jit-lock-context-time 0.2)
 
 ;; %% auto
 (setq
@@ -134,7 +142,11 @@
  xref-show-xrefs-function 'xref-show-definitions-completing-read
  xref-show-definitions-function 'xref-show-definitions-completing-read)
 
-;; %% completion
+;; %% completion minibuffer
+(setq
+ resize-mini-windows nil
+ max-mini-window-height 30)
+
 (setq
  completions-detailed t
  completion-ignore-case t
@@ -173,9 +185,10 @@
  auth-sources
  (list
   (expand-file-name "etc/authinfo.gpg" user-emacs-directory))
+ auth-source-debug t
  epa-pinentry-mode 'loopback
- epa-file-select-keys yx/gpg-encrypt-key
- )
+ epa-file-select-keys yx/gpg-encrypt-key)
+(auth-source-pass-enable)
 
 ;; %% mouse
 (setq
@@ -196,7 +209,7 @@
  fast-but-imprecise-scrolling t
  scroll-preserve-screen-position 'always)
 
-;; %% eww browse-url
+;; %% browse
 (setq
  eww-auto-rename-buffer 'title
  eww-search-prefix "https://cn.bing.com/search?q="

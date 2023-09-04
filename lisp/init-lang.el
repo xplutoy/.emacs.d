@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-09-03 11:01:26 yx>
+;; Modified: <2023-09-04 16:59:18 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,6 +16,7 @@
 (add-hook
  #'prog-mode-hook
  (lambda ()
+   (flymake-mode 1)
    (subword-mode 1)
    (hl-line-mode 1)
    (hs-minor-mode 1)
@@ -59,6 +60,17 @@
             (whitespace-mode 1)))
 
 ;; %% formatter & linter & profiler
+(setq flymake-start-on-save-buffer nil
+      flymake-start-on-flymake-mode nil)
+(with-eval-after-load 'flymake
+  (bind-keys :map flymake-mode-map
+             ("C-c e n" . flymake-goto-next-error)
+             ("C-c e p" . flymake-goto-prev-error)
+             ("C-c e l" . flymake-show-buffer-diagnostics)
+             ("C-c e L" . flymake-show-project-diagnostics))
+  )
+
+
 (use-package reformatter
   :defer 2
   :config
@@ -222,6 +234,7 @@
    eglot-autoshutdown t
    eglot-extend-to-xref t
    eglot-report-progress nil
+   eglot-events-buffer-size 0
    )
   :hook ((c-mode
           c-ts-mode
@@ -231,6 +244,15 @@
           julia-mode
           julia-ts-mode
           LaTeX-mode) . eglot-ensure)
+  :bind (:map eglot-mode-map
+              ("C-c e r" . eglot-rename)
+              ("C-c e f" . eglot-format)
+              ("C-c e a" . eglot-code-actions)
+              ("C-c e s" . consult-eglot-symbols))
+  )
+
+(use-package consult-eglot
+  :after consult
   )
 
 ;; %% citre

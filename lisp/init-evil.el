@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-09-03 16:01:57 yx>
+;; Modified: <2023-09-04 17:01:02 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -53,7 +53,7 @@
  ("M-'"       . consult-register-store)
  ("C-M-#"     . consult-register)
  ("M-i"       . consult-imenu-multi)
- ("M-z"       . vg-quick-zap-to-char)
+ ("M-z"       . vg-quick-zap-up-to-char)
  ("M-;"       . evil-commentary-line)
  ("M-r"       . consult-recent-file)
  ("M-o"       . ace-window)
@@ -149,9 +149,6 @@
       "!"    'shell-command
       "/"    'consult-ripgrep
 
-      "f f"  'find-file
-      "f t"  'find-file-other-tab
-      "f o"  'find-file-other-window
       "f O"  'crux-open-with
       "f r"  'rename-visited-file
       "f F"  'crux-sudo-edit
@@ -168,21 +165,6 @@
       "j o"  'consult-outline
       "j m"  'consult-mark
       "j M"  'consult-global-mark
-
-      "g g"  'consult-xref
-      "g s"  'consult-eglot-symbols
-      "g d"  'xref-find-definitions
-      "g r"  'xref-find-references
-      "g o"  'xref-find-definitions-other-window
-
-      "e f"  'eglot-format
-      "e r"  'eglot-rename
-      "e h"  'eglot-help-at-point
-      "e a"  'eglot-code-actions
-      "e n"  'flymake-goto-next-erroer
-      "e p"  'flymake-goto-prev-error
-      "e b"  'flymake-show-buffer-diagnostics
-      "e B"  'flymake-show-project-diagnostics
 
       "h h"  'symbol-overlay-put
       "h c"  'symbol-overlay-remove-all
