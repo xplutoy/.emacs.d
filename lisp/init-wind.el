@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-09-04 22:47:00 yx>
+;; Modified: <2023-09-05 00:03:02 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -151,6 +151,7 @@
         '("\\*Ibuffer\\*"
           "^\\*Compile"
           "\\*Backtrace\\*"
+          "\\*Bookmark List\\*"
           "\\*shell.*\\*$" shell-mode
           "\\*eshell.*\\*$" eshell-mode
           "\\*term.*\\*$" term-mode
@@ -181,6 +182,7 @@
        "\\*Help\\*"
        "\\*[Wo]*Man.*\\*"
        "\\*Dictionary\\*"
+       "\\*Bookmark List\\*"
        "\\*Flymake .*"
        "^CAPTURE-"
        "^\\*julia.*")

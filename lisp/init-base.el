@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-09-04 15:20:39 yx>
+;; Modified: <2023-09-05 14:39:16 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -150,7 +150,7 @@
 (setq
  completions-detailed t
  completion-ignore-case t
- completions-format 'horizontal
+ completions-format 'one-column
  completions-header-format nil
  completions-max-height 30
  completion-auto-help 'visible
@@ -346,8 +346,8 @@
    (auto-compression-mode 1)
    (delete-selection-mode 1)
    (auto-save-visited-mode 1)
-   (windmove-default-keybindings)
-   (pixel-scroll-precision-mode 1))
+   (pixel-scroll-precision-mode 1)
+   (windmove-default-keybindings 'control))
  )
 
 ;; never kill scratch

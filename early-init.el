@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2023-09-04 12:11:09 yx>
+;; Modified: <2023-09-05 14:28:00 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -22,6 +22,7 @@
  inhibit-startup-message t
  inhibit-compacting-font-caches t
  frame-resize-pixelwise t
+ window-resize-pixelwise t
  frame-inhibit-implied-resize t
  ffap-machine-p-known 'reject
  read-process-output-max (* 1024 1024))
@@ -42,6 +43,7 @@
    (tool-bar-lines . 0)
    (menu-bar-lines . 0)
    (undecorated-round . t)
+   (ns-transparent-titlebar t)
    (vertical-scroll-bars . nil)))
 
 (tooltip-mode -1)

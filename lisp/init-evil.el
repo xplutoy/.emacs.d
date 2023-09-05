@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-09-04 22:41:42 yx>
+;; Modified: <2023-09-05 00:56:03 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -20,6 +20,7 @@
   :init
   (key-chord-mode 1)
   (key-chord-define-global "zz"     'zoom)
+  (key-chord-define-global "ss"     'scratch-buffer)
   (key-chord-define-global "jj"     'avy-goto-char-timer)
   (key-chord-define-global "ji"     'consult-imenu)
   (key-chord-define-global "jl"     'avy-goto-line)
@@ -154,7 +155,6 @@
       "f r"  'rename-visited-file
       "f F"  'crux-sudo-edit
       "f E"  'crux-reopen-as-root
-      "f k"  'kill-current-buffer
       "f K"  'crux-kill-other-buffers
       "f D"  'crux-delete-file-and-buffer
 
