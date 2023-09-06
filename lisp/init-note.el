@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-09-06 12:04:47 yx>
+;; Modified: <2023-09-06 22:19:29 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -68,7 +68,7 @@
                               ("bgcolor" "bg")))
   (org-latex-src-block-backend 'minted)
   (org-preview-latex-default-process 'dvisvgm)
-  (org-startup-with-latex-preview nil)
+  (org-startup-with-latex-preview t)
   (org-latex-preview-ltxpng-directory
    (expand-file-name "ltximg/" no-littering-var-directory))
 
@@ -166,12 +166,13 @@
   (org-cite-global-bibliography
    (list (expand-file-name "bibliography.bib" yx/org-dir)))
 
+  (org-attach-id-dir
+   (expand-file-name "data" yx/org-dir))
   (org-attach-store-link-p 'attach)
   (org-attach-sync-delete-empty-dir t)
 
   :config
-  (setq org-format-latex-options
-        (plist-put org-format-latex-options :scale 1.50))
+  (plist-put org-format-latex-options :scale 1.50)
   (key-chord-define org-mode-map "jh" 'avy-org-goto-heading-timer)
   (add-hook
    'org-mode-hook
@@ -294,38 +295,26 @@
 
 (use-package org-web-tools)
 
-;; %% org-roam notes
-(use-package org-roam
+;; %% note
+(use-package denote
   :after org
   :demand t
-  :init
-  (setq
-   org-roam-directory yx/org-dir
-   org-roam-db-update-on-save t
-   org-roam-database-connector 'sqlite-builtin
-   org-roam-completion-everywhere t
-   org-roam-dailies-directory "journal/"
-   org-roam-capture-templates
-   '(("d" "default" plain "%?"
-      :target (file+head "%<%Y%m%d>-${slug}.org" "#+title: ${title}\n#+created: %U\n#+modified: <>\n\n")
-      :immediate-finish t)
-     ("p" "post" plain "%?"
-      :target (file+head "blog/%<%Y%m%d>-${slug}.org" "#+title: ${title}\n#created: %U\n#+modified: <>\n\n")
-      :immediate-finish t))
-   org-roam-dailies-capture-templates
-   '(("d" "default" entry "* %<%m-%d %p>: %?\n"
-      :target (file+head "%<%Y>.org" "#+title: %<%Y>年琐记\n")
-      :prepend t))
-   )
-  :config
-  (org-roam-db-autosync-mode 1)
+  :custom
+  (denote-directory yx/org-dir)
+  (denote-infer-keywords t)
+  (denote-known-keywords nil)
+  (denote-allow-multi-word-keywords t)
+  (denote-prompts '(title keywords subdirectory))
+  :hook
+  (dired-mode . denote-dired-mode-in-directories)
   )
 
-(use-package org-roam-ui
-  :init
-  (when (featurep 'xwidget-internal)
-    (setq org-roam-ui-browser-function 'xwidget-webkit-browse-url)
-    )
+(use-package citar-denote
+  :after (citar denote)
+  :demand t
+  :config
+  (setq citar-denote-subdir t)
+  (citar-denote-mode)
   )
 
 (use-package org-transclusion)
@@ -381,25 +370,6 @@
   :hook
   (org-mode . citar-capf-setup)
   (LaTeX-mode . citar-capf-setup)
-  )
-
-(use-package citar-org-roam
-  :after (citar org-roam)
-  :demand t
-  :custom
-  (citar-org-roam-subdir "literature_notes")
-  (citar-org-roam-note-title-template "${title}")
-  (citar-org-roam-capture-template-key "l")
-  :config
-  (add-to-list
-   'org-roam-capture-templates
-   '("l" "literature" plain "%?"
-     :target
-     (file+head
-      "%(expand-file-name (or citar-org-roam-subdir \"\") org-roam-directory)/%<%Y%m%d>-${citar-citekey}.org"
-      "#+title: 文献笔记: ${note-title}\n#+created: %U\n#+modified: <>\n\n")
-     :unnarrowed t))
-  (citar-org-roam-mode 1)
   )
 
 ;; %% end

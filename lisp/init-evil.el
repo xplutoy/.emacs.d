@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-09-06 09:03:58 yx>
+;; Modified: <2023-09-06 20:45:45 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -84,14 +84,16 @@
  ("C-c c"     . org-capture)
  ("C-c b"     . org-switchb)
  ("C-c l"     . org-store-link)
- ("C-c n l"   . org-roam-buffer-toggle)
- ("C-c n n"   . org-roam-node-find)
- ("C-c n i"   . org-roam-node-insert)
- ("C-c n c"   . citar-create-note)
- ("C-c n j"   . org-roam-dailies-capture-today)
- ("C-c n C-j" . org-roam-dailies-goto-today)
+ ("C-c n c"   . denote)
+ ("C-c n C-c" . citar-create-note)
+ ("C-c n C-o" . citar-denote-dwim)
+ ("C-c n n"   . denote-open-or-create)
+ ("C-c n i"   . denote-link-or-create)
+ ("C-c n l"   . denote-backlinks)
+ ("C-c n f"   . denote-find-link)
+ ("C-c n b"   . denote-find-backlink)
  ("C-c n t"   . org-transclusion-add)
- ("C-c n T"   . org-transclusion-add-all)
+ ("C-c n C-t" . org-transclusion-add-all)
  ("C-x c j"   . citre-jump)
  ("C-x c k"   . citre-jump-back)
  ("C-x c p"   . citre-peek)

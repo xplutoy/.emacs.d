@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-09-05 14:39:16 yx>
+;; Modified: <2023-09-06 20:30:11 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -235,6 +235,7 @@
 ;; %% savehist
 (setq
  history-delete-duplicates t
+ savehist-save-minibuffer-history t
  savehist-additional-variables
  '(mark-ring
    global-mark-ring
@@ -250,7 +251,6 @@
  desktop-restore-frames nil
  desktop-auto-save-timeout 60
  desktop-load-locked-desktop 'check-pid)
-;; (add-hook 'after-init-hook 'desktop-save-mode)
 
 ;; %% tramp speed up
 (setq

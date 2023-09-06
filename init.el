@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2023-09-02 21:00:21 yx>
+;; Modified: <2023-09-06 19:59:12 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,11 +16,11 @@
 (setq user-full-name "yangxue")
 (setq user-mail-address "yangxue.cs@foxmail.com")
 
-(defvar yx/org-dir "~/yxdocs/yx-slip-notes/")
-(defvar yx/etc-dir "~/.emacs.d/etc/")
-(defvar yx/var-dir "~/.emacs.d/.cache/")
-(defvar yx/zotero-dir "~/Zotero/")
-(defvar yx/gpg-sign-key "67B86CB8A5630C51!")
+(defvar yx/etc-dir         "~/.emacs.d/etc/")
+(defvar yx/var-dir         "~/.emacs.d/.cache/")
+(defvar yx/org-dir         "~/yxdocs/org-notes/")
+(defvar yx/zotero-dir      "~/Zotero/")
+(defvar yx/gpg-sign-key    "67B86CB8A5630C51!")
 (defvar yx/gpg-encrypt-key "8B1F9B207AF00BCF!")
 
 (defconst -is-mac   (eq system-type 'darwin))
@@ -28,12 +28,11 @@
 (defconst -is-linux (eq system-type 'gnu/linux))
 
 (defvar yx/default-open-program
-  (cond (-is-win "start")
-        (-is-mac "open")
+  (cond (-is-win   "start")
+        (-is-mac   "open")
         (-is-linux "xdg-open")
         (t ""))
   )
-
 
 (menu-bar-mode -1)
 (setq system-time-locale "C")
