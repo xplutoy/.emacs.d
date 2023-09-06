@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-09-06 20:45:45 yx>
+;; Modified: <2023-09-07 01:21:22 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -24,6 +24,8 @@
   (key-chord-define-global "jj"     'avy-goto-char-timer)
   (key-chord-define-global "ji"     'consult-imenu)
   (key-chord-define-global "jl"     'avy-goto-line)
+  (key-chord-define org-mode-map
+                    "jh" 'avy-org-goto-heading-timer)
   )
 
 (bind-keys
@@ -85,6 +87,7 @@
  ("C-c b"     . org-switchb)
  ("C-c l"     . org-store-link)
  ("C-c n c"   . denote)
+ ("C-c n t"   . denote-template)
  ("C-c n C-c" . citar-create-note)
  ("C-c n C-o" . citar-denote-dwim)
  ("C-c n n"   . denote-open-or-create)

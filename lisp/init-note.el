@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-09-06 22:19:29 yx>
+;; Modified: <2023-09-07 02:50:56 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -139,7 +139,8 @@
   (org-agenda-include-deadlines t)
   (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-scheduled-if-done t)
-  (org-agenda-skip-scheduled-delay-if-deadline t)
+  (org-agenda-skip-scheduled-delay-if-deadline 'post-deadline)
+  (org-agenda-skip-scheduled-if-deadline-is-shown t)
   (org-agenda-window-setup 'current-window)
   (org-agenda-use-tag-inheritance nil)
   (org-agenda-use-time-grid t)
@@ -151,7 +152,7 @@
   (org-agenda-include-diary t)
   (org-agenda-format-date 'yx/org-agenda-format-date-aligned)
   (org-agenda-scheduled-leaders '("&计划  " "&拖%02d  "))
-  (org-agenda-deadline-leaders '("&截止  " "&剩%02d  " "&逾%02d  "))
+  (org-agenda-deadline-leaders  '("&截止  " "&剩%02d  " "&逾%02d  "))
 
   (org-clock-persist t)
   (org-clock-in-resume t)
@@ -173,7 +174,6 @@
 
   :config
   (plist-put org-format-latex-options :scale 1.50)
-  (key-chord-define org-mode-map "jh" 'avy-org-goto-heading-timer)
   (add-hook
    'org-mode-hook
    (lambda ()
@@ -304,9 +304,21 @@
   (denote-infer-keywords t)
   (denote-known-keywords nil)
   (denote-allow-multi-word-keywords t)
-  (denote-prompts '(title keywords subdirectory))
-  :hook
-  (dired-mode . denote-dired-mode-in-directories)
+  (denote-date-prompt-use-org-read-date t)
+  (denote-excluded-directories-regexp "data\\|scaffold")
+  (denote-prompts '(subdirectory title keywords))
+  (denote-templates nil)
+  :config
+  (require 'denote-org-dblock)
+  :preface
+  (defun yx/denote-template ()
+    "Create note while prompting for a template.
+This is equivalent to calling `denote' when `denote-prompts' is
+set to \\='(template title keywords subdirectory)."
+    (declare (interactive-only t))
+    (interactive)
+    (let ((denote-prompts '(template subdirectory title keywords)))
+      (call-interactively #'denote)))
   )
 
 (use-package citar-denote
