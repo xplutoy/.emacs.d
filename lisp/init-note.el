@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-09-04 14:00:21 yx>
+;; Modified: <2023-09-06 12:04:47 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -46,7 +46,6 @@
   (org-hide-block-startup t)
   (org-hide-drawer-startup t)
   (org-startup-with-inline-images t)
-  (org-startup-with-latex-preview t)
 
   (org-pretty-entities t)
   (org-pretty-entities-include-sub-superscripts nil)
@@ -60,9 +59,16 @@
      (org-agenda-files :maxlevel . 3)))
 
   (org-latex-compiler "xelatex")
-  (org-latex-packages-alist '(("" "ctex" t)))
+  (org-latex-packages-alist '(("" "ctex" t)
+                              ("" "bm")
+                              ("" "amsfonts")
+                              ("" "xcolor" t)
+                              ("" "minted" t)))
+  (org-latex-minted-options '(("breaklines")
+                              ("bgcolor" "bg")))
+  (org-latex-src-block-backend 'minted)
   (org-preview-latex-default-process 'dvisvgm)
-  (plist-put org-format-latex-options :scale 1.5)
+  (org-startup-with-latex-preview nil)
   (org-latex-preview-ltxpng-directory
    (expand-file-name "ltximg/" no-littering-var-directory))
 
@@ -164,6 +170,8 @@
   (org-attach-sync-delete-empty-dir t)
 
   :config
+  (setq org-format-latex-options
+        (plist-put org-format-latex-options :scale 1.50))
   (key-chord-define org-mode-map "jh" 'avy-org-goto-heading-timer)
   (add-hook
    'org-mode-hook
@@ -227,8 +235,11 @@
             :priority>= "A")
      (:name "Overdue"
             :deadline past)
-     (:todo "HOLD")
-     (:auto-planning t))
+     (:name "Someday/Hold"
+            :todo "HOLD"
+            :todo "SOMEDAY")
+     (:name "Other"
+            :anything))
    )
   :hook (org-agenda-mode . org-super-agenda-mode)
   )

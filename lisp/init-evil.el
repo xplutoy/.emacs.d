@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-09-05 00:56:03 yx>
+;; Modified: <2023-09-06 09:03:58 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -20,7 +20,7 @@
   :init
   (key-chord-mode 1)
   (key-chord-define-global "zz"     'zoom)
-  (key-chord-define-global "ss"     'scratch-buffer)
+  (key-chord-define-global "jk"     'scratch-buffer)
   (key-chord-define-global "jj"     'avy-goto-char-timer)
   (key-chord-define-global "ji"     'consult-imenu)
   (key-chord-define-global "jl"     'avy-goto-line)
@@ -87,7 +87,7 @@
  ("C-c n l"   . org-roam-buffer-toggle)
  ("C-c n n"   . org-roam-node-find)
  ("C-c n i"   . org-roam-node-insert)
- ("C-c n c"   . org-roam-capture)
+ ("C-c n c"   . citar-create-note)
  ("C-c n j"   . org-roam-dailies-capture-today)
  ("C-c n C-j" . org-roam-dailies-goto-today)
  ("C-c n t"   . org-transclusion-add)
