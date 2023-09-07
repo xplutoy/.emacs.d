@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2023-09-03 11:02:33 yx>
+;; Modified: <2023-09-08 00:38:10 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -56,13 +56,6 @@
      ("https://planet.emacslife.com/atom.xml" emacs)
      ("https://sachachua.com/blog/category/emacs/feed/" emacs)))
   :preface
-  (defun yx/elfeed-eww-browse ()
-    "Wrapper to open eww and mark elfeed as read"
-    (interactive)
-    (let ((link (elfeed-entry-link elfeed-show-entry)))
-      (when link
-        (eww-browse-url link)))
-    )
   (defun yx/elfeed-kill-entry ()
     "Like `elfeed-kill-entry' but pop elfeed search"
     (interactive)
@@ -71,7 +64,6 @@
     )
   :hook (elfeed-show . olivetti-mode)
   :bind (:map elfeed-show-mode-map
-              ("B" . yx/elfeed-eww-browse)
               ("q" . yx/elfeed-kill-entry))
   )
 

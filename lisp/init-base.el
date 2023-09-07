@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-09-06 20:30:11 yx>
+;; Modified: <2023-09-07 14:50:56 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -312,7 +312,7 @@
 (cond
  (-is-mac
   (setq
-   mac-option-modifier 'meta
+   mac-option-modifier  'meta
    mac-command-modifier 'super
    ns-function-modifier 'hyper
    ns-use-thin-smoothing t
