@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2023-09-06 19:59:12 yx>
+;; Modified: <2023-09-08 07:47:16 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -23,14 +23,14 @@
 (defvar yx/gpg-sign-key    "67B86CB8A5630C51!")
 (defvar yx/gpg-encrypt-key "8B1F9B207AF00BCF!")
 
-(defconst -is-mac   (eq system-type 'darwin))
-(defconst -is-win   (eq system-type 'windows-nt))
-(defconst -is-linux (eq system-type 'gnu/linux))
+(defconst IS-MAC   (eq system-type 'darwin))
+(defconst IS-WIN   (eq system-type 'windows-nt))
+(defconst IS-LINUX (eq system-type 'gnu/linux))
 
 (defvar yx/default-open-program
-  (cond (-is-win   "start")
-        (-is-mac   "open")
-        (-is-linux "xdg-open")
+  (cond (IS-WIN   "start")
+        (IS-MAC   "open")
+        (IS-LINUX "xdg-open")
         (t ""))
   )
 

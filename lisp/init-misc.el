@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-09-04 16:12:35 yx>
+;; Modified: <2023-09-08 07:44:38 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -141,7 +141,7 @@
   (add-to-list 'sis-prefix-override-keys "M-s")
   (add-to-list 'sis-prefix-override-keys "M-g")
 
-  (when -is-win
+  (when IS-WIN
     (sis-ism-lazyman-config "1033" "2052" 'im-select))
 
   (sis-global-inline-mode 1)
@@ -150,13 +150,13 @@
   )
 
 (use-package osx-dictionary
-  :if -is-mac
+  :if IS-MAC
   :bind (("C-c D" . osx-dictionary-search-input)
          ("C-c d" . osx-dictionary-search-pointer))
   )
 
 (use-package fanyi
-  :unless -is-mac
+  :unless IS-MAC
   :bind (("C-c D" . fanyi-dwim)
          ("C-c d" . fanyi-dwim2))
   :custom

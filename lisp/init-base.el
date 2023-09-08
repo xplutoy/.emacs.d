@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-09-07 14:50:56 yx>
+;; Modified: <2023-09-08 08:44:11 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -25,7 +25,7 @@
 
 (setq
  track-eol t
- view-read-only t
+ view-read-only nil
  line-move-visual nil
  align-to-tab-stop nil
  find-file-visit-truename t
@@ -310,7 +310,7 @@
 
 ;; %% os specific settings stay here
 (cond
- (-is-mac
+ (IS-MAC
   (setq
    mac-option-modifier  'meta
    mac-command-modifier 'super
@@ -318,7 +318,7 @@
    ns-use-thin-smoothing t
    ns-use-native-fullscreen nil
    insert-directory-program "gls"))
- (-is-win
+ (IS-WIN
   (setq
    w32-apps-modifier 'hyper
    w32-lwindow-modifier 'super))

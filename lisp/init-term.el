@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:10:40
-;; Modified: <2023-08-24 23:12:37 yx>
+;; Modified: <2023-09-08 07:44:38 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -72,7 +72,7 @@
 
 ;; %% vterm
 (use-package vterm
-  :unless -is-win
+  :unless IS-WIN
   :bind (:map vterm-mode-map
               ("C-y" . vterm-yank)
               ("M-y" . vterm-yank-pop)

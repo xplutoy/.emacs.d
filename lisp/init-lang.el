@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-09-04 17:21:39 yx>
+;; Modified: <2023-09-08 07:44:38 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -171,7 +171,7 @@
   )
 
 (use-package treesit
-  :unless -is-win
+  :unless IS-WIN
   :ensure nil
   :preface
   (defun yx/setup-install-grammars ()
