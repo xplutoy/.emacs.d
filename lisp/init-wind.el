@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-09-05 00:03:02 yx>
+;; Modified: <2023-09-08 17:01:43 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -29,6 +29,9 @@
  switch-to-buffer-in-dedicated-window nil
  switch-to-buffer-preserve-window-point t
  )
+
+(use-package burly
+  :hook (after-init . burly-tabs-mode))
 
 ;; %% tabbar
 (setq

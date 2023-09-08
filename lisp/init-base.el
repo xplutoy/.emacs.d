@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-09-08 14:16:18 yx>
+;; Modified: <2023-09-08 17:29:16 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -250,7 +250,8 @@
  desktop-restore-eager 5
  desktop-restore-frames nil
  desktop-auto-save-timeout 60
- desktop-load-locked-desktop t)
+ desktop-load-locked-desktop t
+ desktop-files-not-to-save "\\(\\`/[^/:]*:\\|(ftp)\\'\\|(ssh)\\'\\|\\.org$\\|^/tmp/\\)")
 
 (desktop-save-mode 1)
 
@@ -261,7 +262,8 @@
                   comint-mode
                   doc-view-mode
                   elfeed-search-mode))
-    (add-to-list 'desktop-modes-not-to-save mode)))
+    (add-to-list 'desktop-modes-not-to-save mode))
+  )
 
 ;; %% tramp speed up
 (setq
