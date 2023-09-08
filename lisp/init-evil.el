@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-09-08 07:52:52 yx>
+;; Modified: <2023-09-08 14:36:43 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -39,6 +39,9 @@
  ([remap apropos]                       . consult-apropos)
  ([remap bookmark-jump]                 . consult-bookmark) ;C-x r b
  ([remap imenu]                         . consult-imenu) ;M-g i
+ ([remap describe-function]             . helpful-callable) ; C-h f
+ ([remap describe-key]                  . helpful-key) ; C-h k
+ ([remap describe-variable]             . helpful-variable) ; C-h v
  )
 
 (bind-keys
@@ -81,6 +84,7 @@
  ("C-c C-k"   . crux-kill-other-buffers)
  ("C-c v"     . magit-file-dispatch)
  ("C-c C-v"   . magit-dispatch)
+ ("C-c C-d"   . helpful-at-point)
  ("C-c g"     . consult-ripgrep)
  ("C-c f"     . consult-find)
  ("C-c a"     . org-agenda)

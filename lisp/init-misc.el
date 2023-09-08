@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-09-08 07:44:38 yx>
+;; Modified: <2023-09-08 14:30:12 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -34,7 +34,6 @@
   )
 
 (use-package posframe)
-(use-package emacsql-sqlite-builtin)
 
 ;; %% auxiliary tool
 (use-package crux-yx
@@ -71,6 +70,8 @@
 
 (use-package ace-link
   :hook (after-init . ace-link-setup-default))
+
+(use-package helpful)
 
 ;; %% pulse the target line of navigate
 (defun yx/pulse-line (&rest _)

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-09-07 13:19:17 yx>
+;; Modified: <2023-09-08 12:30:10 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -39,6 +39,8 @@
   (org-support-shift-select t)
   (org-use-speed-commands t)
   (org-M-RET-may-split-line nil)
+  (org-link-file-path-type 'relative)
+  (org-ascii-headline-spacing '(0 . 1))
   (org-insert-heading-respect-content nil)
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
