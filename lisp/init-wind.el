@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-09-09 10:30:45 yx>
+;; Modified: <2023-09-09 23:14:56 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -74,6 +74,11 @@
   :hook (dired-mode . diredfl-mode)
   :config
   (set-face-attribute 'diredfl-dir-name nil :bold t)
+  )
+
+(use-package dired-subtree
+  :bind (:map dired-mode-map
+              ("TAB" . dired-subtree-cycle))
   )
 
 (use-package dired-narrow
@@ -165,6 +170,7 @@
           "\\*Python\\*$"
           "\\*org-roam\\*$"
           help-mode
+          helpful-mode
           occur-mode
           compilation-mode
           ))
@@ -184,6 +190,7 @@
    shackle-rules
    '((("\\*Ibuffer\\*"
        "\\*Help\\*"
+       "\\*helpful.*"
        "\\*[Wo]*Man.*\\*"
        "\\*Dictionary\\*"
        "\\*Bookmark List\\*"

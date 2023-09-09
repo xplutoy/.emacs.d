@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-09-09 11:01:34 yx>
+;; Modified: <2023-09-09 23:36:50 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -32,8 +32,6 @@
   (org-hide-emphasis-markers t)
   (org-cycle-separator-lines 0)
   (org-use-sub-superscripts '{})
-  (org-image-actual-width `(,(* (window-font-width)
-                                (- fill-column 8))))
   (org-special-ctrl-k t)
   (org-special-ctrl-a/e t)
   (org-support-shift-select t)
@@ -42,6 +40,8 @@
   (org-link-file-path-type 'relative)
   (org-ascii-headline-spacing '(0 . 1))
   (org-insert-heading-respect-content nil)
+  (org-image-actual-width `(,(* (window-font-width)
+                                (- fill-column 8))))
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
   (org-startup-folded t)
@@ -110,7 +110,7 @@
 
   ;; todo
   (org-todo-keywords
-   '((sequence "TODO(t!)" "SOMEDAY(s!)" "NEXT(n!)" "HOLD(h@/!)" "|" "CANCELED(c@/!)" "DONE(d!)")))
+   '((sequence "TODO(t!)" "SOMEDAY(s!)" "NEXT(n!)" "HOLD(h@/!)" "WAITING(w@/!)" "|" "CANCELED(c@/!)" "DONE(d!)")))
   (org-todo-repeat-to-state "NEXT")
   (org-enforce-todo-dependencies t)
 
@@ -119,7 +119,7 @@
 
   (org-capture-templates
    '(("t" "Task"  entry (file+headline org-default-notes-file "Task")
-      "* TODO [#B] %?\nSCHEDULED: %(org-insert-time-stamp (current-time) t)" :prepend t)
+      "* TODO [#B] %?\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+7d\"))\n" :prepend t)
      ("s" "Someday"  entry (file+headline org-default-notes-file "Someday/Maybe")
       "* SOMEDAY [#C] %?\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"12/30\"))" :prepend t)
      ("h" "Habit" entry (file+headline org-default-notes-file "Habit")
@@ -128,7 +128,7 @@
 
 
   (org-stuck-projects '("+project/-DONE-CANCELED"
-                        ("TODO" "NEXT" "SOMEDAY")
+                        ("NEXT")
                         nil ""))
 
   (org-scheduled-past-days 36500)
@@ -155,16 +155,29 @@
                                 "......"
                                 "---------------------------------")))
   (org-agenda-current-time-string "Now - - - - - - - - - - - - - - - - - - - - -")
+  (org-agenda-diary-file
+   (expand-file-name "diary.org" yx/org-dir))
   (org-agenda-include-diary t)
   (org-agenda-show-future-repeats 'next)
   (org-agenda-format-date 'yx/org-agenda-format-date-aligned)
   (org-agenda-scheduled-leaders '("&计划  " "&拖%02d  "))
   (org-agenda-deadline-leaders  '("&截止  " "&剩%02d  " "&逾%02d  "))
 
+  (org-clock-idle-time 30)
+  (org-clock-into-drawer t)
   (org-clock-persist t)
   (org-clock-in-resume t)
   (org-clock-out-when-done t)
+  (org-clock-in-switch-to-state "NEXT")
+  (org-clock-persist-query-resume nil)
   (org-clock-out-remove-zero-time-clocks t)
+  (org-use-last-clock-out-time-as-effective-time t)
+
+  (org-global-properties
+   '(("STYLE_ALL"  . "habit")
+     ("Score_ALL"  . "1 2 3 5 8")
+     ("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00")))
+  (org-columns-default-format "%50ITEM(Task) %2PRIORITY %10Effort(Effort){:} %10CLOCKSUM")
 
   (org-cite-csl-styles-dir
    (expand-file-name "styles/" yx/zotero-dir))
@@ -217,13 +230,17 @@
      (lisp . t)
      (scheme . t)
      (jupyter . t)))
+  (org-crypt-use-before-save-magic)
+  (org-clock-persistence-insinuate)
+  (unpackaged/def-org-maybe-surround "~" "=" "*" "/" "+")
   (add-hook 'org-babel-after-execute-hook
             (lambda ()
               (when org-inline-image-overlays
                 (org-redisplay-inline-images))))
-  (org-crypt-use-before-save-magic)
-  (org-clock-persistence-insinuate)
-  (unpackaged/def-org-maybe-surround "~" "=" "*" "/" "+")
+  (add-hook 'org-agenda-finalize-hook
+            (lambda ()
+              (setq appt-time-msg-list nil)
+              (org-agenda-to-appt)))
   )
 
 ;; %% org+
@@ -243,8 +260,11 @@
             :priority>= "A")
      (:name "Overdue"
             :deadline past)
+     (:name "Next"
+            :todo "NEXT")
      (:name "Someday/Hold"
             :todo "HOLD"
+            :todo "WAITING"
             :todo "SOMEDAY")
      (:name "Other"
             :anything))
@@ -294,7 +314,7 @@
   (org-project-prompt-for-project t)
   (org-project-todos-per-project nil)
   (org-project-todos-file org-default-notes-file)
-  (org-project-capture-template "* TODO [#B] %?\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+1d\"))\n")
+  (org-project-capture-template "* TODO [#B] %?\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+7d\"))\n")
   :bind (:map project-prefix-map
               ("t" . org-project-capture)
               ("o" . org-project-open-todos))

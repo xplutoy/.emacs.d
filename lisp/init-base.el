@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-09-09 10:29:40 yx>
+;; Modified: <2023-09-09 22:11:56 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -307,8 +307,15 @@
         (holiday-fixed 12 25   "圣诞节")
         ))
 
-(setq diary-number-of-entries 7
-      diary-file (expand-file-name "diary.org" yx/org-dir))
+(setq
+ appt-display-format 'window
+ appt-display-interval 5
+ appt-display-duration 120
+ appt-message-warning-time 20)
+
+(add-hook 'after-init-hook
+          (lambda ()
+            (appt-activate 1)))
 
 (setq
  calendar-latitude +30.67
