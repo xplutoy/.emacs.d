@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-09-08 17:29:16 yx>
+;; Modified: <2023-09-09 10:29:40 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -189,6 +189,10 @@
  epa-pinentry-mode 'loopback
  epa-file-select-keys yx/gpg-encrypt-key)
 (auth-source-pass-enable)
+
+(setq
+ password-cache t
+ password-cache-expiry (* 60 60))
 
 ;; %% mouse
 (setq

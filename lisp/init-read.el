@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2023-09-08 00:38:10 yx>
+;; Modified: <2023-09-08 19:36:07 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -51,6 +51,7 @@
      ("https://yihui.org/en/index.xml" R)
      ("https://www.juliabloggers.com/feed/" julia)
      ("http://www.ruanyifeng.com/blog/atom.xml" tech webkit)
+     ("http://lambda-the-ultimate.org/rss.xml" lang)
      ("https://egh0bww1.com/rss.xml" emacs)
      ("https://manateelazycat.github.io/feed.xml" emacs)
      ("https://planet.emacslife.com/atom.xml" emacs)

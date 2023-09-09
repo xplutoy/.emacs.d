@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-09-08 12:30:10 yx>
+;; Modified: <2023-09-09 11:01:34 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -17,9 +17,8 @@
   :ensure nil
   :defer 3
   :bind (:map org-mode-map
-              ("RET" . crux-yx/org-return-dwim)
-              ("C-M-," . org-mark-ring-goto)
-              ("M-g o" . consult-org-heading)
+              ("RET"     . crux-yx/org-return-dwim)
+              ("M-g o"   . consult-org-heading)
               ("C-x n h" . crux-yx/org-show-current-heading-tidily))
   :autoload (org-calendar-holiday)
   :custom
@@ -33,7 +32,8 @@
   (org-hide-emphasis-markers t)
   (org-cycle-separator-lines 0)
   (org-use-sub-superscripts '{})
-  (org-image-actual-width '(600))
+  (org-image-actual-width `(,(* (window-font-width)
+                                (- fill-column 8))))
   (org-special-ctrl-k t)
   (org-special-ctrl-a/e t)
   (org-support-shift-select t)
@@ -45,9 +45,11 @@
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
   (org-startup-folded t)
+  (org-startup-indented nil)
   (org-hide-block-startup t)
   (org-hide-drawer-startup t)
-  (org-startup-with-inline-images t)
+  (org-startup-align-all-tables t)
+  (org-startup-with-inline-images nil)
 
   (org-pretty-entities t)
   (org-pretty-entities-include-sub-superscripts nil)
@@ -70,7 +72,7 @@
                               ("bgcolor" "bg")))
   (org-latex-src-block-backend 'minted)
   (org-preview-latex-default-process 'dvisvgm)
-  (org-startup-with-latex-preview t)
+  (org-startup-with-latex-preview nil)
   (org-latex-preview-ltxpng-directory
    (expand-file-name "ltximg/" no-littering-var-directory))
 
@@ -143,6 +145,8 @@
   (org-agenda-skip-scheduled-if-done t)
   (org-agenda-skip-scheduled-delay-if-deadline 'post-deadline)
   (org-agenda-skip-scheduled-if-deadline-is-shown t)
+  (org-agenda-todo-ignore-deadlines 'near)
+  (org-agenda-todo-ignore-scheduled 'future)
   (org-agenda-window-setup 'current-window)
   (org-agenda-use-tag-inheritance nil)
   (org-agenda-use-time-grid t)
@@ -152,6 +156,7 @@
                                 "---------------------------------")))
   (org-agenda-current-time-string "Now - - - - - - - - - - - - - - - - - - - - -")
   (org-agenda-include-diary t)
+  (org-agenda-show-future-repeats 'next)
   (org-agenda-format-date 'yx/org-agenda-format-date-aligned)
   (org-agenda-scheduled-leaders '("&计划  " "&拖%02d  "))
   (org-agenda-deadline-leaders  '("&截止  " "&剩%02d  " "&逾%02d  "))
