@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-09-09 23:14:56 yx>
+;; Modified: <2023-09-11 00:32:12 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -77,20 +77,22 @@
   )
 
 (use-package dired-subtree
+  :after dired
+  :demand t
   :bind (:map dired-mode-map
               ("TAB" . dired-subtree-cycle))
   )
 
+(use-package zoxide)
+
 (use-package dired-narrow
+  :after dired
+  :demand t
   :bind (:map dired-mode-map
-              ([remap dired-do-man] . dired-narrow-fuzzy)))
+              ([remap dired-do-man] . dired-narrow-regexp)))
+
 (use-package dired-collapse
   :hook (dired-mode . dired-collapse-mode))
-(use-package dired-filter
-  :after dired
-  :bind (:map dired-mode-map
-              ("/" . dired-filter-mode))
-  )
 
 (use-package sr-speedbar
   :defer 2
@@ -190,7 +192,6 @@
    shackle-rules
    '((("\\*Ibuffer\\*"
        "\\*Help\\*"
-       "\\*helpful.*"
        "\\*[Wo]*Man.*\\*"
        "\\*Dictionary\\*"
        "\\*Bookmark List\\*"

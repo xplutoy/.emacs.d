@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-09-10 18:38:00 yx>
+;; Modified: <2023-09-11 00:42:38 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -87,7 +87,34 @@
 (use-package ace-link
   :hook (after-init . ace-link-setup-default))
 
-(use-package helpful)
+(use-package helpful
+  :custom
+  (helpful-switch-buffer-function 'yx/helpful-reuse-window-function)
+  :preface
+  (defun yx/helpful-reuse-window-function (buf)
+    (if-let ((window (display-buffer-reuse-mode-window buf '((mode . helpful-mode)))))
+        (select-window window)
+      (pop-to-buffer buf)))
+  (defun yx/helpful-next-buffer ()
+    (interactive)
+    (let ((bufname (buffer-name)))
+      (next-buffer)
+      (while (not (eq major-mode 'helpful-mode))
+        (unless (string= (buffer-name) bufname)
+          (next-buffer)))))
+  (defun yx/helpful-prev-buffer ()
+    (interactive)
+    (let ((bufname (buffer-name)))
+      (previous-buffer)
+      (while (not (eq major-mode 'helpful-mode))
+        (unless (string= (buffer-name) bufname)
+          (previous-buffer))))
+    )
+  :bind (:map helpful-mode-map
+              ("q" . delete-window)
+              ("b" . yx/helpful-next-buffer)
+              ("f" . yx/helpful-prev-buffer))
+  )
 
 ;; %% pulse the target line of navigate
 (defun yx/pulse-line (&rest _)

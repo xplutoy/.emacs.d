@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-09-09 10:59:39 yx>
+;; Modified: <2023-09-11 00:24:14 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -42,7 +42,10 @@
  ([remap imenu]                         . consult-imenu) ;M-g i
  ([remap describe-function]             . helpful-callable) ; C-h f
  ([remap describe-key]                  . helpful-key) ; C-h k
+ ([remap describe-command]              . helpful-command) ; C-h x
  ([remap describe-variable]             . helpful-variable) ; C-h v
+ ([remap list-directory]                . zoxide-cd) ; C-x C-d
+ ([remap dired-at-point]                . consult-dir) ; C-x d
  )
 
 (bind-keys

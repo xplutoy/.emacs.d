@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-09-04 16:42:16 yx>
+;; Modified: <2023-09-11 00:21:30 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -69,10 +69,9 @@
 
 (use-package consult-dir
   :after consult
-  :bind (("C-x C-d" . consult-dir)
-         :map vertico-map
-         ("C-x C-d" . consult-dir)
-         ("C-x C-j" . consult-dir-jump-file))
+  :bind (:map vertico-map
+              ("C-x C-d" . consult-dir)
+              ("C-x C-j" . consult-dir-jump-file))
   )
 
 ;; %% corfu
