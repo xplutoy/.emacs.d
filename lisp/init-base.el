@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-09-09 22:11:56 yx>
+;; Modified: <2023-09-10 14:28:39 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -213,14 +213,24 @@
  fast-but-imprecise-scrolling t
  scroll-preserve-screen-position 'always)
 
-;; %% browse
+;; %% browse url
 (setq
- eww-auto-rename-buffer 'title
- eww-search-prefix "https://cn.bing.com/search?q="
+ browse-url-generic-program yx/default-open-program
  browse-url-browser-function 'eww-browse-url
- browse-url-browser-program yx/default-open-program)
+ eww-auto-rename-buffer 'title
+ eww-search-prefix "https://cn.bing.com/search?q=")
+
 (with-eval-after-load 'eww
   (add-hook 'eww-after-render-hook 'eww-readable))
+
+(setq-default shr-use-fonts nil)
+(setq-default shr-inhibit-images t)
+
+(setq
+ webjump-sites
+ '(("Wikipedia" .
+    [simple-query "wikipedia.org" "wikipedia.org/wiki/" ""]))
+ webjump-use-internal-browser t)
 
 ;; %% flyspell
 (setq

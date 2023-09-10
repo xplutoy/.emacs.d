@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-09-08 07:44:38 yx>
+;; Modified: <2023-09-10 01:12:10 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -74,9 +74,6 @@
   :defer 2
   :config
   ;; python
-  (reformatter-define python-isort
-    :program "isort" :args '("--stdout" "--atomic" "-"))
-  (add-hook 'python-ts-mode-hook 'python-isort-on-save-mode)
   (reformatter-define python-black
     :program "black" :args '("-"))
   (add-hook 'python-ts-mode-hook 'python-black-on-save-mode)

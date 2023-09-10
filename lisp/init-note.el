@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-09-09 23:36:50 yx>
+;; Modified: <2023-09-10 19:55:04 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -39,7 +39,8 @@
   (org-M-RET-may-split-line nil)
   (org-link-file-path-type 'relative)
   (org-ascii-headline-spacing '(0 . 1))
-  (org-insert-heading-respect-content nil)
+  (org-insert-heading-respect-content t)
+  (org-fold-catch-invisible-edits 'show-and-error)
   (org-image-actual-width `(,(* (window-font-width)
                                 (- fill-column 8))))
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
@@ -273,13 +274,16 @@
   )
 
 (use-package org-modern
-  :hook
-  (org-mode . org-modern-mode)
-  (org-agenda-finalize . org-modern-agenda)
+  :after org
+  :demand t
+  :config
+  (global-org-modern-mode)
   )
 
 (use-package valign
   :hook (org-mode . valign-mode)
+  :custom
+  (valign-fancy-bar 1)
   )
 
 (use-package org-appear

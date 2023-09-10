@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-09-08 14:30:12 yx>
+;; Modified: <2023-09-10 18:38:00 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -31,6 +31,22 @@
     :bind (:map xwidget-webkit-mode-map
                 ("W" . xwidget-webkit-fit-width))
     )
+  )
+
+(use-package engine-mode
+  :hook (after-init . engine-mode)
+  :config
+  (when IS-MAC
+    (setq engine/browser-function 'browse-url-default-macosx-browser))
+  (defengine github
+    "https://github.com/search?q=%s"
+    :keybinding "c")
+  (defengine google
+    "https://www.google.com.hk/search?q=%s"
+    :keybinding "g")
+  (defengine bing
+    "https://cn.bing.com/search?q=%s&ensearch=1"
+    :keybinding "b")
   )
 
 (use-package posframe)
@@ -138,6 +154,19 @@
 ;; %% chinese
 (use-package sis
   :demand t
+  :init
+  (setq
+   sis-inline-with-english t
+   sis-external-ism "im-select"
+   sis-respect-restore-triggers
+   '(isearch-exit isearch-abort)
+   sis-respect-go-english-triggers
+   '(iserach-forward isearch-backward)
+   sis-respect-minibuffer-triggers
+   `(,(cons 'denote (lambda () 'other))
+     ,(cons 'denote-template (lambda () 'other))
+     ,(cons 'denote-open-or-create (lambda () 'other)))
+   )
   :config
   (add-to-list 'sis-prefix-override-keys "M-s")
   (add-to-list 'sis-prefix-override-keys "M-g")
@@ -147,7 +176,10 @@
 
   (sis-global-inline-mode 1)
   (sis-global-respect-mode 1)
-  ;; (sis-global-context-mode 1)
+  (sis-global-context-mode 1)
+
+  (add-hook 'org-capture-mode-hook 'sis-set-other)
+
   )
 
 (use-package osx-dictionary
