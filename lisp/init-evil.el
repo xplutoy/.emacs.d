@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-09-12 19:28:13 yx>
+;; Modified: <2023-09-13 01:06:36 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -20,7 +20,7 @@
   :init
   (key-chord-mode 1)
   (key-chord-define-global "zz"     'zoom)
-  (key-chord-define-global "df"     'desktop-clear)
+  (key-chord-define-global "df"     'sis-switch)
   (key-chord-define-global "jk"     'scratch-buffer)
   (key-chord-define-global "jj"     'avy-goto-char-timer)
   (key-chord-define-global "ji"     'consult-imenu)

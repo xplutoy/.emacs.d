@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-09-12 19:04:05 yx>
+;; Modified: <2023-09-13 01:37:22 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -24,7 +24,7 @@
  help-window-keep-selected t)
 
 (setq
- switch-to-prev-buffer-skip-regexp "^\\*"
+ switch-to-prev-buffer-skip-regexp "^\\*\\|^magit.*"
  switch-to-buffer-obey-display-actions t
  switch-to-buffer-in-dedicated-window nil
  switch-to-buffer-preserve-window-point t

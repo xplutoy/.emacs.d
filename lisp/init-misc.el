@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-09-12 23:00:07 yx>
+;; Modified: <2023-09-13 01:52:05 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -97,17 +97,19 @@
       (pop-to-buffer buf)))
   (defun yx/helpful-next-buffer ()
     (interactive)
-    (let ((bufname (buffer-name)))
+    (cl-letf ((bufname (buffer-name))
+              (switch-to-prev-buffer-skip-regexp nil))
       (next-buffer)
-      (while (not (eq major-mode 'helpful-mode))
-        (unless (string= (buffer-name) bufname)
+      (unless (string= (buffer-name) bufname)
+        (while (not (eq major-mode 'helpful-mode))
           (next-buffer)))))
   (defun yx/helpful-prev-buffer ()
     (interactive)
-    (let ((bufname (buffer-name)))
+    (cl-letf ((bufname (buffer-name))
+              (switch-to-prev-buffer-skip-regexp nil))
       (previous-buffer)
-      (while (not (eq major-mode 'helpful-mode))
-        (unless (string= (buffer-name) bufname)
+      (unless (string= (buffer-name) bufname)
+        (while (not (eq major-mode 'helpful-mode))
           (previous-buffer))))
     )
   :bind (:map helpful-mode-map
