@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-09-12 17:33:11 yx>
+;; Modified: <2023-09-12 19:04:05 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -69,6 +69,16 @@
   (put 'dired-find-alternate-file 'disabled nil)
   :bind (:map dired-mode-map
               ("M-<f10>" . yx/transient-dired))
+  )
+
+(transient-define-prefix yx/transient-dired ()
+  "Dired commands."
+  [["Misc"
+    ("=" "Diff" dired-diff)
+    ("e" "wdired" wdired-change-to-wdired-mode)
+    ("w" "Copy filename" dired-copy-filename-as-kill)
+    ("R" "Rename" dired-do-rename)]
+   ]
   )
 
 ;; %% dired+

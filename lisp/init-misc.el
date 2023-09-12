@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-09-11 00:42:38 yx>
+;; Modified: <2023-09-12 23:00:07 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -203,11 +203,9 @@
 
   (sis-global-inline-mode 1)
   (sis-global-respect-mode 1)
-  (sis-global-context-mode 1)
-
-  (add-hook 'org-capture-mode-hook 'sis-set-other)
-
-  )
+  ;; (sis-global-context-mode 1)
+  (sis-global-cursor-color-mode 1)
+  (add-hook 'org-capture-mode-hook 'sis-set-other))
 
 (use-package osx-dictionary
   :if IS-MAC

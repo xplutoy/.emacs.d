@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-09-11 19:20:38 yx>
+;; Modified: <2023-09-12 19:23:42 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -17,6 +17,7 @@
   :ensure nil
   :defer 3
   :bind (:map org-mode-map
+              ("M-<f10>"  . yx/transient-org)
               ("RET"     . crux-yx/org-return-dwim)
               ("M-g o"   . consult-org-heading)
               ("C-c I"   . (lambda () (interactive) (org-clock-in '(4))))
@@ -244,6 +245,18 @@
             (lambda ()
               (setq appt-time-msg-list nil)
               (org-agenda-to-appt)))
+
+  :preface
+  (transient-define-prefix yx/transient-org ()
+    "Org commands."
+    [["Misc"
+      ("a" "Archive Subtree" org-archive-subtree)
+      ("g" "org-goto" org-goto)
+      ("n" "org-narrow-to-subtree" org-narrow-to-subtree)
+      ("I" "Clock In" org-clock-in)
+      ("O" "Clock Out" org-clock-out)]
+     ]
+    )
   )
 
 ;; %% org+
