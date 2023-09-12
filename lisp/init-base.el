@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-09-10 14:28:39 yx>
+;; Modified: <2023-09-11 01:24:50 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -261,7 +261,7 @@
 ;; %% session
 (setq
  desktop-save t
- desktop-restore-eager 5
+ desktop-restore-eager 2
  desktop-restore-frames nil
  desktop-auto-save-timeout 60
  desktop-load-locked-desktop t

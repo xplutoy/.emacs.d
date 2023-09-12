@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-09-11 00:24:14 yx>
+;; Modified: <2023-09-12 17:39:11 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -49,7 +49,9 @@
  )
 
 (bind-keys
- ("<f10>"     . org-agenda-list)
+ ("<f10>"     . yx/transient-global-odd)
+ ("s-<f10>"   . yx/transient-global-even)
+ ("s-<return>" . toggle-frame-maximized)
  ("s-,"       . winner-undo)
  ("s-."       . winner-redo)
  ("s-]"       . ns-next-frame)
@@ -122,6 +124,81 @@
  ("C-x p b"   . consult-project-buffer)
  )
 
+;; %% transient key
+(transient-define-prefix yx/transient-global-even ()
+  "Global transient for infrequently used functions."
+  [[]]
+  )
+
+(transient-define-prefix yx/transient-global-odd ()
+  "Global transient for frequently used functions."
+  [["Misc"
+    ("o" "crux-open-with" crux-open-with)
+    ("%" "query-replace-regexp" query-replace-regexp)
+    ("!" "shell-command" shell-command)
+    ("D" "crux-delete-file-and-buffer" crux-delete-file-and-buffer)
+    ("R" "rename-visited-file" rename-visited-file)
+    ("K" "crux-kill-other-buffers" crux-kill-other-buffers)
+    ("E" "crux-sudo-edit" crux-sudo-edit)
+    ]
+   ["Jumping"
+    ("j l" "consult-line" consult-line)
+    ("j L" "consult-line-multi" consult-line-multi)
+    ("j o" "consult-outline" consult-outline)]
+   ]
+  )
+
+(transient-define-prefix yx/transient-dired ()
+  "Dired commands."
+  [["Action"
+    ("RET" "Open file"            dired-find-file)
+    ("o"   "Open in other window" dired-find-file-other-window)
+    ("C-o" "Open in other window (No select)" dired-display-file)
+    ("v"   "Open file (View mode)"dired-view-file)
+    ("="   "Diff"                 dired-diff)
+    ("e"   "wdired"               wdired-change-to-wdired-mode)
+    ("w"   "Copy filename"        dired-copy-filename-as-kill)
+    ("W"   "Open in browser"      browse-url-of-dired-file)
+    ("y"   "Show file type"       dired-show-file-type)]
+   ["Attribute"
+    ("R"   "Rename"               dired-do-rename)
+    ("G"   "Group"                dired-do-chgrp)
+    ("M"   "Mode"                 dired-do-chmod)
+    ("O"   "Owner"                dired-do-chown)
+    ("T"   "Timestamp"            dired-do-touch)]
+   ["Navigation"
+    ("j"   "Goto file"            dired-goto-file)
+    ("+"   "Create directory"     dired-create-directory)
+    ("<"   "Jump prev directory"  dired-prev-dirline)
+    (">"   "Jump next directory"  dired-next-dirline)
+    ("^"   "Move up directory"    dired-up-directory)]
+   ["Display"
+    ("g" "  Refresh buffer"       revert-buffer)
+    ("l" "  Refresh file"         dired-do-redisplay)
+    ("k" "  Remove line"          dired-do-kill-lines)
+    ("s" "  Sort"                 dired-sort-toggle-or-edit)
+    ("(" "  Toggle detail info"   dired-hide-details-mode)
+    ("i" "  Insert subdir"        dired-maybe-insert-subdir)
+    ("$" "  Hide subdir"          dired-hide-subdir)
+    ("M-$" "Hide subdir all"      dired-hide-subdir)]
+   ["Act on Marked"
+    ("x"   "Do action"            dired-do-flagged-delete)
+    ("C"   "Copy"                 dired-do-copy)
+    ("D"   "Delete"               dired-do-delete)
+    ("S"   "Symlink"              dired-do-symlink)
+    ("H"   "Hardlink"             dired-do-hardlink)
+    ("P"   "Print"                dired-do-print)
+    ("A"   "Find"                 dired-do-find-regexp)
+    ("Q"   "Replace"              dired-do-find-regexp-and-replace)
+    ("B"   "Elisp bytecompile"    dired-do-byte-compile)
+    ("L"   "Elisp load"           dired-do-load)
+    ("X"   "Shell command"        dired-do-shell-command)
+    ("Z"   "Compress"             dired-do-compress)
+    ("c"   "Compress to"          dired-do-compress-to)
+    ("!"   "Shell command"        dired-do-shell-command)
+    ("&"   "Async shell command"  dired-do-async-shell-command)]]
+  )
+
 ;; %% evil
 (use-package evil
   :hook
@@ -142,8 +219,8 @@
   :config
   (defvar yx-initial-evil-state-setup
     '((conf-mode . normal)
-      (text-mode . normal)
       (prog-mode . normal)
+      (text-mode . insert)
       (color-rg-mode . emacs))
     "Default evil state per major mode.")
   (dolist (p yx-initial-evil-state-setup)
@@ -160,35 +237,6 @@
     "\C-y"  'yank
     "\C-w"  'kill-region
     "\M-."  'xref-find-definitions
-    )
-  ;; leader-key <SPC>
-  (evil-define-key '(normal visual) 'global
-    (kbd "SPC")
-    (define-keymap
-      "SPC"  'execute-extended-command-for-buffer
-      "!"    'shell-command
-      "/"    'consult-ripgrep
-
-      "f O"  'crux-open-with
-      "f r"  'rename-visited-file
-      "f F"  'crux-sudo-edit
-      "f E"  'crux-reopen-as-root
-      "f K"  'crux-kill-other-buffers
-      "f D"  'crux-delete-file-and-buffer
-
-      "j j"  'evil-avy-goto-char-timer
-      "j w"  'evil-avy-goto-word-or-subword-1
-      "j l"  'consult-line
-      "j L"  'consult-line-multi
-      "j i"  'consult-imenu
-      "j o"  'consult-outline
-      "j m"  'consult-mark
-      "j M"  'consult-global-mark
-
-      "h h"  'symbol-overlay-put
-      "h c"  'symbol-overlay-remove-all
-      "h t"  'hl-todo-occur
-      )
     )
   )
 

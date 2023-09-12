@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-09-11 00:32:12 yx>
+;; Modified: <2023-09-12 17:33:11 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -67,6 +67,8 @@
      (dired-hide-details-mode)))
   (add-hook 'wdired-mode-hook 'highlight-changes-mode)
   (put 'dired-find-alternate-file 'disabled nil)
+  :bind (:map dired-mode-map
+              ("M-<f10>" . yx/transient-dired))
   )
 
 ;; %% dired+

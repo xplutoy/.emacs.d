@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-09-10 19:55:04 yx>
+;; Modified: <2023-09-11 19:20:38 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -19,6 +19,8 @@
   :bind (:map org-mode-map
               ("RET"     . crux-yx/org-return-dwim)
               ("M-g o"   . consult-org-heading)
+              ("C-c I"   . (lambda () (interactive) (org-clock-in '(4))))
+              ("C-c O"   . org-clock-out)
               ("C-x n h" . crux-yx/org-show-current-heading-tidily))
   :autoload (org-calendar-holiday)
   :custom
@@ -102,10 +104,10 @@
                               ("@work" . ?w) ("@home" . ?h) ("@society" . ?s)
                               (:endgroup . nil)
                               (:startgroup . nil)
-                              ("math" . ?m) ("AI" . ?a) ("technology" . ?t)
+                              ("#math" . ?m) ("#ai" . ?a) ("#technology" . ?t)
                               (:endgroup . nil)
                               ("crypt" . ?c) ("project" . ?p)
-                              ("bugfix" . ?b) ("urgent" . ?u)
+                              ("%bugfix" . ?b) ("%urgent" . ?u)
                               )))
   (org-fast-tag-selection-single-key t)
 
@@ -161,8 +163,8 @@
   (org-agenda-include-diary t)
   (org-agenda-show-future-repeats 'next)
   (org-agenda-format-date 'yx/org-agenda-format-date-aligned)
-  (org-agenda-scheduled-leaders '("&计划  " "&拖%02d  "))
-  (org-agenda-deadline-leaders  '("&截止  " "&剩%02d  " "&逾%02d  "))
+  (org-agenda-scheduled-leaders '("&计划  " "&拖%03d  "))
+  (org-agenda-deadline-leaders  '("&截止  " "&剩%03d  " "&逾%03d  "))
 
   (org-clock-idle-time 30)
   (org-clock-into-drawer t)

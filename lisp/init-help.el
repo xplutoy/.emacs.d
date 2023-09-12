@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-28 17:41:00
-;; Modified: <2023-08-31 21:47:00 yx>
+;; Modified: <2023-09-11 14:31:36 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -155,7 +155,7 @@
   (skeleton-read "Description: ")
   "\n#\n#\n"
   "# --------------------------------------------------"
-  "\n\n\n" @ _
+  "\n\n" @ _ "\n"
   )
 
 (define-skeleton yx/auto-insert-el-header

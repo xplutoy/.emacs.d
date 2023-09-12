@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-09-07 20:10:51 yx>
+;; Modified: <2023-09-12 06:55:10 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -72,14 +72,16 @@
 
 (use-package circadian
   :demand t
-  :custom
-  (circadian-themes '(("19:30" . modus-vivendi)
-                      ("06:39" . modus-operandi)))
   :config
+  (add-hook 'after-init-hook
+            (lambda ()
+              (setq circadian-themes
+                    '((:sunset  . modus-vivendi)
+                      (:sunrise . modus-operandi)))
+              (circadian-setup)))
   (add-hook 'circadian-after-load-theme-hook
             (lambda (dummy)
               (awesome-tray-enable)))
-  (circadian-setup)
   )
 
 ;; %% modeline
