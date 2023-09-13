@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-09-13 08:31:08 yx>
+;; Modified: <2023-09-13 15:35:35 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -20,7 +20,7 @@
               ("M-<f10>" . yx/transient-org)
               ("RET"     . crux-yx/org-return-dwim)
               ("M-g o"   . consult-org-heading)
-              ("C-c I"   . yx/org-clock-in)
+              ("C-c I"   . org-clock-in)
               ("C-c O"   . org-clock-out)
               ("C-x n h" . crux-yx/org-show-current-heading-tidily))
   :autoload (org-calendar-holiday)
@@ -117,6 +117,7 @@
    '((sequence "TODO(t!)" "SOMEDAY(s!)" "NEXT(n!)" "HOLD(h@/!)" "WAITING(w@/!)" "|" "CANCELED(c@/!)" "DONE(d!)")))
   (org-todo-repeat-to-state "NEXT")
   (org-enforce-todo-dependencies t)
+  (org-treat-S-cursor-todo-selection-as-state-change nil)
 
   (org-default-notes-file
    (expand-file-name "inbox.org" org-directory))

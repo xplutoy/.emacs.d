@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-09-13 08:27:16 yx>
+;; Modified: <2023-09-13 16:23:26 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -31,13 +31,12 @@
   )
 
 (bind-keys
- ([remap move-beginning-of-line]        . crux-move-beginning-of-line)
+ ([remap move-beginning-of-line]        . crux-move-beginning-of-line) ; C-a
  ([remap goto-line]                     . consult-goto-line) ;M-g g
- ([remap switch-to-buffer]              . consult-buffer)
+ ([remap switch-to-buffer]              . consult-buffer) ; C-x b
  ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
  ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame)
  ([remap yank-pop]                      . consult-yank-pop) ;M-y
- ([remap apropos]                       . consult-apropos)
  ([remap bookmark-jump]                 . consult-bookmark) ;C-x r b
  ([remap imenu]                         . consult-imenu) ;M-g i
  ([remap describe-function]             . helpful-callable) ; C-h f
@@ -46,6 +45,7 @@
  ([remap describe-variable]             . helpful-variable) ; C-h v
  ([remap list-directory]                . zoxide-cd) ; C-x C-d
  ([remap dired-at-point]                . consult-dir) ; C-x d
+ ([remap isearch-forward]               . consult-line) ; C-s
  )
 
 (bind-keys
@@ -112,12 +112,6 @@
  ("C-c n b"   . denote-find-backlink)
  ("C-c n t"   . org-transclusion-add)
  ("C-c n C-t" . org-transclusion-add-all)
- ("C-x c j"   . citre-jump)
- ("C-x c k"   . citre-jump-back)
- ("C-x c p"   . citre-peek)
- ("C-x c a"   . citre-ace-peek)
- ("C-x c r"   . citre-peek-references)
- ("C-x c u"   . citre-update-this-tags-file)
  ("C-h b"     . embark-bindings)
  ("C-h M"     . which-key-show-major-mode)
  ("C-h B"     . embark-bindings-at-point)
@@ -141,17 +135,25 @@
     ("o" "crux-open-with" crux-open-with)
     ("%" "query-replace-regexp" query-replace-regexp)
     ("!" "shell-command" shell-command)
+    ("C" "desktop-clear" desktop-clear)
+    ("D" "crux-delete-file-and-buffer" crux-delete-file-and-buffer)
+    ("S" "Scratch" scratch-buffer)
     ("I" "Clock In" yx/org-clock-in)
     ("T" "Toggle" consult-minor-mode-menu)
-    ("D" "crux-delete-file-and-buffer" crux-delete-file-and-buffer)
     ("R" "rename-visited-file" rename-visited-file)
     ("K" "crux-kill-other-buffers" crux-kill-other-buffers)
     ("E" "crux-sudo-edit" crux-sudo-edit)]
    ["TT"
+    ("t0" "tab-close" tab-close)
+    ("t1" "tab-close-other" tab-close-other)
+    ("t2" "tab-new" tab-new)
+    ("f0" "delete-frame" delete-frame)
+    ("f1" "delete-other-frames" delete-other-frames)
+    ("f2" "make-frame" make-frame)
     ("ga" "consult-org-agenda" consult-org-agenda)
     ("ge" "consult-compile-error" consult-compile-error)
     ("gf" "consult-flymake" consult-flymake)
-    ("ci" "consult-emacs-info" yx/consult-emacs-info)]
+    ("si" "consult-emacs-info" yx/consult-emacs-info)]
    ]
   )
 

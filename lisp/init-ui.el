@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-09-12 06:55:10 yx>
+;; Modified: <2023-09-13 11:27:41 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,6 +11,8 @@
 ;; ui
 
 ;;; Code:
+(when IS-MAC
+  (add-hook 'after-init-hook 'menu-bar-mode))
 
 ;; %% font
 (defvar yx/default-font "Cascadia Code PL")

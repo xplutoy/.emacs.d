@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-09-10 01:12:10 yx>
+;; Modified: <2023-09-13 14:39:44 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -246,18 +246,6 @@
 
 (use-package consult-eglot
   :after consult
-  )
-
-;; %% citre
-(use-package citre
-  :init
-  (require 'citre-config)
-  :config
-  (setq
-   citre-use-project-root-when-creating-tags t
-   citre-auto-enable-citre-mode-modes '(prog-mode)
-   citre-default-create-tags-file-location 'global-cache
-   )
   )
 
 ;; %% emacs-lisp
