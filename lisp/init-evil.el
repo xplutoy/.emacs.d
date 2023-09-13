@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-09-13 01:06:36 yx>
+;; Modified: <2023-09-13 08:27:16 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -73,7 +73,7 @@
  ("M-r"       . consult-recent-file)
  ("M-o"       . ace-window)
  ("M-g ;"     . goto-last-change)
- ("M-g f"     . consult-flymake)
+ ("M-g M-f"   . consult-flymake)
  ("M-g o"     . consult-outline)
  ("M-g m"     . consult-mark)
  ("M-g M-m"   . consult-global-mark)
@@ -141,10 +141,17 @@
     ("o" "crux-open-with" crux-open-with)
     ("%" "query-replace-regexp" query-replace-regexp)
     ("!" "shell-command" shell-command)
+    ("I" "Clock In" yx/org-clock-in)
+    ("T" "Toggle" consult-minor-mode-menu)
     ("D" "crux-delete-file-and-buffer" crux-delete-file-and-buffer)
     ("R" "rename-visited-file" rename-visited-file)
     ("K" "crux-kill-other-buffers" crux-kill-other-buffers)
     ("E" "crux-sudo-edit" crux-sudo-edit)]
+   ["TT"
+    ("ga" "consult-org-agenda" consult-org-agenda)
+    ("ge" "consult-compile-error" consult-compile-error)
+    ("gf" "consult-flymake" consult-flymake)
+    ("ci" "consult-emacs-info" yx/consult-emacs-info)]
    ]
   )
 

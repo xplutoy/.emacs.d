@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-09-11 00:21:30 yx>
+;; Modified: <2023-09-13 08:24:26 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -51,6 +51,7 @@
 (use-package consult
   :config
   (setq
+   consult-narrow-key "<"
    xref-show-xrefs-function #'consult-xref
    xref-show-definitions-function #'consult-xref
    consult-ripgrep-args (concat consult-ripgrep-args " --hidden"))
@@ -65,6 +66,11 @@
   :bind (:map minibuffer-local-map
               ("M-s" . consult-history)
               ("M-r" . consult-history))
+  :preface
+  (defun yx/consult-emacs-info ()
+    "Search through Emacs info pages."
+    (interactive)
+    (consult-info "emacs" "elisp" "cl" "compat"))
   )
 
 (use-package consult-dir

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-09-13 01:37:22 yx>
+;; Modified: <2023-09-13 07:35:14 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -95,8 +95,6 @@
               ("TAB" . dired-subtree-cycle))
   )
 
-(use-package zoxide)
-
 (use-package dired-narrow
   :after dired
   :demand t
@@ -105,6 +103,8 @@
 
 (use-package dired-collapse
   :hook (dired-mode . dired-collapse-mode))
+
+(use-package zoxide)
 
 (use-package sr-speedbar
   :defer 2
@@ -141,7 +141,8 @@
    '("^\\*scratch\\*$"
      "^\\*Messages\\*$"
      "^\\*Summary.*\\*$"
-     "^\\*Group\\*$"))
+     "^\\*Group\\*$"
+     "^\\*elfeed-.*"))
   :config
   (midnight-mode t))
 

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-09-12 19:23:42 yx>
+;; Modified: <2023-09-13 08:31:08 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -17,10 +17,10 @@
   :ensure nil
   :defer 3
   :bind (:map org-mode-map
-              ("M-<f10>"  . yx/transient-org)
+              ("M-<f10>" . yx/transient-org)
               ("RET"     . crux-yx/org-return-dwim)
               ("M-g o"   . consult-org-heading)
-              ("C-c I"   . (lambda () (interactive) (org-clock-in '(4))))
+              ("C-c I"   . yx/org-clock-in)
               ("C-c O"   . org-clock-out)
               ("C-x n h" . crux-yx/org-show-current-heading-tidily))
   :autoload (org-calendar-holiday)
@@ -108,7 +108,7 @@
                               ("#math" . ?m) ("#ai" . ?a) ("#technology" . ?t)
                               (:endgroup . nil)
                               ("crypt" . ?c) ("project" . ?p)
-                              ("%bugfix" . ?b) ("%urgent" . ?u)
+                              ("%bugfix%" . ?b) ("%urgent%" . ?u)
                               )))
   (org-fast-tag-selection-single-key t)
 
@@ -247,6 +247,9 @@
               (org-agenda-to-appt)))
 
   :preface
+  (defun yx/org-clock-in ()
+    (interactive)
+    (org-clock-in '(4)))
   (transient-define-prefix yx/transient-org ()
     "Org commands."
     [["Misc"
