@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-09-13 08:24:26 yx>
+;; Modified: <2023-09-13 22:15:19 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -102,8 +102,9 @@
 
 (use-package cape
   :hook
-  (org-mode . yx/cape-capf-setup-org)
-  (LaTeX-mode . yx/cape-capf-setup-latex)
+  (org-mode    . yx/cape-capf-setup-org)
+  (prog-mode   . yx/cape-capf-setup-prog)
+  (LaTeX-mode  . yx/cape-capf-setup-latex)
   (eshell-mode . yx/cape-capf-setup-eshell)
   :init
   (setq cape-dabbrev-min-length 3)
@@ -125,6 +126,9 @@
   (defun yx/cape-capf-setup-eshell ()
     (dolist (ele '(cape-file
                    cape-history))
+      (add-to-list 'completion-at-point-functions ele)))
+  (defun yx/cape-capf-setup-prog ()
+    (dolist (ele `(,(cape-super-capf 'cape-dabbrev 'cape-symbol 'cape-keyword)))
       (add-to-list 'completion-at-point-functions ele)))
   )
 

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-09-13 16:23:26 yx>
+;; Modified: <2023-09-14 09:41:26 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -59,11 +59,12 @@
  ("M-]"       . tab-next)
  ("M-["       . tab-previous)
  ("s-k"       . crux-kill-other-buffers)
- ("C-'"       . vterm-toggle-cd)
  ("C-;"       . crux-yx/toggle-eshell)
+ ("C-:"       . vterm-toggle-cd)
  ("C-."       . embark-act)
  ("C-,"       . embark-dwim)
  ("C-/"       . undo-only)
+ ("M-0"       . delete-window)
  ("M-#"       . consult-register-load)
  ("M-'"       . consult-register-store)
  ("C-M-#"     . consult-register)
@@ -74,6 +75,7 @@
  ("M-o"       . ace-window)
  ("M-g ;"     . goto-last-change)
  ("M-g M-f"   . consult-flymake)
+ ("M-g M-e"   . consult-compile-error)
  ("M-g o"     . consult-outline)
  ("M-g m"     . consult-mark)
  ("M-g M-m"   . consult-global-mark)

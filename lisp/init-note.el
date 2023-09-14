@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-09-13 15:35:35 yx>
+;; Modified: <2023-09-14 09:12:07 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -30,7 +30,7 @@
   (org-num-max-level 2)
   (org-log-into-drawer t)
   (org-reverse-note-order t)
-  (org-return-follows-link nil)
+  (org-return-follows-link t)
   (org-crypt-key yx/gpg-encrypt-key)
   (org-hide-emphasis-markers t)
   (org-cycle-separator-lines 0)

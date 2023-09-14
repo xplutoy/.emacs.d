@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-09-13 14:39:44 yx>
+;; Modified: <2023-09-13 23:03:25 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -69,15 +69,10 @@
              ("C-c e L" . flymake-show-project-diagnostics))
   )
 
+(use-package apheleia
+  :init
+  (apheleia-global-mode +1))
 
-(use-package reformatter
-  :defer 2
-  :config
-  ;; python
-  (reformatter-define python-black
-    :program "black" :args '("-"))
-  (add-hook 'python-ts-mode-hook 'python-black-on-save-mode)
-  )
 
 ;; %% code snippet
 (use-package tempel

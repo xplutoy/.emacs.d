@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-09-11 01:24:50 yx>
+;; Modified: <2023-09-14 09:28:40 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -32,7 +32,6 @@
  delete-by-moving-to-trash t
  bookmark-save-flag 1
  set-mark-command-repeat-pop t
- show-paren-context-when-offscreen t
  compilation-scroll-output 'first-error
  backward-delete-char-untabify-method 'hungry
  sentence-end-double-space nil
@@ -47,6 +46,12 @@
  initial-scratch-message ""
  confirm-kill-processes nil
  disabled-command-function nil)
+
+;; %%
+(setq show-paren-style 'mixed
+      show-paren-context-when-offscreen t
+      show-paren-when-point-inside-paren t
+      )
 
 ;; %% font-lock
 (setq

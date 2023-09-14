@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:10:40
-;; Modified: <2023-09-08 07:44:38 yx>
+;; Modified: <2023-09-14 09:46:18 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -89,6 +89,7 @@
   :custom
   (vterm-toggle-hide-method 'delete-window)
   (vterm-toggle-cd-auto-create-buffer nil)
+  (vterm-toggle-reset-window-configration-after-exit t)
   )
 
 (use-package eshell-vterm
