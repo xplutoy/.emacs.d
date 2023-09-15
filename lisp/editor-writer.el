@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-09-15 22:03:18 yx>
+;; Modified: <2023-09-16 00:02:52 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -57,11 +57,19 @@ set to \\='(template title keywords subdirectory)."
   (setq
    TeX-auto-save t
    TeX-parse-self t
-   TeX-view-program-selection
-   '((output-pdf "pdf-tools"))
-   TeX-view-program-list
-   '(("pdf-tools" TeX-pdf-tools-sync-view)))
-  (setq reftex-plug-into-AUCTeX t)
+   reftex-plug-into-AUCTeX t
+   TeX-source-correlate-start-server t)
+
+  (setq TeX-view-program-list
+        '(("pdf-tools" TeX-pdf-tools-sync-view)
+          ("Skim" "displayline -b -g %n %o %b"))
+        TeX-view-program-selection
+        `((output-pdf ,(cond
+                        (IS-MAC "Skim")
+                        (t "pdf-tools")))
+          (output-dvi  ,yx/default-open-program)
+          (output-html ,yx/default-open-program)))
+
   (mapc (lambda (mode)
           (add-hook 'LaTeX-mode-hook mode))
         (list

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-09-15 19:47:51 yx>
+;; Modified: <2023-09-15 22:26:31 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -51,7 +51,7 @@
 (use-package consult
   :config
   (setq
-   consult-narrow-key "<"
+   consult-narrow-key "?"
    xref-show-xrefs-function #'consult-xref
    xref-show-definitions-function #'consult-xref
    consult-ripgrep-args (concat consult-ripgrep-args " --hidden"))

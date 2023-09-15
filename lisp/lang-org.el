@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-09-15 22:02:57 yx>
+;; Modified: <2023-09-15 22:43:33 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -26,7 +26,6 @@
   (org-directory yx/org-dir)
   (org-ellipsis "...")
   (org-num-max-level 2)
-  (org-log-into-drawer t)
   (org-reverse-note-order t)
   (org-return-follows-link t)
   (org-crypt-key yx/gpg-encrypt-key)
@@ -40,6 +39,7 @@
   (org-M-RET-may-split-line nil)
   (org-link-file-path-type 'relative)
   (org-ascii-headline-spacing '(0 . 1))
+  (org-yank-adjusted-subtrees t)
   (org-insert-heading-respect-content t)
   (org-fold-catch-invisible-edits 'show-and-error)
   (org-image-actual-width `(,(* (window-font-width)
@@ -52,6 +52,10 @@
   (org-hide-drawer-startup t)
   (org-startup-align-all-tables t)
   (org-startup-with-inline-images nil)
+
+  (org-log-redeadline t)
+  (org-log-reschedule t)
+  (org-log-into-drawer t)
 
   (org-pretty-entities t)
   (org-pretty-entities-include-sub-superscripts nil)
@@ -76,7 +80,7 @@
   (org-preview-latex-default-process 'dvisvgm)
   (org-startup-with-latex-preview nil)
   (org-latex-preview-ltxpng-directory
-   (expand-file-name "ltximg/" no-littering-var-directory))
+   (no-littering-expand-var-file-name "ltxinmg/"))
 
   (org-footnote-auto-adjust t)
 
@@ -152,6 +156,7 @@
   (org-agenda-todo-ignore-scheduled 'future)
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-window-setup 'current-window)
+  (org-agenda-restore-windows-after-quit t)
   (org-agenda-use-tag-inheritance nil)
   (org-agenda-use-time-grid t)
   (org-agenda-time-grid (quote ((daily today require-timed)
@@ -167,7 +172,7 @@
   (org-agenda-scheduled-leaders '("&计划  " "&拖%03d  "))
   (org-agenda-deadline-leaders  '("&截止  " "&剩%03d  " "&逾%03d  "))
 
-  (org-clock-idle-time 30)
+  (org-clock-idle-time 60)
   (org-clock-into-drawer t)
   (org-clock-persist t)
   (org-clock-in-resume t)
@@ -175,6 +180,7 @@
   (org-clock-in-switch-to-state "NEXT")
   (org-clock-persist-query-resume nil)
   (org-clock-out-remove-zero-time-clocks t)
+  (org-clock-report-include-clocking-task t)
   (org-use-last-clock-out-time-as-effective-time t)
 
   (org-global-properties
@@ -236,6 +242,7 @@
      (jupyter . t)))
   (org-crypt-use-before-save-magic)
   (org-clock-persistence-insinuate)
+  (org-clock-auto-clockout-insinuate)
   (unpackaged/def-org-maybe-surround "~" "=" "*" "/" "+")
   (add-hook 'org-babel-after-execute-hook
             (lambda ()
