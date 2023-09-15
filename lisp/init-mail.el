@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:52:27
-;; Modified: <2023-08-29 04:07:53 yx>
+;; Modified: <2023-09-15 13:59:48 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -46,14 +46,6 @@
    '((imap
       :server "imap.qq.com"
       :port 993
-      :user "yangxue.wk@foxmail.com"
-      :mailbox "INBOX"
-      :fetchflag "\\Seen"
-      :stream tls
-      :dontexpunge t)
-     (imap
-      :server "imap.qq.com"
-      :port 993
       :user "yangxue.cs@foxmail.com"
       :mailbox "INBOX"
       :fetchflag "\\Seen"
@@ -63,36 +55,50 @@
   (setq
    gnus-select-method '(nnnil "")
    gnus-secondary-select-methods
-   '((nnml "qqmail")
+   '((nnml "foxmail.cs")
      (nnimap
-      "outlook"
-      (nnimap-address "outlook.office365.com")
-      (nnimap-stream ssl)
+      "foxmail.wk"
+      (nnimap-address "imap.qq.com")
       (nnimap-server-port 993)
+      (nnimap-user "yangxue.wk@foxmail.com")
+      (nnimap-stream ssl)
       (nnimap-expunge 'nerver)
       (nnimap-search-engine imap)
       (nnimap-inbox "INBOX")
       (nnimap-split-methods default))
-     )
-   )
+     (nnimap
+      "outlook.cs"
+      (nnimap-user "yangxue.cs@outlook.com")
+      (nnimap-stream ssl)
+      (nnimap-server-port 993)
+      (nnimap-address "outlook.office365.com")
+      (nnimap-expunge 'nerver)
+      (nnimap-search-engine imap)
+      (nnimap-inbox "INBOX")
+      (nnimap-split-methods default))
+     ))
   (setq
    nnmail-expiry-wait '30
+   nnmail-resplit-incoming t
    nnmail-split-fancy-match-partial-words t
    nnmail-split-methods 'nnmail-split-fancy
    nnmail-split-fancy
    '(|
      (: nnmail-split-fancy-with-parent)
-     (any "emacs-devel@gnu\\.org"    "INBOX.emacs-devel")
-     (any "emacs-orgmode@gnu\\.org"  "INBOX.emacs-orgmode")
-     (any "help-gnu-emacs@gnu\\.org" "INBOX.help-gnu-emacs")
-     "INBOX.misc")
+     (to  "yangxue.cs@foxmail.com" "INBOX.foxmail.cs")
+     (to  "yangxue.wk@foxmail.com" "INBOX.foxmail.wk")
+     (to  "yangxue.cs@outlook.com" "INBOX.outlook.cs")
+     (any "emacs-devel@gnu.org"    "INBOX.emacs-devel")
+     (any "emacs-orgmode@gnu.org"  "INBOX.emacs-orgmode")
+     (any "help-gnu-emacs@gnu.org" "INBOX.help-gnu-emacs")
+     "INBOX.Misc")
    )
 
   (setq
    gnus-asynchronous t
    gnus-use-header-prefetch t
    gnus-use-cache t
-   gnus-use-scoring nil
+   gnus-use-scoring t
    gnus-suppress-duplicates t
    gnus-novice-user nil
    gnus-expert-user t

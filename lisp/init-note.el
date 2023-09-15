@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-09-14 09:12:07 yx>
+;; Modified: <2023-09-14 21:40:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -152,6 +152,7 @@
   (org-agenda-skip-scheduled-if-deadline-is-shown t)
   (org-agenda-todo-ignore-deadlines 'near)
   (org-agenda-todo-ignore-scheduled 'future)
+  (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-window-setup 'current-window)
   (org-agenda-use-tag-inheritance nil)
   (org-agenda-use-time-grid t)

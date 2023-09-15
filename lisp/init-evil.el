@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-09-14 09:41:26 yx>
+;; Modified: <2023-09-14 22:41:35 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -43,7 +43,7 @@
  ([remap describe-key]                  . helpful-key) ; C-h k
  ([remap describe-command]              . helpful-command) ; C-h x
  ([remap describe-variable]             . helpful-variable) ; C-h v
- ([remap list-directory]                . zoxide-cd) ; C-x C-d
+ ([remap list-directory]                . zoxide-travel) ; C-x C-d
  ([remap dired-at-point]                . consult-dir) ; C-x d
  ([remap isearch-forward]               . consult-line) ; C-s
  )
@@ -135,6 +135,7 @@
   [["Misc"
     ("a" "agenda" org-agenda-list)
     ("o" "crux-open-with" crux-open-with)
+    ("z" "zoom" zoom)
     ("%" "query-replace-regexp" query-replace-regexp)
     ("!" "shell-command" shell-command)
     ("C" "desktop-clear" desktop-clear)

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-09-14 09:28:40 yx>
+;; Modified: <2023-09-14 22:30:08 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -363,6 +363,8 @@
    w32-lwindow-modifier 'super))
  )
 
+(ffap-bindings)
+
 ;; %% hook
 (add-hook
  #'text-mode
@@ -379,7 +381,6 @@
  #'after-init-hook
  (lambda ()
    (repeat-mode 1)
-   (ffap-bindings)
    (save-place-mode 1)
    (blink-cursor-mode -1)
    (auto-compression-mode 1)
