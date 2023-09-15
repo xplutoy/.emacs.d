@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2023-09-12 17:54:25 yx>
+;; Modified: <2023-09-15 19:22:40 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -42,8 +42,10 @@
    (tool-bar-lines . 0)
    (menu-bar-lines . 0)
    (undecorated-round . t)
-   (ns-transparent-titlebar t)
    (vertical-scroll-bars . nil)))
+
+(when (featurep 'ns)
+  (push '(ns-transparent-titlebar . t) default-frame-alist))
 
 (tooltip-mode -1)
 

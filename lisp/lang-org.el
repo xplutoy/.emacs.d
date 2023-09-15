@@ -1,18 +1,16 @@
-;;; init-note.el --- org note  -*- lexical-binding: t; -*-
+;;; lang-org.el --- org  -*- lexical-binding: t; -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
-;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-09-14 21:40:37 yx>
+;; Created: 2023-09-15 21:58:58
+;; Modified: <2023-09-15 22:02:57 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
 
-;; note
+;;
 
 ;;; Code:
-
-;; %% org
 (use-package org
   :ensure nil
   :defer 3
@@ -332,7 +330,8 @@
   )
 
 (use-package org-project
-  :defer 3
+  :after org
+  :demand t
   :load-path "site-lisp/org-project-yx"
   :custom
   (org-project-prompt-for-project t)
@@ -344,97 +343,5 @@
               ("o" . org-project-open-todos))
   )
 
-(use-package org-web-tools)
-
-;; %% note
-(use-package denote
-  :after org
-  :demand t
-  :custom
-  (denote-directory yx/org-dir)
-  (denote-infer-keywords t)
-  (denote-known-keywords nil)
-  (denote-allow-multi-word-keywords t)
-  (denote-date-prompt-use-org-read-date t)
-  (denote-excluded-directories-regexp "data\\|scaffold")
-  (denote-prompts '(subdirectory title keywords))
-  (denote-templates nil)
-  :config
-  (require 'denote-org-dblock)
-  :preface
-  (defun yx/denote-template ()
-    "Create note while prompting for a template.
-This is equivalent to calling `denote' when `denote-prompts' is
-set to \\='(template title keywords subdirectory)."
-    (declare (interactive-only t))
-    (interactive)
-    (let ((denote-prompts '(template subdirectory title keywords)))
-      (call-interactively #'denote)))
-  )
-
-(use-package citar-denote
-  :after (citar denote)
-  :demand t
-  :config
-  (setq citar-denote-subdir t)
-  (citar-denote-mode)
-  )
-
-(use-package org-transclusion)
-
-;; %% latex
-(use-package tex
-  :ensure auctex
-  :mode (("\\.tex\\'" . LaTeX-mode))
-  :config
-  (setq-default
-   Tex-master nil
-   TeX-engine 'xetex)
-  (setq
-   TeX-auto-save t
-   TeX-parse-self t
-   TeX-view-program-selection
-   '((output-pdf "pdf-tools"))
-   TeX-view-program-list
-   '(("pdf-tools" TeX-pdf-tools-sync-view)))
-  (setq reftex-plug-into-AUCTeX t)
-  (mapc (lambda (mode)
-          (add-hook 'LaTeX-mode-hook mode))
-        (list
-         'flyspell-mode
-         'TeX-PDF-mode
-         'turn-on-reftex
-         'LaTeX-math-mode
-         'TeX-source-correlate-mode))
-  (add-hook 'TeX-after-comilation-finished-functions
-            'TeX-revert-document-buffer)
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs '(latex-mode "texlab")))
-  )
-
-(use-package cdlatex
-  :hook
-  ((LaTeX-mode . turn-on-cdlatex)
-   (org-mode   . turn-on-org-cdlatex))
-  )
-
-;; %% citar
-(use-package citar
-  :after org
-  :demand t
-  :custom
-  (org-cite-insert-processor 'citar)
-  (org-cite-follow-processor 'citar)
-  (org-cite-activate-processor 'citar)
-  (citar-notes-paths `(,yx/org-dir))
-  (citar-library-paths `(,yx/zotero-dir))
-  (citar-at-point-function 'embark-act)
-  (citar-bibliography org-cite-global-bibliography)
-  :hook
-  (org-mode . citar-capf-setup)
-  (LaTeX-mode . citar-capf-setup)
-  )
-
-;; %% end
-(provide 'init-note)
-;;; init-note.el ends here
+(provide 'lang-org)
+;;; lang-org.el ends here

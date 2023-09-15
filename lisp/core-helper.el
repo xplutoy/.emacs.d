@@ -1,9 +1,9 @@
-;;; init-help.el --- help functions  -*- lexical-binding: t; -*-
+;;; core-helper.el --- help functions  -*- lexical-binding: t; -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-28 17:41:00
-;; Modified: <2023-09-11 14:31:36 yx>
+;; Modified: <2023-09-15 19:57:34 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,8 +11,22 @@
 ;;
 
 ;;; Code:
-
 (require 'tempo)
+
+(defvar yx/org-dir         "~/yxdocs/org-notes/")
+(defvar yx/zotero-dir      "~/Zotero/")
+(defvar yx/gpg-sign-key    "67B86CB8A5630C51!")
+(defvar yx/gpg-encrypt-key "8B1F9B207AF00BCF!")
+
+(defconst IS-MAC   (eq system-type 'darwin))
+(defconst IS-WIN   (eq system-type 'windows-nt))
+(defconst IS-LINUX (eq system-type 'gnu/linux))
+
+(defvar yx/default-open-program
+  (cond (IS-WIN   "start")
+        (IS-MAC   "open")
+        (IS-LINUX "xdg-open")
+        (t "")))
 
 (defconst yx/templates-dir
   (expand-file-name "templates" no-littering-etc-directory))
@@ -194,5 +208,5 @@
 
 
 ;; %% end
-(provide 'init-help)
-;;; init-help.el ends here
+(provide 'core-helper)
+;;; core-helper.el ends here

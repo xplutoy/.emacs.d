@@ -1,9 +1,9 @@
-;;; init-base.el --- basic  -*- lexical-binding: t; -*-
+;;; core-config.el --- basic  -*- lexical-binding: t; -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-09-14 22:30:08 yx>
+;; Modified: <2023-09-15 19:58:46 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -13,6 +13,18 @@
 ;;; Code:
 
 ;; %%
+(setq custom-file
+      (expand-file-name "custom.el" yx/etc-dir))
+(load custom-file 'noerror)
+
+(setq user-full-name "yangxue")
+(setq user-mail-address "yangxue.cs@foxmail.com")
+
+(setq system-time-locale "C")
+(prefer-coding-system 'utf-8)
+(set-language-environment 'utf-8)
+(set-default-coding-systems 'utf-8)
+
 (setq-default
  tab-width 2
  abbrev-mode t
@@ -395,5 +407,5 @@
   (emacs-lock-mode 'kill))
 
 ;; %% end
-(provide 'init-base)
-;;; init-base.el ends here
+(provide 'core-config)
+;;; core-config.el ends here

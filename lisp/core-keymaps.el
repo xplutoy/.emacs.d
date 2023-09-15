@@ -1,9 +1,9 @@
-;;; init-evil.el --- keymap  -*- lexical-binding: t; -*-
+;;; core-keymaps.el --- keymap  -*- lexical-binding: t; -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-09-14 22:41:35 yx>
+;; Modified: <2023-09-15 22:16:10 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -219,5 +219,5 @@
   )
 
 ;; %% end
-(provide 'init-evil)
-;;; init-evil.el ends here
+(provide 'core-keymaps)
+;;; core-keymaps.el ends here

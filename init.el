@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2023-09-08 07:47:16 yx>
+;; Modified: <2023-09-15 22:16:42 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,87 +11,26 @@
 ;; init
 
 ;;; Code:
-
-;; %%
-(setq user-full-name "yangxue")
-(setq user-mail-address "yangxue.cs@foxmail.com")
-
-(defvar yx/etc-dir         "~/.emacs.d/etc/")
-(defvar yx/var-dir         "~/.emacs.d/.cache/")
-(defvar yx/org-dir         "~/yxdocs/org-notes/")
-(defvar yx/zotero-dir      "~/Zotero/")
-(defvar yx/gpg-sign-key    "67B86CB8A5630C51!")
-(defvar yx/gpg-encrypt-key "8B1F9B207AF00BCF!")
-
-(defconst IS-MAC   (eq system-type 'darwin))
-(defconst IS-WIN   (eq system-type 'windows-nt))
-(defconst IS-LINUX (eq system-type 'gnu/linux))
-
-(defvar yx/default-open-program
-  (cond (IS-WIN   "start")
-        (IS-MAC   "open")
-        (IS-LINUX "xdg-open")
-        (t ""))
-  )
-
-(menu-bar-mode -1)
-(setq system-time-locale "C")
-(prefer-coding-system 'utf-8)
-(set-language-environment 'utf-8)
-(set-default-coding-systems 'utf-8)
-(setq custom-file (expand-file-name "custom.el" yx/etc-dir))
-(load custom-file 'noerror)
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
+(require 'core-package)
+(require 'core-helper)
+(require 'core-config)
+(require 'core-keymaps)
 
-;; %% package init
-(require 'package)
-(setq
- package-archives
- '(("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
-   ("nongnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
-   ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/"))
- package-quickstart nil
- use-package-always-defer t
- use-package-always-ensure t
- use-package-expand-minimally t
- use-package-enable-imenu-support t
- package-install-upgrade-built-in nil
- package-user-dir (expand-file-name "elpa" yx/var-dir)
- package-gnupghome-dir (expand-file-name "gnupg" package-user-dir))
-(unless (bound-and-true-p package--initialized)
-  (package-initialize))
-(require 'use-package)
+(require 'editor-ui)
+(require 'editor-completion)
+(require 'editor-misc)
+(require 'editor-window)
+(require 'editor-mail)
+(require 'editor-terminal)
+(require 'editor-reader)
+(require 'editor-writer)
+(require 'editor-ide)
 
-;; %% benchmark
-(use-package benchmark-init)
-(benchmark-init/activate)
-(add-hook 'after-init-hook 'benchmark-init/deactivate)
-
-;; %% no-littering
-(use-package no-littering
-  :demand t
-  :init
-  (setq no-littering-var-directory yx/var-dir
-        no-littering-etc-directory yx/etc-dir
-        )
-  :config
-  (no-littering-theme-backups)
-  )
-
-(require 'init-help)
-
-;; %% submodule
-(require 'init-ui)
-(require 'init-base)
-(require 'init-comp)
-(require 'init-evil)
-(require 'init-misc)
-(require 'init-wind)
-(require 'init-term)
-(require 'init-note)
-(require 'init-lang)
-(require 'init-mail)
-(require 'init-read)
+(require 'lang-org)
+(require 'lang-misc)
+(require 'lang-python)
+(require 'lang-julia)
 
 ;;; init.el ends here

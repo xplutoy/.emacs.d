@@ -1,18 +1,16 @@
-;;; init-lang.el --- ide  -*- lexical-binding: t; -*-
+;;; editor-ide.el --- ide  -*- lexical-binding: t; -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
-;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-09-13 23:03:25 yx>
+;; Created: 2023-09-15 22:10:42
+;; Modified: <2023-09-15 22:13:40 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
 
-;; ide
+;;
 
 ;;; Code:
-
-;; %% prog-mode misc
 (add-hook
  #'prog-mode-hook
  (lambda ()
@@ -72,7 +70,6 @@
 (use-package apheleia
   :init
   (apheleia-global-mode +1))
-
 
 ;; %% code snippet
 (use-package tempel
@@ -243,155 +240,5 @@
   :after consult
   )
 
-;; %% emacs-lisp
-(define-auto-insert "\\.el$" 'yx/auto-insert-el-header)
-(add-hook 'emacs-lisp-mode-hook
-          (lambda ()
-            (prettify-symbols-mode)
-            (treesit-parser-create 'elisp)))
-
-;; %% c/c++
-(setq c-basic-offset 4
-      c-default-style "linux")
-(define-auto-insert
-  "\\.\\([Hh]\\|hh\\|hpp\\|hxx\\|h\\+\\+\\)\\'"
-  'yx/auto-insert-h-header
-  )
-(define-auto-insert
-  "\\.\\([Cc]\\|cc\\|cpp\\|cxx\\|c\\+\\+\\)\\'"
-  'yx/auto-insert-c-header)
-
-;; %% jupyter
-(use-package jupyter
-  :after org
-  :demand t
-  :config
-  (setq jupyter-eval-use-overlays nil)
-  ;; @see https://github.com/emacs-jupyter/jupyter/issues/478
-  (setf (alist-get "python" org-src-lang-modes nil nil #'equal) 'python-ts)
-  )
-
-(use-package code-cells
-  :hook ((julia-mode
-          python-ts-mode
-          emacs-lisp-mode) . code-cells-mode-maybe)
-  :bind (:map code-cells-mode-map
-              ("M-p"     . code-cells-backward-cell)
-              ("M-n"     . code-cells-forward-cell))
-  :config
-  (setq code-cells-eval-region-commands
-        '((python-ts-mode . python-shell-send-region)
-          (emacs-lisp-mode . eval-region)))
-  (with-eval-after-load 'jupyter
-    (defalias 'adopt-jupyter-eval-region (apply-partially 'jupyter-eval-region nil))
-    (add-to-list 'code-cells-eval-region-commands
-                 '(jupyter-repl-interaction-mode . adopt-jupyter-eval-region)))
-  (with-eval-after-load 'julia-snail
-    (add-to-list 'code-cells-eval-region-commands
-                 '(julia-snail-mode . julia-snail-send-code-cell)))
-  )
-
-;; %% python
-(defvar yx/default-python-env "~/workspace/.venv/")
-
-(add-hook
- 'python-ts-mode-hook
- (lambda()
-   (setq-local
-    tab-width 2
-    python-indent-offset 4
-    imenu-create-index-function 'python-imenu-create-flat-index
-    ))
- )
-
-(setq
- python-shell-dedicated t
- python-skeleton-autoinsert t
- python-indent-guess-indent-offset-verbose nil
- python-shell-virtualenv-root yx/default-python-env
- python-shell-interpreter "jupyter"
- python-shell-interpreter-args "console --simple-prompt"
- python-shell-completion-native-disabled-interpreters '("ipython" "jupyter"))
-
-(define-auto-insert "\\.py$" 'yx/auto-insert-common-header)
-
-(use-package pyvenv
-  :defer 2
-  :config
-  (pyvenv-activate yx/default-python-env)
-  )
-
-(use-package pyvenv-auto
-  :hook (python-ts-mode . pyvenv-auto-run))
-
-(use-package poetry
-  :hook (python-ts-mode . poetry-tracking-mode))
-
-;; %% Julia
-(use-package julia-mode)
-(use-package julia-ts-mode
-  :mode "\\.jl$")
-
-(use-package eglot-jl
-  :init
-  (with-eval-after-load 'eglot
-    (eglot-jl-init))
-  )
-
-(define-auto-insert "\\.jl$" 'yx/auto-insert-common-header)
-
-(use-package julia-snail
-  :custom
-  (julia-snail-terminal-type :eat)
-  (julia-snail-extensions '(ob-julia formatter))
-  :hook
-  (julia-mode . julia-snail-mode)
-  (julia-ts-mode . julia-snail-mode)
-  )
-
-;; %% R/julia
-(use-package ess-site
-  :ensure ess
-  )
-(define-auto-insert "\\.R$" 'yx/auto-insert-common-header)
-
-;; %% toy langs
-(use-package geiser-chez
-  :init
-  (setq geiser-chez-binary "chez")
-  )
-
-;; %% misc lang
-(add-hook
- 'sh-mode-hook
- (lambda()
-   (setq sh-indentation 2
-         sh-basic-offset 2)
-   (electric-pair-mode -1)
-   (ansi-color-for-comint-mode-on)
-   (compilation-shell-minor-mode 1)
-   )
- )
-
-(use-package yaml-mode)
-
-(use-package json-mode)
-
-(use-package vimrc-mode
-  :mode "\\.?vim\\(rc\\)?\\'"
-  )
-
-(use-package gnuplot-mode
-  :mode "\\.gp$"
-  )
-
-;; %% maxima
-(autoload 'maxima-mode "maxima" "Maxima mode" t)
-(autoload 'imaxima "imaxima" "Frontend for maxima with Image support" t)
-(autoload 'maxima "maxima" "Maxima interaction" t)
-(autoload 'imath-mode "imath" "Imath mode for math formula input" t)
-(setq imaxima-use-maxima-mode-flag t)
-(add-to-list 'auto-mode-alist '("\\.ma[cx]\\'" . maxima-mode))
-
-;; %% end
-(provide 'init-lang)
+(provide 'editor-ide)
+;;; editor-ide.el ends here

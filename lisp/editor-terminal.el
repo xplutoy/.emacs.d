@@ -1,9 +1,9 @@
-;;; init-term.el --- terminal  -*- lexical-binding: t; -*-
+;;; editor-terminal.el --- terminal  -*- lexical-binding: t; -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:10:40
-;; Modified: <2023-09-14 09:46:18 yx>
+;; Modified: <2023-09-15 20:02:04 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -111,5 +111,5 @@
   )
 
 ;; %% end
-(provide 'init-term)
-;;; init-term.el ends here
+(provide 'editor-terminal)
+;;; editor-terminal.el ends here

@@ -1,9 +1,9 @@
-;;; init-misc.el --- misc  -*- lexical-binding: t; -*-
+;;; editor-misc.el --- misc  -*- lexical-binding: t; -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-09-13 08:02:59 yx>
+;; Modified: <2023-09-15 19:49:51 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -223,5 +223,5 @@
   )
 
 ;; %% end
-(provide 'init-misc)
-;;; init-misc.el ends here
+(provide 'editor-misc)
+;;; editor-misc.el ends here

@@ -1,9 +1,9 @@
-;;; init-ui.el --- ui  -*- lexical-binding: t; -*-
+;;; editor-ui.el --- ui  -*- lexical-binding: t; -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-09-13 11:27:41 yx>
+;; Modified: <2023-09-15 19:59:12 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,6 +11,7 @@
 ;; ui
 
 ;;; Code:
+(menu-bar-mode -1)
 (when IS-MAC
   (add-hook 'after-init-hook 'menu-bar-mode))
 
@@ -30,10 +31,9 @@
   )
 
 (if (daemonp)
-    (add-hook
-     'after-make-frame-functions
-     (lambda (frame)
-       (with-selected-frame frame (yx/setup-fonts))))
+    (add-hook 'after-make-frame-functions
+              (lambda (frame)
+                (with-selected-frame frame (yx/setup-fonts))))
   (yx/setup-fonts))
 
 ;; %% theme
@@ -48,6 +48,8 @@
 (setq window-divider-default-bottom-width 1
       window-divider-default-places 'bottom-only)
 (add-hook 'after-init-hook 'window-divider-mode)
+
+(setq x-underline-at-descent-line t)
 
 (setq
  modus-themes-headings
@@ -104,5 +106,5 @@
 
 
 ;; %% end
-(provide 'init-ui)
-;;; init-ui.el ends here
+(provide 'editor-ui)
+;;; editor-ui.el ends here
