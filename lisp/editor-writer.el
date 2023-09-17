@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-09-16 00:02:52 yx>
+;; Modified: <2023-09-17 11:28:39 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -75,11 +75,12 @@ set to \\='(template title keywords subdirectory)."
         (list
          'flyspell-mode
          'TeX-PDF-mode
+         'TeX-fold-mode
          'turn-on-reftex
          'LaTeX-math-mode
+         'prettify-symbols-mode
          'TeX-source-correlate-mode))
-  (add-hook 'TeX-after-comilation-finished-functions
-            'TeX-revert-document-buffer)
+  (add-hook 'TeX-after-comilation-finished-functions 'TeX-revert-document-buffer)
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs '(latex-mode "texlab")))
   )

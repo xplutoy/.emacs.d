@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:10:40
-;; Modified: <2023-09-15 20:02:04 yx>
+;; Modified: <2023-09-16 19:26:47 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -67,7 +67,7 @@
 
 (use-package pcmpl-args
   :after eshell
-  :demand
+  :demand t
   )
 
 ;; %% vterm
@@ -94,7 +94,7 @@
 
 (use-package eshell-vterm
   :after vterm
-  :demand
+  :demand t
   :config
   (eshell-vterm-mode)
   (defalias 'eshell/v 'eshell-exec-visual))

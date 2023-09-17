@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-09-15 19:49:51 yx>
+;; Modified: <2023-09-17 10:06:42 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -118,6 +118,10 @@
               ("f" . yx/helpful-prev-buffer))
   )
 
+(use-package command-log-mode
+  :custom
+  (command-log-mode-key-binding-open-log nil))
+
 ;; %% pulse the target line of navigate
 (defun yx/pulse-line (&rest _)
   "Pulse the current line."
@@ -210,14 +214,14 @@
 
 (use-package osx-dictionary
   :if IS-MAC
-  :bind (("C-c D" . osx-dictionary-search-input)
-         ("C-c d" . osx-dictionary-search-pointer))
+  :bind (("M-s M-d " . osx-dictionary-search-input)
+         ("M-s d"    . osx-dictionary-search-pointer))
   )
 
 (use-package fanyi
   :unless IS-MAC
-  :bind (("C-c D" . fanyi-dwim)
-         ("C-c d" . fanyi-dwim2))
+  :bind (("M-s M-d" . fanyi-dwim)
+         ("M-s d"   . fanyi-dwim2))
   :custom
   (fanyi-providers '(fanyi-haici-provider))
   )

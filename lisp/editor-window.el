@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-09-15 22:22:26 yx>
+;; Modified: <2023-09-16 10:06:57 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -12,7 +12,26 @@
 
 ;;; Code:
 
-;; %%
+;; %% @see http://yummymelon.com/devnull/using-bookmarks-in-emacs-like-you-do-in-web-browsers.html
+(easy-menu-define yx/bookmarks-menu nil
+  "Keymap for CC Bookmarks Menu"
+  '("Bookmarks"
+    ["Edit Bookmarks" list-bookmarks
+     :help "Display a list of existing bookmarks."]
+    ["--" nil]
+    ["Add Bookmark…" bookmark-set-no-overwrite
+     :help "Set a bookmark named NAME at the current location."]
+    ["---" nil]
+    ["Jump to Bookmark…" bookmark-jump
+     :help "Jump to bookmark"]))
+
+(easy-menu-add-item global-map '(menu-bar)
+                    yx/bookmarks-menu
+                    "Tools")
+
+(define-key global-map [menu-bar edit bookmark] nil)
+
+;; %% windows manager
 (setq
  winner-dont-bind-my-keys t
  winner-boring-buffers-regexp "^\\*")

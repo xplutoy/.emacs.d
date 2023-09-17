@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-09-15 22:13:40 yx>
+;; Modified: <2023-09-17 10:58:52 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -71,7 +71,7 @@
   :init
   (apheleia-global-mode +1))
 
-;; %% code snippet
+;; %% snippet
 (use-package tempel
   :defer 2
   :bind
@@ -192,7 +192,7 @@
   (yx/setup-install-grammars)
   )
 
-;; %% code navigate and search
+;; %% refoctor
 (use-package color-rg
   :load-path "site-lisp/color-rg"
   :defer 2
@@ -201,6 +201,7 @@
   (color-rg-mac-load-path-from-shell nil)
   )
 
+;; %% code navigate
 (use-package combobulate
   :ensure nil
   :load-path "site-lisp/combobulate"

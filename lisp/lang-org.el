@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-09-15 22:43:33 yx>
+;; Modified: <2023-09-16 20:05:10 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -81,6 +81,8 @@
   (org-startup-with-latex-preview nil)
   (org-latex-preview-ltxpng-directory
    (no-littering-expand-var-file-name "ltxinmg/"))
+  (setq org-latex-logfiles-extensions
+        (append org-latex-logfiles-extensions '("toc" "dvi")))
 
   (org-footnote-auto-adjust t)
 
@@ -155,7 +157,7 @@
   (org-agenda-todo-ignore-deadlines 'near)
   (org-agenda-todo-ignore-scheduled 'future)
   (org-agenda-tags-todo-honor-ignore-options t)
-  (org-agenda-window-setup 'current-window)
+  (org-agenda-window-setup 'only-window)
   (org-agenda-restore-windows-after-quit t)
   (org-agenda-use-tag-inheritance nil)
   (org-agenda-use-time-grid t)
@@ -265,6 +267,9 @@
       ("n" "org-narrow-to-subtree" org-narrow-to-subtree)
       ("I" "Clock In" org-clock-in)
       ("O" "Clock Out" org-clock-out)]
+     ["Cite"
+      ("ci" "org-cite-insert" org-cite-insert)
+      ("co" "citar-open" citar-open)]
      ]
     )
   )

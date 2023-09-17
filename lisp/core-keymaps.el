@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-09-15 22:16:10 yx>
+;; Modified: <2023-09-17 10:11:53 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -150,6 +150,7 @@
     ("t0" "tab-close" tab-close)
     ("t1" "tab-close-other" tab-close-other)
     ("t2" "tab-new" tab-new)
+    ("tl" "toggle-command-log-buffer" clm/toggle-command-log-buffer)
     ("f0" "delete-frame" delete-frame)
     ("f1" "delete-other-frames" delete-other-frames)
     ("f2" "make-frame" make-frame)
