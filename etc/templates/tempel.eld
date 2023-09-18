@@ -26,5 +26,7 @@ latex-mode
 
 org-mode
 
+($$ "\\(" p "\\)")
+(4= n "\\[" n> r> n "\\]")
 (sel "#+begin_src emacs-lisp" n> r> n "#+end_src" :post (org-edit-src-code))
 (sdot "#+begin_src dot :file " p " :cmdline -Kdot -Tpng" n> "digraph " p " {" n> r> n "}" n "#+end_src")

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-09-16 10:06:57 yx>
+;; Modified: <2023-09-18 08:53:47 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -54,9 +54,10 @@
 
 ;; %% tabbar
 (setq
+ tab-bar-show t
  tab-bar-tab-hints t
- tab-bar-new-button-show nil
- tab-bar-close-button-show nil
+ tab-bar-new-button-show t
+ tab-bar-close-button-show t
  tab-bar-new-tab-choice "*scratch*"
  tab-bar-tab-name-truncated-max 20
  tab-bar-select-tab-modifiers '(super))

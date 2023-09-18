@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-09-16 20:05:10 yx>
+;; Modified: <2023-09-18 17:11:52 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -57,7 +57,7 @@
   (org-log-reschedule t)
   (org-log-into-drawer t)
 
-  (org-pretty-entities t)
+  (org-pretty-entities nil)
   (org-pretty-entities-include-sub-superscripts nil)
 
   (org-fontify-done-headline t)
@@ -81,8 +81,6 @@
   (org-startup-with-latex-preview nil)
   (org-latex-preview-ltxpng-directory
    (no-littering-expand-var-file-name "ltxinmg/"))
-  (setq org-latex-logfiles-extensions
-        (append org-latex-logfiles-extensions '("toc" "dvi")))
 
   (org-footnote-auto-adjust t)
 
@@ -204,8 +202,13 @@
   (org-attach-store-link-p 'attach)
   (org-attach-sync-delete-empty-dir t)
 
+  (org-export-with-sub-superscripts '{})
+
   :config
   (plist-put org-format-latex-options :scale 1.50)
+  (with-eval-after-load 'ox-latex
+    (setq org-latex-logfiles-extensions
+          (append org-latex-logfiles-extensions '("toc" "dvi" "tex" "bbl"))))
   (add-hook
    'org-mode-hook
    (lambda ()
@@ -264,12 +267,16 @@
     [["Misc"
       ("a" "Archive Subtree" org-archive-subtree)
       ("g" "org-goto" org-goto)
-      ("n" "org-narrow-to-subtree" org-narrow-to-subtree)
-      ("I" "Clock In" org-clock-in)
-      ("O" "Clock Out" org-clock-out)]
+      ("i" "Clock In" org-clock-in)
+      ("o" "Clock Out" org-clock-out)
+      ("n" "org-narrow-to-subtree" org-narrow-to-subtree)]
+     ["Toggle"
+      ("tl" "org-toggle-link-display" org-toggle-link-display)
+      ("cv" "org-toggle-inline-images" org-toggle-inline-images)
+      ("cl" "org-preview-latex-fragment" org-preview-latex-fragment)]
      ["Cite"
-      ("ci" "org-cite-insert" org-cite-insert)
-      ("co" "citar-open" citar-open)]
+      ("bi" "org-cite-insert" org-cite-insert)
+      ("bo" "citar-open" citar-open)]
      ]
     )
   )
