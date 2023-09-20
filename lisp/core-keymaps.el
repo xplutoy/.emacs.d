@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-09-18 09:02:10 yx>
+;; Modified: <2023-09-19 08:35:31 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -111,7 +111,9 @@
  ("C-c n i"   . denote-link-or-create)
  ("C-c n l"   . denote-backlinks)
  ("C-c n f"   . denote-find-link)
+ ("C-c n C-f" . denote-org-dblock-insert-links)
  ("C-c n b"   . denote-find-backlink)
+ ("C-c n C-b" . denote-org-dblock-insert-backlinks)
  ("C-c n t"   . org-transclusion-add)
  ("C-c n C-t" . org-transclusion-add-all)
  ("C-h b"     . embark-bindings)

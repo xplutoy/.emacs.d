@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-09-17 10:58:52 yx>
+;; Modified: <2023-09-19 11:29:39 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -110,7 +110,7 @@
 
 ;; %% indent
 (use-package aggressive-indent
-  :hook (prog-mode . aggressive-indent-mode)
+  :hook (emacs-lisp-mode . aggressive-indent-mode)
   )
 
 (use-package indent-guide

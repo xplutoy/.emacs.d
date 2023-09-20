@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-09-17 10:06:42 yx>
+;; Modified: <2023-09-19 10:33:17 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -47,6 +47,15 @@
   (defengine bing
     "https://cn.bing.com/search?q=%s&ensearch=1"
     :keybinding "b")
+  (defengine wiki_cn
+    "https://zh.wikipedia.org/w/index.php?search=%s"
+    :keybinding "w")
+  (defengine wolfram-alpha
+    "https://www.wolframalpha.com/input/?i=%s"
+    :keybinding "m")
+  (defengine zhihu
+    "https://www.zhihu.com/search?q=%s"
+    :keybinding "z")
   )
 
 (use-package posframe)

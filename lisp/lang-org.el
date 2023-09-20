@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-09-18 17:11:52 yx>
+;; Modified: <2023-09-20 09:11:03 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -150,8 +150,9 @@
   (org-agenda-include-deadlines t)
   (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-scheduled-if-done t)
+  (org-agenda-skip-scheduled-if-deadline-is-shown 't)
   (org-agenda-skip-scheduled-delay-if-deadline 'post-deadline)
-  (org-agenda-skip-scheduled-if-deadline-is-shown t)
+  (org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled)
   (org-agenda-todo-ignore-deadlines 'near)
   (org-agenda-todo-ignore-scheduled 'future)
   (org-agenda-tags-todo-honor-ignore-options t)
@@ -169,8 +170,8 @@
   (org-agenda-include-diary t)
   (org-agenda-show-future-repeats 'next)
   (org-agenda-format-date 'yx/org-agenda-format-date-aligned)
-  (org-agenda-scheduled-leaders '("&计划  " "&拖%03d  "))
-  (org-agenda-deadline-leaders  '("&截止  " "&剩%03d  " "&逾%03d  "))
+  (org-agenda-scheduled-leaders '("&计划&  " "&拖%03d  "))
+  (org-agenda-deadline-leaders  '("&截止&  " "&剩%03d  " "&逾%03d  "))
 
   (org-clock-idle-time 60)
   (org-clock-into-drawer t)
@@ -292,7 +293,8 @@
    org-super-agenda-groups
    '((:name "Today"
             :time-grid t
-            :deadline today)
+            :deadline today
+            :scheduled today)
      (:name "Important"
             :tag "urgent"
             :priority>= "A")

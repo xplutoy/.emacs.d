@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-09-15 19:59:12 yx>
+;; Modified: <2023-09-20 19:08:12 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -73,6 +73,7 @@
  '(mode-line ((t :box (:style released-button)))))
 
 (require-theme 'modus-themes)
+(add-hook 'modus-themes-after-load-theme-hook 'awesome-tray-mode)
 
 (use-package circadian
   :demand t
