@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-09-19 11:29:39 yx>
+;; Modified: <2023-09-30 09:43:29 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -219,6 +219,7 @@
   (setq
    eglot-autoshutdown t
    eglot-extend-to-xref t
+   eglot-sync-connect nil
    eglot-report-progress nil
    eglot-events-buffer-size 0
    )

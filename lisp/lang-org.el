@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-09-20 09:11:03 yx>
+;; Modified: <2023-09-30 11:02:50 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -147,12 +147,14 @@
   (org-agenda-files `(,org-default-notes-file))
   (org-agenda-compact-blocks t)
   (org-agenda-remove-tags t)
+  (org-agenda-time-leading-zero t)
   (org-agenda-include-deadlines t)
   (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-scheduled-if-done t)
-  (org-agenda-skip-scheduled-if-deadline-is-shown 't)
-  (org-agenda-skip-scheduled-delay-if-deadline 'post-deadline)
-  (org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled)
+  (org-agenda-skip-scheduled-delay-if-deadline 't)
+  (org-agenda-skip-timestamp-if-deadline-is-shown nil)
+  (org-agenda-skip-scheduled-if-deadline-is-shown nil)
+  (org-agenda-skip-deadline-prewarning-if-scheduled 't)
   (org-agenda-todo-ignore-deadlines 'near)
   (org-agenda-todo-ignore-scheduled 'future)
   (org-agenda-tags-todo-honor-ignore-options t)
@@ -258,6 +260,7 @@
             (lambda ()
               (setq appt-time-msg-list nil)
               (org-agenda-to-appt)))
+  (run-at-time t 900 'org-agenda-to-appt)
 
   :preface
   (defun yx/org-clock-in ()

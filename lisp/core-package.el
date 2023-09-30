@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 19:52:43
-;; Modified: <2023-09-15 19:53:56 yx>
+;; Modified: <2023-09-30 10:03:16 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -19,7 +19,8 @@
  package-archives
  '(("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
    ("nongnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
-   ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/"))
+   ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")))
+(setq
  package-quickstart nil
  use-package-always-defer t
  use-package-always-ensure t
@@ -28,6 +29,9 @@
  package-install-upgrade-built-in nil
  package-user-dir (expand-file-name "elpa" yx/var-dir)
  package-gnupghome-dir (expand-file-name "gnupg" package-user-dir))
+(if (daemonp)
+    (setq use-package-always-demand t))
+
 (unless (bound-and-true-p package--initialized)
   (package-initialize))
 (require 'use-package)

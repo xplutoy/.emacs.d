@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-09-15 19:58:46 yx>
+;; Modified: <2023-09-30 10:40:09 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -71,6 +71,8 @@
  jit-lock-chunk-size 6000
  jit-lock-stealth-time 0.5
  jit-lock-context-time 0.2)
+
+(setq redisplay-skip-fontification-on-input t)
 
 ;; %% auto
 (setq
@@ -335,14 +337,14 @@
         ))
 
 (setq
- appt-display-format 'window
+ appt-audible t
  appt-display-interval 5
  appt-display-duration 120
- appt-message-warning-time 20)
+ appt-message-warning-time 20
+ appt-display-format 'window
+ appt-disp-window-function 'yx/appt-display-with-notification)
 
-(add-hook 'after-init-hook
-          (lambda ()
-            (appt-activate 1)))
+(add-hook 'after-init-hook 'appt-activate)
 
 (setq
  calendar-latitude +30.67

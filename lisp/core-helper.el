@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-28 17:41:00
-;; Modified: <2023-09-15 19:57:34 yx>
+;; Modified: <2023-09-30 10:38:47 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -108,6 +108,27 @@
 (defun yx/diary-sunset ()
   (elt (yx/diary-sunrise-sunset-split) 1))
 
+(cond
+ (IS-MAC
+  (defun yx/notify-send (&rest params)
+    "Send notifications via `terminal-notifier'."
+    (let ((title (plist-get params :title))
+          (body (plist-get params :body)))
+      (start-process "terminal-notifier"
+                     nil
+                     "terminal-notifier"
+                     "-group" "Emacs"
+                     "-title" title
+                     "-message" body
+                     "-activte" "org.gnu.Emacs"))))
+ (t
+  (defalias 'yx/notify-send 'notifications-notify)))
+
+(defun yx/appt-display-with-notification (min-to-app new-time appt-msg)
+  (yx/notify-send :title (format "Appointment in %s minutes" min-to-app)
+                  :body appt-msg
+                  :urgency 'critical)
+  (appt-disp-window min-to-app new-time appt-msg))
 
 ;; %% yx defined tempo skeleton
 (tempo-define-template
