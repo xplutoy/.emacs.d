@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-09-22 10:01:05 yx>
+;; Modified: <2023-10-04 19:18:24 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -102,6 +102,7 @@
      "^\\*Messages\\*$"
      "^\\*Summary.*\\*$"
      "^\\*Group\\*$"
+     "inbox.org$"
      "^\\*Org Agenda\\*$"
      "^\\*elfeed-.*"))
   :config
