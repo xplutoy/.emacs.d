@@ -1,9 +1,9 @@
-;;; lang-python.el --- python  -*- lexical-binding: t; -*-
+;;; lang-python.el --- python  -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:06:10
-;; Modified: <2023-09-15 22:07:19 yx>
+;; Modified: <2023-10-28 13:08:59 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:

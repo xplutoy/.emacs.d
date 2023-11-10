@@ -1,9 +1,9 @@
-;;; core-package.el --- package init  -*- lexical-binding: t; -*-
+;;; core-package.el --- package init  -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 19:52:43
-;; Modified: <2023-09-30 10:03:16 yx>
+;; Modified: <2023-10-28 13:08:52 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:

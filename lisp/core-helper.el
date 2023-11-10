@@ -1,9 +1,9 @@
-;;; core-helper.el --- help functions  -*- lexical-binding: t; -*-
+;;; core-helper.el --- help functions  -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-28 17:41:00
-;; Modified: <2023-09-30 10:38:47 yx>
+;; Modified: <2023-10-28 13:06:58 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -201,7 +201,7 @@
    (buffer-file-name))
   " --- "
   (skeleton-read "Descriptions: ")
-  "  -*- lexical-binding: t; -*-"
+  "  -*- lexical-binding: t -*-"
   '(setq lexical-binding t)
   "\n\n;; Author: "
   (user-full-name)

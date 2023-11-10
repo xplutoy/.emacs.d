@@ -1,9 +1,9 @@
-;;; lang-org.el --- org  -*- lexical-binding: t; -*-
+;;; lang-org.el --- org  -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-10-04 19:16:57 yx>
+;; Modified: <2023-10-28 13:08:22 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -79,8 +79,9 @@
   (org-latex-minted-options '(("breaklines")
                               ("bgcolor" "bg")))
   (org-latex-src-block-backend 'minted)
-  (org-preview-latex-default-process 'dvisvgm)
+  ;; (org-latex-preview-numbered t)
   (org-startup-with-latex-preview nil)
+  (org-preview-latex-default-process 'dvisvgm)
   (org-latex-preview-ltxpng-directory
    (no-littering-expand-var-file-name "ltxinmg/"))
 
@@ -213,6 +214,8 @@
 
   :config
   (plist-put org-format-latex-options :scale 1.50)
+  ;; (plist-put org-latex-preview-options :zoom 1.15)
+  ;; (plist-put org-latex-preview-options :scale 2.20)
   (with-eval-after-load 'ox-latex
     (setq org-latex-logfiles-extensions
           (append org-latex-logfiles-extensions '("toc" "dvi" "tex" "bbl"))))

@@ -1,9 +1,9 @@
-;;; editor-dired.el --- dired  -*- lexical-binding: t; -*-
+;;; editor-dired.el --- dired  -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:20:40
-;; Modified: <2023-09-15 22:22:10 yx>
+;; Modified: <2023-10-28 13:08:04 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:

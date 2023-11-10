@@ -1,9 +1,9 @@
-;;; editor-reader.el --- reader  -*- lexical-binding: t; -*-
+;;; editor-reader.el --- reader  -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2023-09-17 10:43:39 yx>
+;; Modified: <2023-10-28 13:07:19 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:

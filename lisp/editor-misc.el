@@ -1,9 +1,9 @@
-;;; editor-misc.el --- misc  -*- lexical-binding: t; -*-
+;;; editor-misc.el --- misc  -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-09-19 10:33:17 yx>
+;; Modified: <2023-10-28 23:46:31 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -89,8 +89,8 @@
 
 (use-package goggles
   :hook ((text-mode prog-mode) . goggles-mode)
-  :config
-  (setq-default goggles-pulse t)
+  :custom
+  (goggles-pulse t)
   )
 
 (use-package ace-link

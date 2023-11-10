@@ -1,9 +1,9 @@
-;;; lang-julia.el --- julia  -*- lexical-binding: t; -*-
+;;; lang-julia.el --- julia  -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:08:56
-;; Modified: <2023-09-15 22:09:08 yx>
+;; Modified: <2023-10-28 13:08:29 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:

@@ -1,9 +1,9 @@
-;;; core-config.el --- basic  -*- lexical-binding: t; -*-
+;;; core-config.el --- basic  -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-09-30 10:40:09 yx>
+;; Modified: <2023-10-28 14:20:45 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -32,7 +32,6 @@
  line-spacing 0.1
  truncate-lines t
  indent-tabs-mode nil
- bidi-display-reordering nil
  tab-always-indent 'complete)
 
 (setq
@@ -60,10 +59,11 @@
  disabled-command-function nil)
 
 ;; %%
-(setq show-paren-style 'mixed
-      show-paren-context-when-offscreen t
-      show-paren-when-point-inside-paren t
-      )
+(setq
+ show-paren-style 'mixed
+ show-paren-context-when-offscreen t
+ show-paren-when-point-inside-paren t
+ )
 
 ;; %% font-lock
 (setq
@@ -143,12 +143,11 @@
 (add-hook 'after-init-hook 'recentf-mode)
 
 ;; %% whitespace
-(setq-default whitespace-style
-              '(face spaces empty tabs newline trailing space-mark tab-mark newline-mark))
 (setq whitespace-line-column nil
       show-trailing-whitespace nil
-      whitespace-action '(clean auto-clean)
-      )
+      whitespace-action '(clean auto-clean))
+(setq-default whitespace-style
+              '(face spaces empty tabs newline trailing space-mark tab-mark newline-mark))
 
 ;; %% xref
 (setq
@@ -163,8 +162,8 @@
 
 ;; %% completion minibuffer
 (setq
- resize-mini-windows nil
- max-mini-window-height 30)
+ max-mini-window-height 30
+ resize-mini-windows 'grow-only)
 
 (setq
  completions-detailed t
@@ -286,7 +285,7 @@
  desktop-load-locked-desktop t
  desktop-files-not-to-save "\\(\\`/[^/:]*:\\|(ftp)\\'\\|(ssh)\\'\\|\\.org$\\|^/tmp/\\)")
 
-(desktop-save-mode 1)
+(add-hook 'after-init-hook 'desktop-save-mode)
 
 (with-eval-after-load 'desktop
   (dolist (mode '(eww-mode
@@ -307,6 +306,19 @@
       (format "%s\\|%s"
               vc-ignore-dir-regexp
               tramp-file-name-regexp))
+
+;; %% long line
+(setq
+ bidi-inhibit-bpa t
+ long-line-threshold 1000
+ syntax-wholeline-max 1000
+ large-hscroll-threshold 1000)
+
+(setq-default
+ bidi-display-reordering nil
+ bidi-paragraph-direction 'left-to-right)
+
+(add-hook 'after-init-hook 'so-long-mode)
 
 ;; %% calendar
 (setq calendar-holidays

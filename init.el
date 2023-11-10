@@ -1,9 +1,9 @@
-;;; init.el --- init  -*- lexical-binding: t; -*-
+;;; init.el --- init  -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2023-09-15 22:23:18 yx>
+;; Modified: <2023-10-28 13:10:48 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:

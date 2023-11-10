@@ -1,9 +1,9 @@
-;;; editor-ide.el --- ide  -*- lexical-binding: t; -*-
+;;; editor-ide.el --- ide  -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-09-30 09:43:29 yx>
+;; Modified: <2023-10-28 13:06:36 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:

@@ -1,4 +1,4 @@
-;;; early-init.el ---   -*- lexical-binding: t; -*-
+;;; early-init.el ---   -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.

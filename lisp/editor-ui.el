@@ -1,9 +1,9 @@
-;;; editor-ui.el --- ui  -*- lexical-binding: t; -*-
+;;; editor-ui.el --- ui  -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-09-20 19:08:12 yx>
+;; Modified: <2023-10-28 13:07:48 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -77,13 +77,12 @@
 
 (use-package circadian
   :demand t
+  :hook (after-init . circadian-setup)
   :config
-  (add-hook 'after-init-hook
-            (lambda ()
-              (setq circadian-themes
-                    '((:sunset  . modus-vivendi)
-                      (:sunrise . modus-operandi)))
-              (circadian-setup)))
+  (setq
+   circadian-themes
+   '((:sunset  . modus-vivendi)
+     (:sunrise . modus-operandi)))
   (add-hook 'circadian-after-load-theme-hook
             (lambda (dummy)
               (awesome-tray-enable)))
