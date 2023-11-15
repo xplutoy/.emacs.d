@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-11-16 03:50:42 yx>
+;; Modified: <2023-11-16 04:36:06 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -32,6 +32,7 @@
  ([remap move-beginning-of-line]        . crux-move-beginning-of-line) ; C-a
  ([remap goto-line]                     . consult-goto-line) ;M-g g
  ([remap switch-to-buffer]              . consult-buffer) ; C-x b
+ ([remap list-buffers]                  . ibuffer) ; C-x C-b
  ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
  ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame)
  ([remap yank-pop]                      . consult-yank-pop) ;M-y

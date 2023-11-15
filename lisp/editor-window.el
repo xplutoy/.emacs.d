@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-10-28 13:09:05 yx>
+;; Modified: <2023-11-16 04:38:45 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -165,8 +165,7 @@
   :config
   (setq
    shackle-rules
-   '((("\\*Ibuffer\\*"
-       "\\*Help\\*"
+   '((("\\*Help\\*"
        "\\*[Wo]*Man.*\\*"
        "\\*Dictionary\\*"
        "\\*Bookmark List\\*"
@@ -190,6 +189,7 @@
        "^\\*.* eww\\*$")
       :regexp t :select t :popup t)
      (("^magit" magit-mode
+       ibuffer-mode
        Info-mode
        dired-mode
        vterm-mode)
