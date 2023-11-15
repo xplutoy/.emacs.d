@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-10-28 13:06:36 yx>
+;; Modified: <2023-11-13 21:57:44 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -94,6 +94,8 @@
   )
 
 ;; %% version control
+(setq vc-handled-backends '(Git))
+
 (use-package diff-hl
   :hook
   (after-init . global-diff-hl-mode)

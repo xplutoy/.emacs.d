@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-10-28 14:20:45 yx>
+;; Modified: <2023-11-16 04:00:04 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -231,6 +231,10 @@
  fast-but-imprecise-scrolling t
  scroll-preserve-screen-position 'always)
 
+(setq
+ auto-window-vscroll nil
+ auto-hscroll-mode 'current-line)
+
 ;; %% browse url
 (setq
  browse-url-generic-program yx/default-open-program
@@ -318,7 +322,7 @@
  bidi-display-reordering nil
  bidi-paragraph-direction 'left-to-right)
 
-(add-hook 'after-init-hook 'so-long-mode)
+(add-hook 'after-init-hook 'global-so-long-mode)
 
 ;; %% calendar
 (setq calendar-holidays

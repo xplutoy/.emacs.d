@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-11-10 20:19:57 yx>
+;; Modified: <2023-11-16 03:50:42 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -182,6 +182,7 @@
    evil-respect-visual-line-mode t
    evil-disable-insert-state-bindings t
    )
+  :bind (([remap evil-quit] . kill-this-buffer))
   :config
   (defvar yx-initial-evil-state-setup
     '((conf-mode . normal)

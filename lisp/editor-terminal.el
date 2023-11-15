@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:10:40
-;; Modified: <2023-10-28 13:07:08 yx>
+;; Modified: <2023-11-16 04:14:57 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -13,12 +13,8 @@
 ;;; Code:
 
 ;; %% eshell
-(defun eshell/gst (&rest args)
-  (magit-status (pop args) nil)
-  (eshell/echo))
-
-(defun eshell/sudo-open (filename)
-  "Open a file as root in Eshell"
+(defun eshell/F (filename)
+  "Open a file as root from Eshell"
   (let ((qual-filename (if (string-match "^/" filename)
                            filename
                          (concat (expand-file-name (eshell/pwd)) "/" filename))))
