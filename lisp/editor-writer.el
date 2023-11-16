@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-10-28 13:07:27 yx>
+;; Modified: <2023-11-16 19:22:06 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -18,13 +18,13 @@
   (denote-directory yx/org-dir)
   (denote-infer-keywords t)
   (denote-known-keywords nil)
-  (denote-allow-multi-word-keywords t)
   (denote-date-prompt-use-org-read-date t)
   (denote-excluded-directories-regexp "data\\|scaffold")
   (denote-prompts '(subdirectory title keywords))
   (denote-templates nil)
   :config
   (require 'denote-org-dblock)
+  (denote-rename-buffer-mode 1)
   :preface
   (defun yx/denote-template ()
     "Create note while prompting for a template.
