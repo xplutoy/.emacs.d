@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-11-16 04:00:04 yx>
+;; Modified: <2023-11-18 21:20:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -234,6 +234,11 @@
 (setq
  auto-window-vscroll nil
  auto-hscroll-mode 'current-line)
+
+;; %% pulse
+(setq
+ pulse-delay 0.08
+ pulse-iterations 2)
 
 ;; %% browse url
 (setq

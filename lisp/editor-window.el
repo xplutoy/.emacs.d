@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-11-18 20:16:07 yx>
+;; Modified: <2023-11-18 21:12:35 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -55,16 +55,23 @@
 ;; %% tabbar
 (setq
  tab-bar-show t
+ tab-bar-format
+ '(tab-bar-format-menu-bar
+   tab-bar-format-tabs
+   tab-bar-separator
+   tab-bar-format-add-tab)
  tab-bar-tab-hints t
+ tab-bar-new-tab-to 'rightmost
  tab-bar-new-button-show t
  tab-bar-close-button-show t
  tab-bar-new-tab-choice "*scratch*"
  tab-bar-tab-name-truncated-max 20
  tab-bar-select-tab-modifiers '(super))
+
 (add-hook 'after-init-hook
           (lambda ()
-            (tab-bar-mode)
-            (tab-bar-history-mode)))
+            (tab-bar-mode 1)
+            (tab-bar-history-mode 1)))
 
 (use-package sr-speedbar
   :defer 2
