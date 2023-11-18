@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-11-18 21:20:37 yx>
+;; Modified: <2023-11-18 23:33:50 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -294,7 +294,11 @@
  desktop-load-locked-desktop t
  desktop-files-not-to-save "\\(\\`/[^/:]*:\\|(ftp)\\'\\|(ssh)\\'\\|\\.org$\\|^/tmp/\\)")
 
-(add-hook 'after-init-hook 'desktop-save-mode)
+(add-hook 'after-init-hook
+          (lambda ()
+            (desktop-read)
+            (desktop-save-mode 1))
+          )
 
 (with-eval-after-load 'desktop
   (dolist (mode '(eww-mode
