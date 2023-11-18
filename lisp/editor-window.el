@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-11-16 04:38:45 yx>
+;; Modified: <2023-11-18 20:16:07 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -134,8 +134,7 @@
    popper-display-control 'user
    popper-group-function #'popper-group-by-directory)
   (setq popper-reference-buffers
-        '("\\*Ibuffer\\*"
-          "^\\*Compile"
+        '("^\\*Compile"
           "\\*Backtrace\\*"
           "\\*Bookmark List\\*"
           "\\*shell.*\\*$" shell-mode

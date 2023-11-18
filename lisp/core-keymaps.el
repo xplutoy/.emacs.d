@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-11-16 04:36:06 yx>
+;; Modified: <2023-11-18 20:27:58 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -20,7 +20,6 @@
   :init
   (key-chord-mode 1)
   (key-chord-define-global "zz"     'zoom)
-  (key-chord-define-global "jk"     'scratch-buffer)
   (key-chord-define-global "jj"     'avy-goto-char-timer)
   (key-chord-define-global "jl"     'avy-goto-line)
   (with-eval-after-load 'org
@@ -79,12 +78,12 @@
  ("M-g m"     . consult-mark)
  ("M-g M-m"   . consult-global-mark)
  ("M-s l"     . consult-focus-lines)
- ("M-s g"     . color-rg-search-symbol)
- ("M-s M-g"   . color-rg-search-input)
+ ("M-s s"     . color-rg-search-symbol)
+ ("M-s M-s"   . color-rg-search-input)
  ("M-s p"     . color-rg-search-symbol-in-project)
  ("M-s M-p"   . color-rg-search-input-in-project)
- ("M-s s"     . color-rg-search-symbol-in-current-file)
- ("M-s M-s"   . color-rg-search-input-in-current-file)
+ ("M-s f"     . color-rg-search-symbol-in-current-file)
+ ("M-s M-f"   . color-rg-search-input-in-current-file)
  ("C-c ;"     . flyspell-correct-wrapper)
  ("C-c '"     . flyspell-correct-next)
  ("C-c k"     . kill-buffer-and-window)
@@ -137,15 +136,14 @@
     ("a" "agenda" org-agenda-list)
     ("o" "crux-open-with" crux-open-with)
     ("n" "evil-buffer-new" evil-buffer-new)
+    ("s" "scratch-buffer" scratch-buffer)
     ("v" "magit-file-dispatch" magit-file-dispatch)
-    ("z" "zoom" zoom)
     ("%" "query-replace-regexp" query-replace-regexp)
     ("!" "shell-command" shell-command)
     ("C" "desktop-clear" desktop-clear)
     ("D" "crux-delete-file-and-buffer" crux-delete-file-and-buffer)
     ("G" "magit-status" magit-status)
     ("V" "magit-dispatch" magit-dispatch)
-    ("S" "Scratch" scratch-buffer)
     ("I" "Clock In" yx/org-clock-in)
     ("T" "Toggle" consult-minor-mode-menu)
     ("R" "rename-visited-file" rename-visited-file)
