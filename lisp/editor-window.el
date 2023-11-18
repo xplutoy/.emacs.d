@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-11-18 23:00:13 yx>
+;; Modified: <2023-11-18 23:19:49 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -95,15 +95,14 @@
 ;; %% tabspaces
 (use-package tabspaces
   :hook (after-init . tabspaces-mode)
-  :commands (tabspaces-switch-or-create-workspace
-             tabspaces-open-or-create-project-and-workspace)
   :custom
   (tabspaces-use-filtered-buffers-as-default nil)
-  (tabspaces-default-tab "Default")
+  (tabspaces-default-tab "main")
   (tabspaces-remove-to-default t)
   (tabspaces-include-buffers '("*scratch*"))
   (tabspaces-initialize-project-with-todo nil)
   (tabspaces-session t)
+  (tabspaces-session-file (no-littering-expand-var-file-name "tabsession.el"))
   (tabspaces-session-auto-restore t)
   )
 
