@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-11-18 21:12:35 yx>
+;; Modified: <2023-11-18 23:00:13 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -90,6 +90,21 @@
    aw-background nil
    aw-dispatch-always t
    aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  )
+
+;; %% tabspaces
+(use-package tabspaces
+  :hook (after-init . tabspaces-mode)
+  :commands (tabspaces-switch-or-create-workspace
+             tabspaces-open-or-create-project-and-workspace)
+  :custom
+  (tabspaces-use-filtered-buffers-as-default nil)
+  (tabspaces-default-tab "Default")
+  (tabspaces-remove-to-default t)
+  (tabspaces-include-buffers '("*scratch*"))
+  (tabspaces-initialize-project-with-todo nil)
+  (tabspaces-session t)
+  (tabspaces-session-auto-restore t)
   )
 
 ;; %% buffer manager
