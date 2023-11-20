@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:10:40
-;; Modified: <2023-11-16 04:14:57 yx>
+;; Modified: <2023-11-20 22:35:51 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -31,9 +31,10 @@
    eshell-error-if-no-glob t
    eshell-save-history-on-exit t
    eshell-prefer-lisp-functions t
+   eshell-rm-removes-directories t
    eshell-scroll-to-bottom-on-input 'all
-   eshell-destroy-buffer-when-process-dies t
-   )
+   eshell-destroy-buffer-when-process-dies t)
+  :config
   (add-hook
    'eshell-mode-hook
    (lambda ()
@@ -50,8 +51,9 @@
      (eshell/alias "gs"   "magit-status")
      (eshell/alias "gv"   "magit-dispatch")
      (eshell/alias "ll"   "ls -AlohG --color=always")
-     )
-   )
+     ))
+  (dolist (m '(eshell-rebind eshell-tramp eshell-xtra eshell-elecslash))
+    (add-to-list 'eshell-modules-list m))
   )
 
 (use-package eshell-git-prompt-yx

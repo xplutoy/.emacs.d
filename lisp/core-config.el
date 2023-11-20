@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-11-18 23:33:50 yx>
+;; Modified: <2023-11-21 22:01:36 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -105,6 +105,9 @@
  kept-old-versions 2
  delete-old-versions t)
 
+(add-to-list 'backup-directory-alist
+             (cons tramp-file-name-regexp nil))
+
 ;; %% eldoc
 (setq
  eldoc-echo-area-use-multiline-p 3
@@ -119,7 +122,7 @@
 
 ;; %% line number
 (setq
- display-line-numbers-type 'visual
+ display-line-numbers-type t
  display-line-numbers-width-start t
  )
 
@@ -214,6 +217,7 @@
 
 ;; %% mouse
 (setq
+ mouse-highlight nil
  mouse-yank-at-point t
  mouse-wheel-tilt-scroll t
  mouse-wheel-follow-mouse t
@@ -234,11 +238,6 @@
 (setq
  auto-window-vscroll nil
  auto-hscroll-mode 'current-line)
-
-;; %% pulse
-(setq
- pulse-delay 0.08
- pulse-iterations 2)
 
 ;; %% browse url
 (setq
@@ -314,9 +313,10 @@
 (setq
  tramp-verbose 1
  tramp-default-method "ssh"
- remote-file-name-inhibit-cache nil)
+ remote-file-name-inhibit-cache nil
+ remote-file-name-inhibit-locks nil)
 (setq vc-ignore-dir-regexp
-      (format "%s\\|%s"
+      (format "\\(%s\\)\\|\\(%s\\)"
               vc-ignore-dir-regexp
               tramp-file-name-regexp))
 

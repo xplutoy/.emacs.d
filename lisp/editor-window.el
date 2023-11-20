@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-11-18 23:19:49 yx>
+;; Modified: <2023-11-20 22:53:16 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -43,11 +43,10 @@
  help-window-keep-selected t)
 
 (setq
- switch-to-prev-buffer-skip-regexp "^\\*\\|^magit.*"
  switch-to-buffer-obey-display-actions t
  switch-to-buffer-in-dedicated-window nil
  switch-to-buffer-preserve-window-point t
- )
+ switch-to-prev-buffer-skip-regexp "^\\*\\|^magit.*")
 
 (use-package burly
   :hook (after-init . burly-tabs-mode))
@@ -123,7 +122,6 @@
      "^\\*Messages\\*$"
      "^\\*Summary.*\\*$"
      "^\\*Group\\*$"
-     "inbox.org$"
      "^\\*Org Agenda\\*$"
      "^\\*elfeed-.*"))
   :config

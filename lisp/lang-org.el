@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-10-28 13:08:22 yx>
+;; Modified: <2023-11-20 22:41:19 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -209,6 +209,7 @@
   (org-attach-sync-delete-empty-dir t)
 
   (org-export-with-toc t)
+  (org-export-with-drawers nil)
   (org-export-with-section-numbers nil)
   (org-export-with-sub-superscripts '{})
 
