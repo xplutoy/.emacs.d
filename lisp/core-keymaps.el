@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-11-20 23:00:04 yx>
+;; Modified: <2023-11-22 09:04:44 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,6 +16,10 @@
 (defalias 'qrr ''query-replace-regexp)
 
 ;; %% 全局按键
+;; This avoids the ugly accidentally action of scaling text with using the trackpad
+(unbind-key "<C-wheel-up>")
+(unbind-key "<C-wheel-down>")
+
 (use-package key-chord
   :init
   (key-chord-mode 1)
@@ -50,6 +54,7 @@
  ("<f10>"     . yx/transient-global-odd)
  ("s-<f10>"   . yx/transient-global-even)
  ("s-<return>" . toggle-frame-maximized)
+ ("s-SPC"     . sis-switch)
  ("s-,"       . winner-undo)
  ("s-."       . winner-redo)
  ("s-]"       . ns-next-frame)

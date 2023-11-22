@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-11-21 22:01:36 yx>
+;; Modified: <2023-11-22 10:25:28 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -60,7 +60,7 @@
 
 ;; %%
 (setq
- show-paren-style 'mixed
+ show-paren-style 'parenthesis
  show-paren-context-when-offscreen t
  show-paren-when-point-inside-paren t
  )
@@ -77,7 +77,9 @@
 ;; %% auto
 (setq
  auto-save-no-message t
- auto-save-visited-interval 30)
+ auto-save-visited-interval 30
+ delete-auto-save-files t
+ kill-buffer-delete-auto-save-files t)
 
 (customize-set-variable 'auto-revert-use-notify nil)
 (add-hook 'after-init-hook 'global-auto-revert-mode)
@@ -131,12 +133,14 @@
 
 ;; %% recentf
 (setq
+ recentf-max-menu-items 15
  recentf-max-saved-items 50
- recentf-auto-cleanup 'never
+ recentf-auto-cleanup "1:00am"
  recentf-exclude
  '(".*\\.cache.*" "^/.*" "^/ssh:"
    "COMMIT_MSG" "COMMIT_EDITMSG" "/Downloads/" "/elpa/"
-   "\\.\\(?:gz\\|gif\\|svg\\|png\\|jpe?g\\|bmp\\|xpm\\)$"
+   "\\.\\(?:gif\\|svg\\|png\\|jpe?g\\|bmp\\|xpm\\)$"
+   "\\.\\(?:gz\\|zip\\|gpg\\)$"
    file-remote-p)
  )
 
@@ -239,6 +243,10 @@
  auto-window-vscroll nil
  auto-hscroll-mode 'current-line)
 
+;; %% media
+(setq
+ image-use-external-converter t)
+
 ;; %% browse url
 (setq
  browse-url-generic-program yx/default-open-program
@@ -313,8 +321,9 @@
 (setq
  tramp-verbose 1
  tramp-default-method "ssh"
- remote-file-name-inhibit-cache nil
- remote-file-name-inhibit-locks nil)
+ remote-file-name-inhibit-locks t
+ remote-file-name-inhibit-cache nil)
+
 (setq vc-ignore-dir-regexp
       (format "\\(%s\\)\\|\\(%s\\)"
               vc-ignore-dir-regexp
@@ -334,37 +343,38 @@
 (add-hook 'after-init-hook 'global-so-long-mode)
 
 ;; %% calendar
-(setq calendar-holidays
-      '((holiday-chinese 12 30 "春节")
-        (holiday-chinese 1 1   "春节")
-        (holiday-chinese 1 2   "春节")
-        (holiday-chinese 5 5   "端午节")
-        (holiday-chinese 1 15  "元宵节")
-        (holiday-chinese 7 7   "七夕节")
-        (holiday-chinese 9 9   "重阳节")
-        (holiday-chinese 8 15  "中秋节")
-        (holiday-fixed 1 1     "元旦")
-        (holiday-fixed 10 1    "国庆节")
-        (holiday-fixed 10 2    "国庆节")
-        (holiday-fixed 10 3    "国庆节")
-        (holiday-fixed 3 8     "妇女节")
-        (holiday-fixed 3 12    "植树节")
-        (holiday-fixed 5 1     "劳动节")
-        (holiday-fixed 5 4     "青年节")
-        (holiday-fixed 6 1     "儿童节")
-        (holiday-fixed 9 10    "教师节")
-        (holiday-fixed 2 14    "情人节")
-        (holiday-fixed 4 1     "愚人节")
-        (holiday-float 5 0 2   "母亲节")
-        (holiday-float 6 0 3   "父亲节")
-        (holiday-float 11 4 4  "感恩节")
-        (holiday-fixed 12 25   "圣诞节")
-        ))
+(setq
+ calendar-holidays
+ '((holiday-chinese 12 30 "春节")
+   (holiday-chinese 1 1   "春节")
+   (holiday-chinese 1 2   "春节")
+   (holiday-chinese 5 5   "端午节")
+   (holiday-chinese 1 15  "元宵节")
+   (holiday-chinese 7 7   "七夕节")
+   (holiday-chinese 9 9   "重阳节")
+   (holiday-chinese 8 15  "中秋节")
+   (holiday-fixed 1 1     "元旦")
+   (holiday-fixed 10 1    "国庆节")
+   (holiday-fixed 10 2    "国庆节")
+   (holiday-fixed 10 3    "国庆节")
+   (holiday-fixed 3 8     "妇女节")
+   (holiday-fixed 3 12    "植树节")
+   (holiday-fixed 5 1     "劳动节")
+   (holiday-fixed 5 4     "青年节")
+   (holiday-fixed 6 1     "儿童节")
+   (holiday-fixed 9 10    "教师节")
+   (holiday-fixed 2 14    "情人节")
+   (holiday-fixed 4 1     "愚人节")
+   (holiday-float 5 0 2   "母亲节")
+   (holiday-float 6 0 3   "父亲节")
+   (holiday-float 11 4 4  "感恩节")
+   (holiday-fixed 12 25   "圣诞节")
+   ))
 
 (setq
  appt-audible t
- appt-display-interval 5
- appt-display-duration 120
+ appt-display-interval 10
+ appt-display-duration 5
  appt-message-warning-time 20
  appt-display-format 'window
  appt-disp-window-function 'yx/appt-display-with-notification)
