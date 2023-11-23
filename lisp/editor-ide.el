@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-11-13 21:57:44 yx>
+;; Modified: <2023-11-24 02:33:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -29,9 +29,12 @@
     show-trailing-whitespace t)
    (whitespace-mode 1)
    (local-set-key (kbd "RET") 'newline-and-indent)
-   (add-hook 'before-save-hook 'delete-trailing-whitespace)
    )
  )
+
+(use-package ws-butler
+  :hook ((prog-mode conf-mode) . ws-butler-mode)
+  )
 
 ;; ediff
 (setq ediff-keep-variants nil
@@ -109,6 +112,11 @@
   )
 
 (use-package magit)
+
+(use-package magit-todos
+  :after magit
+  :demand t
+  :config (magit-todos-mode 1))
 
 ;; %% indent
 (use-package aggressive-indent

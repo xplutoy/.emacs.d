@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-11-20 22:41:19 yx>
+;; Modified: <2023-11-23 11:46:21 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -34,10 +34,12 @@
   (org-hide-emphasis-markers t)
   (org-cycle-separator-lines 0)
   (org-use-sub-superscripts '{})
+  (org-use-speed-commands t)
+  (org-special-ctrl-o t)
   (org-special-ctrl-k t)
   (org-special-ctrl-a/e t)
   (org-support-shift-select t)
-  (org-use-speed-commands t)
+  (org-ctrl-k-protect-subtree t)
   (org-M-RET-may-split-line nil)
   (org-link-file-path-type 'relative)
   (org-ascii-headline-spacing '(0 . 1))
@@ -81,6 +83,7 @@
   (org-latex-src-block-backend 'minted)
   ;; (org-latex-preview-numbered t)
   (org-startup-with-latex-preview nil)
+  (org-highlight-latex-and-related '(latex))
   (org-preview-latex-default-process 'dvisvgm)
   (org-latex-preview-ltxpng-directory
    (no-littering-expand-var-file-name "ltxinmg/"))

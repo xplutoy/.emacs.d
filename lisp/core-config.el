@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-11-22 10:25:28 yx>
+;; Modified: <2023-11-24 02:24:01 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -43,6 +43,7 @@
  delete-by-moving-to-trash t
  bookmark-save-flag 1
  set-mark-command-repeat-pop t
+ cursor-in-non-selected-windows nil
  compilation-scroll-output 'first-error
  backward-delete-char-untabify-method 'hungry
  sentence-end-double-space nil
@@ -150,11 +151,11 @@
 (add-hook 'after-init-hook 'recentf-mode)
 
 ;; %% whitespace
-(setq whitespace-line-column nil
-      show-trailing-whitespace nil
-      whitespace-action '(clean auto-clean))
-(setq-default whitespace-style
-              '(face spaces empty tabs newline trailing space-mark tab-mark newline-mark))
+(setq
+ whitespace-style
+ '(face spaces empty tabs newline trailing space-mark tab-mark newline-mark)
+ whitespace-line-column nil
+ show-trailing-whitespace nil)
 
 ;; %% xref
 (setq

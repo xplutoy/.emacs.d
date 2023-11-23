@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-11-22 09:04:44 yx>
+;; Modified: <2023-11-23 11:37:03 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -102,6 +102,7 @@
  ("C-c c"     . org-capture)
  ("C-c l"     . org-store-link)
  ("C-c b"     . tabspaces-switch-to-buffer)
+ ("C-c /"     . browse-url-at-point)
  ("C-c w o"   . burly-open-bookmark)
  ("C-c w r"   . burly-reset-tab)
  ("C-c w w"   . burly-bookmark-windows)
