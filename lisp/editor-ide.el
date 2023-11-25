@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-11-26 05:32:39 yx>
+;; Modified: <2023-11-26 06:29:34 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -90,6 +90,8 @@
               ("<left-fringe> <mouse-1>" . diff-hl-diff-goto-hunk))
   )
 
+(use-package git-modes)
+
 (use-package magit)
 
 (use-package magit-todos
@@ -150,8 +152,8 @@
         ("C-c t p" . hl-todo-previous))
   )
 
-(use-package symbol-overlay
-  :hook (prog-mode . symbol-overlay-mode))
+(use-package idle-highlight-mode
+  :hook ((prog-mode text-mode) . idle-highlight-mode))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode)

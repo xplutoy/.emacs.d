@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:10:40
-;; Modified: <2023-11-20 22:35:51 yx>
+;; Modified: <2023-11-26 06:13:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -89,13 +89,6 @@
   (vterm-toggle-cd-auto-create-buffer nil)
   (vterm-toggle-reset-window-configration-after-exit t)
   )
-
-(use-package eshell-vterm
-  :after vterm
-  :demand t
-  :config
-  (eshell-vterm-mode)
-  (defalias 'eshell/v 'eshell-exec-visual))
 
 ;; %% eat
 (use-package eat
