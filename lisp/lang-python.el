@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:06:10
-;; Modified: <2023-10-28 13:08:59 yx>
+;; Modified: <2023-11-26 04:53:58 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -19,6 +19,7 @@
    (setq-local
     tab-width 2
     python-indent-offset 4
+    electric-indent-inhibit t
     imenu-create-index-function 'python-imenu-create-flat-index
     ))
  )

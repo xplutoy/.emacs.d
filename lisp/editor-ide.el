@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-11-24 02:33:37 yx>
+;; Modified: <2023-11-26 05:32:39 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,27 +11,6 @@
 ;;
 
 ;;; Code:
-(add-hook
- #'prog-mode-hook
- (lambda ()
-   (subword-mode 1)
-   (hl-line-mode 1)
-   (hs-minor-mode 1)
-   (semantic-mode 1)
-   (show-paren-mode 1)
-   (electric-pair-mode 1)
-   (display-line-numbers-mode 1)
-   (electric-indent-local-mode 1)
-   (setq-local
-    whitespace-style
-    '(face trailing lines-char space-before-tab space-after-tab)
-    require-final-newline t
-    show-trailing-whitespace t)
-   (whitespace-mode 1)
-   (local-set-key (kbd "RET") 'newline-and-indent)
-   )
- )
-
 (use-package ws-butler
   :hook ((prog-mode conf-mode) . ws-butler-mode)
   )
@@ -127,6 +106,15 @@
   :hook (prog-mode . indent-guide-mode)
   :custom
   (indent-guide-recursive nil)
+  )
+
+;; %% doc
+(use-package devdocs
+  :init
+  (add-hook 'julia-ts-mode-hook
+            (lambda () (setq-local devdocs-current-docs '("julia~1.9"))))
+  (add-hook 'python-base-mode-hook
+            (lambda () (setq-local devdocs-current-docs '("python~3.12" "pytorch" "numpy~1.23"))))
   )
 
 ;; %% symbol highlight
@@ -251,6 +239,9 @@
 (use-package consult-eglot
   :after consult
   )
+
+(use-package breadcrumb
+  :hook ((prog-mode org-mode) . breadcrumb-local-mode))
 
 (provide 'editor-ide)
 ;;; editor-ide.el ends here

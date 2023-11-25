@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-10-28 13:08:36 yx>
+;; Modified: <2023-11-26 05:21:40 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,6 +11,25 @@
 ;; ide
 
 ;;; Code:
+(defun yx/prog-common-setup ()
+  (subword-mode 1)
+  (hl-line-mode 1)
+  (hs-minor-mode 1)
+  (semantic-mode 1)
+  (show-paren-mode 1)
+  (electric-pair-mode 1)
+  (display-line-numbers-mode 1)
+  (electric-indent-local-mode 1)
+  (setq-local
+   whitespace-style
+   '(face trailing lines-char space-before-tab space-after-tab)
+   require-final-newline t
+   show-trailing-whitespace t)
+  (whitespace-mode 1)
+  (local-set-key (kbd "RET") 'newline-and-indent)
+  )
+
+(add-hook 'prog-mode-hook 'yx/prog-common-setup)
 
 ;; %% emacs-lisp
 (define-auto-insert "\\.el$" 'yx/auto-insert-el-header)
@@ -20,16 +39,20 @@
             (treesit-parser-create 'elisp)))
 
 ;; %% c/c++
-(setq c-basic-offset 4
-      c-default-style "linux")
+(setq c-basic-offset 8)
+(defun yx/c-common-setup ()
+  (setq-local tab-width 8
+              indent-tabs-mode t
+              c-default-style "linux"))
+(add-hook 'c-mode-base-map 'yx/c-common-setup)
 (define-auto-insert
   "\\.\\([Hh]\\|hh\\|hpp\\|hxx\\|h\\+\\+\\)\\'"
-  'yx/auto-insert-h-header
-  )
+  'yx/auto-insert-h-header)
 (define-auto-insert
   "\\.\\([Cc]\\|cc\\|cpp\\|cxx\\|c\\+\\+\\)\\'"
   'yx/auto-insert-c-header)
 
+;; %% code-cell
 (use-package code-cells
   :hook ((julia-mode
           python-ts-mode

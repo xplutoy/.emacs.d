@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-11-22 10:33:20 yx>
+;; Modified: <2023-11-24 06:55:41 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -223,8 +223,9 @@
        dired-mode
        vterm-mode)
       :regexp t :select t :same t :inhibit-window-quit t)
-     (("^\\*org-roam\\*$")
-      :regexp t :align right :size 0.33)
+     (("^\\*org-roam\\*$"
+       "^\\*devdocs\\*$")
+      :regexp t :align right :size 0.40)
      )
    )
   (shackle-mode 1)
