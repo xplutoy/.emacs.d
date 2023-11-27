@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-11-28 07:27:27 yx>
+;; Modified: <2023-11-28 07:59:14 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -97,7 +97,7 @@
            ("buffer-name-short" "buffer-position" "process"
             "profiler" "selection-info" "narrow" "macro" "evil")
            :long
-           ("major-mode" "buffer-name" "vcs" "buffer-position" "flymake"
+           ("major-mode" "buffer-name-short" "vcs" "buffer-position" "flymake"
             "process" "selection-info" "narrow" "macro" "profiler" "elgot" "evil"))))
   :config
   (mini-echo-mode 1)
