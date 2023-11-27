@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-10-28 13:07:48 yx>
+;; Modified: <2023-11-26 07:16:21 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -100,7 +100,7 @@
   :config
   (setq
    awesome-tray-active-modules
-   '("evil" "input-method" "belong" "location-or-page" "buffer-name" "mode-name" "git"))
+   '("evil" "input-method" "location-or-page" "buffer-name" "mode-name" "git"))
   (awesome-tray-mode 1)
   )
 

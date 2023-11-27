@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-10-28 23:46:31 yx>
+;; Modified: <2023-11-26 09:26:31 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -234,6 +234,9 @@
   :custom
   (fanyi-providers '(fanyi-haici-provider))
   )
+
+;; %% tools
+(use-package tldr)
 
 ;; %% end
 (provide 'editor-misc)

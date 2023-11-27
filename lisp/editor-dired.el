@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:20:40
-;; Modified: <2023-11-24 03:12:51 yx>
+;; Modified: <2023-11-28 04:21:17 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,7 +16,8 @@
   :custom
   (dired-dwim-target t)
   (dired-mouse-drag-files t)
-  (dired-omit-files "^\\..*$")
+  (dired-omit-files
+   (concat dired-omit-files "\\|^\\..*$"))
   (dired-recursive-copies 'always)
   (dired-recursive-deletes 'top)
   (dired-create-destination-dirs 'ask)
@@ -49,28 +50,56 @@
 
 ;; %% dired+
 (use-package diredfl
-  :hook (dired-mode . diredfl-mode)
+  :hook
+  (dired-mode . diredfl-mode)
+  (dirvish-directory-view-mode . diredfl-mode)
   :config
   (set-face-attribute 'diredfl-dir-name nil :bold t)
   )
 
-(use-package dired-subtree
-  :after dired
-  :demand t
-  :bind (:map dired-mode-map
-              ("TAB" . dired-subtree-cycle))
-  )
-
-(use-package dired-narrow
-  :after dired
-  :demand t
-  :bind (:map dired-mode-map
-              ([remap dired-do-man] . dired-narrow-regexp)))
-
-(use-package dired-collapse
-  :hook (dired-mode . dired-collapse-mode))
-
 (use-package zoxide)
+
+(use-package dirvish
+  :hook (after-init . dirvish-override-dired-mode)
+  :custom
+  (dirvish-quick-access-entries
+   '(("h" "~/"           "Home")
+     ("d" "~/yxdocs/"    "yxdocs")
+     ("D" "~/Downloads/" "Downloads")
+     ("w" "~/workspace/" "workspace>")))
+  :config
+  (setq dirvish-side-width 30)
+  (setq dirvish-use-mode-line nil)
+  (setq dirvish-header-line-height 18)
+  ;; (setq dirvish-use-header-line 'global)
+  (setq dirvish-default-layout '(0 0.4 0.6))
+  (setq dirvish-attributes
+        '(file-time file-size collapse subtree-state vc-state))
+  (setq dired-listing-switches
+        "-l --almost-all --human-readable --group-directories-first --no-group")
+  (dirvish-peek-mode 1)
+  (dirvish-side-follow-mode 1)
+  :bind
+  (("C-c f" . dirvish-fd)
+   :map dirvish-mode-map
+   ("a"   . dirvish-quick-access)
+   ("f"   . dirvish-file-info-menu)
+   ("y"   . dirvish-yank-menu)
+   ("N"   . dirvish-narrow)
+   ("^"   . dirvish-history-last)
+   ("h"   . dirvish-history-jump)
+   ("s"   . dirvish-quicksort)
+   ("v"   . dirvish-vc-menu)
+   ("TAB" . dirvish-subtree-toggle)
+   ("M-f" . dirvish-history-go-forward)
+   ("M-b" . dirvish-history-go-backward)
+   ("M-l" . dirvish-ls-switches-menu)
+   ("M-m" . dirvish-mark-menu)
+   ("M-t" . dirvish-layout-toggle)
+   ("M-s" . dirvish-setup-menu)
+   ("M-e" . dirvish-emerge-menu)
+   ("M-j" . dirvish-fd-jump))
+  )
 
 
 (provide 'editor-dired)

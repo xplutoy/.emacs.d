@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-11-26 05:21:40 yx>
+;; Modified: <2023-11-27 10:05:10 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -39,12 +39,21 @@
             (treesit-parser-create 'elisp)))
 
 ;; %% c/c++
-(setq c-basic-offset 8)
-(defun yx/c-common-setup ()
-  (setq-local tab-width 8
-              indent-tabs-mode t
-              c-default-style "linux"))
-(add-hook 'c-mode-base-map 'yx/c-common-setup)
+(setq
+ c-basic-offset 8
+ c-default-style
+ '((java-mode . "java")
+   (awk-mode  . "awk")
+   (other     . "linux"))
+ )
+
+(setq
+ c-ts-mode-indent-offset 8
+ c-ts-mode-indent-style 'linux)
+
+(add-hook 'c-mode-common-hook
+          (lambda () (c-toggle-auto-hungry-state 1)))
+
 (define-auto-insert
   "\\.\\([Hh]\\|hh\\|hpp\\|hxx\\|h\\+\\+\\)\\'"
   'yx/auto-insert-h-header)

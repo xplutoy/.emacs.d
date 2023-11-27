@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-11-24 06:49:55 yx>
+;; Modified: <2023-11-28 02:49:07 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -57,8 +57,10 @@
  ("s-SPC"     . sis-switch)
  ("s-,"       . winner-undo)
  ("s-."       . winner-redo)
- ("s-]"       . ns-next-frame)
- ("s-["       . ns-prev-frame)
+ ("s-s"       . dirvish-side)
+ ("s-r"       . consult-recent-file)
+ ("s-<right>" . ns-next-frame)
+ ("s-<left>"  . ns-prev-frame)
  ("M-]"       . tab-next)
  ("M-["       . tab-previous)
  ("s-k"       . crux-kill-other-buffers)
@@ -74,7 +76,6 @@
  ("M-i"       . consult-imenu-multi)
  ("M-z"       . vg-quick-zap-up-to-char)
  ("M-;"       . evil-commentary-line)
- ("M-r"       . consult-recent-file)
  ("M-o"       . ace-window)
  ("M-g ;"     . goto-last-change)
  ("M-g M-f"   . consult-flymake)
@@ -158,6 +159,7 @@
     ("E" "crux-sudo-edit" crux-sudo-edit)]
    ["TT"
     ("tl" "toggle-command-log-buffer" clm/toggle-command-log-buffer)
+    ("ds" "dirvish-side" dirvish-side)
     ("ga" "consult-org-agenda" consult-org-agenda)
     ("ge" "consult-compile-error" consult-compile-error)
     ("gf" "consult-flymake" consult-flymake)

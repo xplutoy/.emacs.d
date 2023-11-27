@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-11-26 06:09:16 yx>
+;; Modified: <2023-11-28 02:01:18 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -41,13 +41,6 @@
 (setq
  help-window-select t
  help-window-keep-selected t)
-
-(setq
- display-buffer-base-action
- '((display-buffer-reuse-window
-    display-buffer-same-window
-    display-buffer-reuse-mode-window
-    display-buffer-in-previous-window)))
 
 (setq
  switch-to-buffer-obey-display-actions t

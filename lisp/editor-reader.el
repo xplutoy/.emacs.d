@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2023-10-28 13:07:19 yx>
+;; Modified: <2023-11-27 09:16:36 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -25,6 +25,7 @@
   (setq
    pdf-view-use-scaling t
    pdf-view-use-imagemagick nil)
+  (setq-default pdf-view-display-size 'fit-width)
   (pdf-loader-install)
   )
 

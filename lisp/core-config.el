@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-11-24 02:24:01 yx>
+;; Modified: <2023-11-28 03:57:38 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -26,7 +26,7 @@
 (set-default-coding-systems 'utf-8)
 
 (setq-default
- tab-width 2
+ tab-width 8
  abbrev-mode t
  fill-column 78
  line-spacing 0.1
@@ -113,7 +113,7 @@
 
 ;; %% eldoc
 (setq
- eldoc-echo-area-use-multiline-p 3
+ eldoc-echo-area-use-multiline-p nil
  eldoc-echo-area-display-truncation-message nil)
 
 ;; %% uniquify
@@ -170,8 +170,8 @@
 
 ;; %% completion minibuffer
 (setq
- max-mini-window-height 30
- resize-mini-windows 'grow-only)
+ resize-mini-windows 't
+ max-mini-window-height 30)
 
 (setq
  completions-detailed t
@@ -321,6 +321,7 @@
 ;; %% tramp speed up
 (setq
  tramp-verbose 1
+ tramp-chunksize 2000
  tramp-default-method "ssh"
  remote-file-name-inhibit-locks t
  remote-file-name-inhibit-cache nil)
@@ -416,29 +417,26 @@
 (ffap-bindings)
 
 ;; %% hook
-(add-hook
- #'text-mode
- (lambda ()
-   (setq-local
-    word-wrap t
-    word-wrap-by-category t
-    truncate-lines nil)
-   (visual-line-mode 1)
-   (goto-address-mode 1))
- )
+(defun yx/text-mode-setup ()
+  (setq-local
+   word-wrap t
+   word-wrap-by-category t)
+  (visual-line-mode 1)
+  (goto-address-mode 1)
+  (toggle-truncate-lines -1))
 
-(add-hook
- #'after-init-hook
- (lambda ()
-   (repeat-mode 1)
-   (save-place-mode 1)
-   (blink-cursor-mode -1)
-   (auto-compression-mode 1)
-   (delete-selection-mode 1)
-   (auto-save-visited-mode 1)
-   (pixel-scroll-precision-mode 1)
-   (windmove-default-keybindings 'control))
- )
+(defun yx/global-mirror-mode-setup ()
+  (repeat-mode 1)
+  (save-place-mode 1)
+  (blink-cursor-mode -1)
+  (auto-compression-mode 1)
+  (delete-selection-mode 1)
+  (auto-save-visited-mode 1)
+  (pixel-scroll-precision-mode 1)
+  (windmove-default-keybindings 'control))
+
+(add-hook 'text-mode 'yx/text-mode-setup)
+(add-hook 'after-init-hook 'yx/global-mirror-mode-setup)
 
 ;; never kill scratch
 (with-current-buffer "*scratch*"
