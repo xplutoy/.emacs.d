@@ -1,9 +1,9 @@
-;;; core-config.el --- basic  -*- lexical-binding: t -*-
+;;; -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-11-28 03:57:38 yx>
+;; Modified: <2023-11-28 07:29:54 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -442,6 +442,6 @@
 (with-current-buffer "*scratch*"
   (emacs-lock-mode 'kill))
 
-;; %% end
-(provide 'core-config)
-;;; core-config.el ends here
+
+(provide 'init-basic)
+;;; init-basic.el ends here

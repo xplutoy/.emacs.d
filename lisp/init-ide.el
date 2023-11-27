@@ -1,9 +1,9 @@
-;;; editor-ide.el --- ide  -*- lexical-binding: t -*-
+;;; -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-11-26 06:29:34 yx>
+;; Modified: <2023-11-28 07:35:32 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -245,5 +245,6 @@
 (use-package breadcrumb
   :hook ((prog-mode org-mode) . breadcrumb-local-mode))
 
-(provide 'editor-ide)
-;;; editor-ide.el ends here
+
+(provide 'init-ide)
+;;; init-ide.el ends here

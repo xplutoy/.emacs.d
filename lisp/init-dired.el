@@ -1,9 +1,9 @@
-;;; editor-dired.el --- dired  -*- lexical-binding: t -*-
+;;; -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:20:40
-;; Modified: <2023-11-28 04:21:17 yx>
+;; Modified: <2023-11-28 07:23:30 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,8 +16,6 @@
   :custom
   (dired-dwim-target t)
   (dired-mouse-drag-files t)
-  (dired-omit-files
-   (concat dired-omit-files "\\|^\\..*$"))
   (dired-recursive-copies 'always)
   (dired-recursive-deletes 'top)
   (dired-create-destination-dirs 'ask)
@@ -29,9 +27,12 @@
   (add-hook
    'dired-mode-hook
    (lambda ()
-     (hl-line-mode)
-     (dired-omit-mode)
-     (dired-hide-details-mode)))
+     (setq
+      dired-omit-files
+      (concat dired-omit-files "\\|^\\..*$"))
+     (hl-line-mode 1)
+     (dired-omit-mode 1)
+     (dired-hide-details-mode 1)))
   (add-hook 'wdired-mode-hook 'highlight-changes-mode)
   (put 'dired-find-alternate-file 'disabled nil)
   :bind (:map dired-mode-map
@@ -102,5 +103,5 @@
   )
 
 
-(provide 'editor-dired)
-;;; editor-dired.el ends here
+(provide 'init-dired)
+;;; init-dired.el ends here

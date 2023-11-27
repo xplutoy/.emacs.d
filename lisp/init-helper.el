@@ -1,9 +1,9 @@
-;;; core-helper.el --- help functions  -*- lexical-binding: t -*-
+;;; -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-28 17:41:00
-;; Modified: <2023-10-28 13:06:58 yx>
+;; Modified: <2023-11-28 07:37:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -196,12 +196,7 @@
 (define-skeleton yx/auto-insert-el-header
   ""
   nil
-  ";;; "
-  (file-name-nondirectory
-   (buffer-file-name))
-  " --- "
-  (skeleton-read "Descriptions: ")
-  "  -*- lexical-binding: t -*-"
+  ";;; -*- lexical-binding: t -*-"
   '(setq lexical-binding t)
   "\n\n;; Author: "
   (user-full-name)
@@ -228,6 +223,5 @@
   )
 
 
-;; %% end
-(provide 'core-helper)
-;;; core-helper.el ends here
+(provide 'init-helper)
+;;; init-helper.el ends here

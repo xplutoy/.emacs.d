@@ -1,9 +1,9 @@
-;;; lang-misc.el --- ide  -*- lexical-binding: t -*-
+;;; -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-11-27 10:05:10 yx>
+;; Modified: <2023-11-28 07:26:32 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -64,8 +64,7 @@
 ;; %% code-cell
 (use-package code-cells
   :hook ((julia-mode
-          python-ts-mode
-          emacs-lisp-mode) . code-cells-mode-maybe)
+          python-ts-mode) . code-cells-mode-maybe)
   :bind (:map code-cells-mode-map
               ("M-p"     . code-cells-backward-cell)
               ("M-n"     . code-cells-forward-cell))
@@ -126,5 +125,6 @@
 (setq imaxima-use-maxima-mode-flag t)
 (add-to-list 'auto-mode-alist '("\\.ma[cx]\\'" . maxima-mode))
 
-;; %% end
-(provide 'lang-misc)
+
+(provide 'init-lang)
+;;; init-lang.el ends here

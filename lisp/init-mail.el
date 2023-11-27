@@ -1,9 +1,9 @@
-;;; editor-mail.el --- mail  -*- lexical-binding: t -*-
+;;; -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:52:27
-;; Modified: <2023-10-28 13:08:46 yx>
+;; Modified: <2023-11-28 07:43:29 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -182,5 +182,5 @@
   )
 
 
-;; ==== end =========
-(provide 'editor-mail)
+(provide 'init-mail)
+;;; init-mail.el ends here

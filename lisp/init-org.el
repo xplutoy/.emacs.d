@@ -1,9 +1,9 @@
-;;; lang-org.el --- org  -*- lexical-binding: t -*-
+;;; -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-11-23 11:46:21 yx>
+;; Modified: <2023-11-28 07:28:09 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -49,6 +49,9 @@
   (org-image-actual-width `(,(* (window-font-width)
                                 (- fill-column 8))))
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+
+  org-blank-before-new-entry '((heading . nil)
+                               (plain-list-item . nil))
 
   (org-startup-folded t)
   (org-startup-indented nil)
@@ -376,5 +379,5 @@
               ("o" . org-project-open-todos))
   )
 
-(provide 'lang-org)
-;;; lang-org.el ends here
+(provide 'init-org)
+;;; init-org.el ends here

@@ -1,9 +1,9 @@
-;;; editor-writer.el --- org note  -*- lexical-binding: t -*-
+;;; -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-11-16 19:22:06 yx>
+;; Modified: <2023-11-28 07:34:16 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -108,6 +108,6 @@ set to \\='(template title keywords subdirectory)."
   (LaTeX-mode . citar-capf-setup)
   )
 
-;; %% end
-(provide 'editor-writer)
-;;; editor-writer.el ends here
+
+(provide 'init-writer)
+;;; init-writer.el ends here

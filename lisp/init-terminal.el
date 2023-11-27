@@ -1,9 +1,9 @@
-;;; editor-terminal.el --- terminal  -*- lexical-binding: t -*-
+;;; -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:10:40
-;; Modified: <2023-11-26 06:13:37 yx>
+;; Modified: <2023-11-28 07:38:58 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -101,6 +101,6 @@
    eat-enable-yank-to-terminal t)
   )
 
-;; %% end
-(provide 'editor-terminal)
-;;; editor-terminal.el ends here
+
+(provide 'init-terminal)
+;;; init-terminal.el ends here

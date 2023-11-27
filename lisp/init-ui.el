@@ -1,9 +1,9 @@
-;;; editor-ui.el --- ui  -*- lexical-binding: t -*-
+;;; -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-11-26 07:16:21 yx>
+;; Modified: <2023-11-28 07:27:27 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -72,9 +72,6 @@
 (custom-set-faces
  '(mode-line ((t :box (:style released-button)))))
 
-(require-theme 'modus-themes)
-(add-hook 'modus-themes-after-load-theme-hook 'awesome-tray-mode)
-
 (use-package circadian
   :demand t
   :hook (after-init . circadian-setup)
@@ -83,9 +80,6 @@
    circadian-themes
    '((:sunset  . modus-vivendi)
      (:sunrise . modus-operandi)))
-  (add-hook 'circadian-after-load-theme-hook
-            (lambda (dummy)
-              (awesome-tray-enable)))
   )
 
 ;; %% modeline
@@ -94,17 +88,21 @@
   :hook (after-init . minions-mode)
   )
 
-(use-package awesome-tray
+(use-package mini-echo
   :demand t
-  :load-path "site-lisp/awesome-tray"
+  :custom
+  (mini-echo-separator "|")
+  (mini-echo-default-segments
+   (quote (:short
+           ("buffer-name-short" "buffer-position" "process"
+            "profiler" "selection-info" "narrow" "macro" "evil")
+           :long
+           ("major-mode" "buffer-name" "vcs" "buffer-position" "flymake"
+            "process" "selection-info" "narrow" "macro" "profiler" "elgot" "evil"))))
   :config
-  (setq
-   awesome-tray-active-modules
-   '("evil" "input-method" "location-or-page" "buffer-name" "mode-name" "git"))
-  (awesome-tray-mode 1)
+  (mini-echo-mode 1)
   )
 
 
-;; %% end
-(provide 'editor-ui)
-;;; editor-ui.el ends here
+(provide 'init-ui)
+;;; init-ui.el ends here

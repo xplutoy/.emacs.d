@@ -1,9 +1,9 @@
-;;; editor-completion.el --- minibuffer  -*- lexical-binding: t -*-
+;;; -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-10-28 13:07:35 yx>
+;; Modified: <2023-11-28 07:42:28 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -133,5 +133,5 @@
   )
 
 ;; %% end
-(provide 'editor-completion)
-;;; editor-completion ends here
+(provide 'init-completion)
+;;; init-completion ends here

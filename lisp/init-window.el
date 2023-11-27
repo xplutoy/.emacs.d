@@ -1,9 +1,9 @@
-;;; editor-window.el --- windows  -*- lexical-binding: t -*-
+;;; -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-11-28 02:01:18 yx>
+;; Modified: <2023-11-28 07:30:48 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -224,6 +224,6 @@
   (shackle-mode 1)
   )
 
-;; %% end
-(provide 'editor-window)
-;;; editor-window.el ends here
+
+(provide 'init-window)
+;;; init-window.el ends here

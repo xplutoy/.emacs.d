@@ -1,9 +1,9 @@
-;;; lang-julia.el --- julia  -*- lexical-binding: t -*-
+;;; -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:08:56
-;; Modified: <2023-10-28 13:08:29 yx>
+;; Modified: <2023-11-28 07:40:07 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -32,5 +32,6 @@
   (julia-ts-mode . julia-snail-mode)
   )
 
-(provide 'lang-julia)
-;;; lang-julia.el ends here
+
+(provide 'init-julia)
+;;; init-julia.el ends here

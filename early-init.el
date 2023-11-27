@@ -1,9 +1,9 @@
-;;; early-init.el ---   -*- lexical-binding: t -*-
+;;; -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2023-09-15 19:22:40 yx>
+;; Modified: <2023-11-28 07:57:18 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:

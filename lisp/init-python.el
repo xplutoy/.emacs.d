@@ -1,9 +1,9 @@
-;;; lang-python.el --- python  -*- lexical-binding: t -*-
+;;; -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:06:10
-;; Modified: <2023-11-26 04:53:58 yx>
+;; Modified: <2023-11-28 07:41:39 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -56,5 +56,5 @@
   (setf (alist-get "python" org-src-lang-modes nil nil #'equal) 'python-ts)
   )
 
-(provide 'lang-python)
-;;; lang-python.el ends here
+(provide 'init-python)
+;;; init-python.el ends here

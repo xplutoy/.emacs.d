@@ -1,9 +1,9 @@
-;;; editor-reader.el --- reader  -*- lexical-binding: t -*-
+;;; -*- lexical-binding: t -*-
 
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2023-11-27 09:16:36 yx>
+;; Modified: <2023-11-28 07:31:58 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -80,5 +80,6 @@
               ("W" . elfeed-webkit-toggle))
   )
 
-(provide 'editor-reader)
-;;; editor-reader.el ends here
+
+(provide 'init-reader)
+;;; init-reader.el ends here
