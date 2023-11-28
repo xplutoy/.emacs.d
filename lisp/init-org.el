@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-11-28 07:28:09 yx>
+;; Modified: <2023-11-28 08:13:11 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,9 +11,31 @@
 ;;
 
 ;;; Code:
+(defun yx/org-clock-in ()
+  (interactive)
+  (org-clock-in '(4)))
+
+(transient-define-prefix yx/transient-org ()
+  "Org commands."
+  [["Misc"
+    ("a" "Archive Subtree" org-archive-subtree)
+    ("g" "org-goto" org-goto)
+    ("i" "Clock In" org-clock-in)
+    ("o" "Clock Out" org-clock-out)
+    ("n" "org-narrow-to-subtree" org-narrow-to-subtree)]
+   ["Toggle"
+    ("tl" "org-toggle-link-display" org-toggle-link-display)
+    ("cv" "org-toggle-inline-images" org-toggle-inline-images)
+    ("cl" "org-preview-latex-fragment" org-preview-latex-fragment)]
+   ["Cite"
+    ("bi" "org-cite-insert" org-cite-insert)
+    ("bo" "citar-open" citar-open)]
+   ]
+  )
+
 (use-package org
   :ensure nil
-  :defer 3
+  :defer 2
   :bind (:map org-mode-map
               ("M-<f10>" . yx/transient-org)
               ("RET"     . crux-yx/org-return-dwim)
@@ -275,28 +297,6 @@
               (setq appt-time-msg-list nil)
               (org-agenda-to-appt)))
   (run-at-time t 900 'org-agenda-to-appt)
-
-  :preface
-  (defun yx/org-clock-in ()
-    (interactive)
-    (org-clock-in '(4)))
-  (transient-define-prefix yx/transient-org ()
-    "Org commands."
-    [["Misc"
-      ("a" "Archive Subtree" org-archive-subtree)
-      ("g" "org-goto" org-goto)
-      ("i" "Clock In" org-clock-in)
-      ("o" "Clock Out" org-clock-out)
-      ("n" "org-narrow-to-subtree" org-narrow-to-subtree)]
-     ["Toggle"
-      ("tl" "org-toggle-link-display" org-toggle-link-display)
-      ("cv" "org-toggle-inline-images" org-toggle-inline-images)
-      ("cl" "org-preview-latex-fragment" org-preview-latex-fragment)]
-     ["Cite"
-      ("bi" "org-cite-insert" org-cite-insert)
-      ("bo" "citar-open" citar-open)]
-     ]
-    )
   )
 
 ;; %% org+
