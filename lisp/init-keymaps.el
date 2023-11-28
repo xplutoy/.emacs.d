@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-11-28 07:22:09 yx>
+;; Modified: <2023-11-28 09:15:22 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -129,6 +129,10 @@
  )
 
 ;; %% transient key
+(with-eval-after-load 'transient
+  (keymap-set transient-map "q"        'transient-quit-one)
+  (keymap-set transient-map "<escape>" 'transient-quit-one))
+
 (transient-define-prefix yx/transient-global-even ()
   "Global transient for infrequently used functions."
   [["Size"

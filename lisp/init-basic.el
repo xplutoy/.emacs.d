@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-11-28 07:29:54 yx>
+;; Modified: <2023-11-28 09:09:01 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -54,6 +54,7 @@
  visible-bell nil
  use-short-answers t
  hl-line-sticky-flag nil
+ global-hl-line-sticky-flag nil
  auto-revert-verbose nil
  initial-scratch-message ""
  confirm-kill-processes nil
@@ -77,9 +78,11 @@
 
 ;; %% auto
 (setq
+ auto-save-default t
  auto-save-no-message t
- auto-save-visited-interval 30
+ auto-save-visited-interval 10
  delete-auto-save-files t
+ auto-save-visited-predicate 'buffer-modified-p
  kill-buffer-delete-auto-save-files t)
 
 (customize-set-variable 'auto-revert-use-notify nil)
@@ -113,6 +116,7 @@
 
 ;; %% eldoc
 (setq
+ eldoc-idle-delay 0.3
  eldoc-echo-area-use-multiline-p nil
  eldoc-echo-area-display-truncation-message nil)
 
@@ -138,7 +142,7 @@
  recentf-max-saved-items 50
  recentf-auto-cleanup "1:00am"
  recentf-exclude
- '(".*\\.cache.*" "^/.*" "^/ssh:"
+ '("\\.?cache.*" "^/.*" "^/ssh:" "\\.git/.+$"
    "COMMIT_MSG" "COMMIT_EDITMSG" "/Downloads/" "/elpa/"
    "\\.\\(?:gif\\|svg\\|png\\|jpe?g\\|bmp\\|xpm\\)$"
    "\\.\\(?:gz\\|zip\\|gpg\\)$"
@@ -243,6 +247,10 @@
 (setq
  auto-window-vscroll nil
  auto-hscroll-mode 'current-line)
+
+(setq
+ transient-detect-key-conflicts t
+ transient-highlight-mismatched-keys nil)
 
 ;; %% media
 (setq
