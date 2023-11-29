@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-11-28 07:26:32 yx>
+;; Modified: <2023-11-29 12:10:55 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -100,7 +100,6 @@
    (setq sh-indentation 2
          sh-basic-offset 2)
    (electric-pair-mode -1)
-   (ansi-color-for-comint-mode-on)
    (compilation-shell-minor-mode 1)
    )
  )

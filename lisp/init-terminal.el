@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:10:40
-;; Modified: <2023-11-28 07:38:58 yx>
+;; Modified: <2023-11-29 12:11:21 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,8 +11,13 @@
 ;; terminal shell
 
 ;;; Code:
+(setq
+ comint-input-ignoredups t
+ comint-prompt-read-only t
+ comint-completion-addsuffix t
+ comint-scroll-to-bottom-on-input t
+ comint-scroll-show-maximum-output t)
 
-;; %% eshell
 (defun eshell/F (filename)
   "Open a file as root from Eshell"
   (let ((qual-filename (if (string-match "^/" filename)
@@ -38,7 +43,7 @@
   (add-hook
    'eshell-mode-hook
    (lambda ()
-     (define-key eshell-mode-map (kbd "C-l") 'eshell/clear)
+     (keymap-set eshell-mode-map "C-l" 'eshell/clear)
      (setq
       eshell-visual-commands
       '("vim" "ssh" "tail" "top" "htop" "tmux" "less" "more")

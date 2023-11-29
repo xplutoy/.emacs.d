@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-11-28 07:42:28 yx>
+;; Modified: <2023-11-29 18:12:08 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -66,11 +66,6 @@
   :bind (:map minibuffer-local-map
               ("M-s" . consult-history)
               ("M-r" . consult-history))
-  :preface
-  (defun yx/consult-emacs-info ()
-    "Search through Emacs info pages."
-    (interactive)
-    (consult-info "emacs" "elisp" "cl" "compat"))
   )
 
 (use-package consult-dir
@@ -130,6 +125,20 @@
   (defun yx/cape-capf-setup-prog ()
     (dolist (ele `(,(cape-super-capf 'cape-dabbrev 'cape-symbol 'cape-keyword)))
       (add-to-list 'completion-at-point-functions ele)))
+  )
+
+(use-package marginalia
+  :hook (after-init . marginalia-mode)
+  :bind (:map minibuffer-local-map
+              ("M-A" . marginalia-cycle))
+  :config
+  (defun marginalia-use-builtin ()
+    (interactive)
+    (mapc
+     (lambda (x)
+       (setcdr x (cons 'builtin (remq 'builtin (cdr x)))))
+     marginalia-annotator-registry))
+  (marginalia-use-builtin)
   )
 
 ;; %% end

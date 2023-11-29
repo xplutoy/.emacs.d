@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-11-28 08:13:11 yx>
+;; Modified: <2023-11-29 13:57:50 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,28 +11,6 @@
 ;;
 
 ;;; Code:
-(defun yx/org-clock-in ()
-  (interactive)
-  (org-clock-in '(4)))
-
-(transient-define-prefix yx/transient-org ()
-  "Org commands."
-  [["Misc"
-    ("a" "Archive Subtree" org-archive-subtree)
-    ("g" "org-goto" org-goto)
-    ("i" "Clock In" org-clock-in)
-    ("o" "Clock Out" org-clock-out)
-    ("n" "org-narrow-to-subtree" org-narrow-to-subtree)]
-   ["Toggle"
-    ("tl" "org-toggle-link-display" org-toggle-link-display)
-    ("cv" "org-toggle-inline-images" org-toggle-inline-images)
-    ("cl" "org-preview-latex-fragment" org-preview-latex-fragment)]
-   ["Cite"
-    ("bi" "org-cite-insert" org-cite-insert)
-    ("bo" "citar-open" citar-open)]
-   ]
-  )
-
 (use-package org
   :ensure nil
   :defer 2
@@ -72,8 +50,8 @@
                                 (- fill-column 8))))
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
-  org-blank-before-new-entry '((heading . nil)
-                               (plain-list-item . nil))
+  (org-blank-before-new-entry '((heading . nil)
+                                (plain-list-item . nil)))
 
   (org-startup-folded t)
   (org-startup-indented nil)
@@ -297,6 +275,29 @@
               (setq appt-time-msg-list nil)
               (org-agenda-to-appt)))
   (run-at-time t 900 'org-agenda-to-appt)
+
+  :preface
+  (defun yx/org-clock-in ()
+    (interactive)
+    (org-clock-in '(4)))
+
+  (transient-define-prefix yx/transient-org ()
+    "Org commands."
+    [["Misc"
+      ("a" "Archive Subtree" org-archive-subtree)
+      ("g" "org-goto" org-goto)
+      ("i" "Clock In" org-clock-in)
+      ("o" "Clock Out" org-clock-out)
+      ("n" "org-narrow-to-subtree" org-narrow-to-subtree)]
+     ["Toggle"
+      ("tl" "org-toggle-link-display" org-toggle-link-display)
+      ("cv" "org-toggle-inline-images" org-toggle-inline-images)
+      ("cl" "org-preview-latex-fragment" org-preview-latex-fragment)]
+     ["Cite"
+      ("bi" "org-cite-insert" org-cite-insert)
+      ("bo" "citar-open" citar-open)]
+     ]
+    )
   )
 
 ;; %% org+

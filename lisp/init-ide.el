@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-11-28 07:35:32 yx>
+;; Modified: <2023-11-29 18:32:07 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -40,7 +40,8 @@
 
 ;; %% formatter & linter & profiler
 (setq flymake-start-on-save-buffer t
-      flymake-start-on-flymake-mode nil)
+      flymake-start-on-flymake-mode nil
+      flymake-fringe-indicator-position 'right-fringe)
 (with-eval-after-load 'flymake
   (bind-keys :map flymake-mode-map
              ("C-c e n" . flymake-goto-next-error)
@@ -215,27 +216,31 @@
 ;; %% lsp
 (use-package eglot
   :ensure nil
+  :hook
+  ((c-mode
+    c-ts-mode
+    R-mode
+    python-mode
+    python-ts-mode
+    julia-mode
+    julia-ts-mode
+    LaTeX-mode) . eglot-ensure)
   :init
   (setq
    eglot-autoshutdown t
    eglot-extend-to-xref t
    eglot-sync-connect nil
    eglot-report-progress nil
-   eglot-events-buffer-size 0
-   )
-  :hook ((c-mode
-          c-ts-mode
-          R-mode
-          python-mode
-          python-ts-mode
-          julia-mode
-          julia-ts-mode
-          LaTeX-mode) . eglot-ensure)
-  :bind (:map eglot-mode-map
-              ("C-c e r" . eglot-rename)
-              ("C-c e f" . eglot-format)
-              ("C-c e a" . eglot-code-actions)
-              ("C-c e s" . consult-eglot-symbols))
+   eglot-events-buffer-size 0)
+  :bind
+  (:map
+   eglot-mode-map
+   ("s-e r" . eglot-rename)
+   ("s-e f" . eglot-format)
+   ("s-e a" . eglot-code-actions)
+   ("s-e s" . consult-eglot-symbols))
+  :config
+  (fset #'jsonrpc--log-event #'ignore) ; massive perf boost---don't log every event
   )
 
 (use-package consult-eglot

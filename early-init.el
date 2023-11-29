@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2023-11-28 07:57:18 yx>
+;; Modified: <2023-11-29 16:37:59 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,11 +11,7 @@
 ;;
 
 ;;; Code:
-
-;; %% misc
 (setq
- use-dialog-box nil
- use-file-dialog nil
  inhibit-x-resources t
  inhibit-splash-screen t
  inhibit-startup-message t
@@ -24,7 +20,8 @@
  window-resize-pixelwise t
  frame-inhibit-implied-resize t
  ffap-machine-p-known 'reject
- read-process-output-max (* 1024 1024))
+ read-process-output-max (* 1024 1024)
+ redisplay-skip-fontification-on-input t)
 
 (setq
  load-prefer-newer t
@@ -34,20 +31,19 @@
  native-comp-jit-compilation t
  native-comp-async-report-warnings-errors nil)
 
-;; %% 默认frame，界面设置
-(setq
- default-frame-alist
- '((width . 90)
-   (height . 36)
-   (tool-bar-lines . 0)
-   (menu-bar-lines . 0)
-   (undecorated-round . t)
-   (vertical-scroll-bars . nil)))
+(dolist (param '((width . 90)
+                 (height . 36)
+                 (undecorated-round . t)))
+  (push param default-frame-alist))
 
 (when (featurep 'ns)
   (push '(ns-transparent-titlebar . t) default-frame-alist))
 
-(tooltip-mode -1)
+(tooltip-mode    -1)
+(tool-bar-mode   -1)
+(menu-bar-mode   -1)
+(scroll-bar-mode -1)
+(fringe-mode '(8 . 12))
 
 ;; %% 文件句柄
 (let ((old-file-name-handler-alist file-name-handler-alist))
@@ -59,7 +55,6 @@
      inhibit-trace nil))
   (add-hook #'emacs-startup-hook #'yx/restore-file-name-handler-alist))
 
-;; %% 启动时尽量不要垃圾回收
 (setq
  gc-cons-percentage 0.6
  gc-cons-threshold (* 256 1024 1024))
@@ -71,7 +66,6 @@
     gc-cons-threshold (* 8 1024 1024))
    (garbage-collect)))
 
-;; %% 启动界面更平滑
 (setq-default
  inhibit-message t
  inhibit-redisplay t)

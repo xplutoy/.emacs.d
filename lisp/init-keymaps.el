@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-11-28 09:15:22 yx>
+;; Modified: <2023-11-29 18:03:43 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -38,6 +38,7 @@
  ([remap list-buffers]                  . ibuffer) ; C-x C-b
  ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
  ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame)
+ ([remap project-switch-to-buffer]      . consult-project-buffer) ; C-x p b
  ([remap yank-pop]                      . consult-yank-pop) ;M-y
  ([remap bookmark-jump]                 . consult-bookmark) ;C-x r b
  ([remap imenu]                         . consult-imenu) ;M-g i
@@ -57,6 +58,7 @@
  ("s-SPC"     . sis-switch)
  ("s-,"       . winner-undo)
  ("s-."       . winner-redo)
+ ("s-j"       . avy-goto-char-timer)
  ("s-s"       . dirvish-side)
  ("s-r"       . consult-recent-file)
  ("s-<right>" . ns-next-frame)
@@ -73,23 +75,32 @@
  ("M-#"       . consult-register-load)
  ("M-'"       . consult-register-store)
  ("C-M-#"     . consult-register)
- ("M-i"       . consult-imenu-multi)
  ("M-z"       . vg-quick-zap-up-to-char)
  ("M-;"       . evil-commentary-line)
  ("M-o"       . ace-window)
  ("M-g ;"     . goto-last-change)
+ ("M-g a"     . consult-org-agenda)
+ ("M-g M"     . consult-man)
+ ("M-g I"     . consult-info)
+ ("M-g M-i"   . consult-imenu-multi)
  ("M-g M-f"   . consult-flymake)
  ("M-g M-e"   . consult-compile-error)
  ("M-g o"     . consult-outline)
+ ("M-g k"     . consult-kmacro)
  ("M-g m"     . consult-mark)
  ("M-g M-m"   . consult-global-mark)
- ("M-s l"     . consult-focus-lines)
+ ("M-s f"     . consult-fd)
+ ("M-s l"     . consult-line)
+ ("M-s M l"   . consult-line-multi)
+ ("M-s k"     . consult-focus-lines)
+ ("M-s M-k"   . consult-keep-lines)
+ ("M-s g"     . consult-grep)
+ ("M-s M-g"   . consult-git-grep)
+ ("M-s r"     . consult-ripgrep)
  ("M-s s"     . color-rg-search-symbol)
  ("M-s M-s"   . color-rg-search-input)
  ("M-s p"     . color-rg-search-symbol-in-project)
  ("M-s M-p"   . color-rg-search-input-in-project)
- ("M-s f"     . color-rg-search-symbol-in-current-file)
- ("M-s M-f"   . color-rg-search-input-in-current-file)
  ("C-c ;"     . flyspell-correct-wrapper)
  ("C-c '"     . flyspell-correct-next)
  ("C-c k"     . kill-buffer-and-window)
@@ -97,13 +108,12 @@
  ("C-c v"     . magit-file-dispatch)
  ("C-c C-v"   . magit-dispatch)
  ("C-c C-d"   . helpful-at-point)
- ("C-c g"     . consult-ripgrep)
- ("C-c f"     . consult-find)
  ("C-c a"     . org-agenda)
  ("C-c c"     . org-capture)
  ("C-c l"     . org-store-link)
  ("C-c b"     . tabspaces-switch-to-buffer)
  ("C-c d"     . devdocs-lookup)
+ ("C-c f"     . dirvish-fd)
  ("C-c /"     . browse-url-at-point)
  ("C-c w o"   . burly-open-bookmark)
  ("C-c w r"   . burly-reset-tab)
@@ -125,13 +135,13 @@
  ("C-h b"     . embark-bindings)
  ("C-h M"     . which-key-show-major-mode)
  ("C-h B"     . embark-bindings-at-point)
- ("C-x p b"   . consult-project-buffer)
+ ;; ("C-x p b"   . consult-project-buffer)
  )
 
 ;; %% transient key
 (with-eval-after-load 'transient
-  (keymap-set transient-map "q"        'transient-quit-one)
-  (keymap-set transient-map "<escape>" 'transient-quit-one))
+  (transient-bind-q-to-quit)
+  (keymap-set transient-map "<escape>" 'transient-quit-all))
 
 (transient-define-prefix yx/transient-global-even ()
   "Global transient for infrequently used functions."
@@ -144,90 +154,26 @@
 
 (transient-define-prefix yx/transient-global-odd ()
   "Global transient for frequently used functions."
-  [["Misc"
+  [["]-"
     ("a" "agenda" org-agenda-list)
     ("o" "crux-open-with" crux-open-with)
     ("n" "evil-buffer-new" evil-buffer-new)
     ("s" "scratch-buffer" scratch-buffer)
     ("v" "magit-file-dispatch" magit-file-dispatch)
     ("%" "query-replace-regexp" query-replace-regexp)
-    ("!" "shell-command" shell-command)
+    ("!" "shell-command" shell-command)]
+   ["[-"
     ("C" "desktop-clear" desktop-clear)
     ("D" "crux-delete-file-and-buffer" crux-delete-file-and-buffer)
     ("G" "magit-status" magit-status)
     ("V" "magit-dispatch" magit-dispatch)
     ("I" "Clock In" yx/org-clock-in)
-    ("T" "Toggle" consult-minor-mode-menu)
+    ("T" "consult-minor-mode-menu" consult-minor-mode-menu)
+    ("L" "toggle-command-log-buffer" clm/toggle-command-log-buffer)
     ("R" "rename-visited-file" rename-visited-file)
     ("K" "crux-kill-other-buffers" crux-kill-other-buffers)
     ("E" "crux-sudo-edit" crux-sudo-edit)]
-   ["TT"
-    ("tl" "toggle-command-log-buffer" clm/toggle-command-log-buffer)
-    ("ds" "dirvish-side" dirvish-side)
-    ("ga" "consult-org-agenda" consult-org-agenda)
-    ("ge" "consult-compile-error" consult-compile-error)
-    ("gf" "consult-flymake" consult-flymake)
-    ("hi" "consult-emacs-info" yx/consult-emacs-info)]
    ]
-  )
-
-;; %% evil
-(use-package evil
-  :hook
-  (after-init . evil-mode)
-  :init
-  (setq
-   evil-move-beyond-eol t
-   evil-want-keybinding nil
-   evil-want-integration t
-   evil-want-C-u-scroll nil
-   evil-default-state 'emacs
-   evil-motion-state-modes nil
-   evil-want-fine-undo t
-   evil-undo-system 'undo-redo
-   evil-respect-visual-line-mode t
-   evil-disable-insert-state-bindings t
-   )
-  :bind (([remap evil-quit] . kill-this-buffer))
-  :config
-  (defvar yx-initial-evil-state-setup
-    '((conf-mode . normal)
-      (prog-mode . normal)
-      (text-mode . insert)
-      (color-rg-mode . emacs))
-    "Default evil state per major mode.")
-  (dolist (p yx-initial-evil-state-setup)
-    (evil-set-initial-state (car p) (cdr p)))
-  (evil-define-key 'normal org-mode-map
-    [tab]   'org-cycle
-    [S-tab] 'org-shifttab)
-  (keymap-unset evil-normal-state-map "C-.")
-  (evil-define-key '(normal visual insert) 'global
-    "\C-p"  'previous-line
-    "\C-n"  'next-line
-    "\C-a"  'crux-move-beginning-of-line
-    "\C-e"  'end-of-line
-    "\C-y"  'yank
-    "\C-w"  'kill-region
-    "\M-."  'xref-find-definitions
-    )
-  )
-
-(use-package evil-commentary
-  :after evil
-  :hook (prog-mode . evil-commentary-mode)
-  )
-
-(use-package vimish-fold)
-(use-package evil-vimish-fold
-  :after evil
-  :hook (prog-mode . evil-vimish-fold-mode)
-  )
-
-(use-package evil-surround
-  :after evil
-  :hook ((prog-mode
-          text-mode) . turn-on-evil-surround-mode)
   )
 
 

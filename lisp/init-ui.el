@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-11-28 07:59:14 yx>
+;; Modified: <2023-11-29 12:36:39 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -94,11 +94,11 @@
   (mini-echo-separator "|")
   (mini-echo-default-segments
    (quote (:short
-           ("buffer-name-short" "buffer-position" "process"
+           ("buffer-name-short" "buffer-position"
             "profiler" "selection-info" "narrow" "macro" "evil")
            :long
-           ("major-mode" "buffer-name-short" "vcs" "buffer-position" "flymake"
-            "process" "selection-info" "narrow" "macro" "profiler" "elgot" "evil"))))
+           ("major-mode" "buffer-name-short" "vcs" "buffer-position"
+            "flymake" "selection-info" "narrow" "macro" "profiler" "elgot" "evil"))))
   :config
   (mini-echo-mode 1)
   )

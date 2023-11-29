@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-11-28 09:09:01 yx>
+;; Modified: <2023-11-29 18:00:39 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -49,13 +49,17 @@
  sentence-end-double-space nil
  sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
 
-;; %% quiet
 (setq
  visible-bell nil
  use-short-answers t
+ use-dialog-box nil
+ use-file-dialog nil
+ use-system-tooltips nil)
+
+;; %% quiet
+(setq
  hl-line-sticky-flag nil
  global-hl-line-sticky-flag nil
- auto-revert-verbose nil
  initial-scratch-message ""
  confirm-kill-processes nil
  disabled-command-function nil)
@@ -64,8 +68,7 @@
 (setq
  show-paren-style 'parenthesis
  show-paren-context-when-offscreen t
- show-paren-when-point-inside-paren t
- )
+ show-paren-when-point-inside-paren t)
 
 ;; %% font-lock
 (setq
@@ -74,16 +77,20 @@
  jit-lock-stealth-time 0.5
  jit-lock-context-time 0.2)
 
-(setq redisplay-skip-fontification-on-input t)
-
-;; %% auto
+;; %% auto save
 (setq
  auto-save-default t
  auto-save-no-message t
- auto-save-visited-interval 10
  delete-auto-save-files t
- auto-save-visited-predicate 'buffer-modified-p
- kill-buffer-delete-auto-save-files t)
+ kill-buffer-delete-auto-save-files t
+ auto-save-visited-interval 10
+ auto-save-visited-predicate 'buffer-modified-p)
+
+;; %% auto-revert
+(setq
+ auto-revert-verbose nil
+ auto-revert-avoid-polling t
+ auto-revert-check-vc-info t)
 
 (customize-set-variable 'auto-revert-use-notify nil)
 (add-hook 'after-init-hook 'global-auto-revert-mode)
@@ -130,8 +137,8 @@
 ;; %% line number
 (setq
  display-line-numbers-type t
- display-line-numbers-width-start t
- )
+ display-line-numbers-width 3
+ display-line-numbers-width-start t)
 
 ;; re-builder
 (setq reb-re-syntax 'string)
@@ -441,7 +448,8 @@
   (delete-selection-mode 1)
   (auto-save-visited-mode 1)
   (pixel-scroll-precision-mode 1)
-  (windmove-default-keybindings 'control))
+  (windmove-default-keybindings 'control)
+  )
 
 (add-hook 'text-mode 'yx/text-mode-setup)
 (add-hook 'after-init-hook 'yx/global-mirror-mode-setup)
