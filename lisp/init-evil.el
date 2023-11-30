@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-11-29 12:57:20
-;; Modified: <2023-11-29 12:57:39 yx>
+;; Modified: <2023-12-01 01:54:22 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,17 +16,16 @@
   (after-init . evil-mode)
   :init
   (setq
-   evil-move-beyond-eol t
-   evil-want-keybinding nil
-   evil-want-integration t
-   evil-want-C-u-scroll nil
    evil-default-state 'emacs
+   evil-move-beyond-eol t
+   evil-want-integration t
+   evil-want-keybinding nil
+   evil-want-C-u-scroll nil
    evil-motion-state-modes nil
    evil-want-fine-undo t
    evil-undo-system 'undo-redo
    evil-respect-visual-line-mode t
-   evil-disable-insert-state-bindings t
-   )
+   evil-disable-insert-state-bindings t)
   :bind (([remap evil-quit] . kill-this-buffer))
   :config
   (defvar yx-initial-evil-state-setup
@@ -37,9 +36,6 @@
     "Default evil state per major mode.")
   (dolist (p yx-initial-evil-state-setup)
     (evil-set-initial-state (car p) (cdr p)))
-  (evil-define-key 'normal org-mode-map
-    [tab]   'org-cycle
-    [S-tab] 'org-shifttab)
   (keymap-unset evil-normal-state-map "C-.")
   (evil-define-key '(normal visual insert) 'global
     "\C-p"  'previous-line
@@ -59,7 +55,18 @@
   (evil-collection-mode-list nil)
   (evil-collection-setup-debugger-keys nil)
   :config
-  (evil-collection-init '(consult))
+  (evil-collection-init
+   '(consult
+     sh-script
+     yaml-mode
+     python
+     org
+     imenu
+     hungry-delete
+     elisp-mode
+     eglot
+     unimpaired
+     diff-hl ))
   )
 
 (use-package evil-commentary

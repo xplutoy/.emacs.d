@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-11-29 13:57:50 yx>
+;; Modified: <2023-12-01 02:06:55 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -17,7 +17,7 @@
   :bind (:map org-mode-map
               ("M-<f10>" . yx/transient-org)
               ("RET"     . crux-yx/org-return-dwim)
-              ("M-g o"   . consult-org-heading)
+              ("M-g h"   . consult-org-heading)
               ("C-c y"   . org-download-screenshot)
               ("C-c C-y" . org-download-clipboard)
               ("C-c I"   . org-clock-in)

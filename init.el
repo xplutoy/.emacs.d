@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2023-11-29 12:58:41 yx>
+;; Modified: <2023-11-30 10:24:04 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -22,8 +22,8 @@
 ;; editor
 (require 'init-ui)
 (require 'init-completion)
-(require 'init-misc)
 (require 'init-evil)
+(require 'init-misc)
 (require 'init-dired)
 (require 'init-window)
 (require 'init-mail)
