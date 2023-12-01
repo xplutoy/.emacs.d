@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-12-01 09:36:04 yx>
+;; Modified: <2023-12-02 00:11:30 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -134,6 +134,7 @@
   (org-default-notes-file
    (expand-file-name "inbox.org" org-directory))
 
+  (org-capture-bookmark nil)
   (org-capture-templates
    '(("t" "Task"  entry (file+headline org-default-notes-file "Task")
       "* TODO [#B] %?\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+7d\"))\n" :prepend t)

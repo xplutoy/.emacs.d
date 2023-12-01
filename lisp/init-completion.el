@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-11-29 18:12:08 yx>
+;; Modified: <2023-12-02 00:15:40 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -80,6 +80,7 @@
   :hook ((text-mode prog-mode) . corfu-mode)
   :custom
   (corfu-auto t)
+  (corfu-cycle t)
   (corfu-preselect 'valid)
   (corfu-quit-no-match t)
   (corfu-echo-documentation nil)

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-11-29 18:32:07 yx>
+;; Modified: <2023-12-02 00:19:27 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -93,7 +93,10 @@
 
 (use-package git-modes)
 
-(use-package magit)
+(use-package magit
+  :custom
+  (magit-diff-refine-hunk t)
+  )
 
 (use-package magit-todos
   :after magit

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-11-29 12:36:39 yx>
+;; Modified: <2023-12-02 01:54:43 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -22,7 +22,7 @@
 (defvar yx/variable-pitch-font "Latin Modern Roman")
 
 (defun yx/setup-fonts ()
-  (set-face-attribute 'default nil :family yx/default-font :height 150)
+  (set-face-attribute 'default nil :family yx/default-font :height 160)
   (set-face-attribute 'fixed-pitch nil :family yx/fixed-pitch-font)
   (set-face-attribute 'fixed-pitch-serif nil :family yx/fixed-pitch-serif-font)
   (set-face-attribute 'variable-pitch nil :family yx/variable-pitch-font)
@@ -73,17 +73,19 @@
  '(mode-line ((t :box (:style released-button)))))
 
 (use-package circadian
+  :after solar
   :demand t
-  :hook (after-init . circadian-setup)
   :config
   (setq
    circadian-themes
    '((:sunset  . modus-vivendi)
      (:sunrise . modus-operandi)))
+  (circadian-setup)
   )
 
 ;; %% modeline
 (use-package minions
+  :disabled
   :demand t
   :hook (after-init . minions-mode)
   )
@@ -94,11 +96,11 @@
   (mini-echo-separator "|")
   (mini-echo-default-segments
    (quote (:short
-           ("buffer-name-short" "buffer-position"
-            "profiler" "selection-info" "narrow" "macro" "evil")
+           ("buffer-name-short" "profiler"
+            "selection-info" "narrow" "macro" "evil")
            :long
-           ("major-mode" "buffer-name-short" "vcs" "buffer-position"
-            "flymake" "selection-info" "narrow" "macro" "profiler" "elgot" "evil"))))
+           ("major-mode" "buffer-name-short" "vcs" "flymake"
+            "selection-info" "narrow" "macro" "profiler" "elgot" "evil"))))
   :config
   (mini-echo-mode 1)
   )

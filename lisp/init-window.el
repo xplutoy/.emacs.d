@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-11-29 15:52:06 yx>
+;; Modified: <2023-12-02 01:37:04 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -134,14 +134,14 @@
 (setq
  ibuffer-expert t
  ibuffer-display-summary nil
- ibuffer-show-empty-filter-groups nil
  ;; ibuffer-never-show-predicates '("^\\*")
- )
-(add-hook
- 'ibuffer-mode-hook
- (lambda ()
-   (ibuffer-do-sort-by-recency)
-   (ibuffer-auto-mode 1)))
+ ibuffer-show-empty-filter-groups nil)
+
+(defun yx/ibuffer-setup ()
+  (hl-line-mode 1)
+  (ibuffer-auto-mode 1)
+  (ibuffer-do-sort-by-recency))
+(add-hook 'ibuffer-mode-hook 'yx/ibuffer-setup)
 
 (use-package ibuffer-vc
   :init

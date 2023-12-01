@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-12-01 09:02:19 yx>
+;; Modified: <2023-12-02 07:28:33 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -64,11 +64,17 @@
  confirm-kill-processes nil
  disabled-command-function nil)
 
-;; %%
+;; %% paren
 (setq
  show-paren-style 'parenthesis
  show-paren-context-when-offscreen t
  show-paren-when-point-inside-paren t)
+
+;; %% electric
+(setq
+ electric-pair-inhibit-predicate
+ 'electric-pair-conservative-inhibit
+ )
 
 ;; %% font-lock
 (setq
@@ -197,8 +203,9 @@
  completion-auto-select 'second-tab)
 
 (setq
+ ;; abbrev-suggest t
  save-abbrevs 'silently
- abbrev-suggest-hint-threshold 3)
+ abbrev-suggest-hint-threshold 1)
 
 (setq
  hippie-expand-max-buffers 10
