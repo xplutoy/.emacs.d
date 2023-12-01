@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-11-29 18:00:39 yx>
+;; Modified: <2023-12-01 09:02:19 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -285,11 +285,8 @@
 ;; %% flyspell
 (setq
  ispell-dictionary "english"
- ispell-program-name "hunspell"
- ispell-local-dictionary "en_US"
- ispell-local-dictionary-alist
- '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8))
- ispell-hunspell-dictionary-alist ispell-local-dictionary-alist)
+ ispell-program-name "aspell"
+ ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))
 (with-eval-after-load 'flyspell
   (keymap-unset flyspell-mode-map "C-,")
   (keymap-unset flyspell-mode-map "C-.")

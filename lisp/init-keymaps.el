@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-12-01 05:08:55 yx>
+;; Modified: <2023-12-01 09:23:54 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -101,7 +101,6 @@
  ("M-s M-s"   . color-rg-search-input)
  ("M-s p"     . color-rg-search-symbol-in-project)
  ("M-s M-p"   . color-rg-search-input-in-project)
- ("C-c ;"     . flyspell-correct-wrapper)
  ("C-c '"     . flyspell-correct-next)
  ("C-c k"     . kill-buffer-and-window)
  ("C-c C-k"   . crux-kill-other-buffers)

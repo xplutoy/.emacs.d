@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-12-01 02:06:55 yx>
+;; Modified: <2023-12-01 09:36:04 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -29,7 +29,8 @@
   (org-ellipsis "...")
   (org-num-max-level 2)
   (org-reverse-note-order t)
-  (org-return-follows-link t)
+  (org-return-follows-link nil)
+  (org-mouse-1-follows-link nil)
   (org-crypt-key yx/gpg-encrypt-key)
   (org-hide-emphasis-markers t)
   (org-cycle-separator-lines 0)
@@ -105,7 +106,7 @@
   (org-src-window-setup 'split-window-right)
   (org-src-ask-before-returning-to-edit-buffer nil)
 
-  (org-modules '(ol-info ol-eww ol-gnus ol-docview org-habit org-tempo))
+  (org-modules '(ol-info ol-eww ol-docview org-habit org-tempo))
 
   ;; tag
   (org-tags-column 0)
@@ -156,6 +157,7 @@
   (org-agenda-files `(,org-default-notes-file))
   (org-agenda-compact-blocks t)
   (org-agenda-remove-tags t)
+  (org-agenda-mouse-1-follows-link nil)
   (org-agenda-time-leading-zero t)
   (org-agenda-include-deadlines t)
   (org-agenda-skip-deadline-if-done t)

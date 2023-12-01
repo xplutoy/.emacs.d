@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-11-29 18:44:26 yx>
+;; Modified: <2023-12-01 09:33:53 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -197,6 +197,9 @@
 
 (use-package flyspell-correct
   :after flyspell
+  :bind
+  (:map flyspell-mode-map
+        ("M-$" . flyspell-correct-wrapper))
   )
 
 ;; %% chinese
