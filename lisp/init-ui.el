@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-12-02 01:54:43 yx>
+;; Modified: <2023-12-02 10:03:33 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -104,6 +104,9 @@
   :config
   (mini-echo-mode 1)
   )
+
+(use-package breadcrumb
+  :hook ((prog-mode org-mode) . breadcrumb-local-mode))
 
 
 (provide 'init-ui)

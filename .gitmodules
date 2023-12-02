@@ -19,3 +19,6 @@
 [submodule "site-lisp/org-project-yx"]
 	path = site-lisp/org-project-yx
 	url = https://github.com/xplutoy/org-project-yx.git
+[submodule "site-lisp/define-repeat-map.el"]
+	path = site-lisp/define-repeat-map.el
+	url = https://tildegit.org/acdw/define-repeat-map.el.git

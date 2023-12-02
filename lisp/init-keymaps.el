@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-12-01 09:23:54 yx>
+;; Modified: <2023-12-02 09:12:53 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -19,6 +19,21 @@
 ;; This avoids the ugly accidentally action of scaling text with using the trackpad
 (unbind-key "<C-wheel-up>")
 (unbind-key "<C-wheel-down>")
+
+(use-package define-repeat-map
+  :load-path "site-lisp/define-repeat-map.el")
+
+(define-repeat-map puni-expand-region
+  ( "+" puni-expand-region
+    "-" puni-contract-region)
+  (:enter
+   mark-word
+   mark-sexp
+   mark-defun
+   puni-mark-sexp-at-point
+   puni-mark-sexp-around-point
+   puni-mark-list-around-point
+   ))
 
 (use-package key-chord
   :init
@@ -136,7 +151,6 @@
  ("C-h b"     . embark-bindings)
  ("C-h M"     . which-key-show-major-mode)
  ("C-h B"     . embark-bindings-at-point)
- ;; ("C-x p b"   . consult-project-buffer)
  )
 
 ;; %% transient key

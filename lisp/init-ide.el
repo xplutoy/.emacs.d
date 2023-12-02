@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-12-02 00:19:27 yx>
+;; Modified: <2023-12-02 10:11:20 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -58,8 +58,7 @@
 (use-package tempel
   :defer 2
   :bind
-  (("M-+" . tempel-insert)
-   ("M-=" . tempel-complete)
+  (("M-=" . tempel-insert)
    :map tempel-map
    ("M-]" . tempel-next)
    ("M-[" . tempel-previous))
@@ -205,15 +204,20 @@
   (color-rg-mac-load-path-from-shell nil)
   )
 
-;; %% code navigate
+;; %% structured edit
+(use-package puni
+  :hook
+  ((tex-mode
+    prog-mode
+    sgml-mode
+    nxml-mode) . puni-mode)
+  )
+
 (use-package combobulate
   :ensure nil
   :load-path "site-lisp/combobulate"
-  :hook
-  ((c-ts-mode
-    c++-ts-mode
-    python-ts-mode
-    ) . combobulate-mode)
+  :hook ((python-ts-mode
+          ) . combobulate-mode)
   )
 
 ;; %% lsp
@@ -249,9 +253,6 @@
 (use-package consult-eglot
   :after consult
   )
-
-(use-package breadcrumb
-  :hook ((prog-mode org-mode) . breadcrumb-local-mode))
 
 
 (provide 'init-ide)
