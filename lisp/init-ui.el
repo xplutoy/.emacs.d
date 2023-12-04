@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-12-02 10:03:33 yx>
+;; Modified: <2023-12-04 09:24:16 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,7 +16,7 @@
   (add-hook 'after-init-hook 'menu-bar-mode))
 
 ;; %% font
-(defvar yx/default-font "Cascadia Code PL")
+(defvar yx/default-font "JetBrains Mono NL")
 (defvar yx/fixed-pitch-font "JetBrains Mono NL")
 (defvar yx/fixed-pitch-serif-font "Latin Modern Mono")
 (defvar yx/variable-pitch-font "Latin Modern Roman")
@@ -36,14 +36,6 @@
                 (with-selected-frame frame (yx/setup-fonts))))
   (yx/setup-fonts))
 
-;; %% theme
-(add-hook
- 'prog-mode-hook
- (lambda ()
-   (setq buffer-face-mode-face 'fixed-pitch)
-   (buffer-face-mode))
- )
-
 (setq-default fringes-outside-margins t)
 (setq window-divider-default-bottom-width 1
       window-divider-default-places 'bottom-only)
@@ -52,12 +44,6 @@
 (setq x-underline-at-descent-line t)
 
 (setq
- modus-themes-headings
- '((agenda-date . (variable-pitch 1.3))
-   (agenda-structure . (variable-pitch 1.8))
-   (0 . (variable-pitch 1.5))
-   (1 . (variable-pitch 1.2))
-   (t . (regular 1.1)))
  modus-themes-italic-constructs t
  modus-themes-common-palette-overrides
  '((fringe unspecifield)
@@ -68,6 +54,8 @@
    (fg-line-number-inactive "gray50")
    (bg-line-number-inactive unspecifield))
  )
+
+(use-package ef-themes)
 
 (custom-set-faces
  '(mode-line ((t :box (:style released-button)))))

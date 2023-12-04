@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:06:10
-;; Modified: <2023-11-28 07:41:39 yx>
+;; Modified: <2023-12-04 07:38:38 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -17,7 +17,7 @@
  'python-ts-mode-hook
  (lambda()
    (setq-local
-    tab-width 2
+    tab-width 4
     python-indent-offset 4
     electric-indent-inhibit t
     imenu-create-index-function 'python-imenu-create-flat-index
@@ -27,6 +27,7 @@
 (setq
  python-shell-dedicated t
  python-skeleton-autoinsert t
+ python-indent-guess-indent-offset t
  python-indent-guess-indent-offset-verbose nil
  python-shell-virtualenv-root yx/default-python-env
  python-shell-interpreter "jupyter"

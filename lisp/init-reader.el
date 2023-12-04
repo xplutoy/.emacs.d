@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2023-11-28 07:31:58 yx>
+;; Modified: <2023-12-04 07:53:09 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -57,6 +57,8 @@
      ("https://karthinks.com/index.xml" emacs)
      ("https://manateelazycat.github.io/feed.xml" emacs)
      ("https://planet.emacslife.com/atom.xml" emacs)
+     ("https://matt.might.net/articles/feed.rss" emacs)
+     ("https://andreyor.st/categories/emacs/feed.xml" emacs)
      ("https://sachachua.com/blog/category/emacs/feed/" emacs)))
   :preface
   (defun yx/elfeed-kill-entry ()
@@ -74,10 +76,15 @@
   :after elfeed
   :demand t
   :config
-  (setq elfeed-webkit-auto-enable-tags '(webkit))
+  (setq
+   elfeed-webkit-auto-enable-tags '(webkit))
   (elfeed-webkit-auto-toggle-by-tag)
-  :bind (:map elfeed-show-mode-map
-              ("W" . elfeed-webkit-toggle))
+  :bind
+  (
+   :map elfeed-show-mode-map
+   ("w" . elfeed-webkit-toggle)
+   :map elfeed-webkit-map
+   ("q" . yx/elfeed-kill-entry))
   )
 
 

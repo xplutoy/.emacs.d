@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-11-29 12:57:20
-;; Modified: <2023-12-01 01:54:22 yx>
+;; Modified: <2023-12-03 12:20:00 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -21,6 +21,7 @@
    evil-want-integration t
    evil-want-keybinding nil
    evil-want-C-u-scroll nil
+   evil-want-C-d-scroll nil
    evil-motion-state-modes nil
    evil-want-fine-undo t
    evil-undo-system 'undo-redo

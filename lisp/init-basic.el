@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-12-02 07:28:33 yx>
+;; Modified: <2023-12-04 07:54:56 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -188,7 +188,7 @@
 ;; %% completion minibuffer
 (setq
  resize-mini-windows 't
- max-mini-window-height 30)
+ max-mini-window-height 0.3)
 
 (setq
  completions-detailed t
@@ -315,7 +315,7 @@
 ;; %% session
 (setq
  desktop-save t
- desktop-restore-eager 2
+ desktop-restore-eager 1
  desktop-restore-frames nil
  desktop-auto-save-timeout 60
  desktop-load-locked-desktop t

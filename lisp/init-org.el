@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-12-02 00:11:30 yx>
+;; Modified: <2023-12-04 09:22:54 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -24,6 +24,10 @@
               ("C-c O"   . org-clock-out)
               ("C-x n h" . crux-yx/org-show-current-heading-tidily))
   :autoload (org-calendar-holiday)
+  :hook
+  (org-mode . yx/org-mode-setup)
+  (org-agenda-finalize . yx/org-agenda-finalize-setup)
+  (org-babel-after-execute . yx/org-babel-display-image)
   :custom
   (org-directory yx/org-dir)
   (org-ellipsis "...")
@@ -144,7 +148,6 @@
       "* NEXT [#B] %?\nSCHEDULED: \<%(format-time-string (string ?% ?F ?  ?% ?a) (current-time)) .+1d/7d\>\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n" :prepend t))
    )
 
-
   (org-stuck-projects '("+project/-DONE-CANCELED"
                         ("NEXT")
                         nil ""))
@@ -223,35 +226,12 @@
   (org-export-with-sub-superscripts '{})
 
   :config
-  (plist-put org-format-latex-options :scale 1.50)
+  (plist-put org-format-latex-options :scale 2)
   ;; (plist-put org-latex-preview-options :zoom 1.15)
   ;; (plist-put org-latex-preview-options :scale 2.20)
   (with-eval-after-load 'ox-latex
     (setq org-latex-logfiles-extensions
           (append org-latex-logfiles-extensions '("toc" "dvi" "tex" "bbl"))))
-  (add-hook
-   'org-mode-hook
-   (lambda ()
-     (setq-local
-      evil-auto-indent nil)
-     (auto-fill-mode 0)
-     (variable-pitch-mode 1)))
-  (mapc
-   (lambda (face)
-     (set-face-attribute face nil :inherit 'fixed-pitch-serif))
-   (list
-    'org-date
-    'org-block
-    'org-table
-    'org-verbatim
-    'org-block-begin-line
-    'org-block-end-line
-    'org-meta-line
-    'org-drawer
-    'org-property-value
-    'org-special-keyword
-    'org-latex-and-related
-    'org-document-info-keyword))
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
@@ -268,37 +248,55 @@
   (org-crypt-use-before-save-magic)
   (org-clock-persistence-insinuate)
   (org-clock-auto-clockout-insinuate)
-  (unpackaged/def-org-maybe-surround "~" "=" "*" "/" "+")
-  (add-hook 'org-babel-after-execute-hook
-            (lambda ()
-              (when org-inline-image-overlays
-                (org-redisplay-inline-images))))
-  (add-hook 'org-agenda-finalize-hook
-            (lambda ()
-              (setq appt-time-msg-list nil)
-              (org-agenda-to-appt)))
   (run-at-time t 900 'org-agenda-to-appt)
+  (unpackaged/def-org-maybe-surround "~" "=" "*" "/" "+")
+
+  :custom-face
+  (org-level-1 ((t (:height 1.30))))
+  (org-level-2 ((t (:height 1.20))))
+  (org-level-3 ((t (:height 1.10))))
+  (org-document-title ((t (:height 1.5))))
 
   :preface
+  (defun yx/org-mode-setup ()
+    (setq-local
+     evil-auto-indent nil)
+    (auto-fill-mode 0)
+    (variable-pitch-mode 1)
+    (modify-syntax-entry ?< "." org-mode-syntax-table)
+    (modify-syntax-entry ?> "." org-mode-syntax-table)
+    )
+
+  (defun yx/org-agenda-finalize-setup ()
+    (setq appt-time-msg-list nil)
+    (org-agenda-to-appt)
+    )
+
+  (defun yx/org-babel-display-image ()
+    (when org-inline-image-overlays
+      (org-redisplay-inline-images))
+    )
+
   (defun yx/org-clock-in ()
     (interactive)
-    (org-clock-in '(4)))
+    (org-clock-in '(4))
+    )
 
   (transient-define-prefix yx/transient-org ()
     "Org commands."
     [["Misc"
-      ("a" "Archive Subtree" org-archive-subtree)
+      ("a" "org-archive-subtree" org-archive-subtree)
       ("g" "org-goto" org-goto)
-      ("i" "Clock In" org-clock-in)
-      ("o" "Clock Out" org-clock-out)
+      ("i" "org-clock-in" org-clock-in)
+      ("o" "org-clock-out" org-clock-out)
       ("n" "org-narrow-to-subtree" org-narrow-to-subtree)]
      ["Toggle"
-      ("tl" "org-toggle-link-display" org-toggle-link-display)
-      ("cv" "org-toggle-inline-images" org-toggle-inline-images)
-      ("cl" "org-preview-latex-fragment" org-preview-latex-fragment)]
+      ("L" "org-toggle-link-display" org-toggle-link-display)
+      ("I" "org-toggle-inline-images" org-toggle-inline-images)
+      ("F" "org-preview-latex-fragment" org-preview-latex-fragment)]
      ["Cite"
-      ("bi" "org-cite-insert" org-cite-insert)
-      ("bo" "citar-open" citar-open)]
+      ("ci" "org-cite-insert" org-cite-insert)
+      ("co" "citar-open" citar-open)]
      ]
     )
   )
@@ -345,6 +343,9 @@
   :custom
   (valign-fancy-bar 1)
   )
+
+(use-package mixed-pitch
+  :hook (org-mode . mixed-pitch-mode))
 
 (use-package org-appear
   :hook (org-mode . org-appear-mode)

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-12-02 09:12:53 yx>
+;; Modified: <2023-12-04 08:27:10 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -21,7 +21,8 @@
 (unbind-key "<C-wheel-down>")
 
 (use-package define-repeat-map
-  :load-path "site-lisp/define-repeat-map.el")
+  :load-path "site-lisp/define-repeat-map.el"
+  :commands (define-repeat-map))
 
 (define-repeat-map puni-expand-region
   ( "+" puni-expand-region
@@ -76,11 +77,12 @@
  ("s-j"       . avy-goto-char-timer)
  ("s-s"       . dirvish-side)
  ("s-r"       . consult-recent-file)
+ ("s-k"       . crux-kill-other-buffers)
+ ("s-w"       . delete-frame)
  ("s-<right>" . ns-next-frame)
  ("s-<left>"  . ns-prev-frame)
  ("M-]"       . tab-next)
  ("M-["       . tab-previous)
- ("s-k"       . crux-kill-other-buffers)
  ("C-;"       . crux-yx/toggle-eshell)
  ("C-:"       . vterm-toggle-cd)
  ("C-."       . embark-act)
@@ -149,7 +151,7 @@
  ("C-c n t"   . org-transclusion-add)
  ("C-c n C-t" . org-transclusion-add-all)
  ("C-h b"     . embark-bindings)
- ("C-h M"     . which-key-show-major-mode)
+ ("C-h C-m"   . which-key-show-full-major-mode)
  ("C-h B"     . embark-bindings-at-point)
  )
 
@@ -174,6 +176,7 @@
     ("o" "crux-open-with" crux-open-with)
     ("n" "evil-buffer-new" evil-buffer-new)
     ("s" "scratch-buffer" scratch-buffer)
+    ("m" "major-mode-keybings" which-key-show-full-major-mode)
     ("v" "magit-file-dispatch" magit-file-dispatch)
     ("%" "query-replace-regexp" query-replace-regexp)
     ("!" "shell-command" shell-command)]

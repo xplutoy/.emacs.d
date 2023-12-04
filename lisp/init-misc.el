@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-12-01 09:33:53 yx>
+;; Modified: <2023-12-04 08:14:05 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -75,16 +75,9 @@
   )
 
 (use-package which-key
-  :defer 2
-  :init
-  (setq
-   which-key-idle-delay 1.5
-   which-key-show-early-on-C-h t
-   which-key-show-remaining-keys t
-   which-key-idle-secondary-delay 0.05)
+  :hook (after-init . which-key-mode)
   :config
   (which-key-setup-minibuffer)
-  (which-key-mode 1)
   )
 
 (use-package goggles
