@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:20:40
-;; Modified: <2023-11-29 13:34:37 yx>
+;; Modified: <2023-12-04 09:33:57 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -86,7 +86,6 @@
         ("f"   . dirvish-file-info-menu)
         ("y"   . dirvish-yank-menu)
         ("N"   . dirvish-narrow)
-        ("^"   . dirvish-history-last)
         ("h"   . dirvish-history-jump)
         ("s"   . dirvish-quicksort)
         ("v"   . dirvish-vc-menu)

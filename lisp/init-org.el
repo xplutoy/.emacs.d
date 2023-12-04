@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-12-04 09:22:54 yx>
+;; Modified: <2023-12-04 10:08:57 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -54,6 +54,9 @@
   (org-image-actual-width `(,(* (window-font-width)
                                 (- fill-column 8))))
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+
+  (org-element-use-cache nil)
+  (org-element-cache-persistent nil)
 
   (org-blank-before-new-entry '((heading . nil)
                                 (plain-list-item . nil)))
@@ -252,9 +255,9 @@
   (unpackaged/def-org-maybe-surround "~" "=" "*" "/" "+")
 
   :custom-face
-  (org-level-1 ((t (:height 1.30))))
-  (org-level-2 ((t (:height 1.20))))
-  (org-level-3 ((t (:height 1.10))))
+  (org-level-1 ((t (:height 1.3))))
+  (org-level-2 ((t (:height 1.2))))
+  (org-level-3 ((t (:height 1.1))))
   (org-document-title ((t (:height 1.5))))
 
   :preface
