@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-12-04 07:54:56 yx>
+;; Modified: <2023-12-05 20:16:03 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -72,6 +72,7 @@
 
 ;; %% electric
 (setq
+ electric-pair-preserve-balance nil
  electric-pair-inhibit-predicate
  'electric-pair-conservative-inhibit
  )
@@ -318,18 +319,13 @@
  desktop-restore-eager 1
  desktop-restore-frames nil
  desktop-auto-save-timeout 60
- desktop-load-locked-desktop t
- desktop-files-not-to-save "\\(\\`/[^/:]*:\\|(ftp)\\'\\|(ssh)\\'\\|\\.org$\\|^/tmp/\\)")
-
-(add-hook 'after-init-hook
-          (lambda ()
-            (desktop-read)
-            (desktop-save-mode 1))
-          )
+ desktop-load-locked-desktop t)
 
 (with-eval-after-load 'desktop
   (dolist (mode '(eww-mode
                   Info-mode
+                  magit-mode
+                  magit-log-mode
                   dired-mode
                   comint-mode
                   doc-view-mode
@@ -444,9 +440,10 @@
   (goto-address-mode 1)
   (toggle-truncate-lines -1))
 
-(defun yx/global-mirror-mode-setup ()
+(defun yx/global-mirror-mode-toggle ()
   (repeat-mode 1)
   (save-place-mode 1)
+  (desktop-save-mode -1)
   (blink-cursor-mode -1)
   (auto-compression-mode 1)
   (delete-selection-mode 1)
@@ -456,7 +453,7 @@
   )
 
 (add-hook 'text-mode 'yx/text-mode-setup)
-(add-hook 'after-init-hook 'yx/global-mirror-mode-setup)
+(add-hook 'after-init-hook 'yx/global-mirror-mode-toggle)
 
 ;; never kill scratch
 (with-current-buffer "*scratch*"

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:06:10
-;; Modified: <2023-12-04 07:38:38 yx>
+;; Modified: <2023-12-05 20:25:15 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -37,9 +37,12 @@
 (define-auto-insert "\\.py$" 'yx/auto-insert-common-header)
 
 (use-package pyvenv
-  :defer 2
-  :config
-  (pyvenv-activate yx/default-python-env)
+  :hook (after-init . yx/active-default-pyvenv)
+  :preface
+  (defun yx/active-default-pyvenv ()
+    (interactive)
+    (pyvenv-activate yx/default-python-env)
+    )
   )
 
 (use-package pyvenv-auto

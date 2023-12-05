@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-12-02 00:15:40 yx>
+;; Modified: <2023-12-05 17:34:54 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -89,11 +89,10 @@
   (corfu-history-mode 1)
   (corfu-indexed-mode 1)
   (corfu-popupinfo-mode 1)
-  :bind (:map corfu-map
-              ("TAB"   . corfu-next)
-              ("S-TAB" . corfu-previous)
-              ("M-q"   . corfu-quick-insert)
-              ("M-SPC"   . corfu-insert-separator))
+  :bind
+  (:map corfu-map
+        ("M-q"     . corfu-quick-insert)
+        ("M-SPC"   . corfu-insert-separator))
   )
 
 (use-package cape

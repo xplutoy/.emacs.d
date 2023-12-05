@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-12-01 07:06:10 yx>
+;; Modified: <2023-12-05 18:10:51 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -84,6 +84,7 @@
 (use-package ess-site
   :ensure ess
   )
+
 (define-auto-insert "\\.R$" 'yx/auto-insert-common-header)
 
 ;; %% toy langs

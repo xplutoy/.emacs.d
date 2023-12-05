@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-12-02 10:11:20 yx>
+;; Modified: <2023-12-05 19:37:13 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -57,11 +57,13 @@
 ;; %% snippet
 (use-package tempel
   :defer 2
+  :custom
+  (tempel-trigger-prefix "<")
   :bind
   (("M-=" . tempel-insert)
    :map tempel-map
-   ("M-]" . tempel-next)
-   ("M-[" . tempel-previous))
+   ([tab] . tempel-next)
+   ([backtab] . tempel-previous))
   :hook
   ((prog-mode text-mode) . tempel-setup-capf)
   :init
@@ -74,6 +76,16 @@
   :config
   (global-tempel-abbrev-mode)
   )
+
+(use-package yasnippet
+  :ensure t
+  :hook ((text-mode
+          prog-mode
+          conf-mode
+          snippet-mode) . yas-minor-mode-on)
+  )
+
+(use-package yasnippet-snippets)
 
 ;; %% version control
 (setq vc-handled-backends '(Git))
@@ -253,6 +265,16 @@
 (use-package consult-eglot
   :after consult
   )
+
+(use-package sideline
+  :hook
+  (flymake-mode . yx/sideline-flymake-mode-setup)
+  :preface
+  (defun yx/sideline-flymake-mode-setup ()
+    (setq-local
+     sideline-backends-right '(sideline-flymake))
+    (sideline-mode 1)))
+(use-package sideline-flymake)
 
 
 (provide 'init-ide)
