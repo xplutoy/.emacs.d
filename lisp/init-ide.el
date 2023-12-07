@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-12-05 19:37:13 yx>
+;; Modified: <2023-12-07 08:29:09 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -275,6 +275,14 @@
      sideline-backends-right '(sideline-flymake))
     (sideline-mode 1)))
 (use-package sideline-flymake)
+
+(use-package dape
+  :init
+  (setq
+   dape-adapter-dir
+   (no-littering-expand-var-file-name "dape-debug-adapters")
+   dape-buffer-window-arrangment 'right)
+  )
 
 
 (provide 'init-ide)

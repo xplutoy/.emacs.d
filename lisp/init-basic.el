@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-12-05 20:16:03 yx>
+;; Modified: <2023-12-07 08:05:41 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -203,6 +203,9 @@
  completion-show-inline-help nil
  completion-auto-select 'second-tab)
 
+(setq read-extended-command-predicate
+      'command-completion-default-include-p)
+
 (setq
  ;; abbrev-suggest t
  save-abbrevs 'silently
@@ -363,8 +366,6 @@
 (setq
  calendar-holidays
  '((holiday-chinese 12 30 "春节")
-   (holiday-chinese 1 1   "春节")
-   (holiday-chinese 1 2   "春节")
    (holiday-chinese 5 5   "端午节")
    (holiday-chinese 1 15  "元宵节")
    (holiday-chinese 7 7   "七夕节")
@@ -372,16 +373,12 @@
    (holiday-chinese 8 15  "中秋节")
    (holiday-fixed 1 1     "元旦")
    (holiday-fixed 10 1    "国庆节")
-   (holiday-fixed 10 2    "国庆节")
-   (holiday-fixed 10 3    "国庆节")
    (holiday-fixed 3 8     "妇女节")
-   (holiday-fixed 3 12    "植树节")
    (holiday-fixed 5 1     "劳动节")
    (holiday-fixed 5 4     "青年节")
    (holiday-fixed 6 1     "儿童节")
    (holiday-fixed 9 10    "教师节")
    (holiday-fixed 2 14    "情人节")
-   (holiday-fixed 4 1     "愚人节")
    (holiday-float 5 0 2   "母亲节")
    (holiday-float 6 0 3   "父亲节")
    (holiday-float 11 4 4  "感恩节")

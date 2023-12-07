@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-12-04 10:08:57 yx>
+;; Modified: <2023-12-07 09:22:34 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -14,15 +14,16 @@
 (use-package org
   :ensure nil
   :defer 2
-  :bind (:map org-mode-map
-              ("M-<f10>" . yx/transient-org)
-              ("RET"     . crux-yx/org-return-dwim)
-              ("M-g h"   . consult-org-heading)
-              ("C-c y"   . org-download-screenshot)
-              ("C-c C-y" . org-download-clipboard)
-              ("C-c I"   . org-clock-in)
-              ("C-c O"   . org-clock-out)
-              ("C-x n h" . crux-yx/org-show-current-heading-tidily))
+  :bind
+  (:map org-mode-map
+        ("M-<f10>" . yx/transient-org)
+        ("RET"     . crux-yx/org-return-dwim)
+        ("M-g h"   . consult-org-heading)
+        ("C-c y"   . org-download-screenshot)
+        ("C-c C-y" . org-download-clipboard)
+        ("C-c I"   . org-clock-in)
+        ("C-c O"   . org-clock-out)
+        ("C-x n h" . crux-yx/org-show-current-heading-tidily))
   :autoload (org-calendar-holiday)
   :hook
   (org-mode . yx/org-mode-setup)

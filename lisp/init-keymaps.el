@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-12-05 17:46:35 yx>
+;; Modified: <2023-12-07 09:08:41 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -68,14 +68,15 @@
  )
 
 (bind-keys
+ ("<f5>"      . dape)
  ("<f10>"     . yx/transient-global-odd)
  ("s-<f10>"   . yx/transient-global-even)
  ("s-<return>" . toggle-frame-maximized)
- ("s-SPC"     . sis-switch)
+ ("s-`"       . sis-switch)
  ("s-,"       . winner-undo)
  ("s-."       . winner-redo)
  ("s-j"       . avy-goto-char-timer)
- ("s-s"       . dirvish-side)
+ ("s-d"       . dirvish-side)
  ("s-r"       . consult-recent-file)
  ("s-k"       . crux-kill-other-buffers)
  ("s-w"       . delete-frame)
@@ -130,9 +131,9 @@
  ("C-c b"     . tabspaces-switch-to-buffer)
  ("C-c d"     . devdocs-lookup)
  ("C-c f"     . dirvish-fd)
- ("C-c / o"   . browse-url-at-point)
- ("C-c / a"   . ace-link-addr)
- ("C-c / l"   . ace-link)
+ ("C-x / o"   . browse-url-at-point)
+ ("C-x / a"   . ace-link-addr)
+ ("C-x / l"   . ace-link)
  ("C-c w o"   . burly-open-bookmark)
  ("C-c w r"   . burly-reset-tab)
  ("C-c w w"   . burly-bookmark-windows)
