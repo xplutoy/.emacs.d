@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-12-07 08:29:09 yx>
+;; Modified: <2023-12-07 09:47:41 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -96,10 +96,11 @@
   (dired-mode . diff-hl-dired-mode)
   (magit-post-refresh . diff-hl-magit-post-refresh)
   :config
-  (setq diff-hl-disable-on-remote t)
+  (setq
+   diff-hl-disable-on-remote t
+   diff-hl-show-staged-changes t)
   (diff-hl-flydiff-mode 1)
-  :bind (:map diff-hl-mode-map
-              ("<left-fringe> <mouse-1>" . diff-hl-diff-goto-hunk))
+  (diff-hl-show-hunk-mouse-mode 1)
   )
 
 (use-package git-modes)

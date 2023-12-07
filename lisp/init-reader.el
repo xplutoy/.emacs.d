@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2023-12-04 07:53:09 yx>
+;; Modified: <2023-12-07 11:12:03 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -55,6 +55,7 @@
      ("http://lambda-the-ultimate.org/rss.xml" lang)
      ("https://egh0bww1.com/rss.xml" emacs)
      ("https://karthinks.com/index.xml" emacs)
+     ("https://minibuffer.tonyaldon.com/feed.xml" elisp)
      ("https://manateelazycat.github.io/feed.xml" emacs)
      ("https://planet.emacslife.com/atom.xml" emacs)
      ("https://matt.might.net/articles/feed.rss" emacs)

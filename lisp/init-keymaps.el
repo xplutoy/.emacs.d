@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-12-07 09:08:41 yx>
+;; Modified: <2023-12-07 10:46:04 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -43,8 +43,9 @@
   (key-chord-define-global "jj"     'avy-goto-char-timer)
   (key-chord-define-global "jl"     'avy-goto-line)
   (with-eval-after-load 'org
-    (key-chord-define org-mode-map
-                      "jh" 'avy-org-goto-heading-timer))
+    (key-chord-define
+     org-mode-map
+     "jh" 'avy-org-goto-heading-timer))
   )
 
 (bind-keys
