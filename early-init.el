@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2023-11-29 16:37:59 yx>
+;; Modified: <2023-12-09 14:58:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -57,7 +57,7 @@
 
 (setq
  gc-cons-percentage 0.6
- gc-cons-threshold (* 256 1024 1024))
+ gc-cons-threshold (* 128 1024 1024))
 (add-hook
  'after-init-hook
  (lambda ()

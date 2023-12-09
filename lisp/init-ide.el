@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-12-07 09:47:41 yx>
+;; Modified: <2023-12-09 15:12:10 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -100,7 +100,7 @@
    diff-hl-disable-on-remote t
    diff-hl-show-staged-changes t)
   (diff-hl-flydiff-mode 1)
-  (diff-hl-show-hunk-mouse-mode 1)
+  (global-diff-hl-show-hunk-mouse-mode 1)
   )
 
 (use-package git-modes)
@@ -284,6 +284,9 @@
    (no-littering-expand-var-file-name "dape-debug-adapters")
    dape-buffer-window-arrangment 'right)
   )
+
+(use-package dwim-coder-mode
+  :hook ((c-ts-mode python-ts-mode) . dwim-coder-mode))
 
 
 (provide 'init-ide)

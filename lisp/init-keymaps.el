@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-12-07 10:46:04 yx>
+;; Modified: <2023-12-09 15:00:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -53,6 +53,7 @@
  ([remap goto-line]                     . consult-goto-line) ;M-g g
  ([remap switch-to-buffer]              . consult-buffer) ; C-x b
  ([remap list-buffers]                  . ibuffer) ; C-x C-b
+ ([remap repeat-complex-command]        . consult-complex-command) ; C-x M-:
  ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
  ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame)
  ([remap project-switch-to-buffer]      . consult-project-buffer) ; C-x p b
@@ -76,6 +77,7 @@
  ("s-`"       . sis-switch)
  ("s-,"       . winner-undo)
  ("s-."       . winner-redo)
+ ("s-t"       . tab-bar-new-tab)
  ("s-j"       . avy-goto-char-timer)
  ("s-d"       . dirvish-side)
  ("s-r"       . consult-recent-file)

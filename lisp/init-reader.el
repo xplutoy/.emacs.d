@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2023-12-07 11:12:03 yx>
+;; Modified: <2023-12-09 19:48:10 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -55,37 +55,35 @@
      ("http://lambda-the-ultimate.org/rss.xml" lang)
      ("https://egh0bww1.com/rss.xml" emacs)
      ("https://karthinks.com/index.xml" emacs)
-     ("https://minibuffer.tonyaldon.com/feed.xml" elisp)
      ("https://manateelazycat.github.io/feed.xml" emacs)
      ("https://planet.emacslife.com/atom.xml" emacs)
      ("https://matt.might.net/articles/feed.rss" emacs)
      ("https://andreyor.st/categories/emacs/feed.xml" emacs)
      ("https://sachachua.com/blog/category/emacs/feed/" emacs)))
+  :hook (elfeed-show . olivetti-mode)
+  :config (run-at-time nil (* 8 60 60) 'elfeed-update)
   :preface
   (defun yx/elfeed-kill-entry ()
     "Like `elfeed-kill-entry' but pop elfeed search"
     (interactive)
     (elfeed-kill-buffer)
-    (switch-to-buffer "*elfeed-search*")
+    (switch-to-buffer "*elfeed-search*"))
+  :bind
+  ( :map elfeed-show-mode-map
+    ("w" . elfeed-webkit-toggle)
+    ("q" . yx/elfeed-kill-entry)
     )
-  :hook (elfeed-show . olivetti-mode)
-  :bind (:map elfeed-show-mode-map
-              ("q" . yx/elfeed-kill-entry))
   )
 
 (use-package elfeed-webkit
   :after elfeed
-  :demand t
   :config
   (setq
    elfeed-webkit-auto-enable-tags '(webkit))
   (elfeed-webkit-auto-toggle-by-tag)
   :bind
-  (
-   :map elfeed-show-mode-map
-   ("w" . elfeed-webkit-toggle)
-   :map elfeed-webkit-map
-   ("q" . yx/elfeed-kill-entry))
+  (:map elfeed-webkit-map
+        ("q" . yx/elfeed-kill-entry))
   )
 
 

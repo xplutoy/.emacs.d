@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-12-07 09:22:34 yx>
+;; Modified: <2023-12-09 15:56:31 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -37,6 +37,7 @@
   (org-return-follows-link nil)
   (org-mouse-1-follows-link nil)
   (org-crypt-key yx/gpg-encrypt-key)
+  (org-hide-leading-stars t)
   (org-hide-emphasis-markers t)
   (org-cycle-separator-lines 0)
   (org-use-sub-superscripts '{})
@@ -62,8 +63,10 @@
   (org-blank-before-new-entry '((heading . nil)
                                 (plain-list-item . nil)))
 
-  (org-startup-folded t)
   (org-startup-indented nil)
+  (org-adapt-indentation nil)
+
+  (org-startup-folded t)
   (org-hide-block-startup t)
   (org-hide-drawer-startup t)
   (org-startup-align-all-tables t)

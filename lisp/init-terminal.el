@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:10:40
-;; Modified: <2023-12-05 16:23:36 yx>
+;; Modified: <2023-12-09 15:07:22 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -38,7 +38,7 @@
 
   :preface
   (defun yx/eshell-setup ()
-    (keymap-set eshell-mode-map "C-l" 'eshell/clear)
+    (keymap-set eshell-mode-map "C-l" 'yx/eshell-clear)
     (keymap-set eshell-mode-map "C-r" 'consult-history)
     (setq
      eshell-visual-commands
@@ -51,6 +51,15 @@
     (eshell/alias "gs"   "magit-status")
     (eshell/alias "gv"   "magit-dispatch")
     (eshell/alias "ll"   "ls -AlohG --color=always")
+    )
+
+  (defun yx/eshell-clear ()
+    "Clear the current Eshell buffer."
+    (interactive)
+    (let ((inhibit-read-only t))
+      (erase-buffer)
+      (eshell-send-input)
+      )
     )
 
   (defun eshell/F (filename)

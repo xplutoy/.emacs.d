@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-12-07 08:05:41 yx>
+;; Modified: <2023-12-09 15:44:07 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -72,7 +72,7 @@
 
 ;; %% electric
 (setq
- electric-pair-preserve-balance nil
+ electric-pair-preserve-balance t
  electric-pair-inhibit-predicate
  'electric-pair-conservative-inhibit
  )
@@ -340,7 +340,7 @@
 (setq
  tramp-verbose 1
  tramp-chunksize 2000
- tramp-default-method "ssh"
+ tramp-default-method "scp"
  remote-file-name-inhibit-locks t
  remote-file-name-inhibit-cache nil)
 
@@ -435,6 +435,7 @@
    word-wrap-by-category t)
   (visual-line-mode 1)
   (goto-address-mode 1)
+  (variable-pitch-mode 1)
   (toggle-truncate-lines -1))
 
 (defun yx/global-mirror-mode-toggle ()
