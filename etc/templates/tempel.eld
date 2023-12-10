@@ -3,8 +3,6 @@ fundamental-mode
 (today (format-time-string "%Y-%m-%d"))
 (now (format-time-string "<%Y-%0m-%0d %a %H:%0M>"))
 
-prog-mode
-
 python-base-mode
 
 (for "for " p " in " p ":" n> q)

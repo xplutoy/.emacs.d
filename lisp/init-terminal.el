@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:10:40
-;; Modified: <2023-12-09 15:07:22 yx>
+;; Modified: <2023-12-10 11:27:58 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -21,12 +21,15 @@
 (use-package eshell
   :init
   (setq
+   eshell-kill-on-exit t
    eshell-hist-ignoredups t
    eshell-error-if-no-glob t
    eshell-save-history-on-exit t
    eshell-prefer-lisp-functions t
+   eshell-kill-processes-on-exit t
    eshell-rm-removes-directories t
    eshell-scroll-to-bottom-on-input 'all
+   eshell-scroll-to-bottom-on-output 'all
    eshell-destroy-buffer-when-process-dies t)
   :config
   (dolist (m '(eshell-rebind
@@ -61,6 +64,10 @@
       (eshell-send-input)
       )
     )
+  (defun eshell/z ()
+    (let ((dir (completing-read "Directory: " (ring-elements eshell-last-dir-ring) nil t)))
+      (eshell/cd dir)
+      ))
 
   (defun eshell/F (filename)
     "Open a file as root from Eshell"
@@ -80,6 +87,12 @@
   :init
   (setq eshell-prompt-function 'eshell-git-prompt-multiline)
   )
+
+(use-package eshell-syntax-highlighting
+  :after eshell-mode
+  :demand t
+  :config
+  (eshell-syntax-highlighting-global-mode +1))
 
 (use-package pcmpl-args
   :after eshell

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-12-09 15:56:31 yx>
+;; Modified: <2023-12-10 11:56:38 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -34,6 +34,7 @@
   (org-ellipsis "...")
   (org-num-max-level 2)
   (org-reverse-note-order t)
+  (org-list-allow-alphabetical t)
   (org-return-follows-link nil)
   (org-mouse-1-follows-link nil)
   (org-crypt-key yx/gpg-encrypt-key)
@@ -116,6 +117,19 @@
   (org-src-preserve-indentation nil)
   (org-src-window-setup 'split-window-right)
   (org-src-ask-before-returning-to-edit-buffer nil)
+
+  (org-babel-default-header-args
+   '(
+     (:evel    . "never-export")
+     (:session . "none")
+     (:results . "replace")
+     (:exports . "both")
+     (:cache   . "no")
+     (:noweb   . "no")
+     (:hlines  . "no")
+     (:wrap    . "results")
+     (:tangle  . "no")
+     ))
 
   (org-modules '(ol-info ol-eww ol-docview org-habit org-tempo))
 
@@ -229,6 +243,7 @@
 
   (org-export-with-toc t)
   (org-export-with-drawers nil)
+  (oeg-export-with-footnotes t)
   (org-export-with-section-numbers nil)
   (org-export-with-sub-superscripts '{})
 

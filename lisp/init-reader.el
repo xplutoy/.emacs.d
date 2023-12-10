@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2023-12-09 19:48:10 yx>
+;; Modified: <2023-12-09 19:59:08 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -61,13 +61,21 @@
      ("https://andreyor.st/categories/emacs/feed.xml" emacs)
      ("https://sachachua.com/blog/category/emacs/feed/" emacs)))
   :hook (elfeed-show . olivetti-mode)
-  :config (run-at-time nil (* 8 60 60) 'elfeed-update)
+  :config
+  (run-at-time nil (* 8 60 60) 'elfeed-update)
+  (keymap-set elfeed-search-mode-map "s" (yx/elfeed-tag-selection-as 'star))
+  (keymap-set elfeed-search-mode-map "l" (yx/elfeed-tag-selection-as 'readlater))
   :preface
   (defun yx/elfeed-kill-entry ()
     "Like `elfeed-kill-entry' but pop elfeed search"
     (interactive)
     (elfeed-kill-buffer)
     (switch-to-buffer "*elfeed-search*"))
+  (defun yx/elfeed-tag-selection-as (mytag)
+    (lambda ()
+      "Toggle a tag on an Elfeed search selection"
+      (interactive)
+      (elfeed-search-toggle-all mytag)))
   :bind
   ( :map elfeed-show-mode-map
     ("w" . elfeed-webkit-toggle)
