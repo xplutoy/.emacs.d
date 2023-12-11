@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-12-12 01:11:12 yx>
+;; Modified: <2023-12-12 01:25:14 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -44,10 +44,10 @@
       flymake-fringe-indicator-position 'right-fringe)
 (with-eval-after-load 'flymake
   (bind-keys :map flymake-mode-map
-             ("C-c e n" . flymake-goto-next-error)
-             ("C-c e p" . flymake-goto-prev-error)
-             ("C-c e l" . flymake-show-buffer-diagnostics)
-             ("C-c e L" . flymake-show-project-diagnostics))
+             ("M-c M-n" . flymake-goto-next-error)
+             ("M-c M-p" . flymake-goto-prev-error)
+             ("M-c d"   . flymake-show-buffer-diagnostics)
+             ("M-c M-d" . flymake-show-project-diagnostics))
   )
 
 (use-package apheleia
@@ -168,11 +168,11 @@
           ))
   :bind
   (:map hl-todo-mode-map
-        ("C-c t t" . hl-todo-occur)
-        ("C-c t g" . hl-todo-rgrep)
-        ("C-c t i" . hl-todo-insert)
-        ("C-c t n" . hl-todo-next)
-        ("C-c t p" . hl-todo-previous))
+        ("M-c t t" . hl-todo-occur)
+        ("M-c t g" . hl-todo-rgrep)
+        ("M-c t i" . hl-todo-insert)
+        ("M-c t n" . hl-todo-next)
+        ("M-c t p" . hl-todo-previous))
   )
 
 (use-package idle-highlight-mode
