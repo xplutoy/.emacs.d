@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-12-09 15:12:10 yx>
+;; Modified: <2023-12-11 03:14:00 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -116,14 +116,21 @@
   :config (magit-todos-mode 1))
 
 ;; %% indent
-(use-package aggressive-indent
-  :hook (emacs-lisp-mode . aggressive-indent-mode)
-  )
+(use-package editorconfig
+  :defer 2
+  :custom
+  (editorconfig-trim-whitespaces-mode 'ws-butler-mode)
+  :config
+  (editorconfig-mode 1))
 
 (use-package indent-guide
   :hook (prog-mode . indent-guide-mode)
   :custom
   (indent-guide-recursive nil)
+  )
+
+(use-package aggressive-indent
+  :hook (emacs-lisp-mode . aggressive-indent-mode)
   )
 
 ;; %% doc

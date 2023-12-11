@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-12-04 08:14:05 yx>
+;; Modified: <2023-12-11 11:19:59 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -66,10 +66,6 @@
   :autoload (unpackaged/def-org-maybe-surround)
   :load-path "site-lisp/crux-yx"
   :config
-  (add-hook 'eww-mode-hook
-            (lambda ()
-              (setq-local imenu-create-index-function
-                          'unpackaged/imenu-eww-headings)))
   (crux-with-region-or-buffer indent-region)
   (crux-reopen-as-root-mode 1)
   )

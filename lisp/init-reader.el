@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2023-12-09 19:59:08 yx>
+;; Modified: <2023-12-11 12:58:25 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -44,11 +44,18 @@
 
 ;; %% elfeed
 (use-package elfeed
+  :init
+  (setq elfeed-search-print-entry-function
+        'yx/elfeed-search-print-entry--better-default)
   :custom
   (elfeed-feeds
-   '(("https://www.inference.vc/rss" ai)
+   '(("https://36kr.com/feed" new)
+     ("https://www.zhihu.com/rss" new)
+     ("https://wangyurui.com/feed.xml" thought)
+     ("https://www.inference.vc/rss" ai)
      ("https://spaces.ac.cn/feed" ai webkit)
      ("https://ruder.io/rss/index.rss" ai)
+     ("https://lilianweng.github.io/index.xml" ai webkit)
      ("https://yihui.org/en/index.xml" R)
      ("https://www.juliabloggers.com/feed/" julia)
      ("http://www.ruanyifeng.com/blog/atom.xml" tech webkit)
@@ -63,7 +70,7 @@
   :hook (elfeed-show . olivetti-mode)
   :config
   (run-at-time nil (* 8 60 60) 'elfeed-update)
-  (keymap-set elfeed-search-mode-map "s" (yx/elfeed-tag-selection-as 'star))
+  (keymap-set elfeed-search-mode-map "m" (yx/elfeed-tag-selection-as 'star))
   (keymap-set elfeed-search-mode-map "l" (yx/elfeed-tag-selection-as 'readlater))
   :preface
   (defun yx/elfeed-kill-entry ()
