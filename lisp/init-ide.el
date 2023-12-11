@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-12-12 01:25:14 yx>
+;; Modified: <2023-12-12 01:35:40 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -232,7 +232,6 @@
           nxml-mode) . puni-mode)
   :bind
   (:map puni-mode-map
-        ;; unbind, confict with hungry-delete
         ("DEL"     . nil)
         ("C-d"     . nil)
         ("M-p r"   . puni-raise)
@@ -244,7 +243,11 @@
         ("M-p l"   . puni-slurp-forward)
         ("M-p h"   . puni-slurp-backward)
         ("M-p M-l" . puni-barf-forward)
-        ("M-p M-h" . puni-barf-backward))
+        ("M-p M-h" . puni-barf-backward)
+        ("M-p m"   . puni-mark-sexp-at-point)
+        ("M-p M-m" . puni-mark-sexp-around-point)
+        ("M-p ="   . puni-expand-region)
+        ("M-p -"   . puni-contract-region))
   )
 
 (use-package combobulate
