@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2023-12-11 12:58:25 yx>
+;; Modified: <2023-12-11 15:55:11 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -51,7 +51,6 @@
   (elfeed-feeds
    '(("https://36kr.com/feed" new)
      ("https://www.zhihu.com/rss" new)
-     ("https://wangyurui.com/feed.xml" thought)
      ("https://www.inference.vc/rss" ai)
      ("https://spaces.ac.cn/feed" ai webkit)
      ("https://ruder.io/rss/index.rss" ai)

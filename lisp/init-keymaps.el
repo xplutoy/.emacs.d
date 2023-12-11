@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-12-09 15:00:37 yx>
+;; Modified: <2023-12-12 00:56:33 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -75,12 +75,9 @@
  ("s-<f10>"   . yx/transient-global-even)
  ("s-<return>" . toggle-frame-maximized)
  ("s-`"       . sis-switch)
- ("s-,"       . winner-undo)
- ("s-."       . winner-redo)
  ("s-t"       . tab-bar-new-tab)
  ("s-j"       . avy-goto-char-timer)
  ("s-d"       . dirvish-side)
- ("s-r"       . consult-recent-file)
  ("s-k"       . crux-kill-other-buffers)
  ("s-w"       . delete-frame)
  ("s-<right>" . ns-next-frame)
@@ -93,6 +90,7 @@
  ("C-,"       . embark-dwim)
  ("C-/"       . undo-only)
  ("M-0"       . delete-window)
+ ("M-r"       . consult-recent-file)
  ("M-#"       . consult-register-load)
  ("M-'"       . consult-register-store)
  ("C-M-#"     . consult-register)

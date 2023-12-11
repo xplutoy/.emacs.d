@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-12-02 01:37:04 yx>
+;; Modified: <2023-12-12 00:29:26 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -157,8 +157,7 @@
    popper-display-control 'user
    popper-group-function #'popper-group-by-directory)
   (setq popper-reference-buffers
-        '("^\\*Compile"
-          "\\*Backtrace\\*"
+        '("\\*Backtrace\\*"
           "\\*Bookmark List\\*"
           "\\*shell.*\\*$" shell-mode
           "\\*eshell.*\\*$" eshell-mode
@@ -168,10 +167,10 @@
           "\\*color-rg\\*$"
           "\\*Python\\*$"
           "\\*org-roam\\*$"
+          (compilation-mode . hide)
           help-mode
           helpful-mode
           occur-mode
-          compilation-mode
           ))
   (popper-mode 1)
   (popper-echo-mode 1)

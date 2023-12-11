@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-12-11 03:14:00 yx>
+;; Modified: <2023-12-12 01:11:12 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -226,11 +226,25 @@
 
 ;; %% structured edit
 (use-package puni
-  :hook
-  ((tex-mode
-    prog-mode
-    sgml-mode
-    nxml-mode) . puni-mode)
+  :hook ((tex-mode
+          prog-mode
+          sgml-mode
+          nxml-mode) . puni-mode)
+  :bind
+  (:map puni-mode-map
+        ;; unbind, confict with hungry-delete
+        ("DEL"     . nil)
+        ("C-d"     . nil)
+        ("M-p r"   . puni-raise)
+        ("M-p u"   . puni-splice)
+        ("M-p s"   . puni-squeeze)
+        ("M-p {"   . puni-wrap-curly)
+        ("M-p ("   . puni-wrap-round)
+        ("M-p ["   . puni-wrap-square)
+        ("M-p l"   . puni-slurp-forward)
+        ("M-p h"   . puni-slurp-backward)
+        ("M-p M-l" . puni-barf-forward)
+        ("M-p M-h" . puni-barf-backward))
   )
 
 (use-package combobulate
@@ -262,10 +276,10 @@
   :bind
   (:map
    eglot-mode-map
-   ("s-e r" . eglot-rename)
-   ("s-e f" . eglot-format)
-   ("s-e a" . eglot-code-actions)
-   ("s-e s" . consult-eglot-symbols))
+   ("M-c r" . eglot-rename)
+   ("M-c f" . eglot-format)
+   ("M-c a" . eglot-code-actions)
+   ("M-c s" . consult-eglot-symbols))
   :config
   (fset #'jsonrpc--log-event #'ignore) ; massive perf boost---don't log every event
   )
