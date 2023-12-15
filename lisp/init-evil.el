@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-11-29 12:57:20
-;; Modified: <2023-12-03 12:20:00 yx>
+;; Modified: <2023-12-15 17:47:52 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -67,12 +67,8 @@
      elisp-mode
      eglot
      unimpaired
-     diff-hl ))
-  )
-
-(use-package evil-commentary
-  :after evil
-  :hook (prog-mode . evil-commentary-mode)
+     diff-hl
+     quickrun))
   )
 
 (use-package vimish-fold)
