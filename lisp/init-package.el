@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 19:52:43
-;; Modified: <2023-11-28 07:40:50 yx>
+;; Modified: <2023-12-15 09:24:09 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -18,8 +18,8 @@
 (setq
  package-archives
  '(("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
-   ("nongnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
-   ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")))
+   ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+   ("nongnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")))
 (setq
  package-quickstart nil
  use-package-always-defer t

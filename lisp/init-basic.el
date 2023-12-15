@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-12-09 15:44:07 yx>
+;; Modified: <2023-12-15 08:40:13 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -183,6 +183,7 @@
   ((executable-find "ugrep") 'ugrep)
   (t 'grep)))
 (setq
+ xref-history-storage 'xref-window-local-history
  xref-show-xrefs-function 'xref-show-definitions-completing-read
  xref-show-definitions-function 'xref-show-definitions-completing-read)
 

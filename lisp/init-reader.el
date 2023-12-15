@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2023-12-11 15:55:11 yx>
+;; Modified: <2023-12-13 01:04:05 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -52,12 +52,12 @@
    '(("https://36kr.com/feed" new)
      ("https://www.zhihu.com/rss" new)
      ("https://www.inference.vc/rss" ai)
-     ("https://spaces.ac.cn/feed" ai webkit)
+     ("https://spaces.ac.cn/feed" ai wk)
      ("https://ruder.io/rss/index.rss" ai)
-     ("https://lilianweng.github.io/index.xml" ai webkit)
+     ("https://lilianweng.github.io/index.xml" ai wk)
      ("https://yihui.org/en/index.xml" R)
      ("https://www.juliabloggers.com/feed/" julia)
-     ("http://www.ruanyifeng.com/blog/atom.xml" tech webkit)
+     ("http://www.ruanyifeng.com/blog/atom.xml" tech wk)
      ("http://lambda-the-ultimate.org/rss.xml" lang)
      ("https://egh0bww1.com/rss.xml" emacs)
      ("https://karthinks.com/index.xml" emacs)
@@ -66,6 +66,7 @@
      ("https://matt.might.net/articles/feed.rss" emacs)
      ("https://andreyor.st/categories/emacs/feed.xml" emacs)
      ("https://sachachua.com/blog/category/emacs/feed/" emacs)))
+  (elfeed-search-filte "@3-months-ago +unread -new")
   :hook (elfeed-show . olivetti-mode)
   :config
   (run-at-time nil (* 8 60 60) 'elfeed-update)
@@ -84,7 +85,7 @@
       (elfeed-search-toggle-all mytag)))
   :bind
   ( :map elfeed-show-mode-map
-    ("w" . elfeed-webkit-toggle)
+    ("%" . elfeed-webkit-toggle)
     ("q" . yx/elfeed-kill-entry)
     )
   )
@@ -92,8 +93,6 @@
 (use-package elfeed-webkit
   :after elfeed
   :config
-  (setq
-   elfeed-webkit-auto-enable-tags '(webkit))
   (elfeed-webkit-auto-toggle-by-tag)
   :bind
   (:map elfeed-webkit-map

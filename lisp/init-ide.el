@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-12-12 01:35:40 yx>
+;; Modified: <2023-12-15 09:09:05 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -312,6 +312,10 @@
 (use-package dwim-coder-mode
   :hook ((c-ts-mode python-ts-mode) . dwim-coder-mode))
 
+(use-package quickrun
+  :custom
+  (quickrun-focus-p nil)
+  )
 
 (provide 'init-ide)
 ;;; init-ide.el ends here
