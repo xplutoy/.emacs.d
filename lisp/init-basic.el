@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-12-15 08:40:13 yx>
+;; Modified: <2023-12-16 00:56:34 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -226,6 +226,7 @@
 (setq
  isearch-lazy-count t
  isearch-allow-motion t
+ isearch-repeat-on-direction-change t
  apropos-sort-by-scores t
  lazy-highlight-no-delay-length 3)
 

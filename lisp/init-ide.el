@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-12-15 09:09:05 yx>
+;; Modified: <2023-12-16 00:42:43 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -22,21 +22,6 @@
       )
 
 (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
-
-(add-hook 'diff-mode-hook
-          (lambda ()
-            (setq-local whitespace-style
-                        '(face
-                          tabs
-                          tab-mark
-                          spaces
-                          space-mark
-                          trailing
-                          indentation::space
-                          indentation::tab
-                          newline
-                          newline-mark))
-            (whitespace-mode 1)))
 
 ;; %% formatter & linter & profiler
 (setq flymake-start-on-save-buffer t
@@ -208,7 +193,6 @@
       (mapping
        '((c-mode . c-ts-mode)
          (c++-mode . c++-ts-mode)
-         (c-or-c++-mode . c-or-c++-ts-mode)
          (python-mode . python-ts-mode)))
     (add-to-list 'major-mode-remap-alist mapping))
   :config
