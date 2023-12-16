@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-12-16 00:42:43 yx>
+;; Modified: <2023-12-16 16:10:07 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,6 +16,9 @@
   )
 
 ;; ediff
+(setq diff-whitespace-style
+      '(face tabs tab-mark spaces space-mark trailing lines-tail))
+
 (setq ediff-keep-variants nil
       ediff-window-setup-function 'ediff-setup-windows-plain
       ediff-split-window-function 'split-window-horizontally
@@ -218,25 +221,27 @@
   (:map puni-mode-map
         ("DEL"     . nil)
         ("C-d"     . nil)
-        ("M-p r"   . puni-raise)
-        ("M-p u"   . puni-splice)
-        ("M-p s"   . puni-squeeze)
-        ("M-p {"   . puni-wrap-curly)
-        ("M-p ("   . puni-wrap-round)
-        ("M-p ["   . puni-wrap-square)
-        ("M-p l"   . puni-slurp-forward)
-        ("M-p h"   . puni-slurp-backward)
-        ("M-p M-l" . puni-barf-forward)
-        ("M-p M-h" . puni-barf-backward)
-        ("M-p m"   . puni-mark-sexp-at-point)
-        ("M-p M-m" . puni-mark-sexp-around-point)
-        ("M-p ="   . puni-expand-region)
-        ("M-p -"   . puni-contract-region))
+        ("M-l r"   . puni-raise)
+        ("M-l u"   . puni-splice)
+        ("M-l s"   . puni-squeeze)
+        ("M-l {"   . puni-wrap-curly)
+        ("M-l ("   . puni-wrap-round)
+        ("M-l ["   . puni-wrap-square)
+        ("M-l l"   . puni-slurp-forward)
+        ("M-l h"   . puni-slurp-backward)
+        ("M-l M-l" . puni-barf-forward)
+        ("M-l M-h" . puni-barf-backward)
+        ("M-l m"   . puni-mark-sexp-at-point)
+        ("M-l M-m" . puni-mark-sexp-around-point)
+        ("M-l ="   . puni-expand-region)
+        ("M-l -"   . puni-contract-region))
   )
 
 (use-package combobulate
   :ensure nil
   :load-path "site-lisp/combobulate"
+  :custom
+  (combobulate-key-prefix "M-l l")
   :hook ((python-ts-mode
           ) . combobulate-mode)
   )

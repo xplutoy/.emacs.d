@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-12-15 08:37:54 yx>
+;; Modified: <2023-12-16 15:44:56 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -103,8 +103,6 @@
    (compilation-shell-minor-mode 1)
    )
  )
-
-(use-package yaml-mode)
 
 (use-package vimrc-mode
   :mode "\\.?vim\\(rc\\)?\\'"
