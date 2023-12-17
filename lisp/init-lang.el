@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-12-17 21:32:40 yx>
+;; Modified: <2023-12-18 06:05:28 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -158,6 +158,22 @@
 (use-package geiser-chez
   :init
   (setq geiser-chez-binary "chez")
+  )
+
+(use-package haskell-mode
+  :hook (haskell-mode . yx/haskell-mode-setup)
+  :custom
+  (haskell-stylish-on-save t)
+  (haskell-process-log t)
+  (haskell-process-auto-import-loaded-modules t)
+  :preface
+  (defun yx/haskell-mode-setup ()
+    (haskell-collapse-mode 1)
+    (haskell-decl-scan-mode 1)
+    (haskell-auto-insert-module-template)
+    (speedbar-add-supported-extension ".hs")
+    (eval-after-load "which-func"
+      '(add-to-list 'which-func-modes 'haskell-mode)))
   )
 
 ;; %% misc lang

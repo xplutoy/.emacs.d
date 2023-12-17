@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-12-16 16:10:07 yx>
+;; Modified: <2023-12-18 05:06:40 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -257,7 +257,8 @@
     python-ts-mode
     julia-mode
     julia-ts-mode
-    LaTeX-mode) . eglot-ensure)
+    LaTeX-mode
+    haskell-mode) . eglot-ensure)
   :init
   (setq
    eglot-autoshutdown t

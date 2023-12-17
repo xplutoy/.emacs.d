@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-12-12 00:56:33 yx>
+;; Modified: <2023-12-18 06:01:36 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -95,7 +95,6 @@
  ("M-'"       . consult-register-store)
  ("C-M-#"     . consult-register)
  ("M-z"       . vg-quick-zap-up-to-char)
- ("M-;"       . evil-commentary-line)
  ("M-o"       . ace-window)
  ("M-g ;"     . goto-last-change)
  ("M-g a"     . consult-org-agenda)
@@ -132,6 +131,8 @@
  ("C-c b"     . tabspaces-switch-to-buffer)
  ("C-c d"     . devdocs-lookup)
  ("C-c f"     . dirvish-fd)
+ ("C-x a a"   . align)
+ ("C-x a r"   . align-regexp)
  ("C-x / o"   . browse-url-at-point)
  ("C-x / a"   . ace-link-addr)
  ("C-x / l"   . ace-link)
