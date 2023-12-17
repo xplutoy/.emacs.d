@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2023-12-13 01:04:05 yx>
+;; Modified: <2023-12-17 18:42:12 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -66,7 +66,7 @@
      ("https://matt.might.net/articles/feed.rss" emacs)
      ("https://andreyor.st/categories/emacs/feed.xml" emacs)
      ("https://sachachua.com/blog/category/emacs/feed/" emacs)))
-  (elfeed-search-filte "@3-months-ago +unread -new")
+  (elfeed-search-filter "@3-months-ago +unread -new")
   :hook (elfeed-show . olivetti-mode)
   :config
   (run-at-time nil (* 8 60 60) 'elfeed-update)
@@ -100,5 +100,5 @@
   )
 
 
-(provide 'init-reader)
-;;; init-reader.el ends here
+(provide 'init-reading)
+;;; init-reading.el ends here
