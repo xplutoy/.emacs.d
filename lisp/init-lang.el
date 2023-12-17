@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-12-16 15:44:56 yx>
+;; Modified: <2023-12-17 21:32:40 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,6 +11,8 @@
 ;; ide
 
 ;;; Code:
+(defvar yx/default-python-env "~/workspace/.venv/")
+
 (defun yx/prog-common-setup ()
   (subword-mode 1)
   (hl-line-mode 1)
@@ -80,12 +82,77 @@
                  '(julia-snail-mode . julia-snail-send-code-cell)))
   )
 
+;; %% python
+(setq
+ python-shell-dedicated t
+ python-skeleton-autoinsert t
+ python-indent-guess-indent-offset t
+ python-indent-guess-indent-offset-verbose nil
+ python-shell-virtualenv-root yx/default-python-env
+ python-shell-interpreter "jupyter"
+ python-shell-interpreter-args "console --simple-prompt"
+ python-shell-completion-native-disabled-interpreters '("ipython" "jupyter"))
+
+(defun yx/python-mode-setup ()
+  (setq-local
+   tab-width 4
+   python-indent-offset 4
+   electric-indent-inhibit t
+   imenu-create-index-function 'python-imenu-create-flat-index
+   ))
+(add-hook 'python-ts-mode-hook 'yx/python-mode-setup)
+
+(define-auto-insert "\\.py$" 'yx/auto-insert-common-header)
+
+(use-package pyvenv
+  :hook (after-init . yx/active-default-pyvenv)
+  :preface
+  (defun yx/active-default-pyvenv ()
+    (interactive)
+    (pyvenv-activate yx/default-python-env)
+    )
+  )
+
+(use-package pyvenv-auto
+  :hook (python-ts-mode . pyvenv-auto-run))
+
+(use-package poetry
+  :hook (python-ts-mode . poetry-tracking-mode))
+
+(use-package jupyter
+  :after org
+  :demand t
+  :config
+  (setq jupyter-eval-use-overlays nil)
+  ;; @see https://github.com/emacs-jupyter/jupyter/issues/478
+  (setf (alist-get "python" org-src-lang-modes nil nil #'equal) 'python-ts)
+  )
+
 ;; %% R/julia
 (use-package ess-site
-  :ensure ess
+  :ensure ess)
+
+(use-package julia-mode)
+(use-package julia-ts-mode
+  :mode "\\.jl$")
+
+(use-package eglot-jl
+  :init
+  (with-eval-after-load 'eglot
+    (eglot-jl-init))
+  )
+
+(use-package julia-snail
+  :custom
+  (julia-snail-terminal-type :eat)
+  (julia-snail-extensions '(ob-julia formatter))
+  :hook
+  (julia-mode . julia-snail-mode)
+  (julia-ts-mode . julia-snail-mode)
   )
 
 (define-auto-insert "\\.R$" 'yx/auto-insert-common-header)
+(define-auto-insert "\\.jl$" 'yx/auto-insert-common-header)
 
 ;; %% toy langs
 (use-package geiser-chez

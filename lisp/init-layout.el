@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-12-15 09:21:51 yx>
+;; Modified: <2023-12-17 21:40:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -225,5 +225,5 @@
   )
 
 
-(provide 'init-window)
-;;; init-window.el ends here
+(provide 'init-layout)
+;;; init-layout.el ends here
