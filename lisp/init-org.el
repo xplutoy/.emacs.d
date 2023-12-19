@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-12-10 11:56:38 yx>
+;; Modified: <2023-12-20 04:44:13 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -73,20 +73,31 @@
   (org-startup-align-all-tables t)
   (org-startup-with-inline-images nil)
 
-  (org-log-redeadline t)
-  (org-log-reschedule t)
+  (org-log-done 'time)
   (org-log-into-drawer t)
+  (org-log-redeadline 'time)
+  (org-log-reschedule 'time)
+  (org-log-note-clock-out nil)
+  (org-read-date-prefer-future 'time)
 
   (org-pretty-entities nil)
   (org-pretty-entities-include-sub-superscripts nil)
 
   (org-fontify-done-headline t)
+  (org-fontify-todo-headline t)
   (org-fontify-whole-heading-line t)
   (org-fontify-quote-and-verse-blocks t)
+  (org-fontify-whole-block-delimiter-line t)
 
   (org-refile-targets
    '((nil :maxlevel . 3)
      (org-agenda-files :maxlevel . 3)))
+  (org-refile-use-outline-path 'file)
+  (org-refile-allow-creating-parent-nodes 'confirm)
+
+  (org-goto-max-level 3)
+  (org-goto-interface 'outline-path-completion)
+  (org-outline-path-complete-in-steps nil)
 
   (org-latex-compiler "xelatex")
   (org-latex-packages-alist '(("" "ctex" t)
@@ -105,11 +116,6 @@
    (no-littering-expand-var-file-name "ltxinmg/"))
 
   (org-footnote-auto-adjust t)
-
-  (org-refile-use-outline-path 'file)
-  (org-goto-max-level 3)
-  (org-goto-interface 'outline-path-completion)
-  (org-outline-path-complete-in-steps nil)
 
   (org-src-fontify-natively t)
   (org-src-tab-acts-natively t)
@@ -154,6 +160,7 @@
    '((sequence "TODO(t!)" "SOMEDAY(s!)" "NEXT(n!)" "HOLD(h@/!)" "WAITING(w@/!)" "|" "CANCELED(c@/!)" "DONE(d!)")))
   (org-todo-repeat-to-state "NEXT")
   (org-enforce-todo-dependencies t)
+  (org-enforce-todo-checkbox-dependencies t)
   (org-treat-S-cursor-todo-selection-as-state-change nil)
 
   (org-default-notes-file
@@ -180,8 +187,10 @@
 
   (org-agenda-span 'day)
   (org-agenda-files `(,org-default-notes-file))
+  (org-agenda-sticky nil)
   (org-agenda-compact-blocks t)
   (org-agenda-remove-tags t)
+  (org-agenda-show-all-dates t)
   (org-agenda-mouse-1-follows-link nil)
   (org-agenda-time-leading-zero t)
   (org-agenda-include-deadlines t)
@@ -271,7 +280,7 @@
   (org-clock-persistence-insinuate)
   (org-clock-auto-clockout-insinuate)
   (run-at-time t 900 'org-agenda-to-appt)
-  (unpackaged/def-org-maybe-surround "~" "=" "*" "/" "+")
+  (crux-yx/def-org-maybe-surround "~" "=" "*" "/" "+")
 
   :custom-face
   (org-level-1 ((t (:height 1.3))))

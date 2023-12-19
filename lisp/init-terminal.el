@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:10:40
-;; Modified: <2023-12-10 11:27:58 yx>
+;; Modified: <2023-12-19 23:42:07 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -14,9 +14,17 @@
 (setq
  comint-input-ignoredups t
  comint-prompt-read-only t
+ comint-completion-autolist t
  comint-completion-addsuffix t
+ comint-buffer-maximum-size 10240
  comint-scroll-to-bottom-on-input t
+ comint-scroll-to-bottom-on-output nil
  comint-scroll-show-maximum-output t)
+
+(setq
+ shell-kill-buffer-on-exit t
+ shell-highlight-undef-enable t
+ shell-command-prompt-show-cwd t)
 
 (use-package eshell
   :init

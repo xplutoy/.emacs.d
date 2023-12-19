@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-12-18 06:01:36 yx>
+;; Modified: <2023-12-20 04:48:15 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -67,6 +67,9 @@
  ([remap list-directory]                . zoxide-travel) ; C-x C-d
  ([remap dired-at-point]                . consult-dir) ; C-x d
  ([remap isearch-forward]               . consult-line) ; C-s
+ ([remap dabbrev-expand]                . hippie-expand) ; M-/
+ ([remap comment-dwim]                  . yx/comment-dwim) ; M-;
+ ([remap keyboard-quit]                 . crux-yx/keyboard-quit-dwim) ; C-g
  )
 
 (bind-keys
@@ -89,12 +92,13 @@
  ("C-."       . embark-act)
  ("C-,"       . embark-dwim)
  ("C-/"       . undo-only)
+ ("C-M-/"     . vundo)
  ("M-0"       . delete-window)
  ("M-r"       . consult-recent-file)
  ("M-#"       . consult-register-load)
  ("M-'"       . consult-register-store)
  ("C-M-#"     . consult-register)
- ("M-z"       . vg-quick-zap-up-to-char)
+ ("M-z"       . crux-yx/quick-zap-up-to-char)
  ("M-o"       . ace-window)
  ("M-g ;"     . goto-last-change)
  ("M-g a"     . consult-org-agenda)

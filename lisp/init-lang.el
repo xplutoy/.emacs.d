@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-12-18 06:05:28 yx>
+;; Modified: <2023-12-20 04:55:51 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -14,6 +14,10 @@
 (defvar yx/default-python-env "~/workspace/.venv/")
 
 (defun yx/prog-common-setup ()
+  (setq-local
+   whitespace-style
+   '(face trailing lines-char space-before-tab space-after-tab))
+  (whitespace-mode 1)
   (subword-mode 1)
   (hl-line-mode 1)
   (hs-minor-mode 1)
@@ -21,13 +25,7 @@
   (electric-pair-mode 1)
   (display-line-numbers-mode 1)
   (electric-indent-local-mode 1)
-  (setq-local
-   whitespace-style
-   '(face trailing lines-char space-before-tab space-after-tab)
-   require-final-newline t
-   show-trailing-whitespace t)
-  (whitespace-mode 1)
-  (local-set-key (kbd "RET") 'newline-and-indent)
+  (keymap-local-set "RET" 'newline-and-indent)
   )
 
 (add-hook 'prog-mode-hook 'yx/prog-common-setup)

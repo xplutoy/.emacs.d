@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-12-05 11:00:26 yx>
+;; Modified: <2023-12-19 17:51:00 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -43,6 +43,8 @@
 (setq x-underline-at-descent-line t)
 
 (setq
+ modus-themes-mixed-fonts t
+ modus-themes-variable-pitch-ui t
  modus-themes-italic-constructs t
  modus-themes-common-palette-overrides
  '((fringe unspecifield)
@@ -54,7 +56,18 @@
    (bg-line-number-inactive unspecifield))
  )
 
-(use-package ef-themes)
+(use-package ef-themes
+  :init
+  (setq
+   ef-themes-mixed-fonts t
+   ef-themes-variable-pitch-ui t)
+  )
+
+(use-package lin
+  :hook (after-init . lin-global-mode)
+  :custom
+  (lin-face 'lin-magenta)
+  )
 
 (custom-set-faces
  '(mode-line ((t :box (:style released-button)))))

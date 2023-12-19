@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-12-18 05:06:40 yx>
+;; Modified: <2023-12-20 03:34:39 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,26 +16,30 @@
   )
 
 ;; ediff
-(setq diff-whitespace-style
-      '(face tabs tab-mark spaces space-mark trailing lines-tail))
+(setq
+ diff-default-read-only t
+ diff-update-on-the-fly t)
 
-(setq ediff-keep-variants nil
-      ediff-window-setup-function 'ediff-setup-windows-plain
-      ediff-split-window-function 'split-window-horizontally
-      )
+(setq
+ ediff-keep-variants nil
+ ediff-show-clashes-only t
+ ediff-window-setup-function 'ediff-setup-windows-plain
+ ediff-split-window-function 'split-window-horizontally)
 
 (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
 
 ;; %% formatter & linter & profiler
-(setq flymake-start-on-save-buffer t
-      flymake-start-on-flymake-mode nil
-      flymake-fringe-indicator-position 'right-fringe)
+(setq
+ flymake-start-on-save-buffer t
+ flymake-start-on-flymake-mode t
+ flymake-fringe-indicator-position 'right-fringe)
 (with-eval-after-load 'flymake
   (bind-keys :map flymake-mode-map
-             ("M-c M-n" . flymake-goto-next-error)
-             ("M-c M-p" . flymake-goto-prev-error)
+             ("M-c s"   . flymake-start)
              ("M-c d"   . flymake-show-buffer-diagnostics)
-             ("M-c M-d" . flymake-show-project-diagnostics))
+             ("M-c M-d" . flymake-show-project-diagnostics)
+             ("M-c M-n" . flymake-goto-next-error)
+             ("M-c M-p" . flymake-goto-prev-error))
   )
 
 (use-package apheleia
@@ -272,7 +276,7 @@
    ("M-c r" . eglot-rename)
    ("M-c f" . eglot-format)
    ("M-c a" . eglot-code-actions)
-   ("M-c s" . consult-eglot-symbols))
+   ("M-c g" . consult-eglot-symbols))
   :config
   (fset #'jsonrpc--log-event #'ignore) ; massive perf boost---don't log every event
   )

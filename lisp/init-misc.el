@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2023-12-11 11:19:59 yx>
+;; Modified: <2023-12-20 04:45:26 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -63,7 +63,7 @@
 ;; %% auxiliary tool
 (use-package crux-yx
   :defer 2
-  :autoload (unpackaged/def-org-maybe-surround)
+  :autoload (crux-yx/def-org-maybe-surround)
   :load-path "site-lisp/crux-yx"
   :config
   (crux-with-region-or-buffer indent-region)

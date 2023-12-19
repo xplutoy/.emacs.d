@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2023-12-17 18:42:12 yx>
+;; Modified: <2023-12-20 04:42:36 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -46,7 +46,7 @@
 (use-package elfeed
   :init
   (setq elfeed-search-print-entry-function
-        'yx/elfeed-search-print-entry--better-default)
+        'crux-yx/elfeed-search-print-entry--better-default)
   :custom
   (elfeed-feeds
    '(("https://36kr.com/feed" new)

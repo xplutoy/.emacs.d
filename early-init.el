@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2023-12-09 14:58:37 yx>
+;; Modified: <2023-12-19 17:15:51 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -28,6 +28,7 @@
  byte-compile-warnings nil
  package-native-compile t
  package-enable-at-startup nil
+ native-compile-prune-cache t
  native-comp-jit-compilation t
  native-comp-async-report-warnings-errors nil)
 

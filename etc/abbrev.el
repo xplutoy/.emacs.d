@@ -1,7 +1,7 @@
 ;;-*-coding: utf-8;-*-
 (define-abbrev-table 'global-abbrev-table
   '(;; Misc
-    ("1td" "" crux-yx/insert-date :count 0)
+    ("1td" "" yx/insert-date :count 0)
     ;; regexp
     ("2bl" "^\s-*$" nil :count 1)
     ;; math/unicode symbols
@@ -17,5 +17,5 @@
 (define-abbrev-table 'latex-mode-abbrev-table
   '(
     ("7gh" "" yx/latex-graphics-skl :count 0)
-    ("7bn" "" tempo-template-yx/tex-note-tmpl :count 0)
+    ("7bn" "" yx/tex-note-tmpl :count 0)
     ))
