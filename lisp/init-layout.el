@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-12-17 21:40:37 yx>
+;; Modified: <2023-12-20 05:16:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,6 +11,33 @@
 ;; window buffer frame
 
 ;;; Code:
+(setq
+ window-min-height 3
+ window-min-width 30
+ window-sides-vertical nil
+ split-height-threshold 80
+ split-width-threshold 125
+ even-window-sizes 'height-only
+ window-combination-resize t)
+
+(setq
+ display-buffer-alist
+ '(("\\`\\*Async Shell Command\\*\\'"
+    (display-buffer-no-window)
+    (allow-no-window . t))
+   ("\\(\\*Capture\\*\\|CAPTURE-.*\\)"
+    (display-buffer-reuse-mode-window display-buffer-below-selected))
+   ("\\*Embark Actions\\*"
+    (display-buffer-reuse-mode-window display-buffer-below-selected)
+    (window-height . fit-window-to-buffer)
+    (window-parameters . ((no-other-window . t)
+                          (mode-line-format . none))))
+   ("\\*\\(Calendar\\|Bookmark Annotation\\|ert\\).*"
+    (display-buffer-reuse-mode-window display-buffer-below-selected)
+    (dedicated . t)
+    (window-height . fit-window-to-buffer))
+   )
+ )
 
 ;; %% @see http://yummymelon.com/devnull/using-bookmarks-in-emacs-like-you-do-in-web-browsers.html
 (easy-menu-define yx/bookmarks-menu nil
@@ -192,7 +219,8 @@
        "\\*Bookmark List\\*"
        "\\*Flymake .*"
        "^CAPTURE-"
-       "^\\*julia.*")
+       "^\\*julia.*"
+       color-rg-mode)
       :regexp t :select t :popup t :align t)
      (("\\*Warnings\\*"
        "\\*Messages\\*"
@@ -205,11 +233,9 @@
        "\\*Capture\\*"
        "^\\*Python\\*"
        quickrun--mode
+       osx-dictionary-mode
        "\\*Shell Command Output\\*")
       :regexp t :nonselect t :popup t :align t)
-     ((color-rg-mode
-       "^\\*.* eww\\*$")
-      :regexp t :select t :popup t)
      (("^magit" magit-mode
        ibuffer-mode
        Info-mode

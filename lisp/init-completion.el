@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-12-18 05:37:02 yx>
+;; Modified: <2023-12-20 01:37:40 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -28,21 +28,24 @@
 
 (use-package orderless
   :custom
-  (completion-styles '(orderless basic flex))
+  (completion-styles '(basic substring initials flex orderless))
+  (completion-category-defaults nil)
   (completion-category-overrides
-   '((file (styles basic partial-completion))
-     (eglot (styles orderless basic))))
+   '((file (styles . (basic partial-completion orderless)))
+     (bookmark (styles . (basic substring)))
+     (library (styles . (basic substring)))
+     (embark-keybinding (styles . (basic substring)))
+     (imenu (styles . (basic substring orderless)))
+     (consult-location (styles . (basic substring orderless)))
+     (kill-ring (styles . (emacs22 orderless)))
+     (eglot (styles . (emacs22 substring orderless)))))
   )
 
 ;; %% embark
 (use-package embark
   :custom
   (embark-selection-indicator nil)
-  (embark-prompter 'embark-completing-read-prompter)
-  (embark-indicators '(embark-minimal-indicator
-                       embark-highlight-indicator
-                       embark-isearch-highlight-indicator))
-  )
+  (embark-prompter 'embark-completing-read-prompter))
 (use-package embark-consult
   :after embark
   :hook (embark-collect-mode . consult-preview-at-point-mode))
@@ -97,29 +100,19 @@
 
 (use-package cape
   :hook
-  (org-mode    . yx/cape-capf-setup-org)
-  (prog-mode   . yx/cape-capf-setup-prog)
-  (LaTeX-mode  . yx/cape-capf-setup-latex)
+  (org-mode    . yx/cape-capf-setup-writing)
+  (LaTeX-mode  . yx/cape-capf-setup-writing)
   (eshell-mode . yx/cape-capf-setup-eshell)
   :init
   (setq cape-dabbrev-min-length 3)
-  (dolist (ele '(cape-dict
-                 cape-dabbrev
-                 cape-abbrev
-                 cape-file))
+  (dolist (ele '(cape-dict cape-dabbrev cape-abbrev cape-file))
     (add-to-list 'completion-at-point-functions ele))
   :preface
-  (defun yx/cape-capf-setup-org ()
-    (dolist (ele `(,(cape-capf-super 'cape-dabbrev 'cape-dict) cape-tex))
-      (add-to-list 'completion-at-point-functions ele)))
-  (defun yx/cape-capf-setup-latex ()
+  (defun yx/cape-capf-setup-writing ()
     (dolist (ele '(cape-dict cape-tex))
       (add-to-list 'completion-at-point-functions ele)))
   (defun yx/cape-capf-setup-eshell ()
     (dolist (ele '(cape-file cape-history cape-elisp-symbol))
-      (add-to-list 'completion-at-point-functions ele)))
-  (defun yx/cape-capf-setup-prog ()
-    (dolist (ele `(,(cape-capf-super 'cape-dabbrev 'cape-keyword)))
       (add-to-list 'completion-at-point-functions ele)))
   )
 

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-12-16 00:56:34 yx>
+;; Modified: <2023-12-20 03:55:48 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -41,7 +41,6 @@
  align-to-tab-stop nil
  find-file-visit-truename t
  delete-by-moving-to-trash t
- bookmark-save-flag 1
  set-mark-command-repeat-pop t
  cursor-in-non-selected-windows nil
  compilation-scroll-output 'first-error
@@ -66,6 +65,7 @@
 
 ;; %% paren
 (setq
+ blink-matching-paren nil
  show-paren-style 'parenthesis
  show-paren-context-when-offscreen t
  show-paren-when-point-inside-paren t)
@@ -171,20 +171,34 @@
 ;; %% whitespace
 (setq
  whitespace-style
- '(face spaces empty tabs newline trailing space-mark tab-mark newline-mark)
+ '(face
+   tabs
+   spaces
+   tab-mark
+   space-mark
+   trailing
+   missing-newline-at-eof
+   space-after-tab::tab
+   space-after-tab::space
+   space-before-tab::tab
+   space-before-tab::space)
  whitespace-line-column nil
  show-trailing-whitespace nil)
 
 ;; %% xref
+(let ((executable (or (executable-find "rg") "grep"))
+      (rgp (string-match-p "rg" grep-program)))
+  (setq grep-program executable)
+  (setq grep-template
+        (if rgp
+            "rg -nH --null -e <R> <F>"
+          "grep <X> <C> -nH --null -e <R> <F>"))
+  (setq xref-search-program (if rgp 'ripgrep 'grep)))
+
 (setq
- xref-search-program
- (cond
-  ((executable-find "rg") 'ripgrep)
-  ((executable-find "ugrep") 'ugrep)
-  (t 'grep)))
-(setq
+ xref-file-name-display 'project-relative
  xref-history-storage 'xref-window-local-history
- xref-show-xrefs-function 'xref-show-definitions-completing-read
+ xref-show-xrefs-function 'xref-show-definitions-buffer
  xref-show-definitions-function 'xref-show-definitions-completing-read)
 
 ;; %% completion minibuffer
@@ -207,6 +221,11 @@
 (setq read-extended-command-predicate
       'command-completion-default-include-p)
 
+(setq minibuffer-prompt-properties
+      '(read-only t cursor-intangible t face minibuffer-prompt))
+
+(add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
 (setq
  ;; abbrev-suggest t
  save-abbrevs 'silently
@@ -225,10 +244,13 @@
 ;; %% isearch
 (setq
  isearch-lazy-count t
+ isearch-lazy-highlight t
  isearch-allow-motion t
  isearch-repeat-on-direction-change t
  apropos-sort-by-scores t
  lazy-highlight-no-delay-length 3)
+
+(add-hook 'occur-mode-hook #'hl-line-mode)
 
 ;; %% epa
 (setq
@@ -272,22 +294,43 @@
  transient-detect-key-conflicts t
  transient-highlight-mismatched-keys nil)
 
+;; bookmark
+(setq
+ bookmark-save-flag 1
+ bookmark-fringe-mark nil
+ bookmark-use-annotations nil
+ bookmark-automatically-show-annotations nil)
+
+;; proced
+(setq
+ proced-descend t
+ proced-filter 'user
+ proced-auto-update-flag t
+ proced-enable-color-flag t
+ proced-auto-update-interval 5)
+
 ;; %% media
 (setq
  image-use-external-converter t)
 
 ;; %% browse url
 (setq
- browse-url-generic-program yx/default-open-program
  browse-url-browser-function 'eww-browse-url
+ browse-url-secondary-browser-function 'browse-url-default-browser
+ browse-url-generic-program yx/default-open-program
  eww-auto-rename-buffer 'title
- eww-search-prefix "https://cn.bing.com/search?q=")
+ eww-search-prefix "https://cn.bing.com/search?q="
+ eww-use-external-browser-for-content-type "\\`\\(video/\\|audio\\)"
+ eww-browse-url-new-window-is-tab nil)
 
 (with-eval-after-load 'eww
   (add-hook 'eww-after-render-hook 'eww-readable))
 
-(setq-default shr-use-fonts nil)
-(setq-default shr-inhibit-images t)
+(setq
+ shr-use-fonts nil
+ shr-use-colors nil
+ shr-image-animate nil
+ shr-max-image-proportion 0.6)
 
 (setq
  webjump-sites
@@ -305,6 +348,12 @@
   (keymap-unset flyspell-mode-map "C-.")
   (keymap-unset flyspell-mode-map "C-;")
   )
+
+(setq
+ dictionary-server "dict.org"
+ dictionary-default-popup-strategy "lev"
+ dictionary-create-buttons nil
+ dictionary-use-single-buffer t)
 
 ;; %% savehist
 (setq
@@ -346,10 +395,12 @@
  remote-file-name-inhibit-locks t
  remote-file-name-inhibit-cache nil)
 
-(setq vc-ignore-dir-regexp
-      (format "\\(%s\\)\\|\\(%s\\)"
-              vc-ignore-dir-regexp
-              tramp-file-name-regexp))
+(setq
+ vc-ignore-dir-regexp
+ (format "\\(%s\\)\\|\\(%s\\)"
+         vc-ignore-dir-regexp
+         tramp-file-name-regexp)
+ )
 
 ;; %% long line
 (setq

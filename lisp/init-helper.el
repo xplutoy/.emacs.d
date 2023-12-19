@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-28 17:41:00
-;; Modified: <2023-11-28 07:37:37 yx>
+;; Modified: <2023-12-20 04:46:26 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -42,6 +42,19 @@
    "十一" "十二" "十三" "十四" "十五" "十六" "十七" "十八" "十九"  "廿"
    "廿一" "廿二" "廿三" "廿四" "廿五" "廿六" "廿七" "廿八" "廿九" "三十"
    "卅一" "卅二" "卅三" "卅四" "卅五" "卅六" "卅七" "卅八" "卅九" "卅十"])
+
+(defun yx/insert-date ()
+  "Insert a date according to `%F' format."
+  (interactive)
+  (insert (format-time-string "%F" (current-time))))
+
+(defun yx/comment-dwim (n)
+  "Comment N lines, defaulting to the current one.
+When the region is active, comment its lines instead."
+  (interactive "p")
+  (if (use-region-p)
+      (comment-or-uncomment-region (region-beginning) (region-end))
+    (comment-line n)))
 
 (defun yx/file-contents-str (file)
   "File contents to string."
