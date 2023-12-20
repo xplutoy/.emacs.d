@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-12-20 18:08:13 yx>
+;; Modified: <2023-12-20 18:52:53 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -58,8 +58,11 @@
    (", b" . engine/search-bing)
    (", z" . engine/search-zhihu)
    :map embark-file-map
-   (", s" . crux-sudo-edit))
-  )
+   (", s" . crux-sudo-edit)
+   :map embark-identifier-map
+   (", h" . symbol-overlay-put)
+   ))
+
 (use-package embark-consult
   :after embark
   :hook (embark-collect-mode . consult-preview-at-point-mode))

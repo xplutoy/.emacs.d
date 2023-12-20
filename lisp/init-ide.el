@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-12-20 03:34:39 yx>
+;; Modified: <2023-12-20 19:20:16 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -167,8 +167,13 @@
         ("M-c t p" . hl-todo-previous))
   )
 
-(use-package idle-highlight-mode
-  :hook ((prog-mode text-mode) . idle-highlight-mode))
+(use-package symbol-overlay
+  :custom
+  (symbol-overlay-priority 0)
+  :hook ((prog-mode conf-mode) . symbol-overlay-mode)
+  :bind (:map symbol-overlay-map
+              ("u" . symbol-overlay-remove-all))
+  )
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode)
