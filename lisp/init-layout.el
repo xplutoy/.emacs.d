@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-12-20 07:29:17 yx>
+;; Modified: <2023-12-20 18:28:46 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -26,17 +26,17 @@
     (display-buffer-no-window)
     (allow-no-window . t))
    ("\\(\\*Capture\\*\\|CAPTURE-.*\\)"
-    (display-buffer-reuse-mode-window display-buffer-below-selected))
-   ("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-    nil
-    (window-parameters (mode-line-format . none)))
-   ("\\*Embark Actions\\*"
-    (display-buffer-reuse-mode-window display-buffer-below-selected)
-    (window-height . fit-window-to-buffer)
+    (display-buffer-reuse-mode-window
+     display-buffer-below-selected))
+   ("\\`\\*Embark.*\\*\\'"
+    (display-buffer-reuse-mode-window
+     display-buffer-below-selected)
+    (window-height . 0.4)
     (window-parameters . ((no-other-window . t)
                           (mode-line-format . none))))
    ("\\*\\(Calendar\\|Bookmark Annotation\\|ert\\).*"
-    (display-buffer-reuse-mode-window display-buffer-below-selected)
+    (display-buffer-reuse-mode-window
+     display-buffer-below-selected)
     (dedicated . t)
     (window-height . fit-window-to-buffer))
    )

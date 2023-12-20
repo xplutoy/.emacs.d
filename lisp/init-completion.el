@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-12-20 07:43:33 yx>
+;; Modified: <2023-12-20 18:08:13 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -46,11 +46,20 @@
   :init
   (setq prefix-help-command 'embark-prefix-help-command)
   :custom
+  (embark-confirm-act-all nil)
   (embark-selection-indicator nil)
   (embark-prompter 'embark-completing-read-prompter)
   (embark-indicators '(embark-minimal-indicator
                        embark-highlight-indicator
-                       embark-isearch-highlight-indicator)))
+                       embark-isearch-highlight-indicator))
+  :bind
+  (:map
+   embark-general-map
+   (", b" . engine/search-bing)
+   (", z" . engine/search-zhihu)
+   :map embark-file-map
+   (", s" . crux-sudo-edit))
+  )
 (use-package embark-consult
   :after embark
   :hook (embark-collect-mode . consult-preview-at-point-mode))

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-12-17 18:43:05 yx>
+;; Modified: <2023-12-20 18:03:34 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -120,6 +120,12 @@ set to \\='(template title keywords subdirectory)."
   (org-mode . citar-capf-setup)
   (LaTeX-mode . citar-capf-setup)
   )
+
+(use-package citar-embark
+  :after citar embark
+  :demand t
+  :no-require t
+  :config (citar-embark-mode +1))
 
 
 (provide 'init-writing)
