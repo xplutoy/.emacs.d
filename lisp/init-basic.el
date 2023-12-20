@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-12-20 03:55:48 yx>
+;; Modified: <2023-12-20 22:37:00 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -50,10 +50,11 @@
 
 (setq
  visible-bell nil
- use-short-answers t
  use-dialog-box nil
  use-file-dialog nil
- use-system-tooltips nil)
+ use-system-tooltips nil
+ use-short-answers t
+ y-or-n-p-use-read-key t)
 
 ;; %% quiet
 (setq

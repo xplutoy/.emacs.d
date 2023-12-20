@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-28 17:41:00
-;; Modified: <2023-12-20 04:46:26 yx>
+;; Modified: <2023-12-20 23:22:51 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -55,6 +55,13 @@ When the region is active, comment its lines instead."
   (if (use-region-p)
       (comment-or-uncomment-region (region-beginning) (region-end))
     (comment-line n)))
+
+(defun yx/kill-buffer-dwim (&optional arg)
+  (interactive "P")
+  (if arg
+      (call-interactively 'kill-buffer)
+    (kill-current-buffer))
+  )
 
 (defun yx/file-contents-str (file)
   "File contents to string."

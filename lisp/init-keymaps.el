@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-12-20 19:10:36 yx>
+;; Modified: <2023-12-20 23:24:00 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -69,6 +69,7 @@
  ([remap dabbrev-expand]                . hippie-expand) ; M-/
  ([remap comment-dwim]                  . yx/comment-dwim) ; M-;
  ([remap keyboard-quit]                 . crux-yx/keyboard-quit-dwim) ; C-g
+ ([remap kill-buffer]                   . yx/kill-buffer-dwim) ; C-x k
  )
 
 (bind-keys
@@ -80,7 +81,6 @@
  ("s-t"       . tab-bar-new-tab)
  ("s-j"       . avy-goto-char-timer)
  ("s-d"       . dirvish-side)
- ("s-k"       . crux-kill-other-buffers)
  ("s-w"       . delete-frame)
  ("s-<right>" . ns-next-frame)
  ("s-<left>"  . ns-prev-frame)
