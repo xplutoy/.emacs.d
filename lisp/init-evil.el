@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-11-29 12:57:20
-;; Modified: <2023-12-15 17:47:52 yx>
+;; Modified: <2023-12-20 08:03:38 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -29,13 +29,13 @@
    evil-disable-insert-state-bindings t)
   :bind (([remap evil-quit] . kill-this-buffer))
   :config
-  (defvar yx-initial-evil-state-setup
+  (defvar yx-initial-evil-state-alist
     '((conf-mode . normal)
       (prog-mode . normal)
       (text-mode . insert)
       (color-rg-mode . emacs))
     "Default evil state per major mode.")
-  (dolist (p yx-initial-evil-state-setup)
+  (dolist (p yx-initial-evil-state-alist)
     (evil-set-initial-state (car p) (cdr p)))
   (keymap-unset evil-normal-state-map "C-.")
   (evil-define-key '(normal visual insert) 'global
@@ -46,6 +46,27 @@
     "\C-y"  'yank
     "\C-w"  'kill-region
     "\M-."  'xref-find-definitions
+    )
+  ;; leader-key <SPC>
+  (evil-define-key 'normal 'global
+    (kbd "SPC")
+    (define-keymap
+      "SPC" 'execute-extended-command-for-buffer
+      "!"   'shell-command
+      "/"   'consult-ripgrep
+      "%"   'query-replace-regexp
+
+      "j"   'evil-avy-goto-char-timer
+      "l"   'consult-line
+      "i"   'consult-imenu
+
+      "O"   'crux-open-with
+      "R"   'rename-visited-file
+      "F"   'crux-sudo-edit
+      "E"   'crux-reopen-as-root
+      "K"   'crux-kill-other-buffers
+      "D"   'crux-delete-file-and-buffer
+      )
     )
   )
 

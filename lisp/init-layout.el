@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-12-20 05:16:37 yx>
+;; Modified: <2023-12-20 07:29:17 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -27,6 +27,9 @@
     (allow-no-window . t))
    ("\\(\\*Capture\\*\\|CAPTURE-.*\\)"
     (display-buffer-reuse-mode-window display-buffer-below-selected))
+   ("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+    nil
+    (window-parameters (mode-line-format . none)))
    ("\\*Embark Actions\\*"
     (display-buffer-reuse-mode-window display-buffer-below-selected)
     (window-height . fit-window-to-buffer)

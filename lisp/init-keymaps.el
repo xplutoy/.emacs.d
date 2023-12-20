@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-12-20 05:38:36 yx>
+;; Modified: <2023-12-20 06:55:13 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -118,10 +118,10 @@
  ("M-s g"     . consult-grep)
  ("M-s M-g"   . consult-git-grep)
  ("M-s r"     . consult-ripgrep)
- ("M-s s"     . color-rg-search-symbol)
- ("M-s M-s"   . color-rg-search-input)
- ("M-s p"     . color-rg-search-symbol-in-project)
- ("M-s M-p"   . color-rg-search-input-in-project)
+ ("M-s s"     . color-rg-search-input)
+ ("M-s M-s"   . color-rg-search-symbol)
+ ("M-s p"     . color-rg-search-input-in-project)
+ ("M-s M-p"   . color-rg-search-symbol-in-project)
  ("C-c '"     . flyspell-correct-next)
  ("C-c k"     . kill-buffer-and-window)
  ("C-c C-k"   . crux-kill-other-buffers)

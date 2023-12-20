@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-12-20 01:37:40 yx>
+;; Modified: <2023-12-20 07:43:33 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -43,9 +43,14 @@
 
 ;; %% embark
 (use-package embark
+  :init
+  (setq prefix-help-command 'embark-prefix-help-command)
   :custom
   (embark-selection-indicator nil)
-  (embark-prompter 'embark-completing-read-prompter))
+  (embark-prompter 'embark-completing-read-prompter)
+  (embark-indicators '(embark-minimal-indicator
+                       embark-highlight-indicator
+                       embark-isearch-highlight-indicator)))
 (use-package embark-consult
   :after embark
   :hook (embark-collect-mode . consult-preview-at-point-mode))
