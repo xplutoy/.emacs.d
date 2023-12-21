@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-11-29 12:57:20
-;; Modified: <2023-12-20 08:03:38 yx>
+;; Modified: <2023-12-22 02:54:48 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -59,15 +59,16 @@
       "j"   'evil-avy-goto-char-timer
       "l"   'consult-line
       "i"   'consult-imenu
+      "v"   'magit-file-dispatch
 
+      "V"   'magit-dispatch
       "O"   'crux-open-with
       "R"   'rename-visited-file
-      "F"   'crux-sudo-edit
+      "S"   'crux-sudo-edit
       "E"   'crux-reopen-as-root
       "K"   'crux-kill-other-buffers
       "D"   'crux-delete-file-and-buffer
-      )
-    )
+      ))
   )
 
 (use-package evil-collection

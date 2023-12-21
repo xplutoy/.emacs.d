@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-12-20 04:55:51 yx>
+;; Modified: <2023-12-22 01:54:53 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -153,6 +153,8 @@
 (define-auto-insert "\\.jl$" 'yx/auto-insert-common-header)
 
 ;; %% toy langs
+(use-package lua-mode)
+
 (use-package geiser-chez
   :init
   (setq geiser-chez-binary "chez")
@@ -182,8 +184,7 @@
          sh-basic-offset 2)
    (electric-pair-mode -1)
    (compilation-shell-minor-mode 1)
-   )
- )
+   ))
 
 (use-package vimrc-mode
   :mode "\\.?vim\\(rc\\)?\\'"

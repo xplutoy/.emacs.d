@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-12-20 22:37:00 yx>
+;; Modified: <2023-12-21 18:48:28 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -331,6 +331,7 @@
  shr-use-fonts nil
  shr-use-colors nil
  shr-image-animate nil
+ shr-inhibit-images t
  shr-max-image-proportion 0.6)
 
 (setq
