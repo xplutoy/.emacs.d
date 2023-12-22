@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-12-21 18:48:28 yx>
+;; Modified: <2023-12-22 06:58:26 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -250,6 +250,9 @@
  isearch-repeat-on-direction-change t
  apropos-sort-by-scores t
  lazy-highlight-no-delay-length 3)
+
+(if IS-MAC
+    (keymap-set isearch-mode-map "s-v" 'isearch-yank-kill))
 
 (add-hook 'occur-mode-hook #'hl-line-mode)
 

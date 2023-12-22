@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-12-20 23:24:00 yx>
+;; Modified: <2023-12-22 15:57:41 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -70,6 +70,7 @@
  ([remap comment-dwim]                  . yx/comment-dwim) ; M-;
  ([remap keyboard-quit]                 . crux-yx/keyboard-quit-dwim) ; C-g
  ([remap kill-buffer]                   . yx/kill-buffer-dwim) ; C-x k
+ ([remap save-buffers-kill-emacs]       . delete-frame) ; s-q
  )
 
 (bind-keys
@@ -81,7 +82,7 @@
  ("s-t"       . tab-bar-new-tab)
  ("s-j"       . avy-goto-char-timer)
  ("s-d"       . dirvish-side)
- ("s-w"       . delete-frame)
+ ("s-w"       . tabspaces-close-workspace)
  ("s-<right>" . ns-next-frame)
  ("s-<left>"  . ns-prev-frame)
  ("s-]"       . tab-next)
@@ -125,7 +126,7 @@
  ("M-s M-p"   . color-rg-search-symbol-in-project)
  ("C-c '"     . flyspell-correct-next)
  ("C-c k"     . kill-buffer-and-window)
- ("C-c C-k"   . crux-kill-other-buffers)
+ ("C-c K"     . crux-kill-other-buffers)
  ("C-c v"     . magit-file-dispatch)
  ("C-c C-v"   . magit-dispatch)
  ("C-c C-d"   . helpful-at-point)

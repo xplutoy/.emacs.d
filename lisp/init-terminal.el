@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:10:40
-;; Modified: <2023-12-19 23:42:07 yx>
+;; Modified: <2023-12-22 06:03:28 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,10 +16,10 @@
  comint-prompt-read-only t
  comint-completion-autolist t
  comint-completion-addsuffix t
- comint-buffer-maximum-size 10240
+ comint-buffer-maximum-size 9999
  comint-scroll-to-bottom-on-input t
- comint-scroll-to-bottom-on-output nil
- comint-scroll-show-maximum-output t)
+ comint-scroll-show-maximum-output t
+ comint-scroll-to-bottom-on-output nil)
 
 (setq
  shell-kill-buffer-on-exit t

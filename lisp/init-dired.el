@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:20:40
-;; Modified: <2023-12-05 16:27:52 yx>
+;; Modified: <2023-12-22 05:34:39 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -13,9 +13,6 @@
 ;;; Code:
 (use-package dired
   :ensure nil
-  :bind
-  (:map dired-mode-map
-        ("M-<f10>" . yx/transient-dired))
   :custom
   (dired-dwim-target t)
   (dired-mouse-drag-files t)
@@ -37,17 +34,7 @@
      (concat dired-omit-files "\\|^\\..*$"))
     (hl-line-mode 1)
     (dired-omit-mode 1)
-    (dired-hide-details-mode 1)
-    )
-  (transient-define-prefix yx/transient-dired ()
-    "Dired commands."
-    [["Misc"
-      ("=" "diff" dired-diff)
-      ("e" "wdired" wdired-change-to-wdired-mode)
-      ("w" "copy filename" dired-copy-filename-as-kill)
-      ("R" "rename" dired-do-rename)]
-     ]
-    )
+    (dired-hide-details-mode 1))
   )
 
 ;; %% dired+

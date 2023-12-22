@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-12-22 02:04:35 yx>
+;; Modified: <2023-12-22 13:02:48 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -18,10 +18,9 @@
  split-height-threshold 80
  split-width-threshold 125
  even-window-sizes 'height-only
- window-combination-resize t
  frame-resize-pixelwise t
- frame-inhibit-implied-resize t
  window-resize-pixelwise t
+ window-combination-resize t
  fit-frame-to-buffer nil
  fit-window-to-buffer-horizontally nil)
 
@@ -238,8 +237,7 @@
        "\\*evil-owl\\*"
        "^\\*Compile"
        "\\*Agenda Commands\\*"
-       "^\\*Org Note"
-       "^\\*Org Select"
+       "^\\*Org .*"
        "\\*Capture\\*"
        "^\\*Python\\*"
        quickrun--mode

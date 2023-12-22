@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-12-19 17:51:00 yx>
+;; Modified: <2023-12-22 15:46:22 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -85,22 +85,22 @@
 
 ;; %% modeline
 (use-package minions
-  :disabled
   :demand t
   :hook (after-init . minions-mode)
   )
 
 (use-package mini-echo
+  :disabled
   :demand t
   :custom
   (mini-echo-separator "|")
   (mini-echo-default-segments
-   (quote (:short
-           ("buffer-name-short" "profiler"
-            "selection-info" "narrow" "macro" "evil")
-           :long
-           ("major-mode" "buffer-name-short" "vcs" "flymake"
-            "selection-info" "narrow" "macro" "profiler" "elgot" "evil"))))
+   '(:short
+     ("buffer-name-short" "profiler"
+      "selection-info" "narrow" "macro" "evil")
+     :long
+     ("major-mode" "buffer-name-short" "vcs" "flymake"
+      "selection-info" "narrow" "macro" "profiler" "elgot" "evil")))
   :config
   (mini-echo-mode 1)
   )

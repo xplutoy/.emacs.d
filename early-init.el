@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2023-12-21 00:26:14 yx>
+;; Modified: <2023-12-22 05:47:33 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,6 +16,7 @@
  inhibit-splash-screen t
  inhibit-startup-message t
  inhibit-compacting-font-caches t
+ frame-inhibit-implied-resize t
  ffap-machine-p-known 'reject
  read-process-output-max (* 1024 1024)
  redisplay-skip-fontification-on-input t)
