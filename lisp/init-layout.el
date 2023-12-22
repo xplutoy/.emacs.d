@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-12-22 13:02:48 yx>
+;; Modified: <2023-12-22 16:23:43 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -26,7 +26,9 @@
 
 (setq
  display-buffer-alist
- '(("\\`\\*Async Shell Command\\*\\'"
+ '(("^\\*R"
+    nil (dedicated . t))
+   ("\\`\\*Async Shell Command\\*\\'"
     (display-buffer-no-window)
     (allow-no-window . t))
    ("\\(\\*Capture\\*\\|CAPTURE-.*\\)"

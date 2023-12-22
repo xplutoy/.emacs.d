@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-12-22 01:54:53 yx>
+;; Modified: <2023-12-22 16:16:26 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -128,7 +128,16 @@
 
 ;; %% R/julia
 (use-package ess-site
-  :ensure ess)
+  :ensure ess
+  :init
+  (setq
+   ess-eval-visibly-p 'nowait
+   ess-local-process-name "R"
+   ess-ask-for-ess-directory nil)
+  :config
+  (keymap-set ess-r-mode-map ";" 'ess-insert-assign)
+  (keymap-set inferior-ess-r-mode-map ";" 'ess-insert-assign)
+  )
 
 (use-package julia-mode)
 (use-package julia-ts-mode
