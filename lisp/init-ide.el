@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-12-20 19:20:16 yx>
+;; Modified: <2023-12-24 04:03:11 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -190,6 +190,7 @@
         (grammar
          '((c      "https://github.com/tree-sitter/tree-sitter-c")
            (cpp    "https://github.com/tree-sitter/tree-sitter-cpp")
+           (lua    "https://github.com/MunifTanjim/tree-sitter-lua")
            (org    "https://github.com/milisims/tree-sitter-org")
            (julia  "https://github.com/tree-sitter/tree-sitter-julia")
            (python "https://github.com/tree-sitter/tree-sitter-python")))

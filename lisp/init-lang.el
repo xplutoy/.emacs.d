@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-12-22 16:16:26 yx>
+;; Modified: <2023-12-24 04:40:22 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -162,7 +162,10 @@
 (define-auto-insert "\\.jl$" 'yx/auto-insert-common-header)
 
 ;; %% toy langs
-(use-package lua-mode)
+(use-package lua-ts-mode
+  :init
+  (setq lua-ts-indent-offset 2)
+  )
 
 (use-package geiser-chez
   :init

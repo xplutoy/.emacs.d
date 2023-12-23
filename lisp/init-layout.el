@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-12-22 16:23:43 yx>
+;; Modified: <2023-12-24 04:36:47 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -133,7 +133,7 @@
   :hook (after-init . tabspaces-mode)
   :custom
   (tabspaces-use-filtered-buffers-as-default nil)
-  (tabspaces-default-tab "main")
+  (tabspaces-default-tab "Main")
   (tabspaces-remove-to-default t)
   (tabspaces-include-buffers '("*scratch*"))
   (tabspaces-initialize-project-with-todo nil)
@@ -229,7 +229,7 @@
        "\\*Flymake .*"
        "^CAPTURE-"
        "^\\*julia.*"
-       "^\\*lua\\*$"
+       "^\\*[Ll]ua\\*$"
        comint-mode
        color-rg-mode)
       :regexp t :select t :popup t :align t)
@@ -239,7 +239,7 @@
        "\\*evil-owl\\*"
        "^\\*Compile"
        "\\*Agenda Commands\\*"
-       "^\\*Org .*"
+       "^\\*Org [^S].*"
        "\\*Capture\\*"
        "^\\*Python\\*"
        quickrun--mode
