@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-12-22 14:14:03 yx>
+;; Modified: <2023-12-28 16:54:48 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -22,6 +22,8 @@
         ("C-c y"   . crux-yx/org-link-fast-copy)
         ("C-c C-y" . org-download-screenshot)
         ("C-c M-y" . org-download-clipboard)
+        ("C-c t h" . org-toggle-heading)
+        ("C-c t l" . org-toggle-link-display)
         ("C-c I"   . org-clock-in)
         ("C-c O"   . org-clock-out)
         ("C-x n h" . crux-yx/org-show-current-heading-tidily))
@@ -48,15 +50,14 @@
   (org-special-ctrl-k t)
   (org-special-ctrl-a/e t)
   (org-support-shift-select t)
-  (org-ctrl-k-protect-subtree t)
+  (org-ctrl-k-protect-subtree nil)
   (org-M-RET-may-split-line nil)
   (org-link-file-path-type 'relative)
   (org-ascii-headline-spacing '(0 . 1))
   (org-yank-adjusted-subtrees t)
   (org-insert-heading-respect-content t)
   (org-fold-catch-invisible-edits 'show-and-error)
-  (org-image-actual-width `(,(* (window-font-width)
-                                (- fill-column 8))))
+  (org-image-actual-width t)
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
   (org-element-use-cache nil)
@@ -293,8 +294,9 @@
   (defun yx/org-mode-setup ()
     (setq-local
      evil-auto-indent nil)
-    (auto-fill-mode 0)
+    (auto-fill-mode -1)
     (variable-pitch-mode 1)
+    (yas-minor-mode -1) ; confict with C-c &
     (modify-syntax-entry ?< "." org-mode-syntax-table)
     (modify-syntax-entry ?> "." org-mode-syntax-table)
     )
@@ -393,8 +395,7 @@
 (use-package org-download
   :after org
   :hook (dired-mode . org-download-enable)
-  :commands
-  (org-download-screenshot org-download-clipboard)
+  :commands (org-download-screenshot org-download-clipboard)
   :custom
   (org-download-heading-lvl nil)
   (org-download-screenshot-method "screencapture -i %s")

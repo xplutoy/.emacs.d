@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-12-22 06:58:26 yx>
+;; Modified: <2023-12-27 15:43:00 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -39,6 +39,7 @@
  view-read-only nil
  line-move-visual nil
  align-to-tab-stop nil
+ word-wrap-by-category t
  find-file-visit-truename t
  delete-by-moving-to-trash t
  set-mark-command-repeat-pop t

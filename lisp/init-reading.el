@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2023-12-20 04:42:36 yx>
+;; Modified: <2023-12-27 16:25:51 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -36,6 +36,7 @@
           ) . olivetti-mode)
   :init
   (setq
+   olivetti-style nil
    olivetti-mode-map nil
    olivetti-body-width 0.66
    olivetti-minimum-body-width (+ fill-column 2)

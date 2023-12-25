@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-12-24 04:36:47 yx>
+;; Modified: <2023-12-28 15:53:12 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -223,7 +223,6 @@
    '((("\\*Help\\*"
        helpful-mode
        "\\*Backtrace\\*"
-       "\\*[Wo]*Man.*\\*"
        "\\*Dictionary\\*"
        "\\*Bookmark List\\*"
        "\\*Flymake .*"
@@ -238,17 +237,22 @@
        "\\*evil-registers\\*"
        "\\*evil-owl\\*"
        "^\\*Compile"
+       "^\\*vc-git"
        "\\*Agenda Commands\\*"
-       "^\\*Org [^S].*"
+       "^\\*Org Select\\*$"
+       "^\\*Org [^AS].*"
        "\\*Capture\\*"
        "^\\*Python\\*"
        quickrun--mode
+       compilation-mode
        osx-dictionary-mode
        "\\*Shell Command Output\\*")
       :regexp t :nonselect t :popup t :align t)
      (("^magit" magit-mode
        ibuffer-mode
        Info-mode
+       Man-mode
+       woman-mode
        dired-mode
        vterm-mode)
       :regexp t :select t :same t :inhibit-window-quit t)

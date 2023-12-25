@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-12-24 04:03:11 yx>
+;; Modified: <2023-12-27 15:46:28 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -100,6 +100,7 @@
 (use-package magit
   :custom
   (magit-diff-refine-hunk t)
+  (magit-show-long-lines-warning nil)
   )
 
 (use-package magit-todos

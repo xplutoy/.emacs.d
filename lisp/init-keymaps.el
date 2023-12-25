@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-12-22 15:57:41 yx>
+;; Modified: <2023-12-25 17:19:29 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -78,7 +78,7 @@
  ("<f10>"     . yx/transient-global-odd)
  ("s-<f10>"   . yx/transient-global-even)
  ("s-<return>" . toggle-frame-maximized)
- ("s-`"       . sis-switch)
+ ("s-/"       . sis-switch)
  ("s-t"       . tab-bar-new-tab)
  ("s-j"       . avy-goto-char-timer)
  ("s-d"       . dirvish-side)

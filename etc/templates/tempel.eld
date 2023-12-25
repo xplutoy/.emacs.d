@@ -26,4 +26,4 @@ org-mode
 
 ($  "\\(" p "\\)")
 ($$ "\\[" n> r> n "\\]")
-(dot "#+begin_src dot :file " p " :cmdline -Kdot -Tpng" n> "digraph " p " {" n> r> n "}" n "#+end_src")
+(sdot "#+begin_src dot :file " p " :cmdline -Kdot -Tpng" n> "digraph " p " {" n> r> n "}" n "#+end_src")

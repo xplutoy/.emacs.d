@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-12-24 04:40:22 yx>
+;; Modified: <2023-12-28 16:12:42 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -163,6 +163,7 @@
 
 ;; %% toy langs
 (use-package lua-ts-mode
+  :mode ("\\.lua\\'" . lua-ts-mode)
   :init
   (setq lua-ts-indent-offset 2)
   )
@@ -199,12 +200,12 @@
    ))
 
 (use-package vimrc-mode
-  :mode "\\.?vim\\(rc\\)?\\'"
-  )
+  :mode "\\.?vim\\(rc\\)?\\'")
 
 (use-package gnuplot-mode
-  :mode "\\.gp$"
-  )
+  :mode "\\.gp$")
+
+(use-package graphviz-dot-mode)
 
 ;; %% maxima
 (autoload 'maxima-mode "maxima" "Maxima mode" t)
