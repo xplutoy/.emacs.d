@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-12-30 04:39:23 yx>
+;; Modified: <2023-12-30 06:54:36 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -25,8 +25,8 @@
   :commands (define-repeat-map))
 
 (define-repeat-map puni-expand-region
-  ( "+" puni-expand-region
-    "-" puni-contract-region)
+  ("+" puni-expand-region
+   "-" puni-contract-region)
   (:enter
    mark-word
    mark-sexp
@@ -35,6 +35,14 @@
    puni-mark-sexp-around-point
    puni-mark-list-around-point
    ))
+
+(define-repeat-map org-heading-navigate
+  ("p" org-previous-visible-heading
+   "n" org-next-visible-heading
+   "f" org-forward-heading-same-level
+   "b" org-backward-heading-same-level
+   "j" org-goto)
+  )
 
 (use-package key-chord
   :init

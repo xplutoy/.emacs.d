@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-12-30 05:15:20 yx>
+;; Modified: <2023-12-30 06:37:46 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -44,7 +44,7 @@
   (org-hide-emphasis-markers t)
   (org-cycle-separator-lines 0)
   (org-use-sub-superscripts '{})
-  (org-use-speed-commands t)
+  (org-use-speed-commands nil)
   (org-special-ctrl-o t)
   (org-special-ctrl-k t)
   (org-special-ctrl-a/e t)
