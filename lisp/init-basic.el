@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2023-12-27 15:43:00 yx>
+;; Modified: <2023-12-28 18:52:06 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -231,7 +231,7 @@
 (setq
  ;; abbrev-suggest t
  save-abbrevs 'silently
- abbrev-suggest-hint-threshold 1)
+ abbrev-suggest-hint-threshold 2)
 
 (setq
  hippie-expand-max-buffers 10

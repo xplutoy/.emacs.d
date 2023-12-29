@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-12-25 17:19:29 yx>
+;; Modified: <2023-12-30 04:39:23 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -136,6 +136,8 @@
  ("C-c b"     . tabspaces-switch-to-buffer)
  ("C-c d"     . devdocs-lookup)
  ("C-c e"     . embark-export)
+ ("C-c z"     . hs-toggle-hiding)
+ ("C-c Z"     . hs-show-all)
  ("C-c f"     . dirvish-fd)
  ("C-x a a"   . align)
  ("C-x a r"   . align-regexp)

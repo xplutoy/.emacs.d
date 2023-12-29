@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-12-28 15:53:12 yx>
+;; Modified: <2023-12-29 05:38:46 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -251,6 +251,8 @@
      (("^magit" magit-mode
        ibuffer-mode
        Info-mode
+       "^\\*Man.*\\*$"
+       "^\\*WoMan.*\\*$"
        Man-mode
        woman-mode
        dired-mode

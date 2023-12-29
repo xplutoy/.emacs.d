@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-12-28 16:54:48 yx>
+;; Modified: <2023-12-30 05:15:20 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -20,10 +20,9 @@
         ("RET"     . crux-yx/org-return-dwim)
         ("M-g h"   . consult-org-heading)
         ("C-c y"   . crux-yx/org-link-fast-copy)
-        ("C-c C-y" . org-download-screenshot)
-        ("C-c M-y" . org-download-clipboard)
         ("C-c t h" . org-toggle-heading)
         ("C-c t l" . org-toggle-link-display)
+        ("C-c t v" . crux-yx/org-display-subtree-inline-images)
         ("C-c I"   . org-clock-in)
         ("C-c O"   . org-clock-out)
         ("C-x n h" . crux-yx/org-show-current-heading-tidily))
@@ -34,7 +33,7 @@
   (org-babel-after-execute . yx/org-babel-display-image)
   :custom
   (org-directory yx/org-dir)
-  (org-ellipsis "...")
+  (org-ellipsis nil)
   (org-num-max-level 2)
   (org-reverse-note-order t)
   (org-list-allow-alphabetical t)
@@ -401,6 +400,11 @@
   (org-download-screenshot-method "screencapture -i %s")
   (org-download-image-dir
    (expand-file-name (concat org-attach-directory "images/") yx/org-dir))
+  :bind
+  (:map org-mode-map
+        ("C-c C-y" . org-download-screenshot)
+        ("C-c M-y" . org-download-clipboard)
+        )
   )
 
 (use-package org-project
