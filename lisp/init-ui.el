@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-12-22 15:46:22 yx>
+;; Modified: <2023-12-30 19:12:15 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,8 +11,7 @@
 ;; ui
 
 ;;; Code:
-(unless IS-MAC
-  (menu-bar-mode -1))
+(menu-bar-mode -1)
 
 ;; %% font
 (defvar yx/default-font "JetBrains Mono NL")

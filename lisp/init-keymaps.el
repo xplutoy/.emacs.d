@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-12-30 06:54:36 yx>
+;; Modified: <2023-12-30 07:09:34 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -37,11 +37,11 @@
    ))
 
 (define-repeat-map org-heading-navigate
-  ("p" org-previous-visible-heading
+  ("u" outline-up-heading
+   "p" org-previous-visible-heading
    "n" org-next-visible-heading
    "f" org-forward-heading-same-level
-   "b" org-backward-heading-same-level
-   "j" org-goto)
+   "b" org-backward-heading-same-level)
   )
 
 (use-package key-chord

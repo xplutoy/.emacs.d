@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-12-30 06:37:46 yx>
+;; Modified: <2023-12-31 03:29:12 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -25,6 +25,7 @@
         ("C-c t v" . crux-yx/org-display-subtree-inline-images)
         ("C-c I"   . org-clock-in)
         ("C-c O"   . org-clock-out)
+        ("C-c L"   . org-web-tools-insert-link-for-url)
         ("C-x n h" . crux-yx/org-show-current-heading-tidily))
   :autoload (org-calendar-holiday)
   :hook
@@ -144,16 +145,10 @@
   (org-tags-column 0)
   (org-auto-align-tags t)
   (org-tags-exclude-from-inheritance '(project crypt))
-  (org-tag-persistent-alist (quote
-                             ((:startgroup . nil)
-                              ("@work" . ?w) ("@home" . ?h) ("@society" . ?s)
+  (org-tag-persistent-alist '((:startgroup . nil)
+                              ("#math" . ?m) ("#ai" . ?a) ("#tech" . ?t) ("#life")
                               (:endgroup . nil)
-                              (:startgroup . nil)
-                              ("#math" . ?m) ("#ai" . ?a) ("#technology" . ?t)
-                              (:endgroup . nil)
-                              ("crypt" . ?c) ("project" . ?p)
-                              ("%bugfix%" . ?b) ("%urgent%" . ?u)
-                              )))
+                              ("crypt" . ?c) ("project" . ?p)))
   (org-fast-tag-selection-single-key t)
 
   ;; todo
@@ -420,6 +415,8 @@
               ("t" . org-project-capture)
               ("o" . org-project-open-todos))
   )
+
+(use-package org-web-tools)
 
 (provide 'init-org)
 ;;; init-org.el ends here
