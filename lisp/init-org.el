@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2023-12-31 03:29:12 yx>
+;; Modified: <2024-01-01 03:00:31 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -57,7 +57,7 @@
   (org-yank-adjusted-subtrees t)
   (org-insert-heading-respect-content t)
   (org-fold-catch-invisible-edits 'show-and-error)
-  (org-image-actual-width t)
+  (org-image-actual-width '(300))
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
   (org-element-use-cache nil)

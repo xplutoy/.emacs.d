@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-12-30 19:12:15 yx>
+;; Modified: <2023-12-31 17:07:47 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -14,35 +14,38 @@
 (menu-bar-mode -1)
 
 ;; %% font
-(defvar yx/default-font "JetBrains Mono NL")
-(defvar yx/fixed-pitch-font "JetBrains Mono NL")
-(defvar yx/fixed-pitch-serif-font "Latin Modern Mono")
-(defvar yx/variable-pitch-font "Latin Modern Roman")
+(defvar yx/font "JetBrains Mono NL")
+(defvar yx/fixed-font "JetBrains Mono NL")
+(defvar yx/serif-font "Latin Modern Mono")
+(defvar yx/variable-font "Latin Modern Roman")
 
 (defun yx/setup-fonts ()
-  (set-face-attribute 'default nil :family yx/default-font :height 160)
-  (set-face-attribute 'fixed-pitch nil :family yx/fixed-pitch-font)
-  (set-face-attribute 'fixed-pitch-serif nil :family yx/fixed-pitch-serif-font)
-  (set-face-attribute 'variable-pitch nil :family yx/variable-pitch-font)
+  (set-face-attribute 'default nil :family yx/font :height 160)
+  (set-face-attribute 'fixed-pitch nil :family yx/fixed-font)
+  (set-face-attribute 'fixed-pitch-serif nil :family yx/serif-font)
+  (set-face-attribute 'variable-pitch nil :family yx/variable-font)
   (setq face-font-rescale-alist '(("LXGW WenKai Mono" . 1.0)))
   (set-fontset-font t '(#x4e00 . #x9fff) "LXGW WenKai Mono")
+
+  (cl-loop for font in '("Segoe UI Symbol" "Symbola" "Symbol")
+           when (member font (font-family-list))
+           return (set-fontset-font t 'symbol (font-spec :family font) nil 'prepend))
+  (cl-loop for font in '("Noto Color Emoji" "Apple Color Emoji" "Segoe UI Emoji")
+           when (member font (font-family-list))
+           return (set-fontset-font t 'emoji (font-spec :family font) nil 'prepend))
   )
 
-(if (daemonp)
-    (add-hook 'after-make-frame-functions
-              (lambda (frame)
-                (with-selected-frame frame (yx/setup-fonts))))
-  (yx/setup-fonts))
+(add-hook 'window-setup-hook 'yx/setup-fonts)
+(add-hook 'server-after-make-frame-hook 'yx/setup-fonts)
 
 (setq-default fringes-outside-margins t)
 (setq window-divider-default-bottom-width 1
       window-divider-default-places 'bottom-only)
 (add-hook 'after-init-hook 'window-divider-mode)
 
-(setq x-underline-at-descent-line t)
-
 (setq
  modus-themes-mixed-fonts t
+ x-underline-at-descent-line t
  modus-themes-variable-pitch-ui t
  modus-themes-italic-constructs t
  modus-themes-common-palette-overrides

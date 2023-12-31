@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-12-27 15:46:28 yx>
+;; Modified: <2023-12-31 16:21:06 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -49,10 +49,9 @@
 ;; %% snippet
 (use-package tempel
   :defer 2
-  :custom
-  (tempel-trigger-prefix "<")
   :bind
   (("M-=" . tempel-insert)
+   ("M-+" . tempel-complete)
    :map tempel-map
    ([tab] . tempel-next)
    ([backtab] . tempel-previous))
@@ -65,8 +64,6 @@
     (setq-local completion-at-point-functions
                 (cons 'tempel-expand
                       completion-at-point-functions)))
-  :config
-  (global-tempel-abbrev-mode)
   )
 
 (use-package yasnippet

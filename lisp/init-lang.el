@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2023-12-28 18:55:14 yx>
+;; Modified: <2024-01-01 04:30:55 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -15,7 +15,6 @@
 
 (defun yx/prog-common-setup ()
   (setq-local
-   tab-always-indent t
    whitespace-style
    '(face trailing lines-char space-before-tab space-after-tab))
   (whitespace-mode 1)
