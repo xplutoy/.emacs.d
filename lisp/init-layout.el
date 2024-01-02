@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2023-12-29 05:38:46 yx>
+;; Modified: <2024-01-02 18:59:52 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -232,17 +232,18 @@
        comint-mode
        color-rg-mode)
       :regexp t :select t :popup t :align t)
-     (("\\*Warnings\\*"
-       "\\*Messages\\*"
-       "\\*evil-registers\\*"
-       "\\*evil-owl\\*"
+     (("^\\*Warnings\\*"
+       "^\\*Messages\\*"
+       "^\\*evil-registers\\*"
+       "^\\*evil-owl\\*"
        "^\\*Compile"
        "^\\*vc-git"
-       "\\*Agenda Commands\\*"
+       "^\\*Agenda Commands\\*"
        "^\\*Org Select\\*$"
        "^\\*Org [^AS].*"
-       "\\*Capture\\*"
+       "^\\*Capture\\*"
        "^\\*Python\\*"
+       "^\\*Multiple Choice Help\\*$"
        quickrun--mode
        compilation-mode
        osx-dictionary-mode

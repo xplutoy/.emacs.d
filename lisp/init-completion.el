@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2023-12-20 18:52:53 yx>
+;; Modified: <2024-01-03 05:51:08 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -116,21 +116,10 @@
   )
 
 (use-package cape
-  :hook
-  (org-mode    . yx/cape-capf-setup-writing)
-  (LaTeX-mode  . yx/cape-capf-setup-writing)
-  (eshell-mode . yx/cape-capf-setup-eshell)
   :init
   (setq cape-dabbrev-min-length 3)
-  (dolist (ele '(cape-dict cape-dabbrev cape-abbrev cape-file))
+  (dolist (ele '(cape-abbrev cape-file))
     (add-to-list 'completion-at-point-functions ele))
-  :preface
-  (defun yx/cape-capf-setup-writing ()
-    (dolist (ele '(cape-dict cape-tex))
-      (add-to-list 'completion-at-point-functions ele)))
-  (defun yx/cape-capf-setup-eshell ()
-    (dolist (ele '(cape-file cape-history cape-elisp-symbol))
-      (add-to-list 'completion-at-point-functions ele)))
   )
 
 (use-package marginalia

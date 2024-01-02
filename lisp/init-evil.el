@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-11-29 12:57:20
-;; Modified: <2023-12-22 02:54:48 yx>
+;; Modified: <2024-01-02 23:48:59 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -33,7 +33,8 @@
     '((conf-mode . normal)
       (prog-mode . normal)
       (text-mode . insert)
-      (color-rg-mode . emacs))
+      (color-rg-mode . emacs)
+      (evil-command-window-mode . insert))
     "Default evil state per major mode.")
   (dolist (p yx-initial-evil-state-alist)
     (evil-set-initial-state (car p) (cdr p)))

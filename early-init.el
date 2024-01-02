@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2023-12-22 05:47:33 yx>
+;; Modified: <2024-01-02 15:17:10 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -34,6 +34,8 @@
                  (height . 36)
                  (undecorated-round . t)))
   (push param default-frame-alist))
+
+(push '(fullscreen . maximized) initial-frame-alist)
 
 (when (featurep 'ns)
   (push '(ns-transparent-titlebar . t) default-frame-alist))

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2023-12-20 18:03:34 yx>
+;; Modified: <2024-01-03 05:47:21 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -83,16 +83,15 @@ set to \\='(template title keywords subdirectory)."
           (output-dvi  ,yx/default-open-program)
           (output-html ,yx/default-open-program)))
 
-  (mapc (lambda (mode)
-          (add-hook 'LaTeX-mode-hook mode))
-        (list
-         'flyspell-mode
-         'TeX-PDF-mode
-         'TeX-fold-mode
-         'turn-on-reftex
-         'LaTeX-math-mode
-         'prettify-symbols-mode
-         'TeX-source-correlate-mode))
+  (defun yx/latex-mode-setup ()
+    (TeX-PDF-mode 1)
+    (TeX-fold-mode 1)
+    (TeX-source-correlate-mode 1)
+    (LaTeX-math-mode 1)
+    (prettify-symbols-mode 1)
+    (turn-on-reftex)
+    (push 'cape-tex completion-at-point-functions))
+  (add-hook 'tex-mode-hook 'yx/latex-mode-setup)
   (add-hook 'TeX-after-comilation-finished-functions 'TeX-revert-document-buffer)
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs '(latex-mode "texlab")))

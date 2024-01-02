@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2024-01-01 03:00:31 yx>
+;; Modified: <2024-01-03 05:42:28 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -72,7 +72,7 @@
   (org-startup-folded t)
   (org-hide-block-startup t)
   (org-hide-drawer-startup t)
-  (org-startup-align-all-tables t)
+  (org-startup-align-all-tables nil)
   (org-startup-with-inline-images nil)
 
   (org-log-done 'time)
@@ -266,6 +266,7 @@
      (R . t)
      (julia . t)
      (org . t)
+     (shell . t)
      (latex . t)
      (dot . t)
      (gnuplot . t)
@@ -291,6 +292,7 @@
     (auto-fill-mode -1)
     (variable-pitch-mode 1)
     (yas-minor-mode -1) ; confict with C-c &
+    (push 'cape-tex completion-at-point-functions)
     (modify-syntax-entry ?< "." org-mode-syntax-table)
     (modify-syntax-entry ?> "." org-mode-syntax-table)
     )

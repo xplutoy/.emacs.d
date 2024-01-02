@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2024-01-01 04:30:55 yx>
+;; Modified: <2024-01-03 05:56:41 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -26,7 +26,7 @@
   (display-line-numbers-mode 1)
   (electric-indent-local-mode 1)
   (keymap-local-set "RET" 'newline-and-indent)
-  )
+  (push 'cape-keyword completion-at-point-functions))
 
 (add-hook 'prog-mode-hook 'yx/prog-common-setup)
 

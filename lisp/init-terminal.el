@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:10:40
-;; Modified: <2023-12-22 06:03:28 yx>
+;; Modified: <2024-01-03 05:50:11 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -48,6 +48,9 @@
   (add-hook 'eshell-mode-hook 'yx/eshell-setup)
 
   :preface
+  (defun yx/esheell-cape-capf()
+    (dolist (ele '(cape-file cape-history cape-elisp-symbol))
+      (add-to-list 'completion-at-point-functions ele)))
   (defun yx/eshell-setup ()
     (keymap-set eshell-mode-map "C-l" 'yx/eshell-clear)
     (keymap-set eshell-mode-map "C-r" 'consult-history)
@@ -62,6 +65,7 @@
     (eshell/alias "gs"   "magit-status")
     (eshell/alias "gv"   "magit-dispatch")
     (eshell/alias "ll"   "ls -AlohG --color=always")
+    (yx/eshell-cape-capf)
     )
 
   (defun yx/eshell-clear ()
