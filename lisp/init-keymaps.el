@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2023-12-30 07:09:34 yx>
+;; Modified: <2024-01-04 16:53:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -192,6 +192,7 @@
   "Global transient for frequently used functions."
   [["]-"
     ("a" "agenda" org-agenda-list)
+    ("c" "whitespace-cleanup" whitespace-cleanup)
     ("o" "crux-open-with" crux-open-with)
     ("n" "evil-buffer-new" evil-buffer-new)
     ("s" "scratch-buffer" scratch-buffer)
