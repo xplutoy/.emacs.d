@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2023-12-31 16:21:06 yx>
+;; Modified: <2024-01-04 22:49:18 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -50,8 +50,8 @@
 (use-package tempel
   :defer 2
   :bind
-  (("M-=" . tempel-insert)
-   ("M-+" . tempel-complete)
+  (("M-+" . tempel-insert)
+   ("M-=" . tempel-complete)
    :map tempel-map
    ([tab] . tempel-next)
    ([backtab] . tempel-previous))
@@ -142,19 +142,15 @@
   :hook (prog-mode . hl-todo-mode)
   :config
   (setq hl-todo-keyword-faces
-        '(("HOLD"  . "#d0bf8f")
-          ("TODO"  . "#cc9393")
+        '(("TODO"  . "#cc9393")
           ("NEXT"  . "#dca3a3")
           ("OKAY"  . "#7cb8bb")
           ("DONT"  . "#5f7f5f")
           ("FAIL"  . "#8c5353")
-          ("DONE"  . "#afd8af")
-          ("NOTE"  . "#d0bf8f")
           ("HACK"  . "#d0bf8f")
           ("FIXME" . "#cc9393")
           ("ISSUE" . "#e45649")
           ("TRICK" . "#d0bf8f")
-          ("DEBUG" . "#7cb8bb")
           ))
   :bind
   (:map hl-todo-mode-map

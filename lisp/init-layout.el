@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2024-01-02 18:59:52 yx>
+;; Modified: <2024-01-04 22:52:20 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -244,7 +244,7 @@
        "^\\*Capture\\*"
        "^\\*Python\\*"
        "^\\*Multiple Choice Help\\*$"
-       quickrun--mode
+       "^\\*quickrun\\*$"
        compilation-mode
        osx-dictionary-mode
        "\\*Shell Command Output\\*")
