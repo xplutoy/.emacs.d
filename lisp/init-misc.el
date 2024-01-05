@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-01-04 19:27:52 yx>
+;; Modified: <2024-01-05 22:05:41 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -193,7 +193,6 @@
 
 ;; %% chinese
 (use-package sis
-  :after evil
   :demand t
   :init
   (setq

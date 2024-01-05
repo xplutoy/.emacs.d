@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2024-01-04 22:52:20 yx>
+;; Modified: <2024-01-05 18:32:57 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -222,10 +222,11 @@
    shackle-rules
    '((("\\*Help\\*"
        helpful-mode
-       "\\*Backtrace\\*"
-       "\\*Dictionary\\*"
-       "\\*Bookmark List\\*"
-       "\\*Flymake .*"
+       "^\\*Occur\\*$"
+       "^\\*Backtrace\\*$"
+       "^\\*Dictionary\\*$"
+       "^\\*Bookmark List\\*$"
+       "^\\*Flymake .*"
        "^CAPTURE-"
        "^\\*julia.*"
        "^\\*[Ll]ua\\*$"

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2023-12-31 17:07:47 yx>
+;; Modified: <2024-01-05 22:20:21 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -89,22 +89,6 @@
 (use-package minions
   :demand t
   :hook (after-init . minions-mode)
-  )
-
-(use-package mini-echo
-  :disabled
-  :demand t
-  :custom
-  (mini-echo-separator "|")
-  (mini-echo-default-segments
-   '(:short
-     ("buffer-name-short" "profiler"
-      "selection-info" "narrow" "macro" "evil")
-     :long
-     ("major-mode" "buffer-name-short" "vcs" "flymake"
-      "selection-info" "narrow" "macro" "profiler" "elgot" "evil")))
-  :config
-  (mini-echo-mode 1)
   )
 
 (use-package breadcrumb

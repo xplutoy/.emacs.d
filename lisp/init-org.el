@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2024-01-03 05:42:28 yx>
+;; Modified: <2024-01-05 22:01:33 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -276,7 +276,7 @@
   (org-crypt-use-before-save-magic)
   (org-clock-persistence-insinuate)
   (org-clock-auto-clockout-insinuate)
-  (run-at-time t 900 'org-agenda-to-appt)
+  (run-at-time t 7200 'org-agenda-to-appt)
   (crux-yx/def-org-maybe-surround "~" "=" "*" "/" "+")
 
   :custom-face
@@ -287,8 +287,6 @@
 
   :preface
   (defun yx/org-mode-setup ()
-    (setq-local
-     evil-auto-indent nil)
     (auto-fill-mode -1)
     (variable-pitch-mode 1)
     (yas-minor-mode -1) ; confict with C-c &

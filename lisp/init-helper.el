@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-28 17:41:00
-;; Modified: <2023-12-20 23:22:51 yx>
+;; Modified: <2024-01-05 22:38:05 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -56,6 +56,15 @@ When the region is active, comment its lines instead."
       (comment-or-uncomment-region (region-beginning) (region-end))
     (comment-line n)))
 
+(defun yx/new-empty-buffer ()
+  "Create a new empty buffer
+Warning: new buffer is not prompted for save when killed, see `kill-buffer'."
+  (interactive)
+  (let ((xbuf (generate-new-buffer "untitled")))
+    (set-buffer-major-mode xbuf)
+    (switch-to-buffer xbuf)
+    ))
+
 (defun yx/kill-buffer-dwim (&optional arg)
   (interactive "P")
   (if arg
@@ -72,7 +81,7 @@ When the region is active, comment its lines instead."
 
 (defun yx/org-agenda-format-date-aligned (date)
   "Format a DATE string for display in the daily/weekly agenda, or timeline.
-      This function makes sure that dates are aligned for easy reading."
+  This function makes sure that dates are aligned for easy reading."
   (let* ((dayname (aref yx/cal-china-x-days
                         (calendar-day-of-week date)))
          (day (cadr date))

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2024-01-04 22:55:17 yx>
+;; Modified: <2024-01-05 22:44:44 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -13,7 +13,7 @@
 ;;; Code:
 
 ;; %% simple
-(defalias 'qrr ''query-replace-regexp)
+(defalias 'qrr 'query-replace-regexp)
 
 ;; %% 全局按键
 ;; This avoids the ugly accidentally action of scaling text with using the trackpad
@@ -85,9 +85,8 @@
 (bind-keys
  ("<f5>"      . dape)
  ("<f10>"     . yx/transient-global-odd)
- ("s-<f10>"   . yx/transient-global-even)
  ("s-<return>" . toggle-frame-maximized)
- ("s-/"       . sis-switch)
+ ("s-/"       . sis-set-other)
  ("s-t"       . tab-bar-new-tab)
  ("s-j"       . avy-goto-char-timer)
  ("s-d"       . dirvish-side)
@@ -146,6 +145,7 @@
  ("C-c b"     . tabspaces-switch-to-buffer)
  ("C-c d"     . devdocs-lookup)
  ("C-c e"     . embark-export)
+ ("C-c r"     . query-replace-regexp)
  ("C-c z"     . hs-toggle-hiding)
  ("C-c Z"     . hs-show-all)
  ("C-c f"     . dirvish-fd)
@@ -182,23 +182,14 @@
   (transient-bind-q-to-quit)
   (keymap-set transient-map "<escape>" 'transient-quit-all))
 
-(transient-define-prefix yx/transient-global-even ()
-  "Global transient for infrequently used functions."
-  [["Size"
-    ("0" "text-scale-adjust"   text-scale-adjust)
-    ("+" "text-scale-increase" text-scale-increase)
-    ("-" "text-scale-decrease" text-scale-decrease)
-    ]]
-  )
-
 (transient-define-prefix yx/transient-global-odd ()
   "Global transient for frequently used functions."
   [["]-"
     ("a" "agenda" org-agenda-list)
     ("c" "whitespace-cleanup" whitespace-cleanup)
     ("o" "crux-open-with" crux-open-with)
-    ("n" "evil-buffer-new" evil-buffer-new)
     ("s" "scratch-buffer" scratch-buffer)
+    ("n" "new-empty-buffer" yx/new-empty-buffer)
     ("m" "major-mode-keybings" which-key-show-full-major-mode)
     ("v" "magit-file-dispatch" magit-file-dispatch)
     ("%" "query-replace-regexp" query-replace-regexp)
