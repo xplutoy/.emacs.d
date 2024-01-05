@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2024-01-05 18:29:43 yx>
+;; Modified: <2024-01-06 00:53:21 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -82,9 +82,8 @@
 ;; %% font-lock
 (setq
  jit-lock-defer-time 0
- jit-lock-chunk-size 6000
- jit-lock-stealth-time 0.5
- jit-lock-context-time 0.2)
+ jit-lock-stealth-time 2.0
+ jit-lock-stealth-nice 0.2)
 
 ;; %% auto save
 (setq

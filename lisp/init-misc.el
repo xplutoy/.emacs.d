@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-01-05 22:05:41 yx>
+;; Modified: <2024-01-06 00:57:12 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -14,10 +14,7 @@
 
 ;; %% misc
 (use-package gcmh
-  :hook (after-init . gcmh-mode)
-  :custom
-  (gcmh-high-cons-threshold (* 128 1024 1024))
-  )
+  :hook (after-init . gcmh-mode))
 
 (use-package server
   :defer 2
@@ -132,6 +129,10 @@
 
 ;; %% edit enhencement
 (use-package vundo)
+(use-package goto-chg)
+
+(use-package surround
+  :bind-keymap ("M-'" . surround-keymap))
 
 (use-package avy
   :init

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2024-01-05 22:44:44 yx>
+;; Modified: <2024-01-05 23:59:26 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -87,6 +87,7 @@
  ("<f10>"     . yx/transient-global-odd)
  ("s-<return>" . toggle-frame-maximized)
  ("s-/"       . sis-set-other)
+ ("s-r"       . consult-recent-file)
  ("s-t"       . tab-bar-new-tab)
  ("s-j"       . avy-goto-char-timer)
  ("s-d"       . dirvish-side)
@@ -102,13 +103,13 @@
  ("C-/"       . undo-only)
  ("C-^"       . crux-top-join-line)
  ("C-M-/"     . vundo)
- ("M-0"       . delete-window)
- ("M-r"       . consult-recent-file)
- ("M-#"       . consult-register-load)
- ("M-'"       . consult-register-store)
- ("C-M-#"     . consult-register)
+ ("C-#"       . consult-register-load)
+ ("M-#"       . consult-register-store)
+ ("C-c #"     . consult-register)
  ("M-z"       . crux-yx/quick-zap-up-to-char)
  ("M-o"       . ace-window)
+ ("M-0"       . delete-window)
+ ;; M-' surround-keymap
  ("M-g ;"     . goto-last-change)
  ("M-g a"     . consult-org-agenda)
  ("M-g M"     . consult-man)
@@ -133,7 +134,7 @@
  ("M-s M-s"   . color-rg-search-symbol)
  ("M-s p"     . color-rg-search-input-in-project)
  ("M-s M-p"   . color-rg-search-symbol-in-project)
- ("C-c '"     . flyspell-correct-next)
+ ("C-c ;"     . flyspell-correct-next)
  ("C-c k"     . kill-buffer-and-window)
  ("C-c K"     . crux-kill-other-buffers)
  ("C-c v"     . magit-file-dispatch)

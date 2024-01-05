@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2024-01-04 22:49:18 yx>
+;; Modified: <2024-01-06 00:11:19 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -95,9 +95,10 @@
 (use-package git-modes)
 
 (use-package magit
-  :custom
-  (magit-diff-refine-hunk t)
-  (magit-show-long-lines-warning nil)
+  :init
+  (setq
+   magit-diff-refine-hunk t
+   magit-show-long-lines-warning nil)
   )
 
 (use-package magit-todos
@@ -225,20 +226,17 @@
   (:map puni-mode-map
         ("DEL"     . nil)
         ("C-d"     . nil)
-        ("M-l r"   . puni-raise)
-        ("M-l u"   . puni-splice)
-        ("M-l s"   . puni-squeeze)
-        ("M-l {"   . puni-wrap-curly)
-        ("M-l ("   . puni-wrap-round)
-        ("M-l ["   . puni-wrap-square)
-        ("M-l l"   . puni-slurp-forward)
-        ("M-l h"   . puni-slurp-backward)
-        ("M-l M-l" . puni-barf-forward)
-        ("M-l M-h" . puni-barf-backward)
-        ("M-l m"   . puni-mark-sexp-at-point)
-        ("M-l M-m" . puni-mark-sexp-around-point)
-        ("M-l ="   . puni-expand-region)
-        ("M-l -"   . puni-contract-region))
+        ("M-' r"   . puni-raise)
+        ("M-' u"   . puni-splice)
+        ("M-' M-s" . puni-squeeze)
+        ("M-' l"   . puni-slurp-forward)
+        ("M-' h"   . puni-slurp-backward)
+        ("M-' M-l" . puni-barf-forward)
+        ("M-' M-h" . puni-barf-backward)
+        ("M-' m"   . puni-mark-sexp-at-point)
+        ("M-' M-m" . puni-mark-sexp-around-point)
+        ("M-' ="   . puni-expand-region)
+        ("M-' -"   . puni-contract-region))
   )
 
 (use-package combobulate
