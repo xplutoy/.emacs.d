@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-01-06 00:57:12 yx>
+;; Modified: <2024-01-06 09:44:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -14,7 +14,9 @@
 
 ;; %% misc
 (use-package gcmh
-  :hook (after-init . gcmh-mode))
+  :hook (after-init . gcmh-mode)
+  :custom
+  (gcmh-high-cons-threshold (* 32 1024 1024)))
 
 (use-package server
   :defer 2

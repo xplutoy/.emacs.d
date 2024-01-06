@@ -10,9 +10,6 @@
 [submodule "site-lisp/crux-yx"]
 	path = site-lisp/crux-yx
 	url = https://github.com/xplutoy/crux-yx.git
-[submodule "site-lisp/eshell-git-prompt-yx"]
-	path = site-lisp/eshell-git-prompt-yx
-	url = https://github.com/xplutoy/eshell-git-prompt-yx.git
 [submodule "site-lisp/sr-speedbar-yx"]
 	path = site-lisp/sr-speedbar-yx
 	url = https://github.com/xplutoy/sr-speedbar-yx.git

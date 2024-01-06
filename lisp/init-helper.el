@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-28 17:41:00
-;; Modified: <2024-01-05 22:38:05 yx>
+;; Modified: <2024-01-06 11:10:39 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -64,6 +64,12 @@ Warning: new buffer is not prompted for save when killed, see `kill-buffer'."
     (set-buffer-major-mode xbuf)
     (switch-to-buffer xbuf)
     ))
+
+(defun yx/scratch-buffer ()
+  (interactive)
+  (scratch-buffer)
+  (delete-other-windows)
+  )
 
 (defun yx/kill-buffer-dwim (&optional arg)
   (interactive "P")

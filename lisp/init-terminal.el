@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:10:40
-;; Modified: <2024-01-03 05:50:11 yx>
+;; Modified: <2024-01-06 11:14:39 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -30,15 +30,16 @@
   :init
   (setq
    eshell-kill-on-exit t
+   eshell-kill-processes-on-exit t
+   eshell-save-history-on-exit t
+   eshell-destroy-buffer-when-process-dies t
    eshell-hist-ignoredups t
    eshell-error-if-no-glob t
-   eshell-save-history-on-exit t
    eshell-prefer-lisp-functions t
-   eshell-kill-processes-on-exit t
    eshell-rm-removes-directories t
    eshell-scroll-to-bottom-on-input 'all
    eshell-scroll-to-bottom-on-output 'all
-   eshell-destroy-buffer-when-process-dies t)
+   eshell-prompt-function 'yx/eshell-prompt)
   :config
   (dolist (m '(eshell-rebind
                eshell-tramp
@@ -48,9 +49,16 @@
   (add-hook 'eshell-mode-hook 'yx/eshell-setup)
 
   :preface
-  (defun yx/esheell-cape-capf()
-    (dolist (ele '(cape-file cape-history cape-elisp-symbol))
-      (add-to-list 'completion-at-point-functions ele)))
+  (defun yx/eshell-prompt()
+    (setq eshell-prompt-regexp "^[^#$\n]*[#$] ")
+    (concat (abbreviate-file-name (eshell/pwd))
+            (if (fboundp 'magit-get-current-branch)
+                (if-let ((branch (magit-get-current-branch)))
+                    (format " [git:%s]" branch)
+                  "")
+              "")
+            (if (= (user-uid) 0) "\n# " "\n$ ")))
+
   (defun yx/eshell-setup ()
     (keymap-set eshell-mode-map "C-l" 'yx/eshell-clear)
     (keymap-set eshell-mode-map "C-r" 'consult-history)
@@ -65,7 +73,11 @@
     (eshell/alias "gs"   "magit-status")
     (eshell/alias "gv"   "magit-dispatch")
     (eshell/alias "ll"   "ls -AlohG --color=always")
-    (yx/eshell-cape-capf)
+    (setq-local completion-at-point-functions
+                '(cape-file
+                  pcomplete-completions-at-point
+                  cape-elisp-symbol
+                  t))
     )
 
   (defun yx/eshell-clear ()
@@ -73,13 +85,11 @@
     (interactive)
     (let ((inhibit-read-only t))
       (erase-buffer)
-      (eshell-send-input)
-      )
-    )
+      (eshell-send-input)))
+
   (defun eshell/z ()
     (let ((dir (completing-read "Directory: " (ring-elements eshell-last-dir-ring) nil t)))
-      (eshell/cd dir)
-      ))
+      (eshell/cd dir)))
 
   (defun eshell/F (filename)
     "Open a file as root from Eshell"
@@ -88,17 +98,7 @@
                            (concat (expand-file-name (eshell/pwd)) "/" filename))))
       (switch-to-buffer
        (find-file-noselect
-        (concat "/sudo::" qual-filename)))
-      )
-    )
-  )
-
-(use-package eshell-git-prompt-yx
-  :load-path "site-lisp/eshell-git-prompt-yx"
-  :autoload eshell-git-prompt-multiline
-  :init
-  (setq eshell-prompt-function 'eshell-git-prompt-multiline)
-  )
+        (concat "/sudo::" qual-filename))))))
 
 (use-package eshell-syntax-highlighting
   :after eshell-mode

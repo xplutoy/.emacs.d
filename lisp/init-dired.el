@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:20:40
-;; Modified: <2023-12-22 05:34:39 yx>
+;; Modified: <2024-01-06 03:32:13 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -57,11 +57,12 @@
      ("D" "~/Downloads/" "Downloads")
      ("w" "~/workspace/" "workspace>")))
   :config
-  (setq dirvish-side-width 30)
-  (setq dirvish-use-mode-line nil)
-  (setq dirvish-header-line-height 18)
-  ;; (setq dirvish-use-header-line 'global)
-  (setq dirvish-default-layout '(0 0.4 0.6))
+  (setq dirvish-side-width 30
+        dirvish-use-mode-line t
+        dirvish-default-layout '(0 0.4 0.6))
+  (let ((height (/ yx/font-height 10.0)))
+    (setq dirvish-mode-line-height height
+          dirvish-header-line-height height))
   (setq dirvish-attributes
         '(file-time file-size collapse subtree-state vc-state))
   (setq dired-listing-switches

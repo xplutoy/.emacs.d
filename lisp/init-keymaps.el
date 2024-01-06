@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2024-01-05 23:59:26 yx>
+;; Modified: <2024-01-06 11:11:57 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -189,7 +189,7 @@
     ("a" "agenda" org-agenda-list)
     ("c" "whitespace-cleanup" whitespace-cleanup)
     ("o" "crux-open-with" crux-open-with)
-    ("s" "scratch-buffer" scratch-buffer)
+    ("s" "scratch-buffer" yx/scratch-buffer)
     ("n" "new-empty-buffer" yx/new-empty-buffer)
     ("m" "major-mode-keybings" which-key-show-full-major-mode)
     ("v" "magit-file-dispatch" magit-file-dispatch)

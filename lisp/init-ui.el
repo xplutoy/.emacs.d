@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2024-01-05 22:20:21 yx>
+;; Modified: <2024-01-06 03:17:43 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -14,13 +14,14 @@
 (menu-bar-mode -1)
 
 ;; %% font
+(defvar yx/font-height 160)
 (defvar yx/font "JetBrains Mono NL")
 (defvar yx/fixed-font "JetBrains Mono NL")
 (defvar yx/serif-font "Latin Modern Mono")
 (defvar yx/variable-font "Latin Modern Roman")
 
 (defun yx/setup-fonts ()
-  (set-face-attribute 'default nil :family yx/font :height 160)
+  (set-face-attribute 'default nil :family yx/font :height yx/font-height)
   (set-face-attribute 'fixed-pitch nil :family yx/fixed-font)
   (set-face-attribute 'fixed-pitch-serif nil :family yx/serif-font)
   (set-face-attribute 'variable-pitch nil :family yx/variable-font)

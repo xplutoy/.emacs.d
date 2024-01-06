@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2024-01-06 00:11:19 yx>
+;; Modified: <2024-01-06 06:08:42 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -77,8 +77,6 @@
 (use-package yasnippet-snippets)
 
 ;; %% version control
-(setq vc-handled-backends '(Git))
-
 (use-package diff-hl
   :hook
   (after-init . global-diff-hl-mode)
@@ -226,6 +224,7 @@
   (:map puni-mode-map
         ("DEL"     . nil)
         ("C-d"     . nil)
+        ("C-w"     . nil)
         ("M-' r"   . puni-raise)
         ("M-' u"   . puni-splice)
         ("M-' M-s" . puni-squeeze)
@@ -236,7 +235,8 @@
         ("M-' m"   . puni-mark-sexp-at-point)
         ("M-' M-m" . puni-mark-sexp-around-point)
         ("M-' ="   . puni-expand-region)
-        ("M-' -"   . puni-contract-region))
+        ("M-' -"   . puni-contract-region)
+        )
   )
 
 (use-package combobulate

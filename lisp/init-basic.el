@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2024-01-06 00:53:21 yx>
+;; Modified: <2024-01-06 04:34:01 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -385,16 +385,19 @@
  desktop-load-locked-desktop t)
 
 (with-eval-after-load 'desktop
-  (dolist (mode '(eww-mode
-                  Info-mode
-                  magit-mode
-                  magit-log-mode
-                  dired-mode
-                  comint-mode
-                  doc-view-mode
-                  elfeed-search-mode))
-    (add-to-list 'desktop-modes-not-to-save mode))
+  (mapc
+   (lambda (mode)
+     (push mode desktop-modes-not-to-save))
+   '(eww-mode
+     Info-mode
+     magit-mode
+     magit-log-mode
+     dired-mode
+     comint-mode
+     doc-view-mode
+     elfeed-search-mode))
   )
+
 
 ;; %% tramp speed up
 (setq
@@ -405,11 +408,10 @@
  remote-file-name-inhibit-cache nil)
 
 (setq
+ vc-handled-backends '(Git)
+ vc-git-diff-switches '("--histogram")
  vc-ignore-dir-regexp
- (format "\\(%s\\)\\|\\(%s\\)"
-         vc-ignore-dir-regexp
-         tramp-file-name-regexp)
- )
+ (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
 
 ;; %% long line
 (setq
