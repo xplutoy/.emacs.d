@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2024-01-06 06:08:42 yx>
+;; Modified: <2024-01-06 18:47:38 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -300,9 +300,6 @@
    (no-littering-expand-var-file-name "dape-debug-adapters")
    dape-buffer-window-arrangment 'right)
   )
-
-(use-package dwim-coder-mode
-  :hook ((c-ts-mode python-ts-mode) . dwim-coder-mode))
 
 (use-package quickrun
   :custom
