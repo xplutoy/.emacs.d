@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2024-01-06 22:17:37 yx>
+;; Modified: <2024-01-07 00:27:57 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -122,6 +122,8 @@
  ("M-g k"     . consult-kmacro)
  ("M-g m"     . consult-mark)
  ("M-g M-m"   . consult-global-mark)
+ ("M-s t"     . yx/hl-todo-rg-project)
+ ("M-s M-t"   . hl-todo-occur)
  ("M-s f"     . consult-fd)
  ("M-s M-h"   . symbol-overlay-put)
  ("M-s l"     . consult-line)

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2024-01-06 18:47:38 yx>
+;; Modified: <2024-01-07 00:25:47 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -99,11 +99,6 @@
    magit-show-long-lines-warning nil)
   )
 
-(use-package magit-todos
-  :after magit
-  :demand t
-  :config (magit-todos-mode 1))
-
 ;; %% indent
 (use-package editorconfig
   :defer 2
@@ -138,8 +133,8 @@
   :hook (emacs-lisp . rainbow-mode))
 
 (use-package hl-todo
-  :hook (prog-mode . hl-todo-mode)
-  :config
+  :hook ((text-mode prog-mode) . hl-todo-mode)
+  :init
   (setq hl-todo-keyword-faces
         '(("TODO"  . "#cc9393")
           ("NEXT"  . "#dca3a3")
@@ -149,15 +144,18 @@
           ("HACK"  . "#d0bf8f")
           ("FIXME" . "#cc9393")
           ("ISSUE" . "#e45649")
-          ("TRICK" . "#d0bf8f")
-          ))
-  :bind
-  (:map hl-todo-mode-map
-        ("M-c t t" . hl-todo-occur)
-        ("M-c t g" . hl-todo-rgrep)
-        ("M-c t i" . hl-todo-insert)
-        ("M-c t n" . hl-todo-next)
-        ("M-c t p" . hl-todo-previous))
+          ("TRICK" . "#d0bf8f")))
+  (setq hl-todo-require-punctuation t
+        hl-todo-highlight-punctuation ":")
+
+  (defun yx/hl-todo-rg-project ()
+    "Use `rg' to find all TODO or similar keywords."
+    (interactive)
+    (unless (require 'color-rg nil t)
+      (error "`color-rg' is not installed"))
+    (let* ((regexp (replace-regexp-in-string "\\\\[<>]*" "" (hl-todo--regexp))))
+      (color-rg-search-input regexp (color-rg-project-root-dir))
+      ))
   )
 
 (use-package symbol-overlay
