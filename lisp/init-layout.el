@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2024-01-06 18:37:07 yx>
+;; Modified: <2024-01-06 22:28:10 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -28,6 +28,9 @@
  display-buffer-alist
  '(("^\\*R"
     nil (dedicated . t))
+   ("^\\*[Ee]shell"
+    (display-buffer-in-side-window)
+    (window-height . 0.5))
    ("\\`\\*Async Shell Command\\*\\'"
     (display-buffer-no-window)
     (allow-no-window . t))
@@ -195,7 +198,6 @@
   (setq popper-reference-buffers
         '("\\*Bookmark List\\*"
           "\\*shell.*\\*$" shell-mode
-          "\\*eshell.*\\*$" eshell-mode
           "\\*term.*\\*$" term-mode
           "\\*julia\\*$"
           "\\*color-rg\\*$"

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2024-01-06 18:23:59 yx>
+;; Modified: <2024-01-06 22:17:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -97,7 +97,7 @@
  ("s-<left>"  . ns-prev-frame)
  ("s-]"       . tab-next)
  ("s-["       . tab-previous)
- ("C-;"       . crux-yx/toggle-eshell)
+ ("C-;"       . yx/eshell-here)
  ("C-:"       . vterm-toggle-cd)
  ("C-."       . embark-act)
  ("C-,"       . embark-dwim)

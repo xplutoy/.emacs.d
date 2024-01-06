@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:10:40
-;; Modified: <2024-01-06 18:35:04 yx>
+;; Modified: <2024-01-06 22:16:58 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -30,9 +30,9 @@
   :init
   (setq
    eshell-kill-on-exit t
-   eshell-kill-processes-on-exit t
    eshell-save-history-on-exit t
-   eshell-destroy-buffer-when-process-dies t
+   eshell-kill-processes-on-exit 'ask
+   eshell-destroy-buffer-when-process-dies nil
    eshell-hist-ignoredups t
    eshell-error-if-no-glob t
    eshell-prefer-lisp-functions t
@@ -87,6 +87,21 @@
     (let ((inhibit-read-only t))
       (erase-buffer)
       (eshell-send-input)))
+
+  (defun yx/eshell-here ()
+    (interactive)
+    (let* ((project (project-current))
+           (name (if project (project-name project) "#"))
+           (dir (if (buffer-file-name)
+                    (file-name-directory (buffer-file-name))
+                  default-directory))
+           (old-name eshell-buffer-name)
+           (height (/ (frame-height) 3)))
+      (setq eshell-buffer-name (concat "*Eshell-" name "*"))
+      (eshell)
+      (setq eshell-buffer-name old-name)
+      (eshell/clear)
+      (eshell/cd dir)))
 
   (defun eshell/z ()
     (let ((dir (completing-read "Directory: " (ring-elements eshell-last-dir-ring) nil t)))
