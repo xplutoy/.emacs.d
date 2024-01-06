@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2024-01-05 18:32:57 yx>
+;; Modified: <2024-01-06 18:37:07 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -97,7 +97,7 @@
    tab-bar-separator
    tab-bar-format-add-tab)
  tab-bar-tab-hints t
- tab-bar-new-tab-to 'rightmost
+ tab-bar-new-tab-to 'right
  tab-bar-new-button-show t
  tab-bar-close-button-show t
  tab-bar-new-tab-choice "*scratch*"

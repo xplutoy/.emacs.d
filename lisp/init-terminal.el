@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:10:40
-;; Modified: <2024-01-06 11:14:39 yx>
+;; Modified: <2024-01-06 18:35:04 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -41,9 +41,8 @@
    eshell-scroll-to-bottom-on-output 'all
    eshell-prompt-function 'yx/eshell-prompt)
   :config
-  (dolist (m '(eshell-rebind
-               eshell-tramp
-               eshell-xtra
+  (dolist (m '(eshell-tramp
+               eshell-rebind
                eshell-elecslash))
     (add-to-list 'eshell-modules-list m))
   (add-hook 'eshell-mode-hook 'yx/eshell-setup)
@@ -51,7 +50,7 @@
   :preface
   (defun yx/eshell-prompt()
     (setq eshell-prompt-regexp "^[^#$\n]*[#$] ")
-    (concat (abbreviate-file-name (eshell/pwd))
+    (concat (yx/pwd-replace-home (eshell/pwd))
             (if (fboundp 'magit-get-current-branch)
                 (if-let ((branch (magit-get-current-branch)))
                     (format " [git:%s]" branch)
@@ -71,6 +70,8 @@
     (eshell/alias "d"    "dired $1")
     (eshell/alias "f"    "find-file $1")
     (eshell/alias "gs"   "magit-status")
+    (eshell/alias "gd"   "magit-diff-unstaged")
+    (eshell/alias "gds"  "magit-diff-staged")
     (eshell/alias "gv"   "magit-dispatch")
     (eshell/alias "ll"   "ls -AlohG --color=always")
     (setq-local completion-at-point-functions
@@ -100,40 +101,6 @@
        (find-file-noselect
         (concat "/sudo::" qual-filename))))))
 
-(use-package eshell-syntax-highlighting
-  :after eshell-mode
-  :demand t
-  :config
-  (eshell-syntax-highlighting-global-mode +1))
-
-(use-package pcmpl-args
-  :after eshell
-  :demand t
-  )
-
-;; %% vterm
-(use-package vterm
-  :unless IS-WIN
-  :bind (:map vterm-mode-map
-              ("C-y" . vterm-yank)
-              ("M-y" . vterm-yank-pop)
-              ("C-k" . vterm-send-C-k-and-kill))
-  :config
-  (setq vterm-always-compile-module t)
-  (defun vterm-send-C-k-and-kill ()
-    (kill-ring-save (point) (vterm-end-of-line))
-    (vterm-send-key "k" nil nil t)
-    )
-  )
-
-(use-package vterm-toggle
-  :after vterm
-  :custom
-  (vterm-toggle-hide-method 'delete-window)
-  (vterm-toggle-cd-auto-create-buffer nil)
-  (vterm-toggle-reset-window-configration-after-exit t)
-  )
-
 ;; %% eat
 (use-package eat
   :load-path "site-lisp/emacs-eat"
@@ -145,6 +112,15 @@
    eat-enable-yank-to-terminal t)
   )
 
+(use-package pcmpl-args
+  :after eshell
+  :demand t)
+
+(use-package eshell-syntax-highlighting
+  :after eshell-mode
+  :demand t
+  :config
+  (eshell-syntax-highlighting-global-mode +1))
 
 (provide 'init-terminal)
 ;;; init-terminal.el ends here

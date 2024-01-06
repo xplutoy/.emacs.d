@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-28 17:41:00
-;; Modified: <2024-01-06 11:10:39 yx>
+;; Modified: <2024-01-06 16:59:20 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -77,6 +77,16 @@ Warning: new buffer is not prompted for save when killed, see `kill-buffer'."
       (call-interactively 'kill-buffer)
     (kill-current-buffer))
   )
+
+(defun yx/pwd-replace-home (pwd)
+  "Replace home in PWD with tilde (~) character."
+  (let* ((home (expand-file-name (getenv "HOME")))
+         (home-len (length home)))
+    (if (and
+         (>= (length pwd) home-len)
+         (equal home (substring pwd 0 home-len)))
+        (concat "~" (substring pwd home-len))
+      pwd)))
 
 (defun yx/file-contents-str (file)
   "File contents to string."

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2024-01-06 11:11:57 yx>
+;; Modified: <2024-01-06 18:23:59 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -91,6 +91,7 @@
  ("s-t"       . tab-bar-new-tab)
  ("s-j"       . avy-goto-char-timer)
  ("s-d"       . dirvish-side)
+ ("s-o"       . ace-window)
  ("s-w"       . tabspaces-close-workspace)
  ("s-<right>" . ns-next-frame)
  ("s-<left>"  . ns-prev-frame)
@@ -106,8 +107,8 @@
  ("C-#"       . consult-register-load)
  ("M-#"       . consult-register-store)
  ("C-c #"     . consult-register)
+ ("M-o"       . duplicate-line)
  ("M-z"       . crux-yx/quick-zap-up-to-char)
- ("M-o"       . ace-window)
  ("M-0"       . delete-window)
  ;; M-' surround-keymap
  ("M-g ;"     . goto-last-change)
