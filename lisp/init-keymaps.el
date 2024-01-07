@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2024-01-07 00:27:57 yx>
+;; Modified: <2024-01-08 00:08:02 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -49,6 +49,7 @@
   (key-chord-mode 1)
   (key-chord-define-global "zz"     'zoom)
   (key-chord-define-global "jj"     'avy-goto-char-timer)
+  (key-chord-define-global "jk"     'avy-goto-word-1)
   (key-chord-define-global "jl"     'avy-goto-line)
   (with-eval-after-load 'org
     (key-chord-define

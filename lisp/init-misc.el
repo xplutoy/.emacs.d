@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-01-06 09:44:37 yx>
+;; Modified: <2024-01-08 00:19:53 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -132,9 +132,6 @@
 ;; %% edit enhencement
 (use-package vundo)
 (use-package goto-chg)
-
-(use-package surround
-  :bind-keymap ("M-'" . surround-keymap))
 
 (use-package avy
   :init

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2024-01-05 22:01:33 yx>
+;; Modified: <2024-01-07 01:24:48 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -117,7 +117,7 @@
   (org-latex-preview-ltxpng-directory
    (no-littering-expand-var-file-name "ltxinmg/"))
 
-  (org-footnote-auto-adjust t)
+  (org-footnote-auto-adjust nil)
 
   (org-src-fontify-natively t)
   (org-src-tab-acts-natively t)

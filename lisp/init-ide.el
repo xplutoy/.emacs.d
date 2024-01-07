@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2024-01-07 00:25:47 yx>
+;; Modified: <2024-01-08 00:36:06 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -35,11 +35,11 @@
  flymake-fringe-indicator-position 'right-fringe)
 (with-eval-after-load 'flymake
   (bind-keys :map flymake-mode-map
-             ("M-c s"   . flymake-start)
-             ("M-c d"   . flymake-show-buffer-diagnostics)
-             ("M-c M-d" . flymake-show-project-diagnostics)
-             ("M-c M-n" . flymake-goto-next-error)
-             ("M-c M-p" . flymake-goto-prev-error))
+             ("s-; s"   . flymake-start)
+             ("s-; d"   . flymake-show-buffer-diagnostics)
+             ("s-; M-d" . flymake-show-project-diagnostics)
+             ("s-; M-n" . flymake-goto-next-error)
+             ("s-; M-p" . flymake-goto-prev-error))
   )
 
 (use-package apheleia
@@ -213,6 +213,10 @@
   )
 
 ;; %% structured edit
+(use-package surround
+  :defer 2
+  :bind-keymap ("M-'" . surround-keymap))
+
 (use-package puni
   :hook ((tex-mode
           prog-mode
@@ -223,17 +227,17 @@
         ("DEL"     . nil)
         ("C-d"     . nil)
         ("C-w"     . nil)
-        ("M-' r"   . puni-raise)
-        ("M-' u"   . puni-splice)
-        ("M-' M-s" . puni-squeeze)
-        ("M-' l"   . puni-slurp-forward)
-        ("M-' h"   . puni-slurp-backward)
-        ("M-' M-l" . puni-barf-forward)
-        ("M-' M-h" . puni-barf-backward)
-        ("M-' m"   . puni-mark-sexp-at-point)
-        ("M-' M-m" . puni-mark-sexp-around-point)
-        ("M-' ="   . puni-expand-region)
-        ("M-' -"   . puni-contract-region)
+        ("s-' r"   . puni-raise)
+        ("s-' u"   . puni-splice)
+        ("s-' M-s" . puni-squeeze)
+        ("s-' l"   . puni-slurp-forward)
+        ("s-' h"   . puni-slurp-backward)
+        ("s-' M-l" . puni-barf-forward)
+        ("s-' M-h" . puni-barf-backward)
+        ("s-' m"   . puni-mark-sexp-at-point)
+        ("s-' M-m" . puni-mark-sexp-around-point)
+        ("s-' ="   . puni-expand-region)
+        ("s-' -"   . puni-contract-region)
         )
   )
 
@@ -269,10 +273,10 @@
   :bind
   (:map
    eglot-mode-map
-   ("M-c r" . eglot-rename)
-   ("M-c f" . eglot-format)
-   ("M-c a" . eglot-code-actions)
-   ("M-c g" . consult-eglot-symbols))
+   ("s-; r" . eglot-rename)
+   ("s-; f" . eglot-format)
+   ("s-; a" . eglot-code-actions)
+   ("s-; g" . consult-eglot-symbols))
   :config
   (fset #'jsonrpc--log-event #'ignore) ; massive perf boost---don't log every event
   )

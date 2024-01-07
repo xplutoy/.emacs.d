@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:10:40
-;; Modified: <2024-01-06 22:16:58 yx>
+;; Modified: <2024-01-07 16:38:21 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -48,16 +48,6 @@
   (add-hook 'eshell-mode-hook 'yx/eshell-setup)
 
   :preface
-  (defun yx/eshell-prompt()
-    (setq eshell-prompt-regexp "^[^#$\n]*[#$] ")
-    (concat (yx/pwd-replace-home (eshell/pwd))
-            (if (fboundp 'magit-get-current-branch)
-                (if-let ((branch (magit-get-current-branch)))
-                    (format " [git:%s]" branch)
-                  "")
-              "")
-            (if (= (user-uid) 0) "\n# " "\n$ ")))
-
   (defun yx/eshell-setup ()
     (keymap-set eshell-mode-map "C-l" 'yx/eshell-clear)
     (keymap-set eshell-mode-map "C-r" 'consult-history)
@@ -80,6 +70,16 @@
                   cape-elisp-symbol
                   t))
     )
+
+  (defun yx/eshell-prompt()
+    (setq eshell-prompt-regexp "^[^#$\n]*[#$] ")
+    (concat (yx/pwd-replace-home (eshell/pwd))
+            (if (fboundp 'magit-get-current-branch)
+                (if-let ((branch (magit-get-current-branch)))
+                    (format " [git:%s]" branch)
+                  "")
+              "")
+            (if (= (user-uid) 0) "\n# " "\n$ ")))
 
   (defun yx/eshell-clear ()
     "Clear the current Eshell buffer."
