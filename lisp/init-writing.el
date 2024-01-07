@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2024-01-03 05:47:21 yx>
+;; Modified: <2024-01-08 05:47:12 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -44,10 +44,8 @@ set to \\='(template title keywords subdirectory)."
   (citar-denote-mode)
   )
 
-(use-package org-transclusion)
-
 (use-package edit-indirect)
-(use-package writegood-mode)
+(use-package org-transclusion)
 
 (use-package markdown-mode
   :ensure t

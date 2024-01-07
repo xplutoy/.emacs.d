@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-01-08 00:19:53 yx>
+;; Modified: <2024-01-09 00:11:15 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -71,6 +71,8 @@
 
 (use-package which-key
   :hook (after-init . which-key-mode)
+  :custom
+  (which-key-idle-delay 1.2)
   :config
   (which-key-setup-minibuffer)
   )
@@ -196,9 +198,6 @@
   :demand t
   :init
   (setq
-   sis-context-fixed 'nil
-   sis-inline-with-other nil
-   sis-inline-with-english t
    sis-external-ism "im-select"
    sis-auto-refresh-seconds 0.1
    sis-respect-restore-triggers

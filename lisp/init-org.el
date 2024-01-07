@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2024-01-07 01:24:48 yx>
+;; Modified: <2024-01-08 19:03:24 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -253,7 +253,7 @@
   (org-export-with-sub-superscripts '{})
 
   :config
-  (plist-put org-format-latex-options :scale 2)
+  (plist-put org-format-latex-options :scale 1.8)
   ;; (plist-put org-latex-preview-options :zoom 1.15)
   ;; (plist-put org-latex-preview-options :scale 2.20)
   (with-eval-after-load 'ox-latex
@@ -278,6 +278,7 @@
   (org-clock-auto-clockout-insinuate)
   (run-at-time t 7200 'org-agenda-to-appt)
   (crux-yx/def-org-maybe-surround "~" "=" "*" "/" "+")
+  (add-hook 'org-ctrl-c-ctrl-c-hook 'yx/check-latex-fragment)
 
   :custom-face
   (org-level-1 ((t (:height 1.3))))
@@ -293,6 +294,13 @@
     (push 'cape-tex completion-at-point-functions)
     (modify-syntax-entry ?< "." org-mode-syntax-table)
     (modify-syntax-entry ?> "." org-mode-syntax-table)
+    )
+
+  (defun yx/check-latex-fragment ()
+    (let ((datum (org-element-context)))
+      (when (memq (org-element-type datum) '(latex-environment latex-fragment))
+        (org-latex-preview)
+        t))
     )
 
   (defun yx/org-agenda-finalize-setup ()

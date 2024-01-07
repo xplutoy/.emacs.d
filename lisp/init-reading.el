@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2024-01-07 01:15:15 yx>
+;; Modified: <2024-01-08 13:57:18 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -71,7 +71,7 @@
   (elfeed-search-filter "@3-months-ago +unread -new")
   :hook (elfeed-show . olivetti-mode)
   :config
-  (run-at-time nil (* 8 60 60) 'elfeed-update)
+  (run-at-time nil (* 4 60 60) 'elfeed-update)
   (keymap-set elfeed-search-mode-map "m" (yx/elfeed-tag-selection-as 'star))
   (keymap-set elfeed-search-mode-map "l" (yx/elfeed-tag-selection-as 'readlater))
   :preface
@@ -86,10 +86,11 @@
       (interactive)
       (elfeed-search-toggle-all mytag)))
   :bind
-  ( :map elfeed-show-mode-map
-    ("%" . elfeed-webkit-toggle)
-    ("q" . yx/elfeed-kill-entry)
-    )
+  (:map elfeed-show-mode-map
+        ("w" . elfeed-show-yank)
+        ("%" . elfeed-webkit-toggle)
+        ("q" . yx/elfeed-kill-entry)
+        )
   )
 
 (use-package elfeed-webkit

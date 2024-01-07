@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2024-01-08 00:08:02 yx>
+;; Modified: <2024-01-08 03:46:18 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -84,10 +84,10 @@
  )
 
 (bind-keys
- ("<f5>"      . dape)
+ ("C-<f5>"    . dape)
+ ("<f5>"      . quickrun)
  ("<f10>"     . yx/transient-global-odd)
  ("s-<return>" . toggle-frame-maximized)
- ("s-/"       . sis-set-other)
  ("s-r"       . consult-recent-file)
  ("s-t"       . tab-bar-new-tab)
  ("s-j"       . avy-goto-char-timer)

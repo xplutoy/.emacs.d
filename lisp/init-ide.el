@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2024-01-08 00:36:06 yx>
+;; Modified: <2024-01-08 20:51:00 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -106,6 +106,11 @@
   (editorconfig-trim-whitespaces-mode 'ws-butler-mode)
   :config
   (editorconfig-mode 1))
+
+(use-package snap-indent
+  :hook (prog-mode . snap-indent-mode)
+  :custom
+  (snap-indent-format '(delete-trailing-whitespace)))
 
 (use-package indent-guide
   :hook (prog-mode . indent-guide-mode)
