@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2024-01-08 13:57:18 yx>
+;; Modified: <2024-01-09 02:19:24 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -50,9 +50,7 @@
         'crux-yx/elfeed-search-print-entry--better-default)
   :custom
   (elfeed-feeds
-   '(("https://36kr.com/feed" new)
-     ("https://www.zhihu.com/rss" new)
-     ("https://www.inference.vc/rss" ai)
+   '(("https://www.inference.vc/rss" ai)
      ("https://spaces.ac.cn/feed" ai wk)
      ("https://ruder.io/rss/index.rss" ai)
      ("https://lilianweng.github.io/index.xml" ai wk)
@@ -68,7 +66,7 @@
      ("https://matt.might.net/articles/feed.rss" emacs)
      ("https://andreyor.st/categories/emacs/feed.xml" emacs)
      ("https://sachachua.com/blog/category/emacs/feed/" emacs)))
-  (elfeed-search-filter "@3-months-ago +unread -new")
+  (elfeed-search-filter "@6-months-ago +unread")
   :hook (elfeed-show . olivetti-mode)
   :config
   (run-at-time nil (* 4 60 60) 'elfeed-update)

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2024-01-06 03:17:43 yx>
+;; Modified: <2024-01-09 17:56:52 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -45,8 +45,11 @@
 (add-hook 'after-init-hook 'window-divider-mode)
 
 (setq
+ x-stretch-cursor nil
+ x-underline-at-descent-line t)
+
+(setq
  modus-themes-mixed-fonts t
- x-underline-at-descent-line t
  modus-themes-variable-pitch-ui t
  modus-themes-italic-constructs t
  modus-themes-common-palette-overrides

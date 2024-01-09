@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-01-09 00:11:15 yx>
+;; Modified: <2024-01-09 01:12:46 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -199,7 +199,6 @@
   :init
   (setq
    sis-external-ism "im-select"
-   sis-auto-refresh-seconds 0.1
    sis-respect-restore-triggers
    '(isearch-exit isearch-abort)
    sis-respect-go-english-triggers
@@ -218,7 +217,6 @@
 
   (sis-global-inline-mode 1)
   (sis-global-respect-mode 1)
-  (sis-global-context-mode 1)
   (add-hook 'org-capture-mode-hook 'sis-set-other))
 
 (use-package osx-dictionary

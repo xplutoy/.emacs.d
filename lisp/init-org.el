@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2024-01-08 19:03:24 yx>
+;; Modified: <2024-01-09 18:42:44 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -53,6 +53,7 @@
   (org-ctrl-k-protect-subtree nil)
   (org-M-RET-may-split-line nil)
   (org-link-file-path-type 'relative)
+  (org-link-use-indirect-buffer-for-internals t)
   (org-ascii-headline-spacing '(0 . 1))
   (org-yank-adjusted-subtrees t)
   (org-insert-heading-respect-content t)
@@ -213,8 +214,8 @@
   (org-agenda-include-diary t)
   (org-agenda-show-future-repeats 'next)
   (org-agenda-format-date 'yx/org-agenda-format-date-aligned)
-  (org-agenda-scheduled-leaders '("&计划&  " "&拖%03d  "))
-  (org-agenda-deadline-leaders  '("&截止&  " "&剩%03d  " "&逾%03d  "))
+  (org-agenda-scheduled-leaders '("计划@  " "拖%03d  "))
+  (org-agenda-deadline-leaders  '("截止@  " "剩%03d  " "逾%03d  "))
 
   (org-clock-idle-time 60)
   (org-clock-into-drawer t)

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2024-01-08 03:46:18 yx>
+;; Modified: <2024-01-09 18:26:26 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -17,8 +17,8 @@
 
 ;; %% 全局按键
 ;; This avoids the ugly accidentally action of scaling text with using the trackpad
-(unbind-key "<C-wheel-up>")
-(unbind-key "<C-wheel-down>")
+(keymap-global-unset "C-<wheel-up>")
+(keymap-global-unset "C-<wheel-down>")
 
 (use-package define-repeat-map
   :load-path "site-lisp/define-repeat-map.el"
@@ -81,6 +81,7 @@
  ([remap kill-buffer]                   . yx/kill-buffer-dwim) ; C-x k
  ([remap save-buffers-kill-emacs]       . delete-frame) ; s-q
  ([remap open-line]                     . crux-smart-open-line) ; C-o
+ ([remap fill-paragraph]                . yx/fill-unfill) ; M-q
  )
 
 (bind-keys
@@ -189,7 +190,7 @@
 
 (transient-define-prefix yx/transient-global-odd ()
   "Global transient for frequently used functions."
-  [["]-"
+  [["]]a"
     ("a" "agenda" org-agenda-list)
     ("c" "whitespace-cleanup" whitespace-cleanup)
     ("o" "crux-open-with" crux-open-with)
@@ -199,17 +200,19 @@
     ("v" "magit-file-dispatch" magit-file-dispatch)
     ("%" "query-replace-regexp" query-replace-regexp)
     ("!" "shell-command" shell-command)]
-   ["[-"
+   ["]]A"
     ("C" "desktop-clear" desktop-clear)
     ("D" "crux-delete-file-and-buffer" crux-delete-file-and-buffer)
     ("G" "magit-status" magit-status)
     ("V" "magit-dispatch" magit-dispatch)
     ("I" "Clock In" yx/org-clock-in)
     ("T" "consult-minor-mode-menu" consult-minor-mode-menu)
-    ("L" "toggle-command-log-buffer" clm/toggle-command-log-buffer)
     ("R" "rename-visited-file" rename-visited-file)
     ("K" "crux-kill-other-buffers" crux-kill-other-buffers)
     ("E" "crux-sudo-edit" crux-sudo-edit)]
+   ["]]T"
+    ("t d" "toggle-window-dedicated" yx/toggle-window-dedicated)
+    ("t l" "command-log" clm/toggle-command-log-buffer)]
    ]
   )
 

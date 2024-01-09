@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2024-01-02 15:17:10 yx>
+;; Modified: <2024-01-09 16:46:22 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -30,9 +30,10 @@
  native-comp-jit-compilation t
  native-comp-async-report-warnings-errors nil)
 
-(dolist (param '((width . 90)
+(dolist (param '((width . 78)
                  (height . 36)
-                 (undecorated-round . t)))
+                 (undecorated-round . t)
+                 (vertical-scroll-bars . nil)))
   (push param default-frame-alist))
 
 (push '(fullscreen . maximized) initial-frame-alist)

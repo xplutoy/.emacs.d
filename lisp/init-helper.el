@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-28 17:41:00
-;; Modified: <2024-01-06 16:59:20 yx>
+;; Modified: <2024-01-09 18:03:07 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -55,6 +55,17 @@ When the region is active, comment its lines instead."
   (if (use-region-p)
       (comment-or-uncomment-region (region-beginning) (region-end))
     (comment-line n)))
+
+(defun yx/fill-unfill ()
+  "Like `fill-paragraph', but unfill if used twice."
+
+  (interactive)
+  (let ((fill-column
+         (if (eq last-command #'yx/fill-unfill)
+             (progn (setq this-command nil)
+                    (point-max))
+           fill-column)))
+    (call-interactively #'fill-paragraph)))
 
 (defun yx/new-empty-buffer ()
   "Create a new empty buffer

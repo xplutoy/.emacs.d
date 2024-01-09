@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2024-01-06 22:28:10 yx>
+;; Modified: <2024-01-09 18:24:45 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -30,7 +30,7 @@
     nil (dedicated . t))
    ("^\\*[Ee]shell"
     (display-buffer-in-side-window)
-    (window-height . 0.5))
+    (window-height . 0.4))
    ("\\`\\*Async Shell Command\\*\\'"
     (display-buffer-no-window)
     (allow-no-window . t))
@@ -50,6 +50,17 @@
     (window-height . fit-window-to-buffer))
    )
  )
+
+(defun yx/toggle-window-dedicated ()
+  "Toggle whether the current active window is dedicated or not"
+  (interactive)
+  (message
+   (if (let (window (get-buffer-window (current-buffer)))
+         (set-window-dedicated-p window (not (window-dedicated-p window))))
+       "Window '%s' is dedicated"
+     "Window '%s' is normal")
+   (current-buffer))
+  (force-window-update))
 
 ;; %% @see http://yummymelon.com/devnull/using-bookmarks-in-emacs-like-you-do-in-web-browsers.html
 (easy-menu-define yx/bookmarks-menu nil
@@ -106,6 +117,11 @@
  tab-bar-new-tab-choice "*scratch*"
  tab-bar-tab-name-truncated-max 20
  tab-bar-select-tab-modifiers '(super))
+
+(keymap-unset tab-bar-map "<wheel-up>")
+(keymap-unset tab-bar-map "<wheel-down>")
+(keymap-unset tab-bar-map "<wheel-left>")
+(keymap-unset tab-bar-map "<wheel-right>")
 
 (add-hook 'after-init-hook
           (lambda ()

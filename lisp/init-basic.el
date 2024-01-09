@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2024-01-06 04:34:01 yx>
+;; Modified: <2024-01-09 19:03:01 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -63,7 +63,8 @@
  global-hl-line-sticky-flag nil
  initial-scratch-message ""
  confirm-kill-processes nil
- disabled-command-function nil)
+ disabled-command-function nil
+ confirm-nonexistent-file-or-buffer nil)
 
 ;; %% paren
 (setq
@@ -227,7 +228,6 @@
 
 (setq minibuffer-prompt-properties
       '(read-only t cursor-intangible t face minibuffer-prompt))
-
 (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
 (setq
@@ -281,6 +281,7 @@
  mouse-wheel-tilt-scroll t
  mouse-wheel-follow-mouse t
  mouse-drag-mode-line-buffer t
+ mouse-avoidance-nudge-dist 8
  mouse-wheel-progressive-speed nil
  mouse-drag-and-drop-region-cross-program t
  mouse-wheel-scroll-amount-horizontal 2
@@ -373,6 +374,7 @@
    global-mark-ring
    search-ring
    regexp-search-ring
+   command-history
    extended-command-history))
 (add-hook 'after-init-hook 'savehist-mode)
 
@@ -397,7 +399,6 @@
      doc-view-mode
      elfeed-search-mode))
   )
-
 
 ;; %% tramp speed up
 (setq
@@ -510,6 +511,9 @@
   (auto-compression-mode 1)
   (delete-selection-mode 1)
   (auto-save-visited-mode 1)
+  (mouse-avoidance-mode 'jump)
+  (unless (display-graphic-p)
+    (xterm-mouse-mode 1))
   (pixel-scroll-precision-mode 1)
   (windmove-default-keybindings 'control)
   )
