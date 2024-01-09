@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-01-09 01:12:46 yx>
+;; Modified: <2024-01-10 07:21:03 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -34,27 +34,30 @@
 
 (use-package engine-mode
   :hook (after-init . engine-mode)
+  :custom
+  (engine/browser-function 'browse-url-generic)
   :config
-  (when IS-MAC
-    (setq engine/browser-function 'browse-url-default-macosx-browser))
-  (defengine github
-    "https://github.com/search?q=%s"
-    :keybinding "c")
-  (defengine google
-    "https://www.google.com.hk/search?q=%s"
-    :keybinding "g")
-  (defengine bing
-    "https://cn.bing.com/search?q=%s&ensearch=1"
-    :keybinding "b")
-  (defengine wiki_cn
-    "https://zh.wikipedia.org/w/index.php?search=%s"
-    :keybinding "w")
-  (defengine wolfram-alpha
-    "https://www.wolframalpha.com/input/?i=%s"
-    :keybinding "m")
-  (defengine zhihu
-    "https://www.zhihu.com/search?q=%s"
-    :keybinding "z")
+  (yx/define-enines
+   '(("c" "https://github.com/search?q=%s")
+     ("g" "https://www.google.com/search?q=%s")
+     ("b" "https://cn.bing.com/search?q=%s&ensearch=1")
+     ("w" "https://zh.wikipedia.org/w/index.php?search=%s")
+     ("a" "https://www.wolframalpha.com/input/?i=%s")
+     ("z" "https://www.zhihu.com/search?q=%s")
+     ("d" "https://search.douban.com/book/subject_search?search_text=%s")))
+  :preface
+  (defun yx/extract-name-from-url (url)
+    (let* ((host (url-host (url-generic-parse-url url)))
+           (host-trimmed (split-string host  "\\.")))
+      (car (last host-trimmed 2))))
+
+  (defun yx/define-enines (engines)
+    (dolist (engi engines)
+      (let* ((key  (car engi))
+             (url  (cadr engi))
+             (name (yx/extract-name-from-url url))
+             (symn (make-symbol name)))
+        (eval `(defengine ,symn ,url :keybinding ,key)))))
   )
 
 (use-package posframe)
