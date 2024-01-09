@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2024-01-09 17:56:52 yx>
+;; Modified: <2024-01-09 23:53:24 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,7 +11,14 @@
 ;; ui
 
 ;;; Code:
-(menu-bar-mode -1)
+(setq
+ x-stretch-cursor nil
+ x-underline-at-descent-line t)
+
+(custom-set-faces
+ '(mode-line ((t :box (:style released-button)))))
+
+(when IS-MAC (menu-bar-mode 1))
 
 ;; %% font
 (defvar yx/font-height 160)
@@ -45,10 +52,6 @@
 (add-hook 'after-init-hook 'window-divider-mode)
 
 (setq
- x-stretch-cursor nil
- x-underline-at-descent-line t)
-
-(setq
  modus-themes-mixed-fonts t
  modus-themes-variable-pitch-ui t
  modus-themes-italic-constructs t
@@ -66,17 +69,12 @@
   :init
   (setq
    ef-themes-mixed-fonts t
-   ef-themes-variable-pitch-ui t)
-  )
+   ef-themes-variable-pitch-ui t))
 
 (use-package lin
   :hook (after-init . lin-global-mode)
   :custom
-  (lin-face 'lin-magenta)
-  )
-
-(custom-set-faces
- '(mode-line ((t :box (:style released-button)))))
+  (lin-face 'lin-magenta))
 
 (use-package circadian
   :after solar
@@ -86,14 +84,12 @@
    circadian-themes
    '((:sunset  . modus-vivendi)
      (:sunrise . modus-operandi)))
-  (circadian-setup)
-  )
+  (circadian-setup))
 
 ;; %% modeline
 (use-package minions
   :demand t
-  :hook (after-init . minions-mode)
-  )
+  :hook (after-init . minions-mode))
 
 (use-package breadcrumb
   :hook ((prog-mode org-mode) . breadcrumb-local-mode))

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2024-01-09 18:24:45 yx>
+;; Modified: <2024-01-09 22:33:21 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -113,20 +113,20 @@
  tab-bar-tab-hints t
  tab-bar-new-tab-to 'right
  tab-bar-new-button-show t
- tab-bar-close-button-show t
+ tab-bar-close-button-show nil
  tab-bar-new-tab-choice "*scratch*"
  tab-bar-tab-name-truncated-max 20
  tab-bar-select-tab-modifiers '(super))
 
-(keymap-unset tab-bar-map "<wheel-up>")
-(keymap-unset tab-bar-map "<wheel-down>")
-(keymap-unset tab-bar-map "<wheel-left>")
-(keymap-unset tab-bar-map "<wheel-right>")
-
-(add-hook 'after-init-hook
-          (lambda ()
-            (tab-bar-mode 1)
-            (tab-bar-history-mode 1)))
+(defun yx/tab-bar-setup()
+  (tab-bar-mode 1)
+  (tab-bar-history-mode 1)
+  (let ((map tab-bar-map))
+    (keymap-unset map "<wheel-up>")
+    (keymap-unset map "<wheel-down>")
+    (keymap-unset map "<wheel-left>")
+    (keymap-unset map "<wheel-right>")))
+(add-hook 'after-init-hook #'yx/tab-bar-setup)
 
 (use-package sr-speedbar
   :defer 2
