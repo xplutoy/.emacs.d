@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2024-01-10 08:00:59 yx>
+;; Modified: <2024-01-10 17:39:08 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -134,14 +134,13 @@
 (add-hook 'after-init-hook #'yx/tab-bar-setup)
 
 (use-package sr-speedbar
+  :ensure nil
   :defer 2
-  :load-path "site-lisp/sr-speedbar-yx"
   :init
   (setq
    speedbar-use-images nil
    sr-speedbar-width 30
-   sr-speedbar-skip-other-window-p t)
-  )
+   sr-speedbar-skip-other-window-p t))
 
 (use-package ace-window
   :init

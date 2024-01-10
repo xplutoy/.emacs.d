@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2024-01-10 17:12:30 yx>
+;; Modified: <2024-01-10 18:19:42 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -17,16 +17,16 @@
   :bind
   (:map org-mode-map
         ("M-<f10>" . yx/transient-org)
-        ("RET"     . crux-yx/org-return-dwim)
+        ("RET"     . yx/org-return-dwim)
         ("M-g h"   . consult-org-heading)
-        ("C-c y"   . crux-yx/org-link-fast-copy)
+        ("C-c y"   . yx/org-link-fast-copy)
         ("C-c t h" . org-toggle-heading)
         ("C-c t l" . org-toggle-link-display)
-        ("C-c t v" . crux-yx/org-display-subtree-inline-images)
+        ("C-c t v" . yx/org-display-subtree-inline-images)
         ("C-c I"   . org-clock-in)
         ("C-c O"   . org-clock-out)
         ("C-c L"   . org-web-tools-insert-link-for-url)
-        ("C-x n h" . crux-yx/org-show-current-heading-tidily))
+        ("C-x n h" . yx/org-show-current-heading-tidily))
   :autoload (org-calendar-holiday)
   :hook
   (org-mode . yx/org-mode-setup)
@@ -278,7 +278,7 @@
   (org-clock-persistence-insinuate)
   (org-clock-auto-clockout-insinuate)
   (run-at-time t 7200 'org-agenda-to-appt)
-  (crux-yx/def-org-maybe-surround "~" "=" "*" "/" "+")
+  (yx/def-org-maybe-surround "~" "=" "*" "/" "+")
   (add-hook 'org-ctrl-c-ctrl-c-hook 'yx/check-latex-fragment)
 
   :custom-face

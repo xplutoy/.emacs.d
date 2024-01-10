@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-01-10 10:57:04 yx>
+;; Modified: <2024-01-10 18:19:42 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -63,10 +63,10 @@
 (use-package posframe)
 
 ;; %% auxiliary tool
-(use-package crux-yx
+(use-package crux
+  :ensure nil
   :defer 2
-  :autoload (crux-yx/def-org-maybe-surround)
-  :load-path "site-lisp/crux-yx"
+  :autoload (yx/def-org-maybe-surround)
   :config
   (crux-with-region-or-buffer indent-region)
   (crux-reopen-as-root-mode 1)
@@ -197,6 +197,7 @@
    default-input-method "pyim"
    pyim-outcome-trigger  nil
    pyim-enable-shortcode nil
+   pyim-punctuation-dict nil
    pyim-page-tooltip 'posframe
    pyim-dcache-backend 'pyim-dregcach
    pyim-indicator-list '(pyim-indicator-with-modeline)
@@ -205,8 +206,7 @@
      pyim-probe-program-mode
      pyim-probe-isearch-mode
      pyim-probe-org-latex-mode
-     pyim-probe-org-structure-template
-     ))
+     pyim-probe-org-structure-template))
   :config
   (require 'pyim-dregcache)
   (pyim-default-scheme 'xiaohe-shuangpin)

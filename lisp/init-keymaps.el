@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2024-01-10 10:13:25 yx>
+;; Modified: <2024-01-10 18:28:28 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -77,7 +77,7 @@
  ([remap dired-at-point]                . consult-dir) ; C-x d
  ([remap dabbrev-expand]                . hippie-expand) ; M-/
  ([remap comment-dwim]                  . yx/comment-dwim) ; M-;
- ([remap keyboard-quit]                 . crux-yx/keyboard-quit-dwim) ; C-g
+ ([remap keyboard-quit]                 . yx/keyboard-quit-dwim) ; C-g
  ([remap kill-buffer]                   . yx/kill-buffer-dwim) ; C-x k
  ([remap save-buffers-kill-emacs]       . delete-frame) ; s-q
  ([remap open-line]                     . crux-smart-open-line) ; C-o
@@ -89,6 +89,7 @@
  ("<f5>"      . quickrun)
  ("<f10>"     . yx/transient-global-odd)
  ("s-<return>" . toggle-frame-maximized)
+ ("s-/"       . transform-previous-char)
  ("s-r"       . consult-recent-file)
  ("s-t"       . tab-bar-new-tab)
  ("s-j"       . avy-goto-char-timer)
@@ -109,7 +110,7 @@
  ("M-#"       . consult-register-store)
  ("C-c #"     . consult-register)
  ("M-o"       . duplicate-line)
- ("M-z"       . crux-yx/quick-zap-up-to-char)
+ ("M-z"       . yx/quick-zap-up-to-char)
  ("M-0"       . delete-window)
  ;; M-' surround-keymap
  ("M-g ;"     . goto-last-change)
@@ -179,8 +180,7 @@
  ("C-c n C-t" . org-transclusion-add-all)
  ("C-h b"     . embark-bindings)
  ("C-h C-m"   . which-key-show-full-major-mode)
- ("C-h B"     . embark-bindings-at-point)
- )
+ ("C-h B"     . embark-bindings-at-point))
 
 ;; %% transient key
 (with-eval-after-load 'transient

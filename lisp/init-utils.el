@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-28 17:41:00
-;; Modified: <2024-01-09 18:03:07 yx>
+;; Modified: <2024-01-10 18:05:52 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -43,52 +43,7 @@
    "廿一" "廿二" "廿三" "廿四" "廿五" "廿六" "廿七" "廿八" "廿九" "三十"
    "卅一" "卅二" "卅三" "卅四" "卅五" "卅六" "卅七" "卅八" "卅九" "卅十"])
 
-(defun yx/insert-date ()
-  "Insert a date according to `%F' format."
-  (interactive)
-  (insert (format-time-string "%F" (current-time))))
-
-(defun yx/comment-dwim (n)
-  "Comment N lines, defaulting to the current one.
-When the region is active, comment its lines instead."
-  (interactive "p")
-  (if (use-region-p)
-      (comment-or-uncomment-region (region-beginning) (region-end))
-    (comment-line n)))
-
-(defun yx/fill-unfill ()
-  "Like `fill-paragraph', but unfill if used twice."
-
-  (interactive)
-  (let ((fill-column
-         (if (eq last-command #'yx/fill-unfill)
-             (progn (setq this-command nil)
-                    (point-max))
-           fill-column)))
-    (call-interactively #'fill-paragraph)))
-
-(defun yx/new-empty-buffer ()
-  "Create a new empty buffer
-Warning: new buffer is not prompted for save when killed, see `kill-buffer'."
-  (interactive)
-  (let ((xbuf (generate-new-buffer "untitled")))
-    (set-buffer-major-mode xbuf)
-    (switch-to-buffer xbuf)
-    ))
-
-(defun yx/scratch-buffer ()
-  (interactive)
-  (scratch-buffer)
-  (delete-other-windows)
-  )
-
-(defun yx/kill-buffer-dwim (&optional arg)
-  (interactive "P")
-  (if arg
-      (call-interactively 'kill-buffer)
-    (kill-current-buffer))
-  )
-
+;; %% help functions
 (defun yx/pwd-replace-home (pwd)
   "Replace home in PWD with tilde (~) character."
   (let* ((home (expand-file-name (getenv "HOME")))
@@ -186,7 +141,7 @@ Warning: new buffer is not prompted for save when killed, see `kill-buffer'."
                   :urgency 'critical)
   (appt-disp-window min-to-app new-time appt-msg))
 
-;; %% yx defined tempo skeleton
+;; %% tempo skeleton
 (tempo-define-template
  "yx/tex-note-tmpl"
  `(,(yx/file-contents-str (expand-file-name "math-note.tmpl.tex" yx/templates-dir)))
@@ -278,6 +233,5 @@ Warning: new buffer is not prompted for save when killed, see `kill-buffer'."
   " ends here\n"
   )
 
-
-(provide 'init-helper)
-;;; init-helper.el ends here
+(provide 'init-utils)
+;;; init-utils.el ends here

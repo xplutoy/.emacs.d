@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:59
-;; Modified: <2024-01-08 05:47:12 yx>
+;; Modified: <2024-01-10 18:39:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -100,6 +100,10 @@ set to \\='(template title keywords subdirectory)."
   ((LaTeX-mode . turn-on-cdlatex)
    (org-mode   . turn-on-org-cdlatex))
   )
+
+(use-package transform
+  :ensure nil
+  :commands (transform-previous-char))
 
 ;; %% citar
 (use-package citar

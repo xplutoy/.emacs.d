@@ -7,12 +7,6 @@
 [submodule "site-lisp/emacs-eat"]
 	path = site-lisp/emacs-eat
 	url = https://codeberg.org/akib/emacs-eat.git
-[submodule "site-lisp/crux-yx"]
-	path = site-lisp/crux-yx
-	url = https://github.com/xplutoy/crux-yx.git
-[submodule "site-lisp/sr-speedbar-yx"]
-	path = site-lisp/sr-speedbar-yx
-	url = https://github.com/xplutoy/sr-speedbar-yx.git
 [submodule "site-lisp/define-repeat-map.el"]
 	path = site-lisp/define-repeat-map.el
 	url = https://tildegit.org/acdw/define-repeat-map.el.git

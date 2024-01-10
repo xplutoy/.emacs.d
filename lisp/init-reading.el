@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2024-01-09 02:19:24 yx>
+;; Modified: <2024-01-10 18:19:42 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -47,7 +47,7 @@
 (use-package elfeed
   :init
   (setq elfeed-search-print-entry-function
-        'crux-yx/elfeed-search-print-entry--better-default)
+        'yx/elfeed-search-print-entry--better-default)
   :custom
   (elfeed-feeds
    '(("https://www.inference.vc/rss" ai)
