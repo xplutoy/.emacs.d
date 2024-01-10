@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-01-10 07:21:03 yx>
+;; Modified: <2024-01-10 08:02:19 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -90,13 +90,12 @@
   :hook (after-init . ace-link-setup-default))
 
 (use-package helpful
-  :custom
-  (helpful-switch-buffer-function 'yx/helpful-reuse-window-function)
+  :bind
+  (:map helpful-mode-map
+        ("q" . delete-window)
+        ("b" . yx/helpful-next-buffer)
+        ("f" . yx/helpful-prev-buffer))
   :preface
-  (defun yx/helpful-reuse-window-function (buf)
-    (if-let ((window (display-buffer-reuse-mode-window buf '((mode . helpful-mode)))))
-        (select-window window)
-      (pop-to-buffer buf)))
   (defun yx/helpful-next-buffer ()
     (interactive)
     (cl-letf ((bufname (buffer-name))
@@ -113,12 +112,7 @@
       (unless (string= (buffer-name) bufname)
         (while (not (eq major-mode 'helpful-mode))
           (previous-buffer))))
-    )
-  :bind (:map helpful-mode-map
-              ("q" . delete-window)
-              ("b" . yx/helpful-next-buffer)
-              ("f" . yx/helpful-prev-buffer))
-  )
+    ))
 
 (use-package command-log-mode
   :custom

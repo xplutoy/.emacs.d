@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2024-01-09 22:33:21 yx>
+;; Modified: <2024-01-10 08:00:59 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -31,6 +31,11 @@
    ("^\\*[Ee]shell"
     (display-buffer-in-side-window)
     (window-height . 0.4))
+   ("^\\*[hH]elp.*"
+    (display-buffer-reuse-mode-window
+     display-buffer-in-side-window)
+    (window-height . 0.4)
+    (mode . (help-mode helpful-mode)))
    ("\\`\\*Async Shell Command\\*\\'"
     (display-buffer-no-window)
     (allow-no-window . t))
@@ -238,9 +243,7 @@
   :config
   (setq
    shackle-rules
-   '((("\\*Help\\*"
-       helpful-mode
-       "^\\*Occur\\*$"
+   '((("^\\*Occur\\*$"
        "^\\*Backtrace\\*$"
        "^\\*Dictionary\\*$"
        "^\\*Bookmark List\\*$"
