@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-01-10 10:53:36 yx>
+;; Modified: <2024-01-10 10:57:04 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -230,8 +230,7 @@
    sis-respect-minibuffer-triggers
    `(,(cons 'denote (lambda () 'other))
      ,(cons 'denote-template (lambda () 'other))
-     ,(cons 'denote-open-or-create (lambda () 'other)))
-   )
+     ,(cons 'denote-open-or-create (lambda () 'other))))
   :config
   (add-to-list 'sis-prefix-override-keys "M-s")
   (add-to-list 'sis-prefix-override-keys "M-g")
