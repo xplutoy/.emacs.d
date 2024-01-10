@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2024-01-08 20:51:00 yx>
+;; Modified: <2024-01-11 05:13:12 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,9 +11,22 @@
 ;;
 
 ;;; Code:
-(use-package ws-butler
-  :hook ((prog-mode conf-mode) . ws-butler-mode)
-  )
+(defun yx/prog-common-setup ()
+  (setq-local
+   whitespace-style
+   '(face trailing lines-char space-before-tab space-after-tab))
+  (whitespace-mode            1)
+  (hl-line-mode               1)
+  (hs-minor-mode              1)
+  (superword-mode             1)
+  (show-paren-mode            1)
+  (electric-pair-mode         1)
+  (display-line-numbers-mode  1)
+  (electric-indent-local-mode 1)
+  (keymap-local-set "RET" 'newline-and-indent)
+  (push 'cape-keyword completion-at-point-functions))
+
+(add-hook 'prog-mode-hook 'yx/prog-common-setup)
 
 ;; ediff
 (setq
@@ -46,6 +59,9 @@
   :init
   (apheleia-global-mode +1))
 
+(use-package ws-butler
+  :hook ((prog-mode conf-mode) . ws-butler-mode))
+
 ;; %% snippet
 (use-package tempel
   :defer 2
@@ -77,6 +93,12 @@
 (use-package yasnippet-snippets)
 
 ;; %% version control
+(use-package magit
+  :init
+  (setq
+   magit-diff-refine-hunk t
+   magit-show-long-lines-warning nil))
+
 (use-package diff-hl
   :hook
   (after-init . global-diff-hl-mode)
@@ -87,17 +109,9 @@
    diff-hl-disable-on-remote t
    diff-hl-show-staged-changes t)
   (diff-hl-flydiff-mode 1)
-  (global-diff-hl-show-hunk-mouse-mode 1)
-  )
+  (global-diff-hl-show-hunk-mouse-mode 1))
 
 (use-package git-modes)
-
-(use-package magit
-  :init
-  (setq
-   magit-diff-refine-hunk t
-   magit-show-long-lines-warning nil)
-  )
 
 ;; %% indent
 (use-package editorconfig
@@ -313,5 +327,5 @@
   (quickrun-focus-p nil)
   )
 
-(provide 'init-ide)
-;;; init-ide.el ends here
+(provide 'init-prog)
+;;; init-prog.el ends here
