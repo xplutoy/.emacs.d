@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-01-10 18:19:42 yx>
+;; Modified: <2024-01-10 19:46:26 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -218,7 +218,7 @@
   )
 
 (use-package sis
-  :disable
+  :disabled
   :defer 2
   :init
   (setq

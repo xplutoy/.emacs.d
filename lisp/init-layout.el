@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2024-01-10 17:39:08 yx>
+;; Modified: <2024-01-11 01:35:43 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -24,37 +24,65 @@
  fit-frame-to-buffer nil
  fit-window-to-buffer-horizontally nil)
 
+
 (setq
  display-buffer-alist
- '(("^\\*R"
-    nil (dedicated . t))
-   ("^\\*[Ee]shell"
-    (display-buffer-in-side-window)
-    (window-height . 0.4))
-   ("^\\*[hH]elp.*"
+ '(("\\`\\*[hH]elp"
     (display-buffer-reuse-mode-window
-     display-buffer-in-side-window)
+     display-buffer-in-direction)
+    (window . root)
     (window-height . 0.4)
+    (direction . bottom)
     (mode . (help-mode helpful-mode)))
    ("\\`\\*Async Shell Command\\*\\'"
     (display-buffer-no-window)
     (allow-no-window . t))
-   ("\\(\\*Capture\\*\\|CAPTURE-.*\\)"
+   ("\\`\\(\\*Capture\\|\\*CAPTURE\\)"
     (display-buffer-reuse-mode-window
      display-buffer-below-selected))
-   ("\\`\\*Embark.*\\*\\'"
+   ("\\`\\*Embark"
     (display-buffer-reuse-mode-window
      display-buffer-below-selected)
     (window-height . 0.4)
     (window-parameters . ((no-other-window . t)
                           (mode-line-format . none))))
-   ("\\*\\(Calendar\\|Bookmark Annotation\\|ert\\).*"
+   ("\\`\\(\\*Calendar\\|\\*Bookmark\\)"
     (display-buffer-reuse-mode-window
      display-buffer-below-selected)
     (dedicated . t)
     (window-height . fit-window-to-buffer))
-   )
- )
+   ("\\`\\*devdocs\\*\\'"
+    (display-buffer-reuse-mode-window
+     display-buffer-in-side-window)
+    (side . right)
+    (window-width . 0.4))
+   ("\\`\\(\\*Ibuffer\\|\\*Man\\|\\*WoMan\\|\\*info\\|magit\\)"
+    (display-buffer-full-frame))
+   ))
+
+(add-to-list
+ 'display-buffer-alist
+ `(,(yx/buffer-names-to-regex
+     '("\\*R"
+       "\\*julia"
+       "\\*[Ll]ua"
+       "\\*Python"
+       "\\*[Ee]shell"
+       "\\*term"
+       "\\*Occur"
+       "\\*Backtrac"
+       "\\*Flymake"
+       "\\*vc-git"
+       "\\*Warnings"
+       "\\*Messages"
+       "\\*quickrun"
+       "\\*Dictionary"
+       "\\*osx-dictionary"
+       "\\*color-rg"))
+   (display-buffer-reuse-mode-window
+    display-buffer-in-side-window)
+   (side . bottom)
+   (window-height . 0.4)))
 
 (defun yx/toggle-window-dedicated ()
   "Toggle whether the current active window is dedicated or not"
@@ -148,8 +176,7 @@
    aw-scope 'frame
    aw-background nil
    aw-dispatch-always t
-   aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-  )
+   aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
 ;; %% tabspaces
 (use-package tabspaces
@@ -166,29 +193,11 @@
   )
 
 ;; %% buffer manager
-(setq
- buffer-quit-function 'winner-undo)
+(setq buffer-quit-function 'winner-undo)
 
 (use-package zoom
   :custom
-  (zoom-size '(0.618 . 0.618))
-  )
-
-(use-package midnight
-  :ensure nil
-  :defer 5
-  :custom
-  (midnight-delay 10800)
-  (clean-buffer-list-kill-regexps '(".*"))
-  (clean-buffer-list-kill-never-regexps
-   '("^\\*scratch\\*$"
-     "^\\*Messages\\*$"
-     "^\\*Summary.*\\*$"
-     "^\\*Group\\*$"
-     "^\\*Org Agenda\\*$"
-     "^\\*elfeed-.*"))
-  :config
-  (midnight-mode t))
+  (zoom-size '(0.618 . 0.618)))
 
 (setq
  ibuffer-expert t
@@ -208,7 +217,7 @@
 
 (use-package popper
   :defer 2
-  :bind (("C-`" . popper-toggle-latest)
+  :bind (("C-`" . popper-toggle)
          ("M-`" . popper-cycle)
          ("C-M-`" . popper-toggle-type))
   :config
@@ -216,78 +225,18 @@
    popper-display-control 'user
    popper-group-function #'popper-group-by-directory)
   (setq popper-reference-buffers
-        '("\\*Bookmark List\\*"
-          "\\*shell.*\\*$" shell-mode
-          "\\*term.*\\*$" term-mode
-          "\\*julia\\*$"
+        '("\\*julia\\*$"
           "\\*color-rg\\*$"
           "\\*Python\\*$"
-          "\\*org-roam\\*$"
           (compilation-mode . hide)
           help-mode
           helpful-mode
           occur-mode
+          color-rg-mode
           ))
   (popper-mode 1)
   (popper-echo-mode 1)
   )
-
-(use-package shackle
-  :defer 2
-  :custom
-  (shackle-default-size 0.4)
-  (shackle-select-reused-windows t)
-  (shackle-default-alignment 'below)
-  (shackle-inhibit-window-quit-on-same-windows nil)
-  :config
-  (setq
-   shackle-rules
-   '((("^\\*Occur\\*$"
-       "^\\*Backtrace\\*$"
-       "^\\*Dictionary\\*$"
-       "^\\*Bookmark List\\*$"
-       "^\\*Flymake .*"
-       "^CAPTURE-"
-       "^\\*julia.*"
-       "^\\*[Ll]ua\\*$"
-       comint-mode
-       color-rg-mode)
-      :regexp t :select t :popup t :align t)
-     (("^\\*Warnings\\*"
-       "^\\*Messages\\*"
-       "^\\*evil-registers\\*"
-       "^\\*evil-owl\\*"
-       "^\\*Compile"
-       "^\\*vc-git"
-       "^\\*Agenda Commands\\*"
-       "^\\*Org Select\\*$"
-       "^\\*Org [^AS].*"
-       "^\\*Capture\\*"
-       "^\\*Python\\*"
-       "^\\*Multiple Choice Help\\*$"
-       "^\\*quickrun\\*$"
-       compilation-mode
-       osx-dictionary-mode
-       "\\*Shell Command Output\\*")
-      :regexp t :nonselect t :popup t :align t)
-     (("^magit" magit-mode
-       ibuffer-mode
-       Info-mode
-       "^\\*Man.*\\*$"
-       "^\\*WoMan.*\\*$"
-       Man-mode
-       woman-mode
-       dired-mode
-       vterm-mode)
-      :regexp t :select t :same t :inhibit-window-quit t)
-     (("^\\*org-roam\\*$"
-       "^\\*devdocs\\*$")
-      :regexp t :align right :size 0.40)
-     )
-   )
-  (shackle-mode 1)
-  )
-
 
 (provide 'init-layout)
 ;;; init-layout.el ends here

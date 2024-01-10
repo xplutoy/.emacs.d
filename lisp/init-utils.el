@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-28 17:41:00
-;; Modified: <2024-01-10 18:05:52 yx>
+;; Modified: <2024-01-11 01:38:35 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -53,6 +53,10 @@
          (equal home (substring pwd 0 home-len)))
         (concat "~" (substring pwd home-len))
       pwd)))
+
+(defun yx/buffer-names-to-regex (buffer-name-prefexs)
+  "Convert a list of buffer-name prefex to regex."
+  (concat "\\`\\(" (string-join buffer-name-prefexs "\\|") "\\)"))
 
 (defun yx/file-contents-str (file)
   "File contents to string."

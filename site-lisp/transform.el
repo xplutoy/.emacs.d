@@ -2,7 +2,7 @@
 
 ;; Author: Yuan Fu <casouri@gmail.com>
 ;; URL: https://github.com/casouri/lunarymacs/blob/master/site-lisp/transform.el
-;; Modified: <2024-01-10 18:36:52 yx>
+;; Modified: <2024-01-10 18:44:43 yx>
 
 ;;; This file is NOT part of GNU Emacs
 
@@ -175,6 +175,7 @@ apply transform ‘transform-supsub-previous-char’ instead."
             (delete-char -1)
             (insert new-char)))))))
 
+;;;###autoload
 (defun transform-greek-help ()
   "Show help for Latin–greek mapping."
   (interactive)

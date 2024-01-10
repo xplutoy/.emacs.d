@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2024-01-10 10:40:33 yx>
+;; Modified: <2024-01-10 18:51:45 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -17,13 +17,13 @@
   (setq-local
    whitespace-style
    '(face trailing lines-char space-before-tab space-after-tab))
-  (whitespace-mode 1)
-  (hl-line-mode 1)
-  (subword-mode -1)
-  (hs-minor-mode 1)
-  (show-paren-mode 1)
-  (electric-pair-mode 1)
-  (display-line-numbers-mode 1)
+  (whitespace-mode            1)
+  (hl-line-mode               1)
+  (hs-minor-mode              1)
+  (superword-mode             1)
+  (show-paren-mode            1)
+  (electric-pair-mode         1)
+  (display-line-numbers-mode  1)
   (electric-indent-local-mode 1)
   (keymap-local-set "RET" 'newline-and-indent)
   (push 'cape-keyword completion-at-point-functions))

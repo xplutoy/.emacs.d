@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2024-01-09 19:03:01 yx>
+;; Modified: <2024-01-10 18:55:34 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -498,18 +498,19 @@
   (setq-local
    word-wrap t
    word-wrap-by-category t)
-  (visual-line-mode 1)
-  (goto-address-mode 1)
-  (variable-pitch-mode 1)
-  (toggle-truncate-lines -1))
+  (superword-mode          1)
+  (visual-line-mode        1)
+  (goto-address-mode       1)
+  (variable-pitch-mode     1)
+  (toggle-truncate-lines  -1))
 
 (defun yx/global-mirror-mode-toggle ()
-  (repeat-mode 1)
-  (save-place-mode 1)
-  (desktop-save-mode -1)
-  (blink-cursor-mode -1)
-  (auto-compression-mode 1)
-  (delete-selection-mode 1)
+  (repeat-mode            1)
+  (save-place-mode        1)
+  (desktop-save-mode     -1)
+  (blink-cursor-mode     -1)
+  (auto-compression-mode  1)
+  (delete-selection-mode  1)
   (auto-save-visited-mode 1)
   (mouse-avoidance-mode 'jump)
   (unless (display-graphic-p)
