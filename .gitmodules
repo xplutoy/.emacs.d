@@ -19,3 +19,6 @@
 [submodule "site-lisp/define-repeat-map.el"]
 	path = site-lisp/define-repeat-map.el
 	url = https://tildegit.org/acdw/define-repeat-map.el.git
+[submodule "site-lisp/pyim-tsinghua-dict"]
+	path = site-lisp/pyim-tsinghua-dict
+	url = https://github.com/redguardtoo/pyim-tsinghua-dict.git

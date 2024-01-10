@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-01-10 08:02:19 yx>
+;; Modified: <2024-01-10 10:53:36 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -191,8 +191,35 @@
   )
 
 ;; %% chinese
+(use-package pyim
+  :init
+  (setq
+   default-input-method "pyim"
+   pyim-outcome-trigger  nil
+   pyim-enable-shortcode nil
+   pyim-page-tooltip 'posframe
+   pyim-dcache-backend 'pyim-dregcach
+   pyim-indicator-list '(pyim-indicator-with-modeline)
+   pyim-english-input-switch-functions
+   '(pyim-probe-auto-english
+     pyim-probe-program-mode
+     pyim-probe-isearch-mode
+     pyim-probe-org-latex-mode
+     pyim-probe-org-structure-template
+     ))
+  :config
+  (require 'pyim-dregcache)
+  (pyim-default-scheme 'xiaohe-shuangpin)
+  (use-package pyim-tsinghua-dict
+    :demand t
+    :load-path "site-lisp/pyim-tsinghua-dict")
+  (pyim-tsinghua-dict-enable)
+  :bind ("s-," . pyim-convert-string-at-point)
+  )
+
 (use-package sis
-  :demand t
+  :disable
+  :defer 2
   :init
   (setq
    sis-external-ism "im-select"
