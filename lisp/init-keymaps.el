@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2024-01-10 18:28:28 yx>
+;; Modified: <2024-01-12 18:37:04 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -197,6 +197,7 @@
     ("n" "new-empty-buffer" yx/new-empty-buffer)
     ("m" "major-mode-keybings" which-key-show-full-major-mode)
     ("v" "magit-file-dispatch" magit-file-dispatch)
+    ("w" "pyim-create-word-from-selection" pyim-create-word-from-selection)
     ("%" "query-replace-regexp" query-replace-regexp)
     ("!" "shell-command" shell-command)]
    ["]]A"

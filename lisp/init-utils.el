@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-28 17:41:00
-;; Modified: <2024-01-11 01:38:35 yx>
+;; Modified: <2024-01-12 00:19:33 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -54,9 +54,9 @@
         (concat "~" (substring pwd home-len))
       pwd)))
 
-(defun yx/buffer-names-to-regex (buffer-name-prefexs)
+(defmacro yx/prefixs-to-regex (&rest prefixs)
   "Convert a list of buffer-name prefex to regex."
-  (concat "\\`\\(" (string-join buffer-name-prefexs "\\|") "\\)"))
+  `(rx bos (or ,@prefixs)))
 
 (defun yx/file-contents-str (file)
   "File contents to string."

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2024-01-10 18:19:42 yx>
+;; Modified: <2024-01-12 18:04:39 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -116,7 +116,7 @@
   (org-highlight-latex-and-related '(latex))
   (org-preview-latex-default-process 'dvisvgm)
   (org-latex-preview-ltxpng-directory
-   (no-littering-expand-var-file-name "ltxinmg/"))
+   (no-littering-expand-var-file-name "ltximg/"))
 
   (org-footnote-auto-adjust nil)
 
@@ -250,6 +250,7 @@
   (org-export-with-toc t)
   (org-export-with-drawers nil)
   (oeg-export-with-footnotes t)
+  (org-export-with-broken-links t)
   (org-export-with-section-numbers nil)
   (org-export-with-sub-superscripts '{})
 

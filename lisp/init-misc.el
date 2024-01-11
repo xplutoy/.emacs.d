@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-01-10 19:46:26 yx>
+;; Modified: <2024-01-11 15:34:34 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -192,6 +192,11 @@
 
 ;; %% chinese
 (use-package pyim
+  :bind
+  (("s-," . pyim-convert-string-at-point)
+   :map pyim-mode-map
+   ("," . pyim-next-page)
+   ("." . pyim-previous-page))
   :init
   (setq
    default-input-method "pyim"
@@ -201,6 +206,7 @@
    pyim-page-tooltip 'posframe
    pyim-dcache-backend 'pyim-dregcach
    pyim-indicator-list '(pyim-indicator-with-modeline)
+   pyim-dicts '((:name "big-dict" :file "~/.emacs.d/.cache/pyim-bigdict.pyim"))
    pyim-english-input-switch-functions
    '(pyim-probe-auto-english
      pyim-probe-program-mode
@@ -214,7 +220,6 @@
     :demand t
     :load-path "site-lisp/pyim-tsinghua-dict")
   (pyim-tsinghua-dict-enable)
-  :bind ("s-," . pyim-convert-string-at-point)
   )
 
 (use-package sis

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2024-01-11 01:35:43 yx>
+;; Modified: <2024-01-12 13:31:46 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -62,23 +62,23 @@
 
 (add-to-list
  'display-buffer-alist
- `(,(yx/buffer-names-to-regex
-     '("\\*R"
-       "\\*julia"
-       "\\*[Ll]ua"
-       "\\*Python"
-       "\\*[Ee]shell"
-       "\\*term"
-       "\\*Occur"
-       "\\*Backtrac"
-       "\\*Flymake"
-       "\\*vc-git"
-       "\\*Warnings"
-       "\\*Messages"
-       "\\*quickrun"
-       "\\*Dictionary"
-       "\\*osx-dictionary"
-       "\\*color-rg"))
+ `(,(yx/prefixs-to-regex
+     "*R"
+     "*julia"
+     "*[Ll]ua"
+     "*Python"
+     "*[Ee]shell"
+     "*term"
+     "*Occur"
+     "*Backtrac"
+     "*Flymake"
+     "*vc-git"
+     "*Warnings"
+     "*Messages"
+     "*quickrun"
+     "*Dictionary"
+     "*osx-dictionary"
+     "*color-rg")
    (display-buffer-reuse-mode-window
     display-buffer-in-side-window)
    (side . bottom)
@@ -102,7 +102,7 @@
     ["Edit Bookmarks" list-bookmarks
      :help "Display a list of existing bookmarks."]
     ["--" nil]
-    ["Add Bookmark…" bookmark-set-no-overwrite
+    ["Add Bookmark…" bookmark-set
      :help "Set a bookmark named NAME at the current location."]
     ["---" nil]
     ["Jump to Bookmark…" bookmark-jump

@@ -1,8 +1,8 @@
 ;;; -*- lexical-binding: t; -*-
 
 ;; Author: Yuan Fu <casouri@gmail.com>
-;; URL: https://github.com/casouri/lunarymacs/blob/master/site-lisp/transform.el
-;; Modified: <2024-01-10 18:44:43 yx>
+;; Maintainer: yangxue <yangxue.cs@foxmail.com>
+;; Modified: <2024-01-12 12:12:38 yx>
 
 ;;; This file is NOT part of GNU Emacs
 
