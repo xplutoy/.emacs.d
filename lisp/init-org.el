@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2024-01-12 18:04:39 yx>
+;; Modified: <2024-01-13 03:32:16 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -23,8 +23,6 @@
         ("C-c t h" . org-toggle-heading)
         ("C-c t l" . org-toggle-link-display)
         ("C-c t v" . yx/org-display-subtree-inline-images)
-        ("C-c I"   . org-clock-in)
-        ("C-c O"   . org-clock-out)
         ("C-c L"   . org-web-tools-insert-link-for-url)
         ("C-x n h" . yx/org-show-current-heading-tidily))
   :autoload (org-calendar-holiday)
@@ -323,6 +321,7 @@
   (transient-define-prefix yx/transient-org ()
     "Org commands."
     [["Misc"
+      ("@" "org-cite-insert" org-cite-insert)
       ("a" "org-archive-subtree" org-archive-subtree)
       ("g" "org-goto" org-goto)
       ("i" "org-clock-in" org-clock-in)
@@ -332,12 +331,8 @@
       ("L" "org-toggle-link-display" org-toggle-link-display)
       ("I" "org-toggle-inline-images" org-toggle-inline-images)
       ("F" "org-preview-latex-fragment" org-preview-latex-fragment)]
-     ["Cite"
-      ("ci" "org-cite-insert" org-cite-insert)
-      ("co" "citar-open" citar-open)]
      ]
-    )
-  )
+    ))
 
 ;; %% org+
 (use-package org-ql
