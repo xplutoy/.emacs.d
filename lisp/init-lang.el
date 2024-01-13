@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2024-01-12 03:39:33 yx>
+;; Modified: <2024-01-13 16:39:39 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -150,8 +150,10 @@
   :init
   (setq lua-ts-indent-offset 2))
 
+(setq scheme-program-name "chez")
 (use-package geiser-chez
-  :mode ("\\.sc\\'" . scheme-mode))
+  :mode ("\\.sc\\'" . scheme-mode)
+  :custom (geiser-chez-binary "chez"))
 
 (use-package haskell-mode
   :hook (haskell-mode . yx/haskell-mode-setup)

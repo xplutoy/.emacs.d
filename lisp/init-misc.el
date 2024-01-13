@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-01-11 15:34:34 yx>
+;; Modified: <2024-01-13 03:37:25 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -197,6 +197,8 @@
    :map pyim-mode-map
    ("," . pyim-next-page)
    ("." . pyim-previous-page))
+  :commands
+  (pyim-create-word-from-selection)
   :init
   (setq
    default-input-method "pyim"

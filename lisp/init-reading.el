@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:05:22
-;; Modified: <2024-01-12 02:57:28 yx>
+;; Modified: <2024-01-14 02:49:47 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -56,14 +56,16 @@
      ("https://lilianweng.github.io/index.xml" ai wk)
      ("https://yihui.org/en/index.xml" R)
      ("https://www.juliabloggers.com/feed/" julia)
+     ("https://planet.lisp.org/rss20.xml" lisp)
      ("https://planet.scheme.org/atom.xml" scheme)
+     ("https://planet.haskell.org/rss20.xml" haskell)
+     ("https://planet.emacslife.com/atom.xml" emacs)
      ("http://lambda-the-ultimate.org/rss.xml" lang)
      ("http://www.ruanyifeng.com/blog/atom.xml" tech wk)
      ("https://vimtricks.com/feed/" vim)
      ("https://egh0bww1.com/rss.xml" emacs)
      ("https://karthinks.com/index.xml" emacs)
      ("https://manateelazycat.github.io/feed.xml" emacs)
-     ("https://planet.emacslife.com/atom.xml" emacs)
      ("https://matt.might.net/articles/feed.rss" emacs)
      ("https://andreyor.st/categories/emacs/feed.xml" emacs)
      ("https://sachachua.com/blog/category/emacs/feed/" emacs)))
