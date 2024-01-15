@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2024-01-12 13:31:46 yx>
+;; Modified: <2024-01-15 09:02:06 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -67,7 +67,8 @@
      "*julia"
      "*[Ll]ua"
      "*Python"
-     "*[Ee]shell"
+     "*eshell"
+     "*Eshell"
      "*term"
      "*Occur"
      "*Backtrac"
@@ -77,7 +78,7 @@
      "*Messages"
      "*quickrun"
      "*Dictionary"
-     "*osx-dictionary"
+     "*fanyi"
      "*color-rg")
    (display-buffer-reuse-mode-window
     display-buffer-in-side-window)

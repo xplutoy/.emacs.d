@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2024-01-11 05:13:12 yx>
+;; Modified: <2024-01-15 08:42:42 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -186,8 +186,7 @@
   )
 
 (use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode)
-  )
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package treesit
   :unless IS-WIN
@@ -232,6 +231,8 @@
   )
 
 ;; %% structured edit
+(use-package iedit)
+
 (use-package surround
   :defer 2
   :bind-keymap ("M-'" . surround-keymap))
