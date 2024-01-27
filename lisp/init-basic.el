@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2024-01-10 18:55:34 yx>
+;; Modified: <2024-01-30 03:02:00 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -208,8 +208,9 @@
 
 ;; %% completion minibuffer
 (setq
- resize-mini-windows 't
- max-mini-window-height 0.3)
+ resize-mini-windows t
+ max-mini-window-height 0.3
+ enable-recursive-minibuffers t)
 
 (setq
  completions-detailed t
@@ -268,7 +269,6 @@
  auth-source-debug t
  epa-pinentry-mode 'loopback
  epa-file-select-keys yx/gpg-encrypt-key)
-(auth-source-pass-enable)
 
 (setq
  password-cache t
@@ -516,13 +516,13 @@
   (unless (display-graphic-p)
     (xterm-mouse-mode 1))
   (pixel-scroll-precision-mode 1)
+  (auth-source-pass-enable)
   (windmove-default-keybindings 'control)
   )
 
 (add-hook 'text-mode 'yx/text-mode-setup)
 (add-hook 'after-init-hook 'yx/global-mirror-mode-toggle)
 
-;; never kill scratch
 (with-current-buffer "*scratch*"
   (emacs-lock-mode 'kill))
 

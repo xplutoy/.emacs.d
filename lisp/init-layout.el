@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2024-01-15 09:02:06 yx>
+;; Modified: <2024-01-28 07:06:14 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -37,7 +37,7 @@
    ("\\`\\*Async Shell Command\\*\\'"
     (display-buffer-no-window)
     (allow-no-window . t))
-   ("\\`\\(\\*Capture\\|\\*CAPTURE\\)"
+   ("\\`\\(\\*Org [^S]\\|CAPTURE\\)"
     (display-buffer-reuse-mode-window
      display-buffer-below-selected))
    ("\\`\\*Embark"
@@ -65,7 +65,8 @@
  `(,(yx/prefixs-to-regex
      "*R"
      "*julia"
-     "*[Ll]ua"
+     "*lua"
+     "*Lua"
      "*Python"
      "*eshell"
      "*Eshell"
@@ -74,6 +75,7 @@
      "*Backtrac"
      "*Flymake"
      "*vc-git"
+     "*Error"
      "*Warnings"
      "*Messages"
      "*quickrun"

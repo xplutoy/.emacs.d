@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-01-15 09:03:02 yx>
+;; Modified: <2024-01-15 09:51:45 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -250,13 +250,13 @@
   (add-hook 'org-capture-mode-hook 'sis-set-other))
 
 (use-package fanyi
-  :unless IS-MAC
   :bind (("M-s M-d" . fanyi-dwim)
          ("M-s d"   . fanyi-dwim2))
   :custom
-  (fanyi-providers '(fanyi-haici-provider)))
+  (fanyi-providers '(fanyi-haici-provider))
+  (fanyi-sound-player "mpv" ))
 
-;; %% tools
+;; %% Tools
 (use-package tldr)
 
 (use-package dwim-shell-command

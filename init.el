@@ -25,6 +25,7 @@
    ("nongnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")))
 (setq
  package-quickstart nil
+ use-package-verbose t
  use-package-always-defer t
  use-package-always-ensure t
  use-package-expand-minimally t

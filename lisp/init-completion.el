@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2024-01-03 05:51:08 yx>
+;; Modified: <2024-01-30 18:58:25 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -15,7 +15,8 @@
 ;; %%
 (use-package vertico
   :init
-  (setq vertico-resize nil)
+  (setq vertico-resize nil
+        vertico-preselect 'directory)
   (vertico-mode 1)
   (vertico-mouse-mode 1)
   (vertico-indexed-mode 1)
@@ -53,15 +54,19 @@
                        embark-highlight-indicator
                        embark-isearch-highlight-indicator))
   :bind
-  (:map
-   embark-general-map
-   (", b" . engine/search-bing)
-   (", z" . engine/search-zhihu)
-   :map embark-file-map
-   (", s" . crux-sudo-edit)
-   :map embark-identifier-map
-   (", h" . symbol-overlay-put)
-   ))
+  ( :map embark-general-map
+    (", b" . engine/search-bing)
+    (", z" . engine/search-zhihu)
+    :map
+    embark-file-map
+    (", s" . crux-sudo-edit)
+    :map
+    embark-identifier-map
+    (", h" . symbol-overlay-put)
+    :map
+    minibuffer-local-map
+    ("C-SPC" . (lambda () (interactive) (embark-select) (vertico-next)))
+    ))
 
 (use-package embark-consult
   :after embark
@@ -126,14 +131,6 @@
   :hook (after-init . marginalia-mode)
   :bind (:map minibuffer-local-map
               ("M-A" . marginalia-cycle))
-  :config
-  (defun marginalia-use-builtin ()
-    (interactive)
-    (mapc
-     (lambda (x)
-       (setcdr x (cons 'builtin (remq 'builtin (cdr x)))))
-     marginalia-annotator-registry))
-  (marginalia-use-builtin)
   )
 
 ;; %% end

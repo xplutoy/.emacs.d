@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:08:08
-;; Modified: <2024-01-09 23:53:24 yx>
+;; Modified: <2024-01-28 07:10:25 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -40,7 +40,7 @@
            return (set-fontset-font t 'symbol (font-spec :family font) nil 'prepend))
   (cl-loop for font in '("Noto Color Emoji" "Apple Color Emoji" "Segoe UI Emoji")
            when (member font (font-family-list))
-           return (set-fontset-font t 'emoji (font-spec :family font) nil 'prepend))
+           return (set-fontset-font t 'emoji  (font-spec :family font) nil 'prepend))
   )
 
 (add-hook 'window-setup-hook 'yx/setup-fonts)
@@ -67,26 +67,16 @@
 
 (use-package ef-themes
   :init
-  (setq
-   ef-themes-mixed-fonts t
-   ef-themes-variable-pitch-ui t))
+  (setq ef-themes-mixed-fonts t
+        ef-themes-variable-pitch-ui t))
+
+(load-theme 'modus-operandi t)
 
 (use-package lin
   :hook (after-init . lin-global-mode)
   :custom
   (lin-face 'lin-magenta))
 
-(use-package circadian
-  :after solar
-  :demand t
-  :config
-  (setq
-   circadian-themes
-   '((:sunset  . modus-vivendi)
-     (:sunrise . modus-operandi)))
-  (circadian-setup))
-
-;; %% modeline
 (use-package minions
   :demand t
   :hook (after-init . minions-mode))
