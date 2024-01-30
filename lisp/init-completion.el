@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:58:30
-;; Modified: <2024-01-30 18:58:25 yx>
+;; Modified: <2024-01-31 07:14:18 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -81,13 +81,8 @@
    xref-show-definitions-function #'consult-xref
    consult-ripgrep-args (concat consult-ripgrep-args " --hidden"))
   (consult-customize
-   consult-theme
-   :preview-key '(:debounce 0.2 any)
-   consult-ripgrep
-   consult-git-grep
-   consult-recent-file
-   consult-xref
-   :preview-key '(:debounce 0.4 any))
+   consult-theme :preview-key '(:debounce 0.2 any)
+   consult-bookmark consult-recent-file :preview-key "M-.")
   :bind (:map minibuffer-local-map
               ("M-s" . consult-history)
               ("M-r" . consult-history))

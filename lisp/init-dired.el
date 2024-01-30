@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:20:40
-;; Modified: <2024-01-06 03:32:13 yx>
+;; Modified: <2024-01-31 07:11:16 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -67,7 +67,7 @@
         '(file-time file-size collapse subtree-state vc-state))
   (setq dired-listing-switches
         "-l --almost-all --human-readable --group-directories-first --no-group")
-  (dirvish-peek-mode 1)
+  (dirvish-peek-mode -1)
   (dirvish-side-follow-mode 1)
   :bind
   (:map dirvish-mode-map
