@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2024-01-30 03:02:00 yx>
+;; Modified: <2024-01-30 19:54:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -328,7 +328,7 @@
  browse-url-secondary-browser-function 'browse-url-default-browser
  browse-url-generic-program yx/default-open-program
  eww-auto-rename-buffer 'title
- eww-search-prefix "https://cn.bing.com/search?q="
+ eww-search-prefix "http://www.google.com/search?q="
  eww-use-external-browser-for-content-type "\\`\\(video/\\|audio\\)"
  eww-browse-url-new-window-is-tab nil)
 

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-01-11 05:14:20 yx>
+;; Modified: <2024-01-30 19:55:52 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,6 +16,9 @@
 
 (defvar yx/etc-dir         "~/.emacs.d/etc/")
 (defvar yx/var-dir         "~/.emacs.d/.cache/")
+
+;; env
+(setenv "https_proxy" "http://127.0.0.1:7890")
 
 (require 'package)
 (setq
