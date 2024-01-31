@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-28 17:41:00
-;; Modified: <2024-01-12 00:19:33 yx>
+;; Modified: <2024-01-31 09:04:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -43,7 +43,7 @@
    "廿一" "廿二" "廿三" "廿四" "廿五" "廿六" "廿七" "廿八" "廿九" "三十"
    "卅一" "卅二" "卅三" "卅四" "卅五" "卅六" "卅七" "卅八" "卅九" "卅十"])
 
-;; %% help functions
+;; %% functions
 (defun yx/pwd-replace-home (pwd)
   "Replace home in PWD with tilde (~) character."
   (let* ((home (expand-file-name (getenv "HOME")))
@@ -144,6 +144,13 @@
                   :body appt-msg
                   :urgency 'critical)
   (appt-disp-window min-to-app new-time appt-msg))
+
+;; %% commands
+(defun yx/eww-open-link-with-external-browser ()
+  (interactive)
+  (when-let ((url (eww--url-at-point)))
+    (browse-url-generic  url))
+  )
 
 ;; %% tempo skeleton
 (tempo-define-template

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2024-01-15 08:43:24 yx>
+;; Modified: <2024-01-31 08:43:03 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -158,7 +158,6 @@
  ("C-c f"     . dirvish-fd)
  ("C-x a a"   . align)
  ("C-x a r"   . align-regexp)
- ("C-x / /"   . browse-url-generic)
  ("C-x / o"   . browse-url-at-point)
  ("C-x / a"   . ace-link-addr)
  ("C-x / l"   . ace-link)
