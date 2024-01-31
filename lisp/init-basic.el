@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2024-01-31 09:03:47 yx>
+;; Modified: <2024-01-31 09:41:52 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -333,8 +333,7 @@
  eww-browse-url-new-window-is-tab nil)
 
 (with-eval-after-load 'eww
-  (add-hook 'eww-after-render-hook 'eww-readable)
-  (keymap-set eww-mode-map "C-o" 'yx/eww-open-link-with-external-browser ))
+  (add-hook 'eww-after-render-hook 'eww-readable))
 
 (setq
  shr-use-fonts nil

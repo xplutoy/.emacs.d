@@ -92,13 +92,6 @@ Warning: new buffer is not prompted for save when killed, see `kill-buffer'."
   )
 
 ;;;###autoload
-(defun yx/eww-open-link-with-external-browser ()
-  (interactive)
-  (when-let ((url (eww--url-at-point)))
-    (browse-url-generic  url))
-  )
-
-;;;###autoload
 (defun crux-top-join-line ()
   "Join the current line with the line beneath it."
   (interactive)
