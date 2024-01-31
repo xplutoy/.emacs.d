@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-01-15 09:51:45 yx>
+;; Modified: <2024-01-31 09:14:23 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -223,31 +223,6 @@
     :load-path "site-lisp/pyim-tsinghua-dict")
   (pyim-tsinghua-dict-enable)
   )
-
-(use-package sis
-  :disabled
-  :defer 2
-  :init
-  (setq
-   sis-external-ism "im-select"
-   sis-respect-restore-triggers
-   '(isearch-exit isearch-abort)
-   sis-respect-go-english-triggers
-   '(iserach-forward isearch-backward)
-   sis-respect-minibuffer-triggers
-   `(,(cons 'denote (lambda () 'other))
-     ,(cons 'denote-template (lambda () 'other))
-     ,(cons 'denote-open-or-create (lambda () 'other))))
-  :config
-  (add-to-list 'sis-prefix-override-keys "M-s")
-  (add-to-list 'sis-prefix-override-keys "M-g")
-
-  (when IS-WIN
-    (sis-ism-lazyman-config "1033" "2052" 'im-select))
-
-  (sis-global-inline-mode 1)
-  (sis-global-respect-mode 1)
-  (add-hook 'org-capture-mode-hook 'sis-set-other))
 
 (use-package fanyi
   :bind (("M-s M-d" . fanyi-dwim)
