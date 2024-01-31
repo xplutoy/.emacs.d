@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-28 17:41:00
-;; Modified: <2024-01-31 09:04:37 yx>
+;; Modified: <2024-01-31 09:06:53 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -144,13 +144,6 @@
                   :body appt-msg
                   :urgency 'critical)
   (appt-disp-window min-to-app new-time appt-msg))
-
-;; %% commands
-(defun yx/eww-open-link-with-external-browser ()
-  (interactive)
-  (when-let ((url (eww--url-at-point)))
-    (browse-url-generic  url))
-  )
 
 ;; %% tempo skeleton
 (tempo-define-template
