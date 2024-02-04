@@ -3,10 +3,10 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-05 05:39:02 yx>
+;; Modified: <2024-02-05 07:20:55 yx>
 ;; Licence: GPLv3
 
-;;; Package
+;;; Init
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (add-to-list 'load-path "~/.emacs.d/site-lisp/")
 
@@ -283,7 +283,7 @@
   " ends here\n"
   )
 
-;;; Basic
+;;; Defaults
 (setq custom-file
       (expand-file-name "custom.el" yx/etc-dir))
 (load custom-file 'noerror)
@@ -1003,7 +1003,7 @@
    ]
   )
 
-;;; UI
+;;; Ui
 (setq
  x-stretch-cursor nil
  x-underline-at-descent-line t)
@@ -1677,8 +1677,9 @@
 
 (use-package outli
   :vc (:url "https://github.com/jdtsmith/outli" :rev :newest)
-  :hook ((emacs-lisp-mode text-mode) . outli-mode)
-  )
+  :hook ((prog-mode text-mode) . outli-mode)
+  :bind (:map outli-mode-map
+              ("C-c C-u" . (lambda () (interactive) (outline-back-to-heading)))))
 
 ;;; Dired
 (use-package dired
@@ -2669,12 +2670,13 @@ set to \\='(template title keywords subdirectory)."
   :no-require t
   :config (citar-embark-mode +1))
 
-;;; Prog
+;;; Programming
 (defun yx/prog-common-setup ()
   (setq-local
    whitespace-style
    '(face trailing lines-char space-before-tab space-after-tab))
   (whitespace-mode            1)
+  (reveal-mode                1)
   (hl-line-mode               1)
   (hs-minor-mode              1)
   (superword-mode             1)
@@ -2774,6 +2776,11 @@ set to \\='(template title keywords subdirectory)."
 (use-package git-modes)
 
 ;; %% indent
+(use-package indent-guide
+  :hook (prog-mode . indent-guide-mode)
+  :custom
+  (indent-guide-recursive nil))
+
 (use-package editorconfig
   :defer 2
   :custom
@@ -2785,12 +2792,6 @@ set to \\='(template title keywords subdirectory)."
   :hook (prog-mode . snap-indent-mode)
   :custom
   (snap-indent-format '(delete-trailing-whitespace)))
-
-(use-package indent-guide
-  :hook (prog-mode . indent-guide-mode)
-  :custom
-  (indent-guide-recursive nil)
-  )
 
 (use-package aggressive-indent
   :hook ((emacs-lisp-mode scheme-mode-hook) . aggressive-indent-mode))
@@ -2980,7 +2981,7 @@ set to \\='(template title keywords subdirectory)."
   (quickrun-focus-p nil)
   )
 
-;;; Lang
+;;; Langs
 (defvar yx/default-python-env "~/workspace/.venv/")
 
 ;; %% emacs-lisp
