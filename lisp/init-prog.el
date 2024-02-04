@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2024-01-15 08:42:42 yx>
+;; Modified: <2024-02-01 10:37:09 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -43,6 +43,7 @@
 
 ;; %% formatter & linter & profiler
 (setq
+ flymake-no-changes-timeout nil
  flymake-start-on-save-buffer t
  flymake-start-on-flymake-mode t
  flymake-fringe-indicator-position 'right-fringe)
@@ -289,7 +290,8 @@
    eglot-extend-to-xref t
    eglot-sync-connect nil
    eglot-report-progress nil
-   eglot-events-buffer-size 0)
+   eglot-events-buffer-size 0
+   eglot-send-changes-idle-time 0.3)
   :bind
   (:map
    eglot-mode-map

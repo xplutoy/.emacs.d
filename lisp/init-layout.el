@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:06:35
-;; Modified: <2024-01-28 07:06:14 yx>
+;; Modified: <2024-02-04 09:24:59 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -14,6 +14,7 @@
 (setq
  window-min-height 3
  window-min-width 30
+ ns-pop-up-frames nil
  window-sides-vertical nil
  split-height-threshold 80
  split-width-threshold 125
@@ -81,6 +82,7 @@
      "*quickrun"
      "*Dictionary"
      "*fanyi"
+     "*stardict*"
      "*color-rg")
    (display-buffer-reuse-mode-window
     display-buffer-in-side-window)

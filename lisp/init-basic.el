@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:02:02
-;; Modified: <2024-01-31 09:41:52 yx>
+;; Modified: <2024-02-03 23:43:30 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -404,7 +404,7 @@
 (setq
  tramp-verbose 1
  tramp-chunksize 2000
- tramp-default-method "scp"
+ tramp-default-method "ssh"
  remote-file-name-inhibit-locks t
  remote-file-name-inhibit-cache nil)
 
@@ -516,6 +516,7 @@
   (unless (display-graphic-p)
     (xterm-mouse-mode 1))
   (pixel-scroll-precision-mode 1)
+  (minibuffer-depth-indicate-mode 1)
   (auth-source-pass-enable)
   (windmove-default-keybindings 'control)
   )

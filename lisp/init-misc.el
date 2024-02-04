@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-01-31 09:14:23 yx>
+;; Modified: <2024-02-04 09:41:10 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -224,12 +224,14 @@
   (pyim-tsinghua-dict-enable)
   )
 
-(use-package fanyi
-  :bind (("M-s M-d" . fanyi-dwim)
-         ("M-s d"   . fanyi-dwim2))
-  :custom
-  (fanyi-providers '(fanyi-haici-provider))
-  (fanyi-sound-player "mpv" ))
+(use-package stardict
+  :ensure nil
+  :bind (("M-s d" . stardict-define-at-point)
+         ("M-s M-d" . stardict-define))
+  :init
+  (setq stardict-name "langdao-ec-gb"
+        stardict-dir "~/.config/stardict/dic/stardict-langdao-ec-gb-2.4.2")
+  )
 
 ;; %% Tools
 (use-package tldr)
