@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-02-05 04:46:29 yx>
+;; Modified: <2024-02-05 05:11:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -260,6 +260,11 @@
    ([remap dired-do-async-shell-command] . dwim-shell-command)
    ([remap dired-do-shell-command] . dwim-shell-command)
    ([remap dired-smart-shell-command] . dwim-shell-command)))
+
+(use-package outli
+  :vc (:url "https://github.com/jdtsmith/outli" :rev :newest)
+  :hook ((emacs-lisp-mode text-mode) . outli-mode)
+  )
 
 
 (provide 'init-misc)
