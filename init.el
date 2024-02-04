@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-05 07:20:55 yx>
+;; Modified: <2024-02-05 07:53:20 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -1428,9 +1428,11 @@
 
 ;;; Misc
 (use-package gcmh
-  :hook (after-init . gcmh-mode)
-  :custom
-  (gcmh-high-cons-threshold (* 32 1024 1024)))
+  :hook (emacs-startup . gcmh-mode)
+  :init
+  (setq gcmh-idle-delay 'auto
+        gcmh-auto-idle-delay-factor 10
+        gcmh-high-cons-threshold #x1000000)) ; 16MB
 
 (use-package server
   :defer 2
