@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:57:16
-;; Modified: <2024-01-13 16:39:39 yx>
+;; Modified: <2024-02-05 04:56:07 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -146,9 +146,9 @@
 
 ;; %% toy langs
 (use-package lua-ts-mode
+  :vc (:url "https://git.sr.ht/~johnmuhl/lua-ts-mode" :rev :newest)
   :mode ("\\.lua\\'" . lua-ts-mode)
-  :init
-  (setq lua-ts-indent-offset 2))
+  :init (setq lua-ts-indent-offset 2))
 
 (setq scheme-program-name "chez")
 (use-package geiser-chez

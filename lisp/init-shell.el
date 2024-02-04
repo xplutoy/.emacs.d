@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:10:40
-;; Modified: <2024-01-11 05:08:38 yx>
+;; Modified: <2024-02-05 04:52:34 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -118,13 +118,14 @@
 
 ;; %% eat
 (use-package eat
-  :load-path "site-lisp/emacs-eat"
-  :hook ((eshell-load . eat-eshell-mode)
-         (eshell-load . eat-eshell-visual-command-mode))
+  :vc (:url "https://codeberg.org/akib/emacs-eat" :rev :newest)
   :init
   (setq
    eat-kill-buffer-on-exit t
    eat-enable-yank-to-terminal t)
+  :hook
+  ((eshell-load . eat-eshell-mode)
+   (eshell-load . eat-eshell-visual-command-mode))
   )
 
 (use-package pcmpl-args

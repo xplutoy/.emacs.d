@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:00:08
-;; Modified: <2024-01-31 08:43:03 yx>
+;; Modified: <2024-02-05 04:39:29 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -21,7 +21,7 @@
 (keymap-global-unset "C-<wheel-down>")
 
 (use-package define-repeat-map
-  :load-path "site-lisp/define-repeat-map.el"
+  :vc (:url "https://tildegit.org/acdw/define-repeat-map.el" :rev :newest)
   :commands (define-repeat-map))
 
 (define-repeat-map puni-expand-region

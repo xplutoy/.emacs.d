@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2024-02-05 00:35:41 yx>
+;; Modified: <2024-02-05 04:40:58 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -191,39 +191,32 @@
 (use-package treesit
   :unless IS-WIN
   :ensure nil
-  :preface
-  (defun yx/setup-install-grammars ()
-    "Install Tree-sitter grammars if they are absent."
-    (interactive)
-    (dolist
-        (grammar
-         '((c      "https://github.com/tree-sitter/tree-sitter-c")
-           (cpp    "https://github.com/tree-sitter/tree-sitter-cpp")
-           (lua    "https://github.com/MunifTanjim/tree-sitter-lua")
-           (org    "https://github.com/milisims/tree-sitter-org")
-           (julia  "https://github.com/tree-sitter/tree-sitter-julia")
-           (python "https://github.com/tree-sitter/tree-sitter-python")))
-      (add-to-list 'treesit-language-source-alist grammar)
-      (unless (treesit-language-available-p (car grammar))
-        ;; (treesit-install-language-grammar (car grammar) (car treesit-extra-load-path))
-        (treesit-install-language-grammar (car grammar)))))
   :init
   (setq
-   treesit-extra-load-path (list (no-littering-expand-var-file-name "tree-sitter"))
-   treesit-load-name-override-list '((c++ "libtree-sitter-cpp")))
-  (dolist
-      (mapping
-       '((c-mode . c-ts-mode)
-         (c++-mode . c++-ts-mode)
-         (python-mode . python-ts-mode)))
-    (add-to-list 'major-mode-remap-alist mapping))
-  :config
-  (yx/setup-install-grammars)
-  )
+   major-mode-remap-alist
+   '((c-mode . c-ts-mode)
+     (c++-mode . c++-ts-mode)
+     (python-mode . python-ts-mode))
+   treesit-language-source-alist
+   '((c      "https://github.com/tree-sitter/tree-sitter-c")
+     (cpp    "https://github.com/tree-sitter/tree-sitter-cpp")
+     (lua    "https://github.com/MunifTanjim/tree-sitter-lua")
+     (org    "https://github.com/milisims/tree-sitter-org")
+     (bash "https://github.com/tree-sitter/tree-sitter-bash")
+     (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+     (julia  "https://github.com/tree-sitter/tree-sitter-julia")
+     (python "https://github.com/tree-sitter/tree-sitter-python"))
+   treesit-load-name-override-list '((c++ "libtree-sitter-cpp"))
+   treesit-extra-load-path (list (no-littering-expand-var-file-name "tree-sitter")))
+  (defun yx/treesit--install-language-grammar (lang-pair)
+    (let ((lang (car lang-pair)))
+      (unless (treesit-language-available-p lang)
+        (treesit-install-language-grammar lang (car treesit-extra-load-path)))))
+  (mapc 'yx/treesit--install-language-grammar treesit-language-source-alist))
 
 ;; %% refoctor
 (use-package color-rg
-  :load-path "site-lisp/color-rg"
+  :vc (:url https://github.com/manateelazycat/color-rg :rev :newest)
   :defer 2
   :custom
   (color-rg-search-no-ignore-file nil)
@@ -262,8 +255,7 @@
   )
 
 (use-package combobulate
-  :ensure nil
-  :load-path "site-lisp/combobulate"
+  :vc (:url "https://github.com/mickeynp/combobulate" :rev :newest)
   :custom
   (combobulate-key-prefix "M-l l")
   :hook ((python-ts-mode

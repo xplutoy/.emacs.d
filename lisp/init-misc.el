@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-02-04 23:58:47 yx>
+;; Modified: <2024-02-05 04:46:29 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -209,8 +209,8 @@
   (require 'pyim-dregcache)
   (pyim-default-scheme 'xiaohe-shuangpin)
   (use-package pyim-tsinghua-dict
-    :demand t
-    :load-path "site-lisp/pyim-tsinghua-dict")
+    :vc (:url "https://github.com/redguardtoo/pyim-tsinghua-dict" :rev :newest)
+    :demand t)
   (pyim-tsinghua-dict-enable)
   )
 
