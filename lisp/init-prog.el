@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:10:42
-;; Modified: <2024-02-01 10:37:09 yx>
+;; Modified: <2024-02-05 00:35:41 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -134,8 +134,7 @@
   )
 
 (use-package aggressive-indent
-  :hook (emacs-lisp-mode . aggressive-indent-mode)
-  )
+  :hook ((emacs-lisp-mode scheme-mode-hook) . aggressive-indent-mode))
 
 ;; %% doc
 (use-package devdocs

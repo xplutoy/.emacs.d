@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-02-04 09:52:23 yx>
+;; Modified: <2024-02-04 23:58:47 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -221,6 +221,33 @@
   :init
   (setq stardict-name "langdao-ec-gb"
         stardict-dir "~/.config/stardict/dic/stardict-langdao-ec-gb-2.4.2")
+  )
+
+(use-package bing-dict
+  :init
+  (setq bing-dict-add-to-kill-ring t
+        bing-dict-show-thesaurus 'antonym
+        bing-dict-cache-auto-save nil
+        bing-dict-vocabulary-save t
+        bing-dict-vocabulary-file (no-littering-expand-var-file-name "bing-dict-vocabulary.org"))
+  (add-hook 'eww-mode-hook 'bing-dict-eldoc-mode)
+  (add-hook 'Info-mode-hook 'bing-dict-eldoc-mode)
+  (add-hook 'elfeed-show-hook 'bing-dict-eldoc-mode)
+  :preface
+  (defun bing-dict-eldoc-documentation-function ()
+    (let ((word (word-at-point)))
+      (when (and word (> (length word) 5))
+        (bing-dict-brief word))
+      nil))
+  (define-minor-mode bing-dict-eldoc-mode
+    "Use bing-dict as backend of eldoc."
+    :lighter " Bing Dict"
+    (if bing-dict-eldoc-mode
+        (progn (setq-local eldoc-documentation-function
+                           #'bing-dict-eldoc-documentation-function)
+               (eldoc-mode +1))
+      (setq-local eldoc-documentation-function #'ignore)
+      (eldoc-mode -1)))
   )
 
 ;; %% Tools

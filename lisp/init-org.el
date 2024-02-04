@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 21:58:58
-;; Modified: <2024-01-13 03:32:16 yx>
+;; Modified: <2024-02-05 00:55:09 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -19,11 +19,11 @@
         ("M-<f10>" . yx/transient-org)
         ("RET"     . yx/org-return-dwim)
         ("M-g h"   . consult-org-heading)
-        ("C-c y"   . yx/org-link-fast-copy)
+        ("C-c M-y" . yx/org-link-copy)
+        ("C-c M-i" . org-web-tools-insert-link-for-url)
         ("C-c t h" . org-toggle-heading)
         ("C-c t l" . org-toggle-link-display)
         ("C-c t v" . yx/org-display-subtree-inline-images)
-        ("C-c L"   . org-web-tools-insert-link-for-url)
         ("C-x n h" . yx/org-show-current-heading-tidily))
   :autoload (org-calendar-holiday)
   :hook
@@ -402,9 +402,8 @@
    (expand-file-name (concat org-attach-directory "images/") yx/org-dir))
   :bind
   (:map org-mode-map
-        ("C-c C-y" . org-download-screenshot)
-        ("C-c M-y" . org-download-clipboard)
-        )
+        ("C-c y" . org-download-screenshot)
+        ("C-c C-y" . org-download-clipboard))
   )
 
 (use-package org-web-tools)

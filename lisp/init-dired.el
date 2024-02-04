@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-09-15 22:20:40
-;; Modified: <2024-01-31 07:11:16 yx>
+;; Modified: <2024-02-05 01:40:30 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -19,10 +19,13 @@
   (dired-recursive-copies 'always)
   (dired-recursive-deletes 'top)
   (dired-create-destination-dirs 'ask)
-  (dired-guess-shell-alist-user yx/default-open-program)
   (dired-auto-revert-buffer 'dired-buffer-stale-p)
   (dired-kill-when-opening-new-dired-buffer t)
   (dired-listing-switches "-alGgh")
+  (wdired-create-parent-directories t)
+  (wdired-allow-to-change-permissions t)
+  (dired-guess-shell-alist-user
+   `(("\\.\\(?:docx\\|pdf\\|djvu\\gif)\\'" ,yx/default-open-program)))
   :config
   (add-hook 'dired-mode-hook 'yx/dired-setup)
   (add-hook 'wdired-mode-hook 'highlight-changes-mode)

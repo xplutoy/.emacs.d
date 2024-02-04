@@ -465,18 +465,15 @@ otherwise call `org-self-insert-command'."
   )
 
 ;;;###autoload
-(defun yx/org-link-fast-copy ()
-  (interactive)
-  (let* ((context (org-element-context))
-         (beg (org-element-property :begin context))
-         (end (org-element-property :end context))
-         (type (org-element-type context))
-         (text (buffer-substring-no-properties beg end)))
-    (when (eq type 'link)
-      (string-match org-link-bracket-re text)
-      (let ((url (substring text (match-beginning 1) (match-end 1))))
-        (kill-new url)
-        (message (concat "Copied: " url))))))
+(defun yx/org-link-copy (&optional arg)
+  "Extract URL from org-mode link and add it to kill ring."
+  (interactive "P")
+  (let* ((link (org-element-lineage (org-element-context) '(link) t))
+	 (type (org-element-property :type link))
+	 (url (org-element-property :path link))
+	 (url (concat type ":" url)))
+    (kill-new url)
+    (message (concat "Copied URL: " url))))
 
 
 ;; https://emacs-china.org/t/org-link/13502
