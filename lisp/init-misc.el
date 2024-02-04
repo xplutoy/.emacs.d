@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 22:55:50
-;; Modified: <2024-02-04 09:41:10 yx>
+;; Modified: <2024-02-04 09:52:23 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -117,16 +117,6 @@
 (use-package command-log-mode
   :custom
   (command-log-mode-key-binding-open-log nil))
-
-;; %% pulse the target line of navigate
-(defun yx/pulse-line (&rest _)
-  "Pulse the current line."
-  (pulse-momentary-highlight-one-line (point)))
-
-(dolist (command '(scroll-up-command
-                   scroll-down-command
-                   recenter-top-bottom other-window))
-  (advice-add command :after #'yx/pulse-line))
 
 ;; %% edit enhencement
 (use-package vundo)
