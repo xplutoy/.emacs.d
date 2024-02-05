@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-05 07:53:20 yx>
+;; Modified: <2024-02-06 05:49:07 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -407,12 +407,17 @@
  eldoc-echo-area-use-multiline-p nil
  eldoc-echo-area-display-truncation-message nil)
 
+;; %% help
+(add-hook 'help-fns-describe-function-functions
+          'shortdoc-help-fns-examples-function)
+
 ;; %% uniquify
 (setq
  uniquify-strip-common-suffix t
  uniquify-after-kill-buffer-p t
  uniquify-ignore-buffers-re "^\\*"
- uniquify-buffer-name-style 'post-forward-angle-brackets)
+ uniquify-buffer-name-style 'post-forward-angle-brackets
+ uniquify-dirname-transform 'project-uniquify-dirname-transform)
 
 ;; %% line number
 (setq
@@ -462,16 +467,11 @@
 (setq prettify-symbols-unprettify-at-point 'right-edge)
 
 ;; %% xref
-(let ((executable (or (executable-find "rg") "grep"))
-      (rgp (string-match-p "rg" grep-program)))
-  (setq grep-program executable)
-  (setq grep-template
-        (if rgp
-            "rg -nH --null -e <R> <F>"
-          "grep <X> <C> -nH --null -e <R> <F>"))
-  (setq xref-search-program (if rgp 'ripgrep 'grep)))
+(when-let ((rg (executable-find "rg")))
+  (setq grep-program rg))
 
 (setq
+ xref-search-program 'ripgrep
  xref-file-name-display 'project-relative
  xref-history-storage 'xref-window-local-history
  xref-show-xrefs-function 'xref-show-definitions-buffer
@@ -493,7 +493,8 @@
  completion-cycle-threshold 3
  completion-show-help nil
  completion-show-inline-help nil
- completion-auto-select 'second-tab)
+ completion-auto-select 'second-tab
+ minibuffer-visible-completions t)
 
 (setq read-extended-command-predicate
       'command-completion-default-include-p)
@@ -634,7 +635,8 @@
  dictionary-server "dict.org"
  dictionary-default-popup-strategy "lev"
  dictionary-create-buttons nil
- dictionary-use-single-buffer t)
+ dictionary-display-definition-function
+ 'dictionary-display-definition-in-help-buffer)
 
 ;; %% savehist
 (setq
@@ -677,7 +679,9 @@
  tramp-chunksize 2000
  tramp-default-method "ssh"
  remote-file-name-inhibit-locks t
- remote-file-name-inhibit-cache nil)
+ remote-file-name-inhibit-cache nil
+ remote-file-name-access-timeout 2
+ remote-file-name-inhibit-auto-save t)
 
 (setq
  vc-handled-backends '(Git)
@@ -754,8 +758,7 @@
    mac-command-modifier 'super
    ns-function-modifier 'hyper
    ns-use-thin-smoothing t
-   ns-use-native-fullscreen nil
-   insert-directory-program "gls"))
+   ns-use-native-fullscreen nil))
  (IS-WIN
   (setq
    w32-apps-modifier 'hyper
@@ -897,7 +900,7 @@
  ("C-#"       . consult-register-load)
  ("M-#"       . consult-register-store)
  ("C-c #"     . consult-register)
- ("M-o"       . duplicate-line)
+ ("M-o"       . duplicate-dwim)
  ("M-z"       . yx/quick-zap-up-to-char)
  ("M-0"       . delete-window)
  ;; M-' surround-keymap
@@ -998,7 +1001,6 @@
     ("K" "crux-kill-other-buffers" crux-kill-other-buffers)
     ("E" "crux-sudo-edit" crux-sudo-edit)]
    ["]]T"
-    ("t d" "toggle-window-dedicated" yx/toggle-window-dedicated)
     ("t l" "command-log" clm/toggle-command-log-buffer)]
    ]
   )
@@ -1008,10 +1010,14 @@
  x-stretch-cursor nil
  x-underline-at-descent-line t)
 
+(when IS-MAC (menu-bar-mode 1))
+
+(setq project-mode-line t)
 (custom-set-faces
  '(mode-line ((t :box (:style released-button)))))
 
-(when IS-MAC (menu-bar-mode 1))
+(setq which-func-display 'header)
+(add-hook 'emacs-startup-hook 'which-function-mode)
 
 ;; %% font
 (defvar yx/font-height 160)
@@ -1119,11 +1125,6 @@
      display-buffer-below-selected)
     (dedicated . t)
     (window-height . fit-window-to-buffer))
-   ("\\`\\*devdocs\\*\\'"
-    (display-buffer-reuse-mode-window
-     display-buffer-in-side-window)
-    (side . right)
-    (window-width . 0.4))
    ("\\`\\(\\*Ibuffer\\|\\*Man\\|\\*WoMan\\|\\*info\\|magit\\)"
     (display-buffer-full-frame))
    ))
@@ -1139,33 +1140,32 @@
      "*eshell"
      "*Eshell"
      "*term"
+     "*grep*"
      "*Occur"
      "*Backtrac"
      "*Flymake"
-     "*vc-git"
      "*Error"
-     "*Warnings"
+     "*devdocs"
      "*Messages"
-     "*quickrun"
-     "*Dictionary"
-     "*fanyi"
-     "*stardict*"
      "*color-rg")
    (display-buffer-reuse-mode-window
     display-buffer-in-side-window)
    (side . bottom)
    (window-height . 0.4)))
 
-(defun yx/toggle-window-dedicated ()
-  "Toggle whether the current active window is dedicated or not"
-  (interactive)
-  (message
-   (if (let (window (get-buffer-window (current-buffer)))
-         (set-window-dedicated-p window (not (window-dedicated-p window))))
-       "Window '%s' is dedicated"
-     "Window '%s' is normal")
-   (current-buffer))
-  (force-window-update))
+(add-to-list
+ 'display-buffer-alist
+ `(,(yx/prefixs-to-regex
+     "*vc-git"
+     "*Warnings"
+     "*quickrun"
+     "*Dictionary"
+     "*stardict*")
+   (display-buffer-reuse-mode-window
+    display-buffer-in-side-window)
+   (side . bottom)
+   (window-height . 0.4)
+   (post-command-select-window . nil)))
 
 ;; %% @see http://yummymelon.com/devnull/using-bookmarks-in-emacs-like-you-do-in-web-browsers.html
 (easy-menu-define yx/bookmarks-menu nil
@@ -1689,6 +1689,7 @@
   :custom
   (dired-dwim-target t)
   (dired-mouse-drag-files t)
+  (dired-movement-style 'cycle)
   (dired-recursive-copies 'always)
   (dired-recursive-deletes 'top)
   (dired-create-destination-dirs 'ask)
@@ -1955,6 +1956,7 @@
   :init
   (setq
    eshell-kill-on-exit t
+   eshell-history-append t
    eshell-save-history-on-exit t
    eshell-kill-processes-on-exit 'ask
    eshell-destroy-buffer-when-process-dies nil
@@ -2691,6 +2693,10 @@ set to \\='(template title keywords subdirectory)."
 
 (add-hook 'prog-mode-hook 'yx/prog-common-setup)
 
+;; project
+(setq
+ project-file-history-behavior 'relativize)
+
 ;; ediff
 (setq
  diff-default-read-only t
@@ -2699,25 +2705,34 @@ set to \\='(template title keywords subdirectory)."
 (setq
  ediff-keep-variants nil
  ediff-show-clashes-only t
+ ediff-floating-control-frame t
  ediff-window-setup-function 'ediff-setup-windows-plain
  ediff-split-window-function 'split-window-horizontally)
 
 (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
+
+;; gud
+(setq gud-highlight-current-line t)
 
 ;; %% formatter & linter & profiler
 (setq
  flymake-no-changes-timeout nil
  flymake-start-on-save-buffer t
  flymake-start-on-flymake-mode t
+ flymake-show-diagnostics-at-end-of-line t
  flymake-fringe-indicator-position 'right-fringe)
 (with-eval-after-load 'flymake
-  (bind-keys :map flymake-mode-map
-             ("s-; s"   . flymake-start)
-             ("s-; d"   . flymake-show-buffer-diagnostics)
-             ("s-; M-d" . flymake-show-project-diagnostics)
-             ("s-; M-n" . flymake-goto-next-error)
-             ("s-; M-p" . flymake-goto-prev-error))
-  )
+  (bind-keys
+   :map flymake-mode-map
+   ("s-; s"   . flymake-start)
+   ("M-g d"   . flymake-show-buffer-diagnostics)
+   ("M-g M-d" . flymake-show-project-diagnostics)
+   ("M-g M-n" . flymake-goto-next-error)
+   ("M-g M-p" . flymake-goto-prev-error)
+   :repeat-map flymake-repeatmap
+   ("p" . flymake-goto-prev-error)
+   ("n" . flymake-goto-next-error)
+   ))
 
 (use-package apheleia
   :init
@@ -2898,30 +2913,24 @@ set to \\='(template title keywords subdirectory)."
           sgml-mode
           nxml-mode) . puni-mode)
   :bind
-  (:map puni-mode-map
-        ("DEL"     . nil)
-        ("C-d"     . nil)
-        ("C-w"     . nil)
-        ("s-' r"   . puni-raise)
-        ("s-' u"   . puni-splice)
-        ("s-' M-s" . puni-squeeze)
-        ("s-' l"   . puni-slurp-forward)
-        ("s-' h"   . puni-slurp-backward)
-        ("s-' M-l" . puni-barf-forward)
-        ("s-' M-h" . puni-barf-backward)
-        ("s-' m"   . puni-mark-sexp-at-point)
-        ("s-' M-m" . puni-mark-sexp-around-point)
-        ("s-' ="   . puni-expand-region)
-        ("s-' -"   . puni-contract-region)
-        )
-  )
-
-(use-package combobulate
-  :vc (:url "https://github.com/mickeynp/combobulate" :rev :newest)
-  :custom
-  (combobulate-key-prefix "M-l l")
-  :hook ((python-ts-mode
-          ) . combobulate-mode)
+  (
+   :map puni-mode-map
+   ("DEL"     . nil)
+   ("C-d"     . nil)
+   ("C-w"     . nil)
+   ("C-k"     . puni-kill-line)
+   ("C-)"     . puni-slurp-forward)
+   ("C-("     . puni-slurp-backward)
+   ("C-}"     . puni-barf-forward)
+   ("C-{"     . puni-barf-backward)
+   ("C-M-f"   . puni-forward-sexp-or-up-list)
+   ("C-M-b"   . puni-backward-sexp-or-up-list)
+   ("C-M-r"   . puni-raise)
+   ("C-M-z"   . puni-squeeze)
+   ("C-M-t"   . puni-transpose)
+   ("C-M-?"   . puni-convolute)
+   ("C-M-="   . puni-expand-region)
+   ("C-M--"   . puni-contract-region))
   )
 
 ;; %% lsp
@@ -3040,6 +3049,7 @@ set to \\='(template title keywords subdirectory)."
 (setq
  python-shell-dedicated t
  python-skeleton-autoinsert t
+ python-indent-block-paren-deeper t
  python-indent-guess-indent-offset t
  python-indent-guess-indent-offset-verbose nil
  python-shell-virtualenv-root yx/default-python-env
@@ -3116,12 +3126,6 @@ set to \\='(template title keywords subdirectory)."
 
 (define-auto-insert "\\.R$" 'yx/auto-insert-common-header)
 (define-auto-insert "\\.jl$" 'yx/auto-insert-common-header)
-
-;; %% toy langs
-(use-package lua-ts-mode
-  :vc (:url "https://git.sr.ht/~johnmuhl/lua-ts-mode" :rev :newest)
-  :mode ("\\.lua\\'" . lua-ts-mode)
-  :init (setq lua-ts-indent-offset 2))
 
 (setq scheme-program-name "chez")
 (use-package geiser-chez
