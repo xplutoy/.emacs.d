@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-06 05:49:07 yx>
+;; Modified: <2024-02-06 12:39:23 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -34,12 +34,11 @@
  package-user-dir (expand-file-name "elpa" yx/var-dir)
  package-gnupghome-dir (expand-file-name "gnupg" package-user-dir))
 
-(when (daemonp) (setq use-package-always-demand t))
+(when (daemonp)
+  (setq use-package-always-demand t))
 
 (unless (bound-and-true-p package--initialized)
   (package-initialize))
-
-(require 'use-package)
 
 ;; %% benchmark
 (use-package benchmark-init)
@@ -940,7 +939,7 @@
  ("C-c c"     . org-capture)
  ("C-c l"     . org-store-link)
  ("C-c b"     . tabspaces-switch-to-buffer)
- ("C-c d"     . devdocs-lookup)
+ ("C-c d"     . bing-dict-brief)
  ("C-c e"     . embark-export)
  ("C-c r"     . query-replace-regexp)
  ("C-c z"     . hs-toggle-hiding)
@@ -1012,12 +1011,9 @@
 
 (when IS-MAC (menu-bar-mode 1))
 
-(setq project-mode-line t)
-(custom-set-faces
- '(mode-line ((t :box (:style released-button)))))
-
-(setq which-func-display 'header)
-(add-hook 'emacs-startup-hook 'which-function-mode)
+(setq project-mode-line t
+      which-func-display 'header)
+;; (add-hook 'emacs-startup-hook 'which-function-mode)
 
 ;; %% font
 (defvar yx/font-height 160)
@@ -2309,8 +2305,7 @@
 
   :config
   (plist-put org-format-latex-options :scale 1.8)
-  ;; (plist-put org-latex-preview-options :zoom 1.15)
-  ;; (plist-put org-latex-preview-options :scale 2.20)
+  (plist-put org-format-latex-options :background "Transparent")
   (with-eval-after-load 'ox-latex
     (setq org-latex-logfiles-extensions
           (append org-latex-logfiles-extensions '("toc" "dvi" "tex" "bbl"))))
@@ -2510,6 +2505,7 @@
      ("https://planet.scheme.org/atom.xml" scheme)
      ("https://planet.haskell.org/rss20.xml" haskell)
      ("https://planet.emacslife.com/atom.xml" emacs)
+     ("http://wingolog.org/feed/atom" lang)
      ("http://lambda-the-ultimate.org/rss.xml" lang)
      ("https://matt.might.net/articles/feed.rss" lang)
      ("http://www.ruanyifeng.com/blog/atom.xml" tech webkit)
@@ -2815,12 +2811,13 @@ set to \\='(template title keywords subdirectory)."
 
 ;; %% doc
 (use-package devdocs
-  :init
-  (add-hook 'julia-ts-mode-hook
-            (lambda () (setq-local devdocs-current-docs '("julia~1.9"))))
-  (add-hook 'python-base-mode-hook
-            (lambda () (setq-local devdocs-current-docs '("python~3.12" "pytorch" "numpy~1.23"))))
+  :bind (:map prog-mode-map
+              ("s-; d" . devdocs-lookup))
   )
+(add-hook 'julia-ts-mode-hook
+          (lambda () (setq-local devdocs-current-docs '("julia~1.9"))))
+(add-hook 'python-base-mode-hook
+          (lambda () (setq-local devdocs-current-docs '("python~3.12" "pytorch" "numpy~1.23"))))
 
 ;; %% symbol highlight
 (use-package rainbow-mode
@@ -2968,16 +2965,6 @@ set to \\='(template title keywords subdirectory)."
 (use-package consult-eglot
   :after consult
   )
-
-(use-package sideline
-  :hook
-  (flymake-mode . yx/sideline-flymake-mode-setup)
-  :preface
-  (defun yx/sideline-flymake-mode-setup ()
-    (setq-local
-     sideline-backends-right '(sideline-flymake))
-    (sideline-mode 1)))
-(use-package sideline-flymake)
 
 (use-package dape
   :init
