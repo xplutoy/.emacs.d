@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-06 12:39:23 yx>
+;; Modified: <2024-02-07 16:54:40 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -18,21 +18,19 @@
 (setenv "https_proxy" "http://127.0.0.1:7890")
 
 (require 'package)
-(setq
- package-archives
- '(("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
-   ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-   ("nongnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")))
-(setq
- package-quickstart nil
- use-package-verbose t
- use-package-always-defer t
- use-package-always-ensure t
- use-package-expand-minimally t
- use-package-enable-imenu-support t
- package-install-upgrade-built-in nil
- package-user-dir (expand-file-name "elpa" yx/var-dir)
- package-gnupghome-dir (expand-file-name "gnupg" package-user-dir))
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/") t)
+
+
+(setq package-quickstart nil
+      use-package-verbose t
+      use-package-always-defer t
+      use-package-always-ensure t
+      use-package-expand-minimally t
+      use-package-enable-imenu-support t
+      package-install-upgrade-built-in nil
+      package-user-dir (expand-file-name "elpa" yx/var-dir)
+      package-gnupghome-dir (expand-file-name "gnupg" package-user-dir))
 
 (when (daemonp)
   (setq use-package-always-demand t))
@@ -63,9 +61,10 @@
 (defvar yx/gpg-sign-key    "67B86CB8A5630C51!")
 (defvar yx/gpg-encrypt-key "8B1F9B207AF00BCF!")
 
-(defconst IS-MAC   (eq system-type 'darwin))
-(defconst IS-WIN   (eq system-type 'windows-nt))
-(defconst IS-LINUX (eq system-type 'gnu/linux))
+(defconst IS-MAC     (eq system-type 'darwin))
+(defconst IS-WIN     (eq system-type 'windows-nt))
+(defconst IS-LINUX   (eq system-type 'gnu/linux))
+(defconst IS-ANDROID (eq system-type 'android))
 
 (defvar yx/default-open-program
   (cond (IS-WIN   "start")
@@ -103,7 +102,7 @@
   "Convert a list of buffer-name prefex to regex."
   `(rx bos (or ,@prefixs)))
 
-(defun yx/file-contents-str (file)
+(defun yx/file-contents-2-str (file)
   "File contents to string."
   (with-temp-buffer
     (insert-file-contents file)
@@ -131,19 +130,6 @@
     (format "%04d-%02d-%02d 周%-8s 农历%s%s" year month
             day dayname cn-month-string cn-day-string)))
 
-(defun yx/is-it-dark-p ()
-  "Return t if it's dark outside, otherwise nil."
-  (let* ((solar (solar-sunrise-sunset (calendar-current-date)))
-         (sunrise (car (nth 0 solar)))
-         (sunset (car (nth 1 solar)))
-         (time (decode-time (current-time)))
-         (hour (nth 2 time))
-         (minute (nth 1 time))
-         (minute-frac (/ minute 60.0))
-         (time-decimal (+ hour minute-frac)))
-    (or (> time-decimal sunset) (< time-decimal sunrise)))
-  )
-
 (defun yx/diary-sunrise-sunset-split ()
   "Split `solar-sunrise-sunset-string' into sunrise, sunset, and daylight hours."
   (let* ((string (solar-sunrise-sunset-string (calendar-current-date)))
@@ -152,8 +138,7 @@
                      (group "sunset " (1+ (or digit ":")) (or "am" "pm")) " "
                      (group "(" (1+ alpha) ")")
                      (1+ anything)
-                     "(" (group (1+ (or digit ":")))
-                     ))
+                     "(" (group (1+ (or digit ":")))))
          (sunrise (progn
                     (string-match regexp string)
                     (match-string 1 string)) )
@@ -168,32 +153,10 @@
 (defun yx/diary-sunset ()
   (elt (yx/diary-sunrise-sunset-split) 1))
 
-(cond
- (IS-MAC
-  (defun yx/notify-send (&rest params)
-    "Send notifications via `terminal-notifier'."
-    (let ((title (plist-get params :title))
-          (body (plist-get params :body)))
-      (start-process "terminal-notifier"
-                     nil
-                     "terminal-notifier"
-                     "-group" "Emacs"
-                     "-title" title
-                     "-message" body
-                     "-activte" "org.gnu.Emacs"))))
- (t
-  (defalias 'yx/notify-send 'notifications-notify)))
-
-(defun yx/appt-display-with-notification (min-to-app new-time appt-msg)
-  (yx/notify-send :title (format "Appointment in %s minutes" min-to-app)
-                  :body appt-msg
-                  :urgency 'critical)
-  (appt-disp-window min-to-app new-time appt-msg))
-
 ;; %% tempo skeleton
 (tempo-define-template
  "yx/tex-note-tmpl"
- `(,(yx/file-contents-str (expand-file-name "math-note.tmpl.tex" yx/templates-dir)))
+ `(,(yx/file-contents-2-str (expand-file-name "math-note.tmpl.tex" yx/templates-dir)))
  )
 
 (define-skeleton yx/latex-graphics-skl
@@ -728,11 +691,10 @@
  appt-audible t
  appt-display-interval 10
  appt-display-duration 5
- appt-message-warning-time 20
  appt-display-format 'window
- appt-disp-window-function 'yx/appt-display-with-notification)
+ appt-message-warning-time 20)
 
-(add-hook 'after-init-hook 'appt-activate)
+(add-hook 'emacs-startup-hook 'appt-activate)
 
 (setq
  calendar-latitude +30.67
@@ -1107,7 +1069,7 @@
    ("\\`\\*Async Shell Command\\*\\'"
     (display-buffer-no-window)
     (allow-no-window . t))
-   ("\\`\\(\\*Org [^S]\\|CAPTURE\\)"
+   ("\\`\\(\\*Org Select\\|CAPTURE\\)"
     (display-buffer-reuse-mode-window
      display-buffer-below-selected))
    ("\\`\\*Embark"
@@ -1121,7 +1083,7 @@
      display-buffer-below-selected)
     (dedicated . t)
     (window-height . fit-window-to-buffer))
-   ("\\`\\(\\*Ibuffer\\|\\*Man\\|\\*WoMan\\|\\*info\\|magit\\)"
+   ("\\`\\(\\*Ibuffer\\|\\*Man\\|\\*WoMan\\|\\*info\\|magit\\|\\*Org Agenda\\)"
     (display-buffer-full-frame))
    ))
 
@@ -2293,6 +2255,7 @@
 
   (org-attach-id-dir
    (expand-file-name "data/" yx/org-dir))
+  (org-attach-dir-relative t)
   (org-attach-store-link-p 'attach)
   (org-attach-sync-delete-empty-dir t)
 
@@ -2313,6 +2276,7 @@
    'org-babel-load-languages
    '((emacs-lisp . t)
      (python . t)
+     (C . t)
      (R . t)
      (julia . t)
      (org . t)
@@ -2343,30 +2307,25 @@
     (yas-minor-mode -1) ; confict with C-c &
     (push 'cape-tex completion-at-point-functions)
     (modify-syntax-entry ?< "." org-mode-syntax-table)
-    (modify-syntax-entry ?> "." org-mode-syntax-table)
-    )
+    (modify-syntax-entry ?> "." org-mode-syntax-table))
 
   (defun yx/check-latex-fragment ()
     (let ((datum (org-element-context)))
       (when (memq (org-element-type datum) '(latex-environment latex-fragment))
         (org-latex-preview)
-        t))
-    )
+        t)))
 
   (defun yx/org-agenda-finalize-setup ()
     (setq appt-time-msg-list nil)
-    (org-agenda-to-appt)
-    )
+    (org-agenda-to-appt))
 
   (defun yx/org-babel-display-image ()
     (when org-inline-image-overlays
-      (org-redisplay-inline-images))
-    )
+      (org-redisplay-inline-images)))
 
   (defun yx/org-clock-in ()
     (interactive)
-    (org-clock-in '(4))
-    )
+    (org-clock-in '(4)))
 
   (transient-define-prefix yx/transient-org ()
     "Org commands."
@@ -2386,8 +2345,7 @@
 
 ;; %% org+
 (use-package org-ql
-  :after org
-  )
+  :after org)
 
 (use-package org-super-agenda
   :init
