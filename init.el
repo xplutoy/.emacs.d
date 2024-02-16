@@ -3,15 +3,15 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-07 16:54:40 yx>
+;; Modified: <2024-02-16 20:19:22 yx>
 ;; Licence: GPLv3
 
 ;;; Init
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (add-to-list 'load-path "~/.emacs.d/site-lisp/")
 
-(defvar yx/etc-dir         "~/.emacs.d/etc/")
-(defvar yx/var-dir         "~/.emacs.d/.cache/")
+(defvar yx/etc-dir "~/.emacs.d/etc/")
+(defvar yx/var-dir "~/.emacs.d/.cache/")
 
 ;; env
 (setenv "http_proxy"  "http://127.0.0.1:7890")
@@ -20,7 +20,6 @@
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
-
 
 (setq package-quickstart nil
       use-package-verbose t
@@ -286,15 +285,12 @@
  visible-bell nil
  use-dialog-box nil
  use-file-dialog nil
- use-system-tooltips nil
  use-short-answers t
  y-or-n-p-use-read-key t)
 
-;; %% quiet
 (setq
  hl-line-sticky-flag nil
  global-hl-line-sticky-flag nil
- initial-scratch-message ""
  confirm-kill-processes nil
  disabled-command-function nil
  confirm-nonexistent-file-or-buffer nil)
@@ -309,9 +305,7 @@
 ;; %% electric
 (setq
  electric-pair-preserve-balance t
- electric-pair-inhibit-predicate
- 'electric-pair-conservative-inhibit
- )
+ electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
 
 ;; %% font-lock
 (setq
@@ -466,7 +460,7 @@
 (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
 (setq
- ;; abbrev-suggest t
+ abbrev-suggest t
  save-abbrevs 'silently
  abbrev-suggest-hint-threshold 2)
 
@@ -747,7 +741,7 @@
   (auto-compression-mode  1)
   (delete-selection-mode  1)
   (auto-save-visited-mode 1)
-  (mouse-avoidance-mode 'jump)
+  (mouse-avoidance-mode 'cat-and-mouse)
   (unless (display-graphic-p)
     (xterm-mouse-mode 1))
   (pixel-scroll-precision-mode 1)
@@ -861,6 +855,8 @@
  ("C-#"       . consult-register-load)
  ("M-#"       . consult-register-store)
  ("C-c #"     . consult-register)
+ ("M-["       . bs-cycle-previous)
+ ("M-]"       . bs-cycle-next)
  ("M-o"       . duplicate-dwim)
  ("M-z"       . yx/quick-zap-up-to-char)
  ("M-0"       . delete-window)
@@ -1014,8 +1010,6 @@
  modus-themes-italic-constructs t
  modus-themes-common-palette-overrides
  '((fringe unspecifield)
-   (bg-heading-1 bg-dim)
-   (fg-heading-1 fg-main)
    (fg-line-number-active fg-main)
    (bg-line-number-active unspecifield)
    (fg-line-number-inactive "gray50")
@@ -1118,7 +1112,8 @@
      "*Warnings"
      "*quickrun"
      "*Dictionary"
-     "*stardict*")
+     "*stardict*"
+     "*Compile-Log*")
    (display-buffer-reuse-mode-window
     display-buffer-in-side-window)
    (side . bottom)
@@ -2558,7 +2553,7 @@ set to \\='(template title keywords subdirectory)."
 ;; %% latex
 (use-package tex
   :ensure auctex
-  :mode (("\\.tex\\'" . LaTeX-mode))
+  :mode ("\\.tex\\'" . latex-mode)
   :config
   (setq-default
    Tex-master nil
@@ -2825,17 +2820,13 @@ set to \\='(template title keywords subdirectory)."
   :ensure nil
   :init
   (setq
-   major-mode-remap-alist
-   '((c-mode . c-ts-mode)
-     (c++-mode . c++-ts-mode)
-     (python-mode . python-ts-mode))
    treesit-language-source-alist
    '((c      "https://github.com/tree-sitter/tree-sitter-c")
      (cpp    "https://github.com/tree-sitter/tree-sitter-cpp")
      (lua    "https://github.com/MunifTanjim/tree-sitter-lua")
      (org    "https://github.com/milisims/tree-sitter-org")
-     (bash "https://github.com/tree-sitter/tree-sitter-bash")
-     (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+     (bash   "https://github.com/tree-sitter/tree-sitter-bash")
+     (elisp  "https://github.com/Wilfred/tree-sitter-elisp")
      (julia  "https://github.com/tree-sitter/tree-sitter-julia")
      (python "https://github.com/tree-sitter/tree-sitter-python"))
    treesit-load-name-override-list '((c++ "libtree-sitter-cpp"))
@@ -2844,7 +2835,10 @@ set to \\='(template title keywords subdirectory)."
     (let ((lang (car lang-pair)))
       (unless (treesit-language-available-p lang)
         (treesit-install-language-grammar lang (car treesit-extra-load-path)))))
-  (mapc 'yx/treesit--install-language-grammar treesit-language-source-alist))
+  (mapc 'yx/treesit--install-language-grammar treesit-language-source-alist)
+  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode)))
 
 ;; %% refoctor
 (use-package color-rg
