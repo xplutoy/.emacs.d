@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-16 20:19:22 yx>
+;; Modified: <2024-02-17 11:24:19 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -1063,7 +1063,7 @@
    ("\\`\\*Async Shell Command\\*\\'"
     (display-buffer-no-window)
     (allow-no-window . t))
-   ("\\`\\(\\*Org Select\\|CAPTURE\\)"
+   ("\\`\\(\\*Org [SL]\\|CAPTURE\\)"
     (display-buffer-reuse-mode-window
      display-buffer-below-selected))
    ("\\`\\*Embark"
@@ -2816,10 +2816,10 @@ set to \\='(template title keywords subdirectory)."
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package treesit
-  :unless IS-WIN
   :ensure nil
   :init
   (setq
+   treesit-font-lock-level 4
    treesit-language-source-alist
    '((c      "https://github.com/tree-sitter/tree-sitter-c")
      (cpp    "https://github.com/tree-sitter/tree-sitter-cpp")
