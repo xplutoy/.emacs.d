@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-17 11:24:19 yx>
+;; Modified: <2024-02-17 18:16:23 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -827,6 +827,9 @@
  ([remap save-buffers-kill-emacs]       . delete-frame) ; s-q
  ([remap open-line]                     . crux-smart-open-line) ; C-o
  ([remap fill-paragraph]                . yx/fill-unfill) ; M-q
+ ([remap upcase-word]                   . upcase-dwim) ; M-u
+ ([remap downcase-word]                 . downcase-dwim) ; M-l
+ ([remap capitalize-word]               . capitalize-dwim) ; M-c
  )
 
 (bind-keys
@@ -1443,10 +1446,11 @@
 
 (use-package which-key
   :hook (after-init . which-key-mode)
-  :custom
-  (which-key-idle-delay 1.2)
   :config
-  (which-key-setup-minibuffer)
+  (setq which-key-show-early-on-C-h t
+        which-key-idle-delay most-positive-fixnum
+        which-key-idle-secondary-delay 1e-100)
+  (which-key-setup-side-window-bottom)
   )
 
 (use-package goggles
@@ -2417,30 +2421,21 @@
  doc-view-resolution 300)
 
 (use-package pdf-tools
-  :if (display-graphic-p)
-  :hook
-  (pdf-tools-enabled . pdf-isearch-minor-mode)
+  :hook (pdf-tools-enabled . pdf-isearch-minor-mode)
   :init
-  (setq
-   pdf-view-use-scaling t
-   pdf-view-use-imagemagick nil)
+  (setq pdf-view-use-scaling t
+        pdf-view-use-imagemagick nil)
   (setq-default pdf-view-display-size 'fit-width)
-  (pdf-loader-install)
-  )
+  (pdf-loader-install))
 
 ;; %% olivetti
 (use-package olivetti
-  :hook ((org-mode
-          org-agenda-mode
-          ) . olivetti-mode)
+  :hook ((org-mode org-agenda-mode) . olivetti-mode)
   :init
-  (setq
-   olivetti-style nil
-   olivetti-mode-map nil
-   olivetti-body-width 0.66
-   olivetti-minimum-body-width (+ fill-column 2)
-   )
-  )
+  (setq olivetti-style nil
+        olivetti-mode-map nil
+        olivetti-body-width 0.66
+        olivetti-minimum-body-width (+ fill-column 2)))
 
 ;; %% elfeed
 (use-package elfeed
@@ -2711,7 +2706,6 @@ set to \\='(template title keywords subdirectory)."
   )
 
 (use-package yasnippet
-  :ensure t
   :hook ((text-mode
           prog-mode
           conf-mode

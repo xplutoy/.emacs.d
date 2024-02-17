@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2024-02-05 07:46:55 yx>
+;; Modified: <2024-02-17 16:51:19 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -44,10 +44,9 @@
 (let ((old-file-name-handler-alist file-name-handler-alist))
   (setq-default file-name-handler-alist nil)
   (defun yx/restore-file-name-handler-alist ()
-    (setq
-     file-name-handler-alist
-     (delete-dups (append file-name-handler-alist old-file-name-handler-alist))
-     inhibit-trace nil))
+    (setq file-name-handler-alist
+          (delete-dups (append file-name-handler-alist old-file-name-handler-alist))
+          inhibit-trace nil))
   (add-hook #'emacs-startup-hook #'yx/restore-file-name-handler-alist))
 
 ;; %% 设置eln缓存目录
