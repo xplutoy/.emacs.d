@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-18 20:50:54 yx>
+;; Modified: <2024-02-19 00:22:56 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -1010,12 +1010,12 @@
  modus-themes-mixed-fonts t
  modus-themes-variable-pitch-ui t
  modus-themes-italic-constructs t
- modus-themes-common-palette-overrides
- '((fringe unspecifield)
-   (fg-line-number-active fg-main)
-   (bg-line-number-active unspecifield)
-   (fg-line-number-inactive "gray50")
-   (bg-line-number-inactive unspecifield))
+ ;; modus-themes-common-palette-overrides
+ ;; '((fringe unspecifield)
+ ;;   (fg-line-number-active fg-main)
+ ;;   (bg-line-number-active unspecifield)
+ ;;   (fg-line-number-inactive "gray50")
+ ;;   (bg-line-number-inactive unspecifield))
  )
 
 (use-package ef-themes
@@ -1183,9 +1183,7 @@
   (tab-bar-history-mode 1)
   (let ((map tab-bar-map))
     (keymap-unset map "<wheel-up>")
-    (keymap-unset map "<wheel-down>")
-    (keymap-unset map "<wheel-left>")
-    (keymap-unset map "<wheel-right>")))
+    (keymap-unset map "<wheel-down>")))
 (add-hook 'after-init-hook #'yx/tab-bar-setup)
 
 (use-package sr-speedbar
@@ -1331,13 +1329,16 @@
 (use-package consult
   :config
   (setq
-   consult-narrow-key "?"
+   consult-narrow-key "<"
    xref-show-xrefs-function #'consult-xref
    xref-show-definitions-function #'consult-xref
    consult-ripgrep-args (concat consult-ripgrep-args " --hidden"))
   (consult-customize
    consult-theme :preview-key '(:debounce 0.2 any)
-   consult-bookmark consult-recent-file :preview-key "M-.")
+   consult-bookmark
+   consult-recent-file
+   consult--source-buffer
+   consult--source-recent-file :preview-key "M-.")
   :bind (:map minibuffer-local-map
               ("M-s" . consult-history)
               ("M-r" . consult-history))
@@ -1356,19 +1357,13 @@
   :custom
   (corfu-auto t)
   (corfu-cycle t)
-  (corfu-preselect 'prompt)
-  (corfu-quit-no-match t)
   (corfu-echo-documentation nil)
   :config
   (corfu-echo-mode 1)
   (corfu-history-mode 1)
   (corfu-indexed-mode 1)
   (corfu-popupinfo-mode 1)
-  :bind
-  (:map corfu-map
-        ("M-q"     . corfu-quick-insert)
-        ("M-SPC"   . corfu-insert-separator))
-  )
+  :bind (:map corfu-map ("M-q" . corfu-quick-insert)))
 
 (use-package cape
   :init
@@ -1392,9 +1387,10 @@
         gcmh-high-cons-threshold #x1000000)) ; 16MB
 
 (use-package server
-  :defer 2
+  :defer 1
   :ensure nil
   :commands (server-running-p)
+  :custom (server-client-instructions nil)
   :config (or (server-running-p) (server-mode)))
 
 (when (featurep 'xwidget-internal)
@@ -1975,15 +1971,13 @@
   (defun yx/eshell-here ()
     (interactive)
     (let* ((project (project-current))
-           (name (if project (project-name project) "#"))
+           (name (if project (project-name project) ""))
+           (eshell-buffer-name (concat "*eshell-" name "*"))
            (dir (if (buffer-file-name)
                     (file-name-directory (buffer-file-name))
                   default-directory))
-           (old-name eshell-buffer-name)
            (height (/ (frame-height) 3)))
-      (setq eshell-buffer-name (concat "*Eshell-" name "*"))
       (eshell)
-      (setq eshell-buffer-name old-name)
       (eshell/clear)
       (eshell/cd dir)))
 
@@ -2710,16 +2704,24 @@ set to \\='(template title keywords subdirectory)."
           prog-mode
           conf-mode
           snippet-mode) . yas-minor-mode-on)
-  )
-
+  :custom
+  (yas-snippet-dirs `(,(no-littering-expand-etc-file-name "snippets"))))
 (use-package yasnippet-snippets)
 
 ;; %% version control
 (use-package magit
-  :init
-  (setq
-   magit-diff-refine-hunk t
-   magit-show-long-lines-warning nil))
+  :custom
+  (magit-diff-refine-hunk 'all)
+  (magit-show-long-lines-warning nil)
+  :bind (:map magit-status-mode-map
+              ("q" . #'yx/magit-kill-buffers))
+  :preface
+  (defun yx/magit-kill-buffers ()
+    "Restore window configuration and kill all Magit buffers."
+    (interactive)
+    (magit-restore-window-configuration)
+    (mapc #'kill-buffer (magit-mode-get-buffers)))
+  )
 
 (use-package diff-hl
   :hook
