@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-17 18:16:23 yx>
+;; Modified: <2024-02-18 20:50:54 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -901,7 +901,6 @@
  ("C-c l"     . org-store-link)
  ("C-c b"     . tabspaces-switch-to-buffer)
  ("C-c d"     . bing-dict-brief)
- ("C-c e"     . embark-export)
  ("C-c r"     . query-replace-regexp)
  ("C-c z"     . hs-toggle-hiding)
  ("C-c Z"     . hs-show-all)
@@ -1308,19 +1307,21 @@
                        embark-highlight-indicator
                        embark-isearch-highlight-indicator))
   :bind
-  ( :map embark-general-map
-    (", b" . engine/search-bing)
-    (", z" . engine/search-zhihu)
-    :map
-    embark-file-map
-    (", s" . crux-sudo-edit)
-    :map
-    embark-identifier-map
-    (", h" . symbol-overlay-put)
-    :map
-    minibuffer-local-map
-    ("C-SPC" . (lambda () (interactive) (embark-select) (vertico-next)))
-    ))
+  (("C-." . embark-act)
+   :map embark-general-map
+   (", b" . engine/search-bing)
+   (", z" . engine/search-zhihu)
+   :map
+   embark-file-map
+   (", s" . crux-sudo-edit)
+   :map
+   embark-identifier-map
+   (", h" . symbol-overlay-put)
+   :map
+   minibuffer-local-map
+   ("C-c C-e" . embark-export)
+   ("C-c C-c" . embark-collect)
+   ("C-SPC" . (lambda () (interactive) (embark-select) (vertico-next)))))
 
 (use-package embark-consult
   :after embark
@@ -1598,10 +1599,9 @@
 
 (use-package bing-dict
   :init
-  (setq bing-dict-add-to-kill-ring t
-        bing-dict-show-thesaurus 'antonym
+  (setq bing-dict-vocabulary-save t
         bing-dict-cache-auto-save nil
-        bing-dict-vocabulary-save t
+        bing-dict-show-thesaurus 'synonym
         bing-dict-vocabulary-file (no-littering-expand-var-file-name "bing-dict-vocabulary.org"))
   (add-hook 'eww-mode-hook 'bing-dict-eldoc-mode)
   (add-hook 'Info-mode-hook 'bing-dict-eldoc-mode)
