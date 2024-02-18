@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-19 00:22:56 yx>
+;; Modified: <2024-02-19 00:58:08 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -2698,15 +2698,6 @@ set to \\='(template title keywords subdirectory)."
                 (cons 'tempel-expand
                       completion-at-point-functions)))
   )
-
-(use-package yasnippet
-  :hook ((text-mode
-          prog-mode
-          conf-mode
-          snippet-mode) . yas-minor-mode-on)
-  :custom
-  (yas-snippet-dirs `(,(no-littering-expand-etc-file-name "snippets"))))
-(use-package yasnippet-snippets)
 
 ;; %% version control
 (use-package magit
