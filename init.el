@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-19 11:55:52 yx>
+;; Modified: <2024-02-19 18:41:00 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -492,8 +492,7 @@
 ;; %% epa
 (setq
  auth-sources
- (list
-  (expand-file-name "etc/authinfo.gpg" user-emacs-directory))
+ `(,(no-littering-expand-etc-file-name "authinfo.gpg"))
  auth-source-debug t
  epa-pinentry-mode 'loopback
  epa-file-select-keys yx/gpg-encrypt-key)
@@ -572,8 +571,10 @@
 
 (setq
  webjump-sites
- '(("Wikipedia" .
-    [simple-query "wikipedia.org" "wikipedia.org/wiki/" ""]))
+ '(("OrgDoc"     . "https://orgmode.org/org.html")
+   ("Wikipedia"  . [simple-query "wikipedia.org" "wikipedia.org/wiki/" ""])
+   ("DuckDuckGo" . [simple-query "duckduckgo.com" "duckduckgo.com/?q=" ""])
+   ("Google"     . [simple-query "www.google.com" "www.google.com/search?q=" ""]))
  webjump-use-internal-browser t)
 
 ;; %% flyspell
@@ -1535,6 +1536,26 @@
               ("M-L" . drag-stuff-right))
   )
 
+;; %% erc
+(use-package erc
+  :ensure nil
+  :custom
+  (erc-nick "xplutoyz")
+  (erc-join-buffer 'bury)
+  (erc-interpret-mirc-color t)
+  (erc-kill-queries-on-quit t)
+  (erc-kill-server-buffer-on-quit t)
+  (erc-fill-function 'erc-fill-static)
+  (erc-fill-static-center 15)
+  (erc-prompt-for-password nil)
+  (erc-prompt-for-nickserv-password nil)
+  (erc-use-auth-source-for-nickserv-password t)
+  (erc-hide-list '("JOIN" "NICK" "PART" "QUIT"))
+  :config
+  (add-to-list 'erc-modules 'services)
+  (erc-update-modules)
+  (erc-services-mode 1))
+
 ;; %% spell
 (use-package jinx
   :bind (("M-$" . jinx-correct)
@@ -2297,7 +2318,6 @@
   (defun yx/org-mode-setup ()
     (auto-fill-mode -1)
     (variable-pitch-mode 1)
-    (yas-minor-mode -1) ; confict with C-c &
     (push 'cape-tex completion-at-point-functions)
     (modify-syntax-entry ?< "." org-mode-syntax-table)
     (modify-syntax-entry ?> "." org-mode-syntax-table))
