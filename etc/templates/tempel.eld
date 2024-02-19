@@ -9,10 +9,9 @@ fundamental-mode
 ;;;
 prog-mode
 
-(fixme (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "FIXME ")
-(todo (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "TODO ")
-(bug (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "BUG ")
-(hack (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "HACK ")
+(todo (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "TODO: ")
+(fail (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "FAIL: ")
+(fixme (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "FIXME: ")
 
 ;;;
 python-base-mode
@@ -105,4 +104,15 @@ org-mode
 
 ($  "\\(" p "\\)")
 ($$ "\\[" n> r> n "\\]")
-(sdot "#+begin_src dot :file " p " :cmdline -Kdot -Tpng" n> "digraph " p " {" n> r> n "}" n "#+end_src")
+(caption "#+caption: ")
+(begin "#+begin_" (s name) n> r> n "#+end_" name)
+(src "#+begin_src " q n r n "#+end_src")
+(quote "#+begin_quote" n> r> n "#+end_quote")
+(example "#+begin_example" n> r> n "#+end_example")
+(center "#+begin_center" n> r> n "#+end_center")
+(comment "#+begin_comment" n> r> n "#+end_comment")
+(verse "#+begin_verse" n> r> n "#+end_verse")
+(dot "#+begin_src dot :file " p " :cmdline -Kdot -Tpng" n> "digraph " p " {" n> r> n "}" n "#+end_src")
+(gnuplot "#+begin_src gnuplot :var data=" (p "table") " :file " (p "plot.png") n r n "#+end_src" :post (org-edit-src-code))
+(elisp "#+begin_src elisp" n r n "#+end_src" :post (org-edit-src-code))
+(inlsrc "src_" p "{" q "}")

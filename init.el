@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-19 00:58:08 yx>
+;; Modified: <2024-02-19 11:55:52 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -2682,22 +2682,20 @@ set to \\='(template title keywords subdirectory)."
 ;; %% snippet
 (use-package tempel
   :defer 2
-  :bind
-  (("M-+" . tempel-insert)
-   ("M-=" . tempel-complete)
-   :map tempel-map
-   ([tab] . tempel-next)
-   ([backtab] . tempel-previous))
-  :hook
-  ((prog-mode text-mode) . tempel-setup-capf)
-  :init
-  (setq tempel-path
-        (expand-file-name "templates/tempel.eld" no-littering-etc-directory))
-  (defun tempel-setup-capf ()
+  :hook ((prog-mode text-mode) . yx/tempel-setup-capf)
+  :custom
+  (tempel-trigger-prefix "<")
+  (tempel-path (no-littering-expand-etc-file-name "templates/tempel.eld"))
+  :bind (("M-+" . tempel-insert)
+         ("M-=" . tempel-complete)
+         :map tempel-map
+         ([tab] . tempel-next)
+         ([backtab] . tempel-previous))
+  :preface
+  (defun yx/tempel-setup-capf ()
     (setq-local completion-at-point-functions
                 (cons 'tempel-expand
-                      completion-at-point-functions)))
-  )
+                      completion-at-point-functions))))
 
 ;; %% version control
 (use-package magit
@@ -2771,13 +2769,11 @@ set to \\='(template title keywords subdirectory)."
   (setq hl-todo-keyword-faces
         '(("TODO"  . "#cc9393")
           ("NEXT"  . "#dca3a3")
-          ("OKAY"  . "#7cb8bb")
           ("DONT"  . "#5f7f5f")
           ("FAIL"  . "#8c5353")
           ("HACK"  . "#d0bf8f")
           ("FIXME" . "#cc9393")
-          ("ISSUE" . "#e45649")
-          ("TRICK" . "#d0bf8f")))
+          ("ISSUE" . "#e45649")))
   (setq hl-todo-require-punctuation t
         hl-todo-highlight-punctuation ":")
 
