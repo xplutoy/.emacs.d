@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-19 18:41:00 yx>
+;; Modified: <2024-02-19 23:07:49 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -571,7 +571,7 @@
 
 (setq
  webjump-sites
- '(("OrgDoc"     . "https://orgmode.org/org.html")
+ '(("OrgSite"    . "https://orgmode.org")
    ("Wikipedia"  . [simple-query "wikipedia.org" "wikipedia.org/wiki/" ""])
    ("DuckDuckGo" . [simple-query "duckduckgo.com" "duckduckgo.com/?q=" ""])
    ("Google"     . [simple-query "www.google.com" "www.google.com/search?q=" ""]))
@@ -585,8 +585,7 @@
 (with-eval-after-load 'flyspell
   (keymap-unset flyspell-mode-map "C-,")
   (keymap-unset flyspell-mode-map "C-.")
-  (keymap-unset flyspell-mode-map "C-;")
-  )
+  (keymap-unset flyspell-mode-map "C-;"))
 
 (setq
  dictionary-server "dict.org"
@@ -831,6 +830,7 @@
  ([remap upcase-word]                   . upcase-dwim) ; M-u
  ([remap downcase-word]                 . downcase-dwim) ; M-l
  ([remap capitalize-word]               . capitalize-dwim) ; M-c
+ ([remap goto-char]                     . avy-goto-char-timer) ; M-g c
  )
 
 (bind-keys
@@ -862,7 +862,8 @@
  ("M-["       . bs-cycle-previous)
  ("M-]"       . bs-cycle-next)
  ("M-o"       . duplicate-dwim)
- ("M-z"       . yx/quick-zap-up-to-char)
+ ("M-z"       . avy-zap-to-char-dwim)
+ ("M-Z"       . avy-zap-up-to-char-dwim)
  ("M-0"       . delete-window)
  ;; M-' surround-keymap
  ("M-g ;"     . goto-last-change)
@@ -876,6 +877,8 @@
  ("M-g k"     . consult-kmacro)
  ("M-g m"     . consult-mark)
  ("M-g M-m"   . consult-global-mark)
+ ("M-g l"     . avy-goto-line)
+ ("M-g w"     . avy-goto-word-0)
  ("M-s t"     . yx/hl-todo-rg-project)
  ("M-s M-t"   . hl-todo-occur)
  ("M-s f"     . consult-fd)
@@ -893,7 +896,6 @@
  ("M-s M-p"   . color-rg-search-symbol-in-project)
  ("C-c ;"     . flyspell-correct-next)
  ("C-c k"     . kill-buffer-and-window)
- ("C-c K"     . crux-kill-other-buffers)
  ("C-c v"     . magit-file-dispatch)
  ("C-c C-v"   . magit-dispatch)
  ("C-c C-d"   . helpful-at-point)
@@ -908,6 +910,7 @@
  ("C-c f"     . dirvish-fd)
  ("C-x a a"   . align)
  ("C-x a r"   . align-regexp)
+ ("C-x / /"   . webjump)
  ("C-x / o"   . browse-url-at-point)
  ("C-x / a"   . ace-link-addr)
  ("C-x / l"   . ace-link)
@@ -1495,7 +1498,7 @@
 
 (use-package avy
   :init
-  (setq avy-style 'at
+  (setq avy-style 'pre
         avy-timeout-seconds 0.8)
   :bind (:map isearch-mode-map
               ("C-'" . avy-isearch))
@@ -1512,8 +1515,9 @@
        (cdr (ring-ref avy-ring 0))))
     t)
   (setf (alist-get ?  avy-dispatch-alist) 'avy-action-mark-to-char)
-  (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark)
-  )
+  (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark))
+
+(use-package avy-zap)
 
 (use-package hungry-delete
   :hook (after-init . global-hungry-delete-mode)
@@ -1527,14 +1531,12 @@
   )
 
 (use-package drag-stuff
-  :hook ((text-mode
-          prog-mode) . drag-stuff-mode)
+  :hook ((text-mode prog-mode) . drag-stuff-mode)
   :bind (:map drag-stuff-mode-map
               ("M-J" . drag-stuff-down)
               ("M-K" . drag-stuff-up)
               ("M-H" . drag-stuff-left)
-              ("M-L" . drag-stuff-right))
-  )
+              ("M-L" . drag-stuff-right)))
 
 ;; %% erc
 (use-package erc
@@ -2945,17 +2947,10 @@ set to \\='(template title keywords subdirectory)."
             (treesit-parser-create 'elisp)))
 
 ;; %% c/c++
-(setq
- c-basic-offset 8
- c-default-style
- '((java-mode . "java")
-   (awk-mode  . "awk")
-   (other     . "linux"))
- )
-
-(setq
- c-ts-mode-indent-offset 8
- c-ts-mode-indent-style 'linux)
+(setq c-basic-offset 4
+      c-default-style 'linux
+      c-ts-mode-indent-offset 4
+      c-ts-mode-indent-style 'linux)
 
 (add-hook 'c-mode-common-hook
           (lambda () (c-toggle-auto-hungry-state 1)))
