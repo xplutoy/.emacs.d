@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-20 14:55:52 yx>
+;; Modified: <2024-02-20 23:56:26 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -1704,6 +1704,7 @@
   (dirvish-quick-access-entries
    '(("h" "~/"           "Home")
      ("d" "~/yxdocs/"    "yxdocs")
+     ("m" "/mnt/"        "Drives")
      ("D" "~/Downloads/" "Downloads")
      ("w" "~/workspace/" "workspace>")))
   :config
@@ -2692,8 +2693,7 @@ set to \\='(template title keywords subdirectory)."
    ))
 
 (use-package apheleia
-  :init
-  (apheleia-global-mode +1))
+  :init (apheleia-global-mode +1))
 
 (use-package ws-butler
   :hook ((prog-mode conf-mode) . ws-butler-mode))
@@ -2961,15 +2961,18 @@ set to \\='(template title keywords subdirectory)."
 
 ;; %% code-cell
 (use-package code-cells
-  :hook ((julia-mode
-          python-ts-mode) . code-cells-mode-maybe)
-  :bind (:map code-cells-mode-map
-              ("M-p"     . code-cells-backward-cell)
-              ("M-n"     . code-cells-forward-cell))
+  :hook ((julia-mode python-ts-mode) . code-cells-mode-maybe)
   :config
   (setq code-cells-eval-region-commands
         '((python-ts-mode . python-shell-send-region)
           (emacs-lisp-mode . eval-region)))
+  (let ((map code-cells-mode-map))
+    (keymap-set map "C-c C-n" 'code-cells-forward-cell)
+    (keymap-set map "C-c C-p" 'code-cells-backward-cell)
+    (keymap-set map "n" (code-cells-speed-key 'code-cells-forward-cell))
+    (keymap-set map "p" (code-cells-speed-key 'code-cells-backward-cell))
+    (keymap-set map "e" (code-cells-speed-key 'code-cells-eval))
+    (keymap-set map "TAB" (code-cells-speed-key 'outline-cycle)))
   (with-eval-after-load 'jupyter
     (defalias 'adopt-jupyter-eval-region (apply-partially 'jupyter-eval-region nil))
     (add-to-list 'code-cells-eval-region-commands
