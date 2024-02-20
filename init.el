@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-19 23:07:49 yx>
+;; Modified: <2024-02-20 14:55:52 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -678,8 +678,7 @@
    (holiday-float 5 0 2   "母亲节")
    (holiday-float 6 0 3   "父亲节")
    (holiday-float 11 4 4  "感恩节")
-   (holiday-fixed 12 25   "圣诞节")
-   ))
+   (holiday-fixed 12 25   "圣诞节")))
 
 (setq
  appt-audible t
@@ -687,7 +686,6 @@
  appt-display-duration 5
  appt-display-format 'window
  appt-message-warning-time 20)
-
 (add-hook 'emacs-startup-hook 'appt-activate)
 
 (setq
@@ -717,8 +715,7 @@
  (IS-WIN
   (setq
    w32-apps-modifier 'hyper
-   w32-lwindow-modifier 'super))
- )
+   w32-lwindow-modifier 'super)))
 
 (ffap-bindings)
 
@@ -980,7 +977,7 @@
 ;; (add-hook 'emacs-startup-hook 'which-function-mode)
 
 ;; %% font
-(defvar yx/font-height 160)
+(defvar yx/font-height 150)
 (defvar yx/font "JetBrains Mono NL")
 (defvar yx/fixed-font "JetBrains Mono NL")
 (defvar yx/serif-font "Latin Modern Mono")
@@ -1014,12 +1011,12 @@
  modus-themes-mixed-fonts t
  modus-themes-variable-pitch-ui t
  modus-themes-italic-constructs t
- ;; modus-themes-common-palette-overrides
- ;; '((fringe unspecifield)
- ;;   (fg-line-number-active fg-main)
- ;;   (bg-line-number-active unspecifield)
- ;;   (fg-line-number-inactive "gray50")
- ;;   (bg-line-number-inactive unspecifield))
+ modus-themes-common-palette-overrides
+ '((fringe unspecifield)
+   (fg-line-number-active fg-main)
+   (bg-line-number-active unspecifield)
+   (fg-line-number-inactive "gray50")
+   (bg-line-number-inactive unspecifield))
  )
 
 (use-package ef-themes
@@ -1069,7 +1066,7 @@
    ("\\`\\*Async Shell Command\\*\\'"
     (display-buffer-no-window)
     (allow-no-window . t))
-   ("\\`\\(\\*Org [SL]\\|CAPTURE\\)"
+   ("\\`\\(\\*Org L\\|\\*Org Select\\|CAPTURE\\)"
     (display-buffer-reuse-mode-window
      display-buffer-below-selected))
    ("\\`\\*Embark"
