@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-20 23:56:26 yx>
+;; Modified: <2024-02-23 14:43:37 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -272,6 +272,7 @@
  line-move-visual nil
  align-to-tab-stop nil
  word-wrap-by-category t
+ initial-scratch-message ""
  find-file-visit-truename t
  delete-by-moving-to-trash t
  set-mark-command-repeat-pop t
@@ -989,13 +990,14 @@
   (set-face-attribute 'fixed-pitch-serif nil :family yx/serif-font)
   (set-face-attribute 'variable-pitch nil :family yx/variable-font)
   (setq face-font-rescale-alist '(("LXGW WenKai Mono" . 1.0)))
-  (set-fontset-font t '(#x4e00 . #x9fff) "LXGW WenKai Mono")
-
+  (cl-loop for font in '( "LXGW WenKai Mono" "Microsoft Yahei" "PingFang SC")
+           when (x-list-fonts font)
+           return (set-fontset-font t '(#x4e00 . #x9fff) font))
   (cl-loop for font in '("Segoe UI Symbol" "Symbola" "Symbol")
-           when (member font (font-family-list))
+           when (x-list-fonts font)
            return (set-fontset-font t 'symbol (font-spec :family font) nil 'prepend))
   (cl-loop for font in '("Noto Color Emoji" "Apple Color Emoji" "Segoe UI Emoji")
-           when (member font (font-family-list))
+           when (x-list-fonts font)
            return (set-fontset-font t 'emoji  (font-spec :family font) nil 'prepend))
   )
 
@@ -1296,28 +1298,26 @@
 
 ;; %% embark
 (use-package embark
-  :init
-  (setq prefix-help-command 'embark-prefix-help-command)
   :custom
+  (embark-help-key "?")
+  (embark-cycle-key ".")
   (embark-confirm-act-all nil)
   (embark-selection-indicator nil)
-  (embark-prompter 'embark-completing-read-prompter)
+  (prefix-help-command 'embark-prefix-help-command)
   (embark-indicators '(embark-minimal-indicator
                        embark-highlight-indicator
                        embark-isearch-highlight-indicator))
+  :commands embark-open-externally
+  :config
+  (defun yx/dired-open-externally (&optional arg)
+    "Open marked or current file in operating system's default application."
+    (interactive "P")
+    (dired-map-over-marks (embark-open-externally (dired-get-filename)) arg))
   :bind
   (("C-." . embark-act)
-   :map embark-general-map
-   (", b" . engine/search-bing)
-   (", z" . engine/search-zhihu)
-   :map
-   embark-file-map
-   (", s" . crux-sudo-edit)
-   :map
-   embark-identifier-map
-   (", h" . symbol-overlay-put)
-   :map
-   minibuffer-local-map
+   :map dired-mode-map
+   ("e" . yx/dired-open-externally)
+   :map minibuffer-local-map
    ("C-c C-e" . embark-export)
    ("C-c C-c" . embark-collect)
    ("C-SPC" . (lambda () (interactive) (embark-select) (vertico-next)))))
@@ -1371,7 +1371,18 @@
   (setq cape-dabbrev-min-length 3)
   (dolist (ele '(cape-abbrev cape-file))
     (add-to-list 'completion-at-point-functions ele))
-  )
+  :bind (("C-c p p" . completion-at-point)
+         ("C-c p t" . complete-tag)
+         ("C-c p a" . cape-abbrev)
+         ("C-c p k" . cape-keyword)
+         ("C-c p h" . cape-history)
+         ("C-c p l" . cape-line)
+         ("C-c p w" . cape-dict)
+         ("C-c p f" . cape-file)
+         ("C-c p /" . cape-tex)
+         ("C-c p :" . cape-emoji)
+         ("C-c p &" . cape-sgml)
+         ("C-c p r" . cape-rfc1345)))
 
 (use-package marginalia
   :hook (after-init . marginalia-mode)
@@ -1495,7 +1506,7 @@
 
 (use-package avy
   :init
-  (setq avy-style 'pre
+  (setq avy-style 'at
         avy-timeout-seconds 0.8)
   :bind (:map isearch-mode-map
               ("C-'" . avy-isearch))
@@ -1674,10 +1685,6 @@
   (dired-guess-shell-alist-user
    `(("\\.\\(?:docx\\|pdf\\|djvu\\gif)\\'" ,yx/default-open-program)))
   :config
-  (add-hook 'dired-mode-hook 'yx/dired-setup)
-  (add-hook 'wdired-mode-hook 'highlight-changes-mode)
-  (put 'dired-find-alternate-file 'disabled nil)
-  :preface
   (defun yx/dired-setup ()
     (setq
      dired-omit-files
@@ -1685,7 +1692,9 @@
     (hl-line-mode 1)
     (dired-omit-mode 1)
     (dired-hide-details-mode 1))
-  )
+  (add-hook 'dired-mode-hook 'yx/dired-setup)
+  (add-hook 'wdired-mode-hook 'highlight-changes-mode)
+  (put 'dired-find-alternate-file 'disabled nil))
 
 ;; %% dired+
 (use-package diredfl
@@ -2689,8 +2698,7 @@ set to \\='(template title keywords subdirectory)."
    ("M-g M-p" . flymake-goto-prev-error)
    :repeat-map flymake-repeatmap
    ("p" . flymake-goto-prev-error)
-   ("n" . flymake-goto-next-error)
-   ))
+   ("n" . flymake-goto-next-error)))
 
 (use-package apheleia
   :init (apheleia-global-mode +1))
@@ -2828,7 +2836,6 @@ set to \\='(template title keywords subdirectory)."
      (lua    "https://github.com/MunifTanjim/tree-sitter-lua")
      (org    "https://github.com/milisims/tree-sitter-org")
      (bash   "https://github.com/tree-sitter/tree-sitter-bash")
-     (elisp  "https://github.com/Wilfred/tree-sitter-elisp")
      (julia  "https://github.com/tree-sitter/tree-sitter-julia")
      (python "https://github.com/tree-sitter/tree-sitter-python"))
    treesit-load-name-override-list '((c++ "libtree-sitter-cpp"))
@@ -2939,9 +2946,7 @@ set to \\='(template title keywords subdirectory)."
 ;; %% emacs-lisp
 (define-auto-insert "\\.el$" 'yx/auto-insert-el-header)
 (add-hook 'emacs-lisp-mode-hook
-          (lambda ()
-            (prettify-symbols-mode)
-            (treesit-parser-create 'elisp)))
+          (lambda () (prettify-symbols-mode 1)))
 
 ;; %% c/c++
 (setq c-basic-offset 4
