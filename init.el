@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-23 14:43:37 yx>
+;; Modified: <2024-02-27 14:42:13 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -1566,6 +1566,14 @@
   (erc-update-modules)
   (erc-services-mode 1))
 
+;; %% emms
+(use-package emms
+  :custom
+  (emms-player-list '(emms-player-mpv))
+  (emms-source-file-default-directory "~/Music/")
+  :config
+  (emms-minimalistic))
+
 ;; %% spell
 (use-package jinx
   :bind (("M-$" . jinx-correct)
@@ -2653,8 +2661,9 @@ set to \\='(template title keywords subdirectory)."
   (superword-mode             1)
   (show-paren-mode            1)
   (electric-pair-mode         1)
+  (electric-indent-mode       1)
+  (electric-layout-mode       1)
   (display-line-numbers-mode  1)
-  (electric-indent-local-mode 1)
   (keymap-local-set "RET" 'newline-and-indent)
   (push 'cape-keyword completion-at-point-functions))
 
