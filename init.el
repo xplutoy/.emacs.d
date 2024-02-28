@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-27 14:42:13 yx>
+;; Modified: <2024-02-28 18:07:53 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -155,8 +155,7 @@
 ;; %% tempo skeleton
 (tempo-define-template
  "yx/tex-note-tmpl"
- `(,(yx/file-contents-2-str (expand-file-name "math-note.tmpl.tex" yx/templates-dir)))
- )
+ `(,(yx/file-contents-2-str (expand-file-name "math-note.tmpl.tex" yx/templates-dir))))
 
 (define-skeleton yx/latex-graphics-skl
   "Insert centered picture."
@@ -316,12 +315,25 @@
 
 ;; %% auto save
 (setq
+ save-silently t
  auto-save-default t
+ auto-save-timeout 10
  auto-save-no-message t
- delete-auto-save-files t
  kill-buffer-delete-auto-save-files t
- auto-save-visited-interval 10
- auto-save-visited-predicate 'buffer-modified-p)
+ auto-save-visited-interval 15
+ auto-save-visited-predicate
+ (lambda () (and (buffer-modified-p)
+            (not (string-suffix-p "gpg" (file-name-extension (buffer-name)) t)))))
+
+;; %% backup
+(setq
+ version-control t
+ backup-by-copying t
+ kept-new-versions 5
+ delete-old-versions t)
+
+(add-to-list 'backup-directory-alist
+             (cons tramp-file-name-regexp nil))
 
 ;; %% auto-revert
 (setq
@@ -346,17 +358,6 @@
 (add-hook 'before-save-hook 'time-stamp)
 
 (setq tempo-interactive t)
-
-;; %% backup
-(setq
- version-control t
- backup-by-copying t
- kept-new-versions 6
- kept-old-versions 2
- delete-old-versions t)
-
-(add-to-list 'backup-directory-alist
-             (cons tramp-file-name-regexp nil))
 
 ;; %% eldoc
 (setq
@@ -1570,6 +1571,7 @@
 (use-package emms
   :custom
   (emms-player-list '(emms-player-mpv))
+  (emms-info-functions '(emms-info-native))
   (emms-source-file-default-directory "~/Music/")
   :config
   (emms-minimalistic))
@@ -2673,19 +2675,23 @@ set to \\='(template title keywords subdirectory)."
 (setq
  project-file-history-behavior 'relativize)
 
-;; ediff
+;; diff
 (setq
  diff-default-read-only t
- diff-update-on-the-fly t)
-
-(setq
- ediff-keep-variants nil
+ diff-update-on-the-fly t
  ediff-show-clashes-only t
  ediff-floating-control-frame t
  ediff-window-setup-function 'ediff-setup-windows-plain
  ediff-split-window-function 'split-window-horizontally)
 
 (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
+
+;; semantic
+(add-hook 'prog-mode-hook #'semantic-mode)
+(with-eval-after-load 'semantic
+  (global-semanticdb-minor-mode 1)
+  (global-semantic-idle-summary-mode 1)
+  (global-semantic-idle-scheduler-mode 1))
 
 ;; gud
 (setq gud-highlight-current-line t)
