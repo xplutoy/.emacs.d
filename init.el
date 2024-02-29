@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-01 05:46:44 yx>
+;; Modified: <2024-03-01 06:05:13 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -739,6 +739,7 @@
   (save-place-mode        1)
   (desktop-save-mode     -1)
   (blink-cursor-mode     -1)
+  (global-reveal-mode     1)
   (auto-compression-mode  1)
   (delete-selection-mode  1)
   (auto-save-visited-mode 1)
@@ -2485,12 +2486,16 @@
 
 ;; %% elfeed
 (use-package elfeed
-  :init
-  (setq elfeed-search-print-entry-function
-        'yx/elfeed-search-print-entry--better-default)
+  :bind (:map elfeed-show-mode-map
+              ("w" . elfeed-show-yank)
+              ("%" . elfeed-webkit-toggle)
+              ("q" . yx/elfeed-kill-entry)
+              :map elfeed-search-mode-map
+              ("R" . yx/elfeed-mark-all-as-read))
   :custom
   (elfeed-feeds
-   '(("https://www.inference.vc/rss" ai)
+   '(("http://www.zhihu.com/rss" new)
+     ("https://www.inference.vc/rss" ai)
      ("https://spaces.ac.cn/feed" ai webkit)
      ("https://ruder.io/rss/index.rss" ai)
      ("https://lilianweng.github.io/index.xml" ai webkit)
@@ -2511,6 +2516,7 @@
      ("https://andreyor.st/categories/emacs/feed.xml" emacs)
      ("https://sachachua.com/blog/category/emacs/feed/" emacs)))
   (elfeed-search-filter "@6-months-ago +unread")
+  (elfeed-search-print-entry-function 'yx/elfeed-search-print-entry--better-default)
   :hook (elfeed-show . olivetti-mode)
   :config
   (run-at-time nil (* 4 60 60) 'elfeed-update)
@@ -2527,22 +2533,19 @@
       "Toggle a tag on an Elfeed search selection"
       (interactive)
       (elfeed-search-toggle-all mytag)))
-  :bind
-  (:map elfeed-show-mode-map
-        ("w" . elfeed-show-yank)
-        ("%" . elfeed-webkit-toggle)
-        ("q" . yx/elfeed-kill-entry)
-        )
-  )
+  (defun yx/elfeed-mark-all-as-read ()
+    "Mark all feeds in buffer as read."
+    (interactive)
+    (mark-whole-buffer)
+    (elfeed-search-untag-all-unread)))
 
 (use-package elfeed-webkit
   :after elfeed
+  :bind (:map elfeed-webkit-map
+              ("q" . yx/elfeed-kill-entry))
   :config
-  (elfeed-webkit-auto-toggle-by-tag)
-  :bind
-  (:map elfeed-webkit-map
-        ("q" . yx/elfeed-kill-entry))
-  )
+  (elfeed-webkit-auto-toggle-by-tag))
+
 
 ;;; Writing
 (use-package denote
@@ -2670,7 +2673,6 @@ set to \\='(template title keywords subdirectory)."
    whitespace-style
    '(face trailing lines-char space-before-tab space-after-tab))
   (whitespace-mode            1)
-  (reveal-mode                1)
   (hl-line-mode               1)
   (hs-minor-mode              1)
   (superword-mode             1)
