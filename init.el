@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-01 05:07:36 yx>
+;; Modified: <2024-03-01 05:46:44 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -1461,14 +1461,7 @@
   (setq which-key-show-early-on-C-h t
         which-key-idle-delay most-positive-fixnum
         which-key-idle-secondary-delay 1e-100)
-  (which-key-setup-side-window-bottom)
-  )
-
-(use-package goggles
-  :hook ((text-mode prog-mode) . goggles-mode)
-  :custom
-  (goggles-pulse t)
-  )
+  (which-key-setup-side-window-bottom))
 
 (use-package ace-link
   :hook (after-init . ace-link-setup-default))
@@ -1547,6 +1540,25 @@
               ("M-K" . drag-stuff-up)
               ("M-H" . drag-stuff-left)
               ("M-L" . drag-stuff-right)))
+
+(use-package pulsar
+  :defer 2
+  :custom
+  (pulsar-delay 0.05)
+  (pulsar-iterations 8)
+  :config
+  (add-hook 'next-error-hook         #'pulsar-pulse-line)
+  (add-hook 'minibuffer-setup-hook   #'pulsar-pulse-line)
+  (add-hook 'imenu-after-jump-hook   #'pulsar-recenter-center)
+  (add-hook 'imenu-after-jump-hook   #'pulsar-reveal-entry)
+  (add-hook 'consult-after-jump-hook #'pulsar-recenter-center)
+  (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
+  (pulsar-global-mode 1))
+
+(use-package goggles
+  :hook ((text-mode prog-mode) . goggles-mode)
+  :custom
+  (goggles-pulse t))
 
 ;; %% erc
 (use-package erc
