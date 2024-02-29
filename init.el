@@ -3,11 +3,10 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-02-28 18:07:53 yx>
+;; Modified: <2024-03-01 05:07:36 yx>
 ;; Licence: GPLv3
 
 ;;; Init
-(add-to-list 'load-path "~/.emacs.d/lisp/")
 (add-to-list 'load-path "~/.emacs.d/site-lisp/")
 
 (defvar yx/etc-dir "~/.emacs.d/etc/")
@@ -49,8 +48,7 @@
   (setq no-littering-var-directory yx/var-dir
         no-littering-etc-directory yx/etc-dir)
   :config
-  (no-littering-theme-backups)
-  )
+  (no-littering-theme-backups))
 
 ;;; Utils
 (require 'tempo)
@@ -267,7 +265,6 @@
 
 (setq
  track-eol t
- view-read-only nil
  line-move-visual nil
  align-to-tab-stop nil
  word-wrap-by-category t
@@ -344,6 +341,7 @@
 (customize-set-variable 'auto-revert-use-notify nil)
 (add-hook 'after-init-hook 'global-auto-revert-mode)
 
+;; %% auto-insert
 (setq
  auto-insert-query nil
  auto-insert-alist nil
@@ -358,6 +356,11 @@
 (add-hook 'before-save-hook 'time-stamp)
 
 (setq tempo-interactive t)
+
+;; %% view mode
+(setq view-read-only t)
+(add-hook 'view-mode-hook
+          (lambda () (setq cursor-type (if view-mode 'hollow 'box))))
 
 ;; %% eldoc
 (setq
@@ -628,8 +631,7 @@
      dired-mode
      comint-mode
      doc-view-mode
-     elfeed-search-mode))
-  )
+     elfeed-search-mode)))
 
 ;; %% tramp speed up
 (setq
@@ -777,16 +779,14 @@
    mark-defun
    puni-mark-sexp-at-point
    puni-mark-sexp-around-point
-   puni-mark-list-around-point
-   ))
+   puni-mark-list-around-point))
 
 (define-repeat-map org-heading-navigate
   ("u" outline-up-heading
    "p" org-previous-visible-heading
    "n" org-next-visible-heading
    "f" org-forward-heading-same-level
-   "b" org-backward-heading-same-level)
-  )
+   "b" org-backward-heading-same-level))
 
 (use-package key-chord
   :init
@@ -970,7 +970,9 @@
 ;;; Ui
 (setq
  x-stretch-cursor nil
- x-underline-at-descent-line t)
+ x-underline-at-descent-line t
+ inhibit-splash-screen t
+ inhibit-startup-message t)
 
 (when IS-MAC (menu-bar-mode 1))
 
@@ -1217,9 +1219,8 @@
   (tabspaces-include-buffers '("*scratch*"))
   (tabspaces-initialize-project-with-todo nil)
   (tabspaces-session t)
-  (tabspaces-session-file (no-littering-expand-var-file-name "tabsession.el"))
   (tabspaces-session-auto-restore t)
-  )
+  (tabspaces-session-file (no-littering-expand-var-file-name "tabsession.el")))
 
 ;; %% buffer manager
 (setq buffer-quit-function 'winner-undo)
@@ -1231,8 +1232,8 @@
 (setq
  ibuffer-expert t
  ibuffer-display-summary nil
- ;; ibuffer-never-show-predicates '("^\\*")
- ibuffer-show-empty-filter-groups nil)
+ ibuffer-show-empty-filter-groups nil
+ ibuffer-default-sorting-mode 'major-mode)
 
 (defun yx/ibuffer-setup ()
   (hl-line-mode 1)
@@ -2673,7 +2674,8 @@ set to \\='(template title keywords subdirectory)."
 
 ;; project
 (setq
- project-file-history-behavior 'relativize)
+ project-file-history-behavior 'relativize
+ project-vc-extra-root-markers '(".dir-locals.el" ".project.el"))
 
 ;; diff
 (setq
@@ -2697,23 +2699,25 @@ set to \\='(template title keywords subdirectory)."
 (setq gud-highlight-current-line t)
 
 ;; %% formatter & linter & profiler
-(setq
- flymake-no-changes-timeout nil
- flymake-start-on-save-buffer t
- flymake-start-on-flymake-mode t
- flymake-show-diagnostics-at-end-of-line t
- flymake-fringe-indicator-position 'right-fringe)
-(with-eval-after-load 'flymake
-  (bind-keys
-   :map flymake-mode-map
-   ("s-; s"   . flymake-start)
-   ("M-g d"   . flymake-show-buffer-diagnostics)
-   ("M-g M-d" . flymake-show-project-diagnostics)
-   ("M-g M-n" . flymake-goto-next-error)
-   ("M-g M-p" . flymake-goto-prev-error)
-   :repeat-map flymake-repeatmap
-   ("p" . flymake-goto-prev-error)
-   ("n" . flymake-goto-next-error)))
+(use-package flymake
+  :ensure nil
+  :custom
+  (flymake-no-changes-timeout nil)
+  (flymake-show-diagnostics-at-end-of-line t)
+  (flymake-fringe-indicator-position 'right-fring)
+  :config
+  (setq elisp-flymake-byte-compile-load-path
+        (append elisp-flymake-byte-compile-load-path load-path))
+  :bind
+  (:map flymake-mode-map
+        ("s-; s"   . flymake-start)
+        ("M-g d"   . flymake-show-buffer-diagnostics)
+        ("M-g M-d" . flymake-show-project-diagnostics)
+        ("M-g M-n" . flymake-goto-next-error)
+        ("M-g M-p" . flymake-goto-prev-error)
+        :repeat-map flymake-repeatmap
+        ("p" . flymake-goto-prev-error)
+        ("n" . flymake-goto-next-error)))
 
 (use-package apheleia
   :init (apheleia-global-mode +1))
@@ -2759,10 +2763,10 @@ set to \\='(template title keywords subdirectory)."
   (after-init . global-diff-hl-mode)
   (dired-mode . diff-hl-dired-mode)
   (magit-post-refresh . diff-hl-magit-post-refresh)
+  :custom
+  (diff-hl-disable-on-remote t)
+  (diff-hl-show-staged-changes t)
   :config
-  (setq
-   diff-hl-disable-on-remote t
-   diff-hl-show-staged-changes t)
   (diff-hl-flydiff-mode 1)
   (global-diff-hl-show-hunk-mouse-mode 1))
 
@@ -2881,30 +2885,23 @@ set to \\='(template title keywords subdirectory)."
   :bind-keymap ("M-'" . surround-keymap))
 
 (use-package puni
-  :hook ((tex-mode
-          prog-mode
-          sgml-mode
-          nxml-mode) . puni-mode)
+  :hook ((prog-mode sgml-mode nxml-mode) . puni-mode)
+  :custom
+  (puni-confirm-when-delete-unbalanced-active-region nil)
   :bind
-  (
-   :map puni-mode-map
-   ("DEL"     . nil)
-   ("C-d"     . nil)
-   ("C-w"     . nil)
-   ("C-k"     . puni-kill-line)
+  (:map
+   puni-mode-map
    ("C-)"     . puni-slurp-forward)
    ("C-("     . puni-slurp-backward)
    ("C-}"     . puni-barf-forward)
    ("C-{"     . puni-barf-backward)
-   ("C-M-f"   . puni-forward-sexp-or-up-list)
-   ("C-M-b"   . puni-backward-sexp-or-up-list)
+   ("C-M-@"   . puni-mark-sexp-at-point)
+   ("C-M-2"   . puni-mark-sexp-around-point)
    ("C-M-r"   . puni-raise)
    ("C-M-z"   . puni-squeeze)
    ("C-M-t"   . puni-transpose)
-   ("C-M-?"   . puni-convolute)
    ("C-M-="   . puni-expand-region)
-   ("C-M--"   . puni-contract-region))
-  )
+   ("C-M--"   . puni-contract-region)))
 
 ;; %% lsp
 (use-package eglot
@@ -3019,8 +3016,8 @@ set to \\='(template title keywords subdirectory)."
    tab-width 4
    python-indent-offset 4
    electric-indent-inhibit t
-   imenu-create-index-function 'python-imenu-create-flat-index
-   ))
+   imenu-create-index-function 'python-imenu-create-flat-index)
+  (flymake-mode 1))
 (add-hook 'python-ts-mode-hook 'yx/python-mode-setup)
 
 (define-auto-insert "\\.py$" 'yx/auto-insert-common-header)
@@ -3069,8 +3066,7 @@ set to \\='(template title keywords subdirectory)."
 (use-package eglot-jl
   :init
   (with-eval-after-load 'eglot
-    (eglot-jl-init))
-  )
+    (eglot-jl-init)))
 
 (use-package julia-snail
   :custom
@@ -3078,8 +3074,7 @@ set to \\='(template title keywords subdirectory)."
   (julia-snail-extensions '(ob-julia formatter))
   :hook
   (julia-mode . julia-snail-mode)
-  (julia-ts-mode . julia-snail-mode)
-  )
+  (julia-ts-mode . julia-snail-mode))
 
 (define-auto-insert "\\.R$" 'yx/auto-insert-common-header)
 (define-auto-insert "\\.jl$" 'yx/auto-insert-common-header)

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2024-02-17 16:51:19 yx>
+;; Modified: <2024-03-01 04:37:54 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,14 +11,6 @@
 ;;
 
 ;;; Code:
-(setq
- inhibit-splash-screen t
- inhibit-startup-message t
- frame-inhibit-implied-resize t
- ffap-machine-p-known 'reject
- read-process-output-max (* 1024 1024)
- redisplay-skip-fontification-on-input t)
-
 (setq
  load-prefer-newer t
  byte-compile-warnings nil
@@ -38,7 +30,12 @@
 (scroll-bar-mode -1)
 (fringe-mode '(8 . 12))
 
-(setq gc-cons-threshold most-positive-fixnum)
+(setq
+ frame-inhibit-implied-resize t
+ ffap-machine-p-known 'reject
+ read-process-output-max (* 1024 1024)
+ gc-cons-threshold most-positive-fixnum
+ redisplay-skip-fontification-on-input t)
 
 ;; %% 文件句柄
 (let ((old-file-name-handler-alist file-name-handler-alist))
