@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-01 19:15:29 yx>
+;; Modified: <2024-03-01 19:31:30 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -320,7 +320,7 @@
  auto-save-visited-interval 15
  auto-save-visited-predicate
  (lambda () (and (buffer-modified-p)
-            (not (string-suffix-p "gpg" (file-name-extension (buffer-name)) t)))))
+                 (not (string-suffix-p "gpg" (file-name-extension (buffer-name)) t)))))
 
 ;; %% backup
 (setq
@@ -1323,14 +1323,21 @@
     "Open marked or current file in operating system's default application."
     (interactive "P")
     (dired-map-over-marks (embark-open-externally (dired-get-filename)) arg))
-  :bind
-  (("C-." . embark-act)
-   :map dired-mode-map
-   ("e" . yx/dired-open-externally)
-   :map minibuffer-local-map
-   ("C-c C-e" . embark-export)
-   ("C-c C-c" . embark-collect)
-   ("C-SPC" . (lambda () (interactive) (embark-select) (vertico-next)))))
+  (defun yx/consult-outline-insert-heading (target)
+    (let* ((marker (plist-get
+                    (text-properties-at 0 target)
+                    'consult--candidate))
+           (headline-name (org-entry-get nil "ITEM")))
+      (org-insert-link nil headline-name)))
+  :bind (("C-." . embark-act)
+         :map dired-mode-map
+         ("e" . yx/dired-open-externally)
+         :map minibuffer-local-map
+         ("C-c C-e" . embark-export)
+         ("C-c C-c" . embark-collect)
+         ("C-SPC" . (lambda () (interactive) (embark-select) (vertico-next)))
+         :map  embark-general-map
+         ("h" . yx/consult-outline-insert-heading)))
 
 (use-package embark-consult
   :after embark
