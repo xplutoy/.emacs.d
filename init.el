@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-01 06:05:13 yx>
+;; Modified: <2024-03-01 19:15:29 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -546,9 +546,8 @@
 (setq
  proced-descend t
  proced-filter 'user
- proced-auto-update-flag t
  proced-enable-color-flag t
- proced-auto-update-interval 5)
+ proced-auto-update-flag nil)
 
 ;; %% media
 (setq
@@ -799,8 +798,7 @@
   (with-eval-after-load 'org
     (key-chord-define
      org-mode-map
-     "jh" 'avy-org-goto-heading-timer))
-  )
+     "jh" 'avy-org-goto-heading-timer)))
 
 (bind-keys
  ([remap move-beginning-of-line]        . crux-move-beginning-of-line) ; C-a
@@ -831,13 +829,28 @@
  ([remap downcase-word]                 . downcase-dwim) ; M-l
  ([remap capitalize-word]               . capitalize-dwim) ; M-c
  ([remap goto-char]                     . avy-goto-char-timer) ; M-g c
+ ([remap suspend-frame]                 . repeat) ; C-z
  )
+
+(defvar-keymap yx/app-prefix-map
+  :doc "Keymap for app"
+  "g" #'gnus
+  "c" #'calendar
+  "r" #'elfeed
+  "e" #'erc-tls
+  "i" #'info
+  "v" #'vterm
+  "m" #'emms-browser
+  "t" #'proced
+  "a" #'org-agenda-list
+  "p" #'package-list-packages)
+(keymap-global-set "s-a" yx/app-prefix-map)
 
 (bind-keys
  ("C-<f5>"    . dape)
  ("<f5>"      . quickrun)
- ("<f10>"     . yx/transient-global-odd)
- ("s-<return>" . toggle-frame-maximized)
+ ("<f10>"     . yx/eshell-here)
+ ("s-s"       . yx/transient-global-simple)
  ("s-/"       . transform-previous-char)
  ("s-r"       . consult-recent-file)
  ("s-t"       . tab-bar-new-tab)
@@ -849,7 +862,6 @@
  ("s-<left>"  . ns-prev-frame)
  ("s-]"       . tab-next)
  ("s-["       . tab-previous)
- ("s-s"       . yx/eshell-here)
  ("C-;"       . iedit-mode)
  ("C-."       . embark-act)
  ("C-,"       . embark-dwim)
@@ -940,10 +952,9 @@
   (transient-bind-q-to-quit)
   (keymap-set transient-map "<escape>" 'transient-quit-all))
 
-(transient-define-prefix yx/transient-global-odd ()
+(transient-define-prefix yx/transient-global-simple ()
   "Global transient for frequently used functions."
-  [["]]a"
-    ("a" "agenda" org-agenda-list)
+  [["]]1"
     ("c" "whitespace-cleanup" whitespace-cleanup)
     ("o" "crux-open-with" crux-open-with)
     ("s" "scratch-buffer" yx/scratch-buffer)
@@ -953,20 +964,16 @@
     ("w" "pyim-create-word-from-selection" pyim-create-word-from-selection)
     ("%" "query-replace-regexp" query-replace-regexp)
     ("!" "shell-command" shell-command)]
-   ["]]A"
+   ["]]2"
     ("C" "desktop-clear" desktop-clear)
     ("D" "crux-delete-file-and-buffer" crux-delete-file-and-buffer)
-    ("G" "magit-status" magit-status)
     ("V" "magit-dispatch" magit-dispatch)
-    ("I" "Clock In" yx/org-clock-in)
     ("T" "consult-minor-mode-menu" consult-minor-mode-menu)
     ("R" "rename-visited-file" rename-visited-file)
     ("K" "crux-kill-other-buffers" crux-kill-other-buffers)
     ("E" "crux-sudo-edit" crux-sudo-edit)]
-   ["]]T"
-    ("t l" "command-log" clm/toggle-command-log-buffer)]
-   ]
-  )
+   ["]]3"
+    ("t l" "command-log" clm/toggle-command-log-buffer)]])
 
 ;;; Ui
 (setq
@@ -1086,7 +1093,7 @@
      display-buffer-below-selected)
     (dedicated . t)
     (window-height . fit-window-to-buffer))
-   ("\\`\\(\\*Ibuffer\\|\\*Man\\|\\*WoMan\\|\\*info\\|magit\\|\\*Org Agenda\\)"
+   ("\\`\\(\\*Proced\\*\\|\\*Ibuffer\\|\\*Man\\|\\*WoMan\\|\\*info\\|magit\\|\\*Org Agenda\\)"
     (display-buffer-full-frame))
    ))
 
@@ -1412,9 +1419,7 @@
   (use-package xwidget
     :ensure nil
     :bind (:map xwidget-webkit-mode-map
-                ("W" . xwidget-webkit-fit-width))
-    )
-  )
+                ("W" . xwidget-webkit-fit-width))))
 
 (use-package engine-mode
   :hook (after-init . engine-mode)
@@ -1595,15 +1600,12 @@
   :bind (("M-$" . jinx-correct)
          ("C-M-$" . jinx-languages))
   :config
-  (setq jinx-languages "en_US")
-  )
+  (setq jinx-languages "en_US"))
 
 (use-package flyspell-correct
   :after flyspell
-  :bind
-  (:map flyspell-mode-map
-        ("M-$" . flyspell-correct-wrapper))
-  )
+  :bind (:map flyspell-mode-map
+              ("M-$" . flyspell-correct-wrapper)))
 
 ;; %% chinese
 (use-package pyim
@@ -1636,8 +1638,7 @@
   (use-package pyim-tsinghua-dict
     :vc (:url "https://github.com/redguardtoo/pyim-tsinghua-dict" :rev :newest)
     :demand t)
-  (pyim-tsinghua-dict-enable)
-  )
+  (pyim-tsinghua-dict-enable))
 
 (use-package stardict
   :ensure nil
@@ -1645,8 +1646,7 @@
          ("M-s M-d" . stardict-define))
   :init
   (setq stardict-name "langdao-ec-gb"
-        stardict-dir "~/.config/stardict/dic/stardict-langdao-ec-gb-2.4.2")
-  )
+        stardict-dir "~/.config/stardict/dic/stardict-langdao-ec-gb-2.4.2"))
 
 (use-package bing-dict
   :init
@@ -1698,12 +1698,13 @@
   (dired-dwim-target t)
   (dired-mouse-drag-files t)
   (dired-movement-style 'cycle)
+  (dired-ls-F-marks-symlinks t)
   (dired-recursive-copies 'always)
   (dired-recursive-deletes 'top)
   (dired-create-destination-dirs 'ask)
   (dired-auto-revert-buffer 'dired-buffer-stale-p)
   (dired-kill-when-opening-new-dired-buffer t)
-  (dired-listing-switches "-alGgh")
+  (dired-listing-switches "-laFGgh")
   (wdired-create-parent-directories t)
   (wdired-allow-to-change-permissions t)
   (dired-guess-shell-alist-user
@@ -1726,8 +1727,7 @@
   (dired-mode . diredfl-mode)
   (dirvish-directory-view-mode . diredfl-mode)
   :config
-  (set-face-attribute 'diredfl-dir-name nil :bold t)
-  )
+  (set-face-attribute 'diredfl-dir-name nil :bold t))
 
 (use-package zoxide)
 
@@ -1770,8 +1770,7 @@
         ("M-t" . dirvish-layout-toggle)
         ("M-s" . dirvish-setup-menu)
         ("M-e" . dirvish-emerge-menu)
-        ("M-j" . dirvish-fd-jump))
-  )
+        ("M-j" . dirvish-fd-jump)))
 
 ;;; Gnus
 (setq
@@ -1812,8 +1811,7 @@
       :mailbox "INBOX"
       :fetchflag "\\Seen"
       :stream tls
-      :dontexpunge t)
-     ))
+      :dontexpunge t)))
   (setq
    gnus-select-method '(nnnil "")
    gnus-secondary-select-methods
@@ -1837,8 +1835,7 @@
       (nnimap-expunge 'nerver)
       (nnimap-search-engine imap)
       (nnimap-inbox "INBOX")
-      (nnimap-split-methods default))
-     ))
+      (nnimap-split-methods default))))
   (setq
    nnmail-expiry-wait '30
    nnmail-resplit-incoming t
@@ -1853,8 +1850,7 @@
      (any "emacs-devel@gnu.org"    "INBOX.emacs-devel")
      (any "emacs-orgmode@gnu.org"  "INBOX.emacs-orgmode")
      (any "help-gnu-emacs@gnu.org" "INBOX.help-gnu-emacs")
-     "INBOX.Misc")
-   )
+     "INBOX.Misc"))
 
   (setq
    gnus-asynchronous t
@@ -1888,8 +1884,7 @@
   (setq
    nnrss-ignore-article-fields '(description guid pubData dc:creator link))
 
-  (gnus-demon-add-handler 'gnus-demon-scan-mail nil 10)
-  )
+  (gnus-demon-add-handler 'gnus-demon-scan-mail nil 10))
 
 (use-package gnus-group
   :ensure nil
@@ -1940,8 +1935,7 @@
    gnus-group-sort-function '(gnus-group-sort-by-method)
    gnus-group-line-format "%M%S%p%P %0{%5y%} %B%{%G%}\n")
 
-  (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
-  )
+  (add-hook 'gnus-group-mode-hook 'gnus-topic-mode))
 
 ;;; Shell
 (setq
@@ -2048,18 +2042,6 @@
        (find-file-noselect
         (concat "/sudo::" qual-filename))))))
 
-;; %% eat
-(use-package eat
-  :vc (:url "https://codeberg.org/akib/emacs-eat" :rev :newest)
-  :init
-  (setq
-   eat-kill-buffer-on-exit t
-   eat-enable-yank-to-terminal t)
-  :hook
-  ((eshell-load . eat-eshell-mode)
-   (eshell-load . eat-eshell-visual-command-mode))
-  )
-
 (use-package pcmpl-args
   :after eshell
   :demand t)
@@ -2069,6 +2051,21 @@
   :demand t
   :config
   (eshell-syntax-highlighting-global-mode +1))
+
+;; %% eat
+(use-package eat
+  :vc (:url "https://codeberg.org/akib/emacs-eat" :rev :newest)
+  :custom
+  (eat-kill-buffer-on-exit t)
+  (eat-enable-yank-to-terminal t)
+  :hook
+  ((eshell-load . eat-eshell-mode)
+   (eshell-load . eat-eshell-visual-command-mode)))
+
+;; %% vterm
+(use-package vterm
+  :unless IS-WIN
+  :custom (vterm-always-compile-module t))
 
 ;;; Org
 (use-package org
@@ -2118,6 +2115,9 @@
   (org-fold-catch-invisible-edits 'show-and-error)
   (org-image-actual-width '(300))
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+
+  (org-lowest-priority ?D)
+  (org-priority-default ?C)
 
   (org-element-use-cache nil)
   (org-element-cache-persistent nil)
@@ -2386,8 +2386,7 @@
       ("L" "org-toggle-link-display" org-toggle-link-display)
       ("I" "org-toggle-inline-images" org-toggle-inline-images)
       ("F" "org-preview-latex-fragment" org-preview-latex-fragment)]
-     ]
-    ))
+     ]))
 
 ;; %% org+
 (use-package org-ql
@@ -2591,8 +2590,12 @@ set to \\='(template title keywords subdirectory)."
   (setq
    markdown-command "pandoc"
    markdown-enable-math t
-   markdown-header-scaling t)
-  )
+   markdown-header-scaling t))
+
+;; %% bibtex
+(setq
+ bibtex-dialect 'biblatex
+ bibtex-align-at-equal-sign t)
 
 ;; %% latex
 (use-package tex
