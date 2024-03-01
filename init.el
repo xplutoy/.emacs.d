@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-01 19:31:30 yx>
+;; Modified: <2024-03-01 20:16:34 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -3080,8 +3080,7 @@ set to \\='(template title keywords subdirectory)."
    ess-ask-for-ess-directory nil)
   :config
   (keymap-set ess-r-mode-map ";" 'ess-insert-assign)
-  (keymap-set inferior-ess-r-mode-map ";" 'ess-insert-assign)
-  )
+  (keymap-set inferior-ess-r-mode-map ";" 'ess-insert-assign))
 
 (use-package julia-mode)
 (use-package julia-ts-mode
@@ -3103,10 +3102,17 @@ set to \\='(template title keywords subdirectory)."
 (define-auto-insert "\\.R$" 'yx/auto-insert-common-header)
 (define-auto-insert "\\.jl$" 'yx/auto-insert-common-header)
 
-(setq scheme-program-name "chez")
+;; scheme && lisp
+(setq scheme-program-name "chez"
+      inferior-lisp-program "sbcl")
+
 (use-package geiser-chez
   :mode ("\\.sc\\'" . scheme-mode)
+  :hook (scheme-mode . turn-on-geiser-mode)
   :custom (geiser-chez-binary "chez"))
+
+(use-package sly
+  :hook (lisp-mode . sly-mode))
 
 (use-package haskell-mode
   :hook (haskell-mode . yx/haskell-mode-setup)
