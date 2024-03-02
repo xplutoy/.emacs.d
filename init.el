@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-03 02:26:50 yx>
+;; Modified: <2024-03-03 05:02:11 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -103,8 +103,7 @@
   "File contents to string."
   (with-temp-buffer
     (insert-file-contents file)
-    (buffer-string))
-  )
+    (buffer-string)))
 
 (defun yx/org-agenda-format-date-aligned (date)
   "Format a DATE string for display in the daily/weekly agenda, or timeline.
@@ -141,8 +140,7 @@
                     (match-string 1 string)) )
          (sunset (capitalize (match-string 3 string)))
          (daylight (format "%s of daylight" (match-string 5 string))))
-    (list sunrise sunset daylight))
-  )
+    (list sunrise sunset daylight)))
 
 (defun yx/diary-sunrise ()
   (elt (yx/diary-sunrise-sunset-split) 0))
@@ -254,153 +252,124 @@
 (set-language-environment 'utf-8)
 (set-default-coding-systems 'utf-8)
 
-(setq-default
- tab-width 8
- abbrev-mode t
- fill-column 78
- line-spacing 0.1
- truncate-lines t
- indent-tabs-mode nil
- tab-always-indent 'complete)
+(setq-default tab-width 8
+              abbrev-mode t
+              fill-column 78
+              truncate-lines t
+              indent-tabs-mode nil
+              tab-always-indent 'complete)
 
-(setq
- track-eol t
- line-move-visual nil
- align-to-tab-stop nil
- word-wrap-by-category t
- initial-scratch-message ""
- find-file-visit-truename t
- delete-by-moving-to-trash t
- set-mark-command-repeat-pop t
- cursor-in-non-selected-windows nil
- compilation-scroll-output 'first-error
- backward-delete-char-untabify-method 'hungry
- sentence-end-double-space nil
- sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
+(setq track-eol t
+      line-move-visual nil
+      word-wrap-by-category t
+      initial-scratch-message ""
+      find-file-visit-truename t
+      delete-by-moving-to-trash t
+      set-mark-command-repeat-pop t
+      cursor-in-non-selected-windows nil
+      compilation-scroll-output 'first-error
+      backward-delete-char-untabify-method 'hungry
+      sentence-end-double-space nil
+      sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
 
-(setq
- visible-bell nil
- use-dialog-box nil
- use-file-dialog nil
- use-short-answers t
- y-or-n-p-use-read-key t)
+(setq visible-bell nil
+      use-dialog-box nil
+      use-file-dialog nil
+      use-short-answers t
+      y-or-n-p-use-read-key t)
 
-(setq
- hl-line-sticky-flag nil
- global-hl-line-sticky-flag nil
- confirm-kill-processes nil
- disabled-command-function nil
- confirm-nonexistent-file-or-buffer nil)
+(setq hl-line-sticky-flag nil
+      global-hl-line-sticky-flag nil
+      confirm-kill-processes nil
+      disabled-command-function nil
+      confirm-nonexistent-file-or-buffer nil)
 
 ;; %% paren
-(setq
- blink-matching-paren nil
- show-paren-style 'parenthesis
- show-paren-context-when-offscreen t
- show-paren-when-point-inside-paren t)
+(setq blink-matching-paren nil
+      show-paren-style 'parenthesis
+      show-paren-context-when-offscreen t
+      show-paren-when-point-inside-paren t)
 
 ;; %% electric
-(setq
- electric-pair-preserve-balance t
- electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
+(setq electric-pair-preserve-balance nil
+      electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
 
 ;; %% font-lock
-(setq
- jit-lock-defer-time 0
- jit-lock-stealth-time 2.0
- jit-lock-stealth-nice 0.2)
+(setq jit-lock-defer-time 0
+      jit-lock-stealth-time 2.0
+      jit-lock-stealth-nice 0.2)
 
 ;; %% auto save
-(setq
- save-silently t
- auto-save-default t
- auto-save-timeout 10
- auto-save-no-message t
- kill-buffer-delete-auto-save-files t
- auto-save-visited-interval 15
- auto-save-visited-predicate
- (lambda () (and (buffer-modified-p)
-                 (not (string-suffix-p "gpg" (file-name-extension (buffer-name)) t)))))
+(setq save-silently t
+      auto-save-default t
+      auto-save-timeout 10
+      auto-save-no-message t
+      kill-buffer-delete-auto-save-files t
+      auto-save-visited-interval 15
+      auto-save-visited-predicate
+      (lambda () (and (buffer-modified-p)
+                      (not (string-suffix-p "gpg" (file-name-extension (buffer-name)) t)))))
 
-;; %% backup
-(setq
- version-control t
- backup-by-copying t
- kept-new-versions 5
- delete-old-versions t)
+(setq version-control t
+      backup-by-copying t
+      kept-new-versions 5
+      delete-old-versions t)
 
 (add-to-list 'backup-directory-alist
              (cons tramp-file-name-regexp nil))
 
-;; %% auto-revert
-(setq
- auto-revert-verbose nil
- auto-revert-avoid-polling t
- auto-revert-check-vc-info t)
-
+(setq auto-revert-verbose nil
+      auto-revert-avoid-polling t
+      auto-revert-check-vc-info t)
 (customize-set-variable 'auto-revert-use-notify nil)
-(add-hook 'after-init-hook 'global-auto-revert-mode)
 
-;; %% auto-insert
-(setq
- auto-insert-query nil
- auto-insert-alist nil
- auto-insert-directory
- (expand-file-name "templates/" no-littering-etc-directory))
+(setq auto-insert-query nil
+      auto-insert-alist nil
+      auto-insert-directory (no-littering-expand-etc-file-name "templates/"))
 
-(add-hook 'after-init-hook 'auto-insert-mode)
-
-(setq
- time-stamp-pattern "10/^[@#;\*].*[Mm]odified: <%%>$")
+(setq time-stamp-pattern "10/^[@#;\*].*[Mm]odified: <%%>$")
 
 (add-hook 'before-save-hook 'time-stamp)
 
 (setq tempo-interactive t)
 
-;; %% view mode
 (setq view-read-only t)
 (add-hook 'view-mode-hook
           (lambda () (setq cursor-type (if view-mode 'hollow 'box))))
 
-;; %% eldoc
-(setq
- eldoc-idle-delay 0.3
- eldoc-echo-area-use-multiline-p nil
- eldoc-echo-area-display-truncation-message nil)
+(setq eldoc-idle-delay 0.3
+      eldoc-echo-area-use-multiline-p nil
+      eldoc-echo-area-display-truncation-message nil)
 
-;; %% help
-(add-hook 'help-fns-describe-function-functions
-          'shortdoc-help-fns-examples-function)
+(setq help-window-select t
+      help-window-keep-selected t)
+(add-hook 'help-fns-describe-function-functions #'shortdoc-help-fns-examples-function)
 
-;; %% uniquify
-(setq
- uniquify-strip-common-suffix t
- uniquify-after-kill-buffer-p t
- uniquify-ignore-buffers-re "^\\*"
- uniquify-buffer-name-style 'post-forward-angle-brackets
- uniquify-dirname-transform 'project-uniquify-dirname-transform)
+(setq uniquify-strip-common-suffix t
+      uniquify-after-kill-buffer-p t
+      uniquify-ignore-buffers-re "^\\*"
+      uniquify-buffer-name-style 'post-forward-angle-brackets
+      uniquify-dirname-transform 'project-uniquify-dirname-transform)
 
 ;; %% line number
-(setq
- display-line-numbers-type t
- display-line-numbers-width 4
- display-line-numbers-width-start t)
+(setq display-line-numbers-type t
+      display-line-numbers-width 4
+      display-line-numbers-major-tick 10
+      display-line-numbers-width-start t)
 
 ;; re-builder
 (setq reb-re-syntax 'string)
 
 ;; %% recentf
-(setq
- recentf-max-menu-items 15
- recentf-max-saved-items 50
- recentf-auto-cleanup "1:00am"
- recentf-exclude
- '("\\.?cache.*" "^/.*" "^/ssh:" "\\.git/.+$"
-   "COMMIT_MSG" "COMMIT_EDITMSG" "/Downloads/" "/elpa/"
-   "\\.\\(?:gif\\|svg\\|png\\|jpe?g\\|bmp\\|xpm\\)$"
-   "\\.\\(?:gz\\|zip\\|gpg\\)$"
-   file-remote-p)
- )
+(setq recentf-max-menu-items 15
+      recentf-max-saved-items 50
+      recentf-auto-cleanup "1:00am"
+      recentf-exclude
+      '("\\.?cache.*" "^/.*" "^/ssh:" "\\.git/.+$"
+        "COMMIT_MSG" "COMMIT_EDITMSG" "/Downloads/" "/elpa/"
+        "\\.\\(?:gif\\|svg\\|png\\|jpe?g\\|bmp\\|xpm\\)$"
+        "\\.\\(?:gz\\|zip\\|gpg\\)$"
+        file-remote-p))
 
 (with-eval-after-load 'recentf
   (add-to-list 'recentf-exclude
@@ -408,21 +377,9 @@
 (add-hook 'after-init-hook 'recentf-mode)
 
 ;; %% whitespace
-(setq
- whitespace-style
- '(face
-   tabs
-   spaces
-   tab-mark
-   space-mark
-   trailing
-   missing-newline-at-eof
-   space-after-tab::tab
-   space-after-tab::space
-   space-before-tab::tab
-   space-before-tab::space)
- whitespace-line-column nil
- show-trailing-whitespace nil)
+(setq whitespace-style
+      '(face trailing lines-char space-before-tab space-after-tab)
+      show-trailing-whitespace nil)
 
 ;; prettify
 (setq prettify-symbols-unprettify-at-point 'right-edge)
@@ -431,62 +388,54 @@
 (when-let ((rg (executable-find "rg")))
   (setq grep-program rg))
 
-(setq
- xref-search-program 'ripgrep
- xref-file-name-display 'project-relative
- xref-history-storage 'xref-window-local-history
- xref-show-xrefs-function 'xref-show-definitions-buffer
- xref-show-definitions-function 'xref-show-definitions-completing-read)
+(setq xref-search-program 'ripgrep
+      xref-file-name-display 'project-relative
+      xref-history-storage 'xref-window-local-history
+      xref-show-xrefs-function 'xref-show-definitions-buffer
+      xref-show-definitions-function 'xref-show-definitions-completing-read)
 
 ;; %% completion minibuffer
-(setq
- resize-mini-windows t
- max-mini-window-height 0.3
- enable-recursive-minibuffers t)
+(setq resize-mini-windows t
+      max-mini-window-height 0.3
+      enable-recursive-minibuffers t)
 
-(setq
- completions-detailed t
- completion-ignore-case t
- completions-format 'one-column
- completions-header-format nil
- completions-max-height 30
- completion-auto-help 'visible
- completion-cycle-threshold 3
- completion-show-help nil
- completion-show-inline-help nil
- completion-auto-select 'second-tab
- minibuffer-visible-completions t)
+(setq completions-detailed t
+      completion-ignore-case t
+      completions-format 'one-column
+      completions-header-format nil
+      completions-max-height 30
+      completion-auto-help 'visible
+      completion-cycle-threshold 3
+      completion-show-help nil
+      completion-show-inline-help nil
+      completion-auto-select 'second-tab
+      minibuffer-visible-completions t)
 
-(setq read-extended-command-predicate
-      'command-completion-default-include-p)
+(setq read-extended-command-predicate 'command-completion-default-include-p)
 
 (setq minibuffer-prompt-properties
       '(read-only t cursor-intangible t face minibuffer-prompt))
 (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
-(setq
- abbrev-suggest t
- save-abbrevs 'silently
- abbrev-suggest-hint-threshold 2)
+(setq abbrev-suggest t
+      save-abbrevs 'silently
+      abbrev-suggest-hint-threshold 2)
 
-(setq
- hippie-expand-max-buffers 10
- hippie-expand-try-functions-list
- '(try-complete-file-name
-   try-complete-file-name-partially
-   try-expand-dabbrev
-   try-expand-dabbrev-from-kill
-   try-expand-dabbrev-all-buffers)
- )
+(setq hippie-expand-max-buffers 5
+      hippie-expand-try-functions-list
+      '(try-complete-file-name
+        try-complete-file-name-partially
+        try-expand-dabbrev
+        try-expand-dabbrev-from-kill
+        try-expand-dabbrev-all-buffers))
 
 ;; %% isearch
-(setq
- isearch-lazy-count t
- isearch-lazy-highlight t
- isearch-allow-motion t
- isearch-repeat-on-direction-change t
- apropos-sort-by-scores t
- lazy-highlight-no-delay-length 3)
+(setq isearch-lazy-count t
+      isearch-lazy-highlight t
+      isearch-allow-motion t
+      isearch-repeat-on-direction-change t
+      apropos-sort-by-scores t
+      lazy-highlight-no-delay-length 3)
 
 (keymap-set isearch-mode-map "M->" 'isearch-end-of-buffer)
 (keymap-set isearch-mode-map "M-<" 'isearch-beginning-of-buffer)
@@ -495,238 +444,203 @@
 (add-hook 'occur-mode-hook #'hl-line-mode)
 
 ;; %% epa
-(setq
- auth-sources
- `(,(no-littering-expand-etc-file-name "authinfo.gpg"))
- auth-source-debug t
- epa-pinentry-mode 'loopback
- epa-file-select-keys yx/gpg-encrypt-key)
+(setq auth-sources
+      `(,(no-littering-expand-etc-file-name "authinfo.gpg"))
+      auth-source-debug t
+      epa-pinentry-mode 'loopback
+      epa-file-select-keys yx/gpg-encrypt-key)
 
-(setq
- password-cache t
- password-cache-expiry (* 60 60))
+(setq password-cache t
+      password-cache-expiry (* 60 60))
 
 ;; %% mouse
-(setq
- mouse-highlight nil
- mouse-yank-at-point t
- mouse-wheel-tilt-scroll t
- mouse-wheel-follow-mouse t
- mouse-drag-mode-line-buffer t
- mouse-avoidance-nudge-dist 8
- mouse-wheel-progressive-speed nil
- mouse-drag-and-drop-region-cross-program t
- mouse-wheel-scroll-amount-horizontal 2
- mouse-wheel-scroll-amount '(2 ((shift) . hscroll)))
+(setq mouse-highlight nil
+      mouse-yank-at-point t
+      mouse-wheel-tilt-scroll t
+      mouse-wheel-follow-mouse t
+      mouse-drag-mode-line-buffer t
+      mouse-avoidance-nudge-dist 8
+      mouse-wheel-progressive-speed nil
+      mouse-drag-and-drop-region-cross-program t
+      mouse-wheel-scroll-amount-horizontal 2
+      mouse-wheel-scroll-amount '(2 ((shift) . hscroll)))
 
 ;; %% scroll
-(setq
- scroll-step 1
- scroll-margin 1
- scroll-conservatively 101
- fast-but-imprecise-scrolling t
- scroll-preserve-screen-position 'always)
+(setq scroll-step 1
+      scroll-margin 1
+      scroll-conservatively 101
+      fast-but-imprecise-scrolling t
+      scroll-preserve-screen-position 'always)
 
-(setq
- auto-window-vscroll nil
- auto-hscroll-mode 'current-line)
+(setq auto-window-vscroll nil
+      auto-hscroll-mode 'current-line)
 
-(setq
- transient-detect-key-conflicts t
- transient-highlight-mismatched-keys nil)
+(setq transient-detect-key-conflicts t
+      transient-highlight-mismatched-keys nil)
 
 ;; bookmark
-(setq
- bookmark-save-flag 1
- bookmark-fringe-mark nil
- bookmark-use-annotations nil
- bookmark-automatically-show-annotations nil)
+(setq bookmark-save-flag 1
+      bookmark-fringe-mark nil
+      bookmark-use-annotations nil
+      bookmark-automatically-show-annotations nil)
 
 ;; proced
-(setq
- proced-descend t
- proced-filter 'user
- proced-enable-color-flag t
- proced-auto-update-flag nil)
+(setq proced-descend t
+      proced-filter 'user
+      proced-enable-color-flag t
+      proced-auto-update-flag nil)
 
 ;; %% media
-(setq
- image-use-external-converter t)
+(setq image-use-external-converter t)
 
-;; %% browse url
-(setq
- browse-url-browser-function 'eww-browse-url
- browse-url-secondary-browser-function 'browse-url-default-browser
- browse-url-generic-program yx/default-open-program
- eww-auto-rename-buffer 'title
- eww-search-prefix "http://www.google.com/search?q="
- eww-use-external-browser-for-content-type "\\`\\(video/\\|audio\\)"
- eww-browse-url-new-window-is-tab nil)
+(setq browse-url-browser-function 'eww-browse-url
+      browse-url-secondary-browser-function 'browse-url-default-browser
+      browse-url-generic-program yx/default-open-program
+      eww-auto-rename-buffer 'title
+      eww-search-prefix "http://www.google.com/search?q="
+      eww-use-external-browser-for-content-type "\\`\\(video/\\|audio\\)"
+      eww-browse-url-new-window-is-tab nil)
 
 (with-eval-after-load 'eww
   (add-hook 'eww-after-render-hook 'eww-readable))
 
-(setq
- shr-use-fonts nil
- shr-use-colors nil
- shr-image-animate nil
- shr-inhibit-images t
- shr-max-image-proportion 0.6)
+(setq shr-use-fonts nil
+      shr-use-colors nil
+      shr-image-animate nil
+      shr-inhibit-images t
+      shr-max-image-proportion 0.6)
 
-(setq
- webjump-sites
- '(("OrgSite"    . "https://orgmode.org")
-   ("Wikipedia"  . [simple-query "wikipedia.org" "wikipedia.org/wiki/" ""])
-   ("DuckDuckGo" . [simple-query "duckduckgo.com" "duckduckgo.com/?q=" ""])
-   ("Google"     . [simple-query "www.google.com" "www.google.com/search?q=" ""]))
- webjump-use-internal-browser t)
+(setq webjump-sites
+      '(("OrgSite"    . "https://orgmode.org")
+        ("Wikipedia"  . [simple-query "wikipedia.org" "wikipedia.org/wiki/" ""])
+        ("DuckDuckGo" . [simple-query "duckduckgo.com" "duckduckgo.com/?q=" ""])
+        ("Google"     . [simple-query "www.google.com" "www.google.com/search?q=" ""]))
+      webjump-use-internal-browser t)
 
 ;; %% flyspell
-(setq
- ispell-dictionary "english"
- ispell-program-name "aspell"
- ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))
+(setq ispell-dictionary "english"
+      ispell-program-name "aspell"
+      ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))
 (with-eval-after-load 'flyspell
   (keymap-unset flyspell-mode-map "C-,")
   (keymap-unset flyspell-mode-map "C-.")
   (keymap-unset flyspell-mode-map "C-;"))
 
-(setq
- dictionary-server "dict.org"
- dictionary-default-popup-strategy "lev"
- dictionary-create-buttons nil
- dictionary-display-definition-function
- 'dictionary-display-definition-in-help-buffer)
+(setq dictionary-server "dict.org"
+      dictionary-default-popup-strategy "lev"
+      dictionary-create-buttons nil
+      dictionary-display-definition-function 'dictionary-display-definition-in-help-buffer)
 
 ;; %% savehist
-(setq
- history-delete-duplicates t
- savehist-save-minibuffer-history t
- savehist-additional-variables
- '(mark-ring
-   global-mark-ring
-   search-ring
-   regexp-search-ring
-   command-history
-   extended-command-history))
-(add-hook 'after-init-hook 'savehist-mode)
+(setq history-delete-duplicates t
+      savehist-save-minibuffer-history t
+      savehist-additional-variables '(mark-ring
+                                      global-mark-ring
+                                      search-ring
+                                      regexp-search-ring
+                                      command-history
+                                      extended-command-history))
 
 ;; %% session
-(setq
- desktop-save t
- desktop-restore-eager 1
- desktop-restore-frames nil
- desktop-auto-save-timeout 60
- desktop-load-locked-desktop t)
+(setq desktop-save t
+      desktop-restore-eager 1
+      desktop-restore-frames nil
+      desktop-auto-save-timeout 60
+      desktop-load-locked-desktop t)
 
 (with-eval-after-load 'desktop
-  (mapc
-   (lambda (mode)
-     (push mode desktop-modes-not-to-save))
-   '(eww-mode
-     Info-mode
-     magit-mode
-     magit-log-mode
-     dired-mode
-     comint-mode
-     doc-view-mode
-     elfeed-search-mode)))
+  (mapc (lambda (mode)
+          (push mode desktop-modes-not-to-save))
+        '(eww-mode
+          Info-mode
+          magit-mode
+          magit-log-mode
+          dired-mode
+          comint-mode
+          doc-view-mode
+          elfeed-search-mode)))
 
 ;; %% tramp speed up
-(setq
- tramp-verbose 1
- tramp-chunksize 2000
- tramp-default-method "ssh"
- remote-file-name-inhibit-locks t
- remote-file-name-inhibit-cache nil
- remote-file-name-access-timeout 2
- remote-file-name-inhibit-auto-save t)
+(setq tramp-verbose 1
+      tramp-chunksize 2000
+      tramp-default-method "ssh"
+      remote-file-name-inhibit-locks t
+      remote-file-name-inhibit-cache nil
+      remote-file-name-access-timeout 2
+      remote-file-name-inhibit-auto-save t)
 
-(setq
- vc-handled-backends '(Git)
- vc-git-diff-switches '("--histogram")
- vc-ignore-dir-regexp
- (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
+(setq vc-handled-backends '(Git)
+      vc-git-diff-switches '("--histogram")
+      vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
 
 ;; %% long line
-(setq
- bidi-inhibit-bpa t
- long-line-threshold 1000
- syntax-wholeline-max 1000
- large-hscroll-threshold 1000)
+(setq bidi-inhibit-bpa t
+      long-line-threshold 1000
+      syntax-wholeline-max 1000
+      large-hscroll-threshold 1000)
 
-(setq-default
- bidi-display-reordering nil
- bidi-paragraph-direction 'left-to-right)
-
-(add-hook 'after-init-hook 'global-so-long-mode)
+(setq-default bidi-display-reordering nil
+              bidi-paragraph-direction 'left-to-right)
 
 ;; %% calendar
-(setq
- calendar-holidays
- '((holiday-chinese 12 30 "春节")
-   (holiday-chinese 5 5   "端午节")
-   (holiday-chinese 1 15  "元宵节")
-   (holiday-chinese 7 7   "七夕节")
-   (holiday-chinese 9 9   "重阳节")
-   (holiday-chinese 8 15  "中秋节")
-   (holiday-fixed 1 1     "元旦")
-   (holiday-fixed 10 1    "国庆节")
-   (holiday-fixed 3 8     "妇女节")
-   (holiday-fixed 5 1     "劳动节")
-   (holiday-fixed 5 4     "青年节")
-   (holiday-fixed 6 1     "儿童节")
-   (holiday-fixed 9 10    "教师节")
-   (holiday-fixed 2 14    "情人节")
-   (holiday-float 5 0 2   "母亲节")
-   (holiday-float 6 0 3   "父亲节")
-   (holiday-float 11 4 4  "感恩节")
-   (holiday-fixed 12 25   "圣诞节")))
+(setq calendar-holidays '((holiday-chinese 12 30 "春节")
+                          (holiday-chinese 5 5   "端午节")
+                          (holiday-chinese 1 15  "元宵节")
+                          (holiday-chinese 7 7   "七夕节")
+                          (holiday-chinese 9 9   "重阳节")
+                          (holiday-chinese 8 15  "中秋节")
+                          (holiday-fixed 1 1     "元旦")
+                          (holiday-fixed 10 1    "国庆节")
+                          (holiday-fixed 3 8     "妇女节")
+                          (holiday-fixed 5 1     "劳动节")
+                          (holiday-fixed 5 4     "青年节")
+                          (holiday-fixed 6 1     "儿童节")
+                          (holiday-fixed 9 10    "教师节")
+                          (holiday-fixed 2 14    "情人节")
+                          (holiday-float 5 0 2   "母亲节")
+                          (holiday-float 6 0 3   "父亲节")
+                          (holiday-float 11 4 4  "感恩节")
+                          (holiday-fixed 12 25   "圣诞节")))
 
-(setq
- appt-audible t
- appt-display-interval 10
- appt-display-duration 5
- appt-display-format 'window
- appt-message-warning-time 20)
-(add-hook 'emacs-startup-hook 'appt-activate)
+(setq appt-audible t
+      appt-display-interval 10
+      appt-display-duration 5
+      appt-display-format 'window
+      appt-message-warning-time 20)
 
-(setq
- calendar-latitude +30.67
- calendar-longitude +104.07
- calendar-date-style 'iso
- calendar-week-start-day 1
- calendar-mode-line-format nil
- calendar-mark-holidays-flag t
- calendar-mark-diary-entries-flag nil
- calendar-chinese-celestial-stem
- ["甲" "乙" "丙" "丁" "戊" "己" "庚" "辛" "壬" "癸"]
- calendar-chinese-terrestrial-branch
- ["子" "丑" "寅" "卯" "辰" "巳" "午" "未" "申" "酉" "戌" "亥"])
+(add-hook 'emacs-startup-hook #'appt-activate)
 
-(add-hook 'calendar-today-visible-hook 'calendar-mark-today)
+(setq calendar-latitude +30.67
+      calendar-longitude +104.07
+      calendar-date-style 'iso
+      calendar-week-start-day 1
+      calendar-mode-line-format nil
+      calendar-mark-holidays-flag t
+      calendar-mark-diary-entries-flag nil
+      calendar-chinese-celestial-stem
+      ["甲" "乙" "丙" "丁" "戊" "己" "庚" "辛" "壬" "癸"]
+      calendar-chinese-terrestrial-branch
+      ["子" "丑" "寅" "卯" "辰" "巳" "午" "未" "申" "酉" "戌" "亥"])
+
+(add-hook 'calendar-today-visible-hook #'calendar-mark-today)
 
 ;; %% os specific settings stay here
-(cond
- (IS-MAC
-  (setq
-   mac-option-modifier  'meta
-   mac-command-modifier 'super
-   ns-function-modifier 'hyper
-   ns-use-thin-smoothing t
-   ns-use-native-fullscreen nil))
- (IS-WIN
-  (setq
-   w32-apps-modifier 'hyper
-   w32-lwindow-modifier 'super)))
+(cond (IS-MAC
+       (setq mac-option-modifier  'meta
+             mac-command-modifier 'super
+             ns-function-modifier 'hyper
+             ns-use-thin-smoothing t
+             ns-use-native-fullscreen nil))
+      (IS-WIN
+       (setq w32-apps-modifier 'hyper
+             w32-lwindow-modifier 'super)))
 
 (ffap-bindings)
 
 ;; %% hook
 (defun yx/text-mode-setup ()
-  (setq-local
-   word-wrap t
-   word-wrap-by-category t)
+  (setq-local word-wrap t
+              line-spacing 0.15)
   (superword-mode          1)
   (visual-line-mode        1)
   (goto-address-mode       1)
@@ -735,6 +649,7 @@
 
 (defun yx/global-mirror-mode-toggle ()
   (repeat-mode            1)
+  (savehist-mode          1)
   (save-place-mode        1)
   (desktop-save-mode     -1)
   (blink-cursor-mode     -1)
@@ -742,14 +657,15 @@
   (auto-compression-mode  1)
   (delete-selection-mode  1)
   (auto-save-visited-mode 1)
+  (global-so-long-mode    1)
   (mouse-avoidance-mode 'cat-and-mouse)
   (unless (display-graphic-p)
     (xterm-mouse-mode 1))
+  (global-auto-revert-mode 1)
   (pixel-scroll-precision-mode 1)
   (minibuffer-depth-indicate-mode 1)
   (auth-source-pass-enable)
-  (windmove-default-keybindings 'control)
-  )
+  (windmove-default-keybindings 'control))
 
 (add-hook 'text-mode 'yx/text-mode-setup)
 (add-hook 'after-init-hook 'yx/global-mirror-mode-toggle)
@@ -773,13 +689,12 @@
 (define-repeat-map puni-expand-region
   ("+" puni-expand-region
    "-" puni-contract-region)
-  (:enter
-   mark-word
-   mark-sexp
-   mark-defun
-   puni-mark-sexp-at-point
-   puni-mark-sexp-around-point
-   puni-mark-list-around-point))
+  (:enter mark-word
+          mark-sexp
+          mark-defun
+          puni-mark-sexp-at-point
+          puni-mark-sexp-around-point
+          puni-mark-list-around-point))
 
 (define-repeat-map org-heading-navigate
   ("u" outline-up-heading
@@ -800,38 +715,6 @@
      org-mode-map
      "jh" 'avy-org-goto-heading-timer)))
 
-(bind-keys
- ([remap move-beginning-of-line]        . crux-move-beginning-of-line) ; C-a
- ([remap goto-line]                     . consult-goto-line) ;M-g g
- ([remap switch-to-buffer]              . consult-buffer) ; C-x b
- ([remap list-buffers]                  . ibuffer) ; C-x C-b
- ([remap repeat-complex-command]        . consult-complex-command) ; C-x M-:
- ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
- ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame)
- ([remap project-switch-to-buffer]      . consult-project-buffer) ; C-x p b
- ([remap yank-pop]                      . consult-yank-pop) ;M-y
- ([remap bookmark-jump]                 . consult-bookmark) ;C-x r b
- ([remap imenu]                         . consult-imenu) ;M-g i
- ([remap describe-function]             . helpful-callable) ; C-h f
- ([remap describe-key]                  . helpful-key) ; C-h k
- ([remap describe-command]              . helpful-command) ; C-h x
- ([remap describe-variable]             . helpful-variable) ; C-h v
- ([remap list-directory]                . zoxide-travel) ; C-x C-d
- ([remap dired-at-point]                . consult-dir) ; C-x d
- ([remap dabbrev-expand]                . hippie-expand) ; M-/
- ([remap comment-dwim]                  . yx/comment-dwim) ; M-;
- ([remap keyboard-quit]                 . yx/keyboard-quit-dwim) ; C-g
- ([remap kill-buffer]                   . yx/kill-buffer-dwim) ; C-x k
- ([remap save-buffers-kill-emacs]       . delete-frame) ; s-q
- ([remap open-line]                     . crux-smart-open-line) ; C-o
- ([remap fill-paragraph]                . yx/fill-unfill) ; M-q
- ([remap upcase-word]                   . upcase-dwim) ; M-u
- ([remap downcase-word]                 . downcase-dwim) ; M-l
- ([remap capitalize-word]               . capitalize-dwim) ; M-c
- ([remap goto-char]                     . avy-goto-char-timer) ; M-g c
- ([remap suspend-frame]                 . repeat) ; C-z
- )
-
 (defvar-keymap yx/app-prefix-map
   :doc "Keymap for app"
   "g" #'gnus
@@ -846,106 +729,136 @@
   "p" #'package-list-packages)
 (keymap-global-set "s-a" yx/app-prefix-map)
 
-(bind-keys
- ("C-<f5>"    . dape)
- ("<f5>"      . quickrun)
- ("<f10>"     . yx/eshell-here)
- ("s-s"       . yx/transient-global-simple)
- ("s-/"       . transform-previous-char)
- ("s-r"       . consult-recent-file)
- ("s-t"       . tab-bar-new-tab)
- ("s-j"       . avy-goto-char-timer)
- ("s-d"       . dirvish-side)
- ("s-o"       . ace-window)
- ("s-w"       . tabspaces-close-workspace)
- ("s-<right>" . ns-next-frame)
- ("s-<left>"  . ns-prev-frame)
- ("s-]"       . tab-next)
- ("s-["       . tab-previous)
- ("C-;"       . iedit-mode)
- ("C-."       . embark-act)
- ("C-,"       . embark-dwim)
- ("C-/"       . undo-only)
- ("C-^"       . crux-top-join-line)
- ("C-M-/"     . vundo)
- ("C-#"       . consult-register-load)
- ("M-#"       . consult-register-store)
- ("C-c #"     . consult-register)
- ("M-["       . bs-cycle-previous)
- ("M-]"       . bs-cycle-next)
- ("M-o"       . duplicate-dwim)
- ("M-z"       . avy-zap-to-char-dwim)
- ("M-Z"       . avy-zap-up-to-char-dwim)
- ("M-0"       . delete-window)
- ;; M-' surround-keymap
- ("M-g ;"     . goto-last-change)
- ("M-g a"     . consult-org-agenda)
- ("M-g M"     . consult-man)
- ("M-g I"     . consult-info)
- ("M-g M-i"   . consult-imenu-multi)
- ("M-g M-f"   . consult-flymake)
- ("M-g M-e"   . consult-compile-error)
- ("M-g o"     . consult-outline)
- ("M-g k"     . consult-kmacro)
- ("M-g m"     . consult-mark)
- ("M-g M-m"   . consult-global-mark)
- ("M-g l"     . avy-goto-line)
- ("M-g w"     . avy-goto-word-0)
- ("M-s t"     . yx/hl-todo-rg-project)
- ("M-s M-t"   . hl-todo-occur)
- ("M-s f"     . consult-fd)
- ("M-s M-h"   . symbol-overlay-put)
- ("M-s l"     . consult-line)
- ("M-s M l"   . consult-line-multi)
- ("M-s k"     . consult-focus-lines)
- ("M-s M-k"   . consult-keep-lines)
- ("M-s g"     . consult-grep)
- ("M-s M-g"   . consult-git-grep)
- ("M-s r"     . consult-ripgrep)
- ("M-s s"     . color-rg-search-input)
- ("M-s M-s"   . color-rg-search-symbol)
- ("M-s p"     . color-rg-search-input-in-project)
- ("M-s M-p"   . color-rg-search-symbol-in-project)
- ("C-c ;"     . flyspell-correct-next)
- ("C-c k"     . kill-buffer-and-window)
- ("C-c v"     . magit-file-dispatch)
- ("C-c C-v"   . magit-dispatch)
- ("C-c C-d"   . helpful-at-point)
- ("C-c a"     . org-agenda)
- ("C-c c"     . org-capture)
- ("C-c l"     . org-store-link)
- ("C-c b"     . tabspaces-switch-to-buffer)
- ("C-c d"     . bing-dict-brief)
- ("C-c r"     . query-replace-regexp)
- ("C-c z"     . hs-toggle-hiding)
- ("C-c Z"     . hs-show-all)
- ("C-c f"     . dirvish-fd)
- ("C-x a a"   . align)
- ("C-x a r"   . align-regexp)
- ("C-x / /"   . webjump)
- ("C-x / o"   . browse-url-at-point)
- ("C-x / a"   . ace-link-addr)
- ("C-x / l"   . ace-link)
- ("C-c w o"   . burly-open-bookmark)
- ("C-c w r"   . burly-reset-tab)
- ("C-c w w"   . burly-bookmark-windows)
- ("C-c w f"   . burly-bookmark-frames)
- ("C-c n c"   . denote)
- ("C-c n t"   . denote-template)
- ("C-c n C-c" . citar-create-note)
- ("C-c n C-o" . citar-denote-dwim)
- ("C-c n n"   . denote-open-or-create)
- ("C-c n i"   . denote-link-or-create)
- ("C-c n l"   . denote-backlinks)
- ("C-c n f"   . denote-find-link)
- ("C-c n C-f" . denote-org-dblock-insert-links)
- ("C-c n b"   . denote-find-backlink)
- ("C-c n C-b" . denote-org-dblock-insert-backlinks)
- ("C-c n t"   . org-transclusion-add)
- ("C-c n C-t" . org-transclusion-add-all)
- ("C-h b"     . embark-bindings)
- ("C-h C-m"   . which-key-show-full-major-mode)
- ("C-h B"     . embark-bindings-at-point))
+(bind-keys ([remap move-beginning-of-line]        . crux-move-beginning-of-line) ; C-a
+           ([remap goto-line]                     . consult-goto-line) ;M-g g
+           ([remap switch-to-buffer]              . consult-buffer) ; C-x b
+           ([remap list-buffers]                  . ibuffer) ; C-x C-b
+           ([remap repeat-complex-command]        . consult-complex-command) ; C-x M-:
+           ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
+           ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame)
+           ([remap project-switch-to-buffer]      . consult-project-buffer) ; C-x p b
+           ([remap yank-pop]                      . consult-yank-pop) ;M-y
+           ([remap bookmark-jump]                 . consult-bookmark) ;C-x r b
+           ([remap imenu]                         . consult-imenu) ;M-g i
+           ([remap describe-function]             . helpful-callable) ; C-h f
+           ([remap describe-key]                  . helpful-key) ; C-h k
+           ([remap describe-command]              . helpful-command) ; C-h x
+           ([remap describe-variable]             . helpful-variable) ; C-h v
+           ([remap list-directory]                . zoxide-travel) ; C-x C-d
+           ([remap dired-at-point]                . consult-dir) ; C-x d
+           ([remap dabbrev-expand]                . hippie-expand) ; M-/
+           ([remap comment-dwim]                  . yx/comment-dwim) ; M-;
+           ([remap keyboard-quit]                 . yx/keyboard-quit-dwim) ; C-g
+           ([remap kill-buffer]                   . yx/kill-buffer-dwim) ; C-x k
+           ([remap save-buffers-kill-emacs]       . delete-frame) ; s-q
+           ([remap open-line]                     . crux-smart-open-line) ; C-o
+           ([remap fill-paragraph]                . yx/fill-unfill) ; M-q
+           ([remap upcase-word]                   . upcase-dwim) ; M-u
+           ([remap downcase-word]                 . downcase-dwim) ; M-l
+           ([remap capitalize-word]               . capitalize-dwim) ; M-c
+           ([remap goto-char]                     . avy-goto-char-timer) ; M-g c
+           ([remap suspend-frame]                 . repeat) ; C-z
+           )
+
+(bind-keys ("C-<f5>"    . dape)
+           ("<f5>"      . quickrun)
+           ("<f10>"     . yx/eshell-here)
+           ("s-s"       . yx/transient-global-simple)
+           ("s-/"       . transform-previous-char)
+           ("s-r"       . consult-recent-file)
+           ("s-t"       . tab-bar-new-tab)
+           ("s-j"       . avy-goto-char-timer)
+           ("s-d"       . dirvish-side)
+           ("s-o"       . ace-window)
+           ("s-w"       . tabspaces-close-workspace)
+           ("s-<right>" . ns-next-frame)
+           ("s-<left>"  . ns-prev-frame)
+           ("s-]"       . tab-next)
+           ("s-["       . tab-previous)
+           ("C-;"       . iedit-mode)
+           ("C-."       . embark-act)
+           ("C-,"       . embark-dwim)
+           ("C-/"       . undo-only)
+           ("C-^"       . crux-top-join-line)
+           ("C-M-/"     . vundo)
+           ("C-#"       . consult-register-load)
+           ("M-#"       . consult-register-store)
+           ("C-c #"     . consult-register)
+           ("M-["       . bs-cycle-previous)
+           ("M-]"       . bs-cycle-next)
+           ("M-o"       . duplicate-dwim)
+           ("M-z"       . avy-zap-to-char-dwim)
+           ("M-Z"       . avy-zap-up-to-char-dwim)
+           ("M-0"       . delete-window)
+           ;; M-' surround-keymap
+           ("M-g ;"     . goto-last-change)
+           ("M-g a"     . consult-org-agenda)
+           ("M-g M"     . consult-man)
+           ("M-g I"     . consult-info)
+           ("M-g M-i"   . consult-imenu-multi)
+           ("M-g M-f"   . consult-flymake)
+           ("M-g M-e"   . consult-compile-error)
+           ("M-g o"     . consult-outline)
+           ("M-g k"     . consult-kmacro)
+           ("M-g m"     . consult-mark)
+           ("M-g M-m"   . consult-global-mark)
+           ("M-g l"     . avy-goto-line)
+           ("M-g w"     . avy-goto-word-0)
+           ("M-s t"     . yx/hl-todo-rg-project)
+           ("M-s M-t"   . hl-todo-occur)
+           ("M-s f"     . consult-fd)
+           ("M-s M-h"   . symbol-overlay-put)
+           ("M-s l"     . consult-line)
+           ("M-s M l"   . consult-line-multi)
+           ("M-s k"     . consult-focus-lines)
+           ("M-s M-k"   . consult-keep-lines)
+           ("M-s g"     . consult-grep)
+           ("M-s M-g"   . consult-git-grep)
+           ("M-s r"     . consult-ripgrep)
+           ("M-s s"     . color-rg-search-input)
+           ("M-s M-s"   . color-rg-search-symbol)
+           ("M-s p"     . color-rg-search-input-in-project)
+           ("M-s M-p"   . color-rg-search-symbol-in-project)
+           ("C-c ;"     . flyspell-correct-next)
+           ("C-c k"     . kill-buffer-and-window)
+           ("C-c v"     . magit-file-dispatch)
+           ("C-c C-v"   . magit-dispatch)
+           ("C-c C-d"   . helpful-at-point)
+           ("C-c a"     . org-agenda)
+           ("C-c c"     . org-capture)
+           ("C-c l"     . org-store-link)
+           ("C-c b"     . tabspaces-switch-to-buffer)
+           ("C-c d"     . bing-dict-brief)
+           ("C-c r"     . query-replace-regexp)
+           ("C-c z"     . hs-toggle-hiding)
+           ("C-c Z"     . hs-show-all)
+           ("C-c f"     . dirvish-fd)
+           ("C-x a a"   . align)
+           ("C-x a r"   . align-regexp)
+           ("C-x / /"   . webjump)
+           ("C-x / o"   . browse-url-at-point)
+           ("C-x / a"   . ace-link-addr)
+           ("C-x / l"   . ace-link)
+           ("C-c w o"   . burly-open-bookmark)
+           ("C-c w r"   . burly-reset-tab)
+           ("C-c w w"   . burly-bookmark-windows)
+           ("C-c w f"   . burly-bookmark-frames)
+           ("C-c n c"   . denote)
+           ("C-c n t"   . denote-template)
+           ("C-c n C-c" . citar-create-note)
+           ("C-c n C-o" . citar-denote-dwim)
+           ("C-c n n"   . denote-open-or-create)
+           ("C-c n i"   . denote-link-or-create)
+           ("C-c n l"   . denote-backlinks)
+           ("C-c n f"   . denote-find-link)
+           ("C-c n C-f" . denote-org-dblock-insert-links)
+           ("C-c n b"   . denote-find-backlink)
+           ("C-c n C-b" . denote-org-dblock-insert-backlinks)
+           ("C-c n t"   . org-transclusion-add)
+           ("C-c n C-t" . org-transclusion-add-all)
+           ("C-h b"     . embark-bindings)
+           ("C-h C-m"   . which-key-show-full-major-mode)
+           ("C-h B"     . embark-bindings-at-point))
 
 ;; %% transient key
 (with-eval-after-load 'transient
@@ -976,17 +889,15 @@
     ("t l" "command-log" clm/toggle-command-log-buffer)]])
 
 ;;; Ui
-(setq
- x-stretch-cursor nil
- x-underline-at-descent-line t
- inhibit-splash-screen t
- inhibit-startup-message t)
+(setq x-stretch-cursor nil
+      x-underline-at-descent-line t
+      inhibit-splash-screen t
+      inhibit-startup-message t)
 
 (when IS-MAC (menu-bar-mode 1))
 
 (setq project-mode-line t
       which-func-display 'header)
-;; (add-hook 'emacs-startup-hook 'which-function-mode)
 
 ;; %% font
 (defvar yx/font-height 150)
@@ -1009,8 +920,7 @@
            return (set-fontset-font t 'symbol (font-spec :family font) nil 'prepend))
   (cl-loop for font in '("Noto Color Emoji" "Apple Color Emoji" "Segoe UI Emoji")
            when (x-list-fonts font)
-           return (set-fontset-font t 'emoji  (font-spec :family font) nil 'prepend))
-  )
+           return (set-fontset-font t 'emoji  (font-spec :family font) nil 'prepend)))
 
 (add-hook 'window-setup-hook 'yx/setup-fonts)
 (add-hook 'server-after-make-frame-hook 'yx/setup-fonts)
@@ -1020,17 +930,14 @@
       window-divider-default-places 'bottom-only)
 (add-hook 'after-init-hook 'window-divider-mode)
 
-(setq
- modus-themes-mixed-fonts t
- modus-themes-variable-pitch-ui t
- modus-themes-italic-constructs t
- modus-themes-common-palette-overrides
- '((fringe unspecifield)
-   (fg-line-number-active fg-main)
-   (bg-line-number-active unspecifield)
-   (fg-line-number-inactive "gray50")
-   (bg-line-number-inactive unspecifield))
- )
+(setq modus-themes-mixed-fonts t
+      modus-themes-variable-pitch-ui t
+      modus-themes-italic-constructs t
+      modus-themes-common-palette-overrides '((fringe unspecifield)
+                                              (fg-line-number-active fg-main)
+                                              (bg-line-number-active unspecifield)
+                                              (fg-line-number-inactive "gray50")
+                                              (bg-line-number-inactive unspecifield)))
 
 (use-package ef-themes
   :init
@@ -1052,87 +959,82 @@
   :hook ((prog-mode org-mode) . breadcrumb-local-mode))
 
 ;;; Layout
-(setq
- ns-pop-up-frames nil
- window-sides-vertical nil
- split-height-threshold 30
- split-width-threshold 125
- even-window-sizes 'height-only
- frame-resize-pixelwise t
- window-resize-pixelwise t
- window-combination-resize t
- fit-frame-to-buffer nil
- fit-window-to-buffer-horizontally nil)
+(setq ns-pop-up-frames nil
+      window-sides-vertical nil
+      split-height-threshold 30
+      split-width-threshold 125
+      even-window-sizes 'height-only
+      frame-resize-pixelwise t
+      window-resize-pixelwise t
+      window-combination-resize t
+      fit-frame-to-buffer nil
+      fit-window-to-buffer-horizontally nil)
 
 
-(setq
- display-buffer-alist
- '(("\\`\\*[hH]elp"
-    (display-buffer-reuse-mode-window
-     display-buffer-in-direction)
-    (window . root)
-    (window-height . 0.4)
-    (direction . bottom)
-    (mode . (help-mode helpful-mode)))
-   ("\\`\\*Async Shell Command\\*\\'"
-    (display-buffer-no-window)
-    (allow-no-window . t))
-   ("\\`\\(\\*Org L\\|\\*Org Select\\|CAPTURE\\)"
-    (display-buffer-reuse-mode-window
-     display-buffer-below-selected))
-   ("\\`\\*Embark"
-    (display-buffer-reuse-mode-window
-     display-buffer-below-selected)
-    (window-height . 0.4)
-    (window-parameters . ((no-other-window . t)
-                          (mode-line-format . none))))
-   ("\\`\\(\\*Calendar\\|\\*Bookmark\\)"
-    (display-buffer-reuse-mode-window
-     display-buffer-below-selected)
-    (dedicated . t)
-    (window-height . fit-window-to-buffer))
-   ("\\`\\(\\*Proced\\*\\|\\*Ibuffer\\|\\*Man\\|\\*WoMan\\|\\*info\\|magit\\|\\*Org Agenda\\)"
-    (display-buffer-full-frame))
-   ))
+(setq display-buffer-alist
+      '(("\\`\\*[hH]elp"
+         (display-buffer-reuse-mode-window
+          display-buffer-in-direction)
+         (window . root)
+         (window-height . 0.4)
+         (direction . bottom)
+         (mode . (help-mode helpful-mode)))
+        ("\\`\\*Async Shell Command\\*\\'"
+         (display-buffer-no-window)
+         (allow-no-window . t))
+        ("\\`\\(\\*Org L\\|\\*Org Select\\|CAPTURE\\)"
+         (display-buffer-reuse-mode-window
+          display-buffer-below-selected))
+        ("\\`\\*Embark"
+         (display-buffer-reuse-mode-window
+          display-buffer-below-selected)
+         (window-height . 0.4)
+         (window-parameters . ((no-other-window . t)
+                               (mode-line-format . none))))
+        ("\\`\\(\\*Calendar\\|\\*Bookmark\\)"
+         (display-buffer-reuse-mode-window
+          display-buffer-below-selected)
+         (dedicated . t)
+         (window-height . fit-window-to-buffer))
+        ("\\`\\(\\*Proced\\*\\|\\*Ibuffer\\|\\*Man\\|\\*WoMan\\|\\*info\\|magit\\|\\*Org Agenda\\)"
+         (display-buffer-full-frame))))
 
-(add-to-list
- 'display-buffer-alist
- `(,(yx/prefixs-to-regex
-     "*R"
-     "*julia"
-     "*lua"
-     "*Lua"
-     "*Python"
-     "*eshell"
-     "*Eshell"
-     "*term"
-     "*grep*"
-     "*Occur"
-     "*Backtrac"
-     "*Flymake"
-     "*Error"
-     "*devdocs"
-     "*Messages"
-     "*color-rg")
-   (display-buffer-reuse-mode-window
-    display-buffer-in-side-window)
-   (side . bottom)
-   (window-height . 0.4)))
+(add-to-list 'display-buffer-alist
+             `(,(yx/prefixs-to-regex
+                 "*R"
+                 "*julia"
+                 "*lua"
+                 "*Lua"
+                 "*Python"
+                 "*eshell"
+                 "*Eshell"
+                 "*term"
+                 "*grep*"
+                 "*Occur"
+                 "*Backtrac"
+                 "*Flymake"
+                 "*Error"
+                 "*devdocs"
+                 "*Messages"
+                 "*color-rg")
+               (display-buffer-reuse-mode-window
+                display-buffer-in-side-window)
+               (side . bottom)
+               (window-height . 0.4)))
 
-(add-to-list
- 'display-buffer-alist
- `(,(yx/prefixs-to-regex
-     "*vc-git"
-     "*Warnings"
-     "*quickrun"
-     "*Dictionary"
-     "*stardict*"
-     "*Compile-Log*")
-   (display-buffer-reuse-mode-window
-    display-buffer-in-side-window)
-   (side . bottom)
-   (window-height . 0.4)
-   (post-command-select-window . nil)))
+(add-to-list 'display-buffer-alist
+             `(,(yx/prefixs-to-regex
+                 "*vc-git"
+                 "*Warnings"
+                 "*quickrun"
+                 "*Dictionary"
+                 "*stardict*"
+                 "*Compile-Log*")
+               (display-buffer-reuse-mode-window
+                display-buffer-in-side-window)
+               (side . bottom)
+               (window-height . 0.4)
+               (post-command-select-window . nil)))
 
 ;; %% @see http://yummymelon.com/devnull/using-bookmarks-in-emacs-like-you-do-in-web-browsers.html
 (easy-menu-define yx/bookmarks-menu nil
@@ -1153,42 +1055,35 @@
 
 (define-key global-map [menu-bar edit bookmark] nil)
 
-;; %% windows manager
-(setq
- winner-dont-bind-my-keys t
- winner-boring-buffers-regexp "^\\*")
+(setq winner-dont-bind-my-keys t
+      winner-boring-buffers-regexp "^\\*")
 (add-hook 'after-init-hook 'winner-mode)
 (add-hook 'after-init-hook 'temp-buffer-resize-mode)
 
-(setq
- help-window-select t
- help-window-keep-selected t)
+(setq buffer-quit-function 'winner-undo)
 
-(setq
- switch-to-buffer-in-dedicated-window nil
- switch-to-buffer-obey-display-actions t
- switch-to-buffer-preserve-window-point t
- switch-to-prev-buffer-skip 'visible
- switch-to-prev-buffer-skip-regexp "^\\*\\|^magit.*")
+(setq switch-to-buffer-in-dedicated-window nil
+      switch-to-buffer-obey-display-actions t
+      switch-to-buffer-preserve-window-point t
+      switch-to-prev-buffer-skip 'visible
+      switch-to-prev-buffer-skip-regexp "^\\*\\|^magit.*")
 
 (use-package burly
   :hook (after-init . burly-tabs-mode))
 
 ;; %% tabbar
-(setq
- tab-bar-show t
- tab-bar-format
- '(tab-bar-format-menu-bar
-   tab-bar-format-tabs
-   tab-bar-separator
-   tab-bar-format-add-tab)
- tab-bar-tab-hints t
- tab-bar-new-tab-to 'right
- tab-bar-new-button-show t
- tab-bar-close-button-show nil
- tab-bar-new-tab-choice "*scratch*"
- tab-bar-tab-name-truncated-max 20
- tab-bar-select-tab-modifiers '(super))
+(setq tab-bar-show t
+      tab-bar-format '(tab-bar-format-menu-bar
+                       tab-bar-format-tabs
+                       tab-bar-separator
+                       tab-bar-format-add-tab)
+      tab-bar-tab-hints t
+      tab-bar-new-tab-to 'right
+      tab-bar-new-button-show t
+      tab-bar-close-button-show nil
+      tab-bar-new-tab-choice "*scratch*"
+      tab-bar-tab-name-truncated-max 20
+      tab-bar-select-tab-modifiers '(super))
 
 (defun yx/tab-bar-setup()
   (tab-bar-mode 1)
@@ -1202,18 +1097,16 @@
   :ensure nil
   :defer 2
   :init
-  (setq
-   speedbar-use-images nil
-   sr-speedbar-width 30
-   sr-speedbar-skip-other-window-p t))
+  (setq speedbar-use-images nil
+        sr-speedbar-width 30
+        sr-speedbar-skip-other-window-p t))
 
 (use-package ace-window
   :init
-  (setq
-   aw-scope 'frame
-   aw-background nil
-   aw-dispatch-always t
-   aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+  (setq aw-scope 'frame
+        aw-background nil
+        aw-dispatch-always t
+        aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
 ;; %% tabspaces
 (use-package tabspaces
@@ -1228,18 +1121,14 @@
   (tabspaces-session-auto-restore nil)
   (tabspaces-session-file (no-littering-expand-var-file-name "tabsession.el")))
 
-;; %% buffer manager
-(setq buffer-quit-function 'winner-undo)
-
 (use-package zoom
   :custom
   (zoom-size '(0.618 . 0.618)))
 
-(setq
- ibuffer-expert t
- ibuffer-display-summary nil
- ibuffer-show-empty-filter-groups nil
- ibuffer-default-sorting-mode 'major-mode)
+(setq ibuffer-expert t
+      ibuffer-display-summary nil
+      ibuffer-show-empty-filter-groups nil
+      ibuffer-default-sorting-mode 'major-mode)
 
 (defun yx/ibuffer-setup ()
   (hl-line-mode 1)
@@ -1257,9 +1146,8 @@
          ("M-`" . popper-cycle)
          ("C-M-`" . popper-toggle-type))
   :config
-  (setq
-   popper-display-control 'user
-   popper-group-function #'popper-group-by-directory)
+  (setq popper-display-control 'user
+        popper-group-function #'popper-group-by-directory)
   (setq popper-reference-buffers
         '("\\*julia\\*$"
           "\\*color-rg\\*$"
@@ -1268,11 +1156,9 @@
           help-mode
           helpful-mode
           occur-mode
-          color-rg-mode
-          ))
+          color-rg-mode))
   (popper-mode 1)
-  (popper-echo-mode 1)
-  )
+  (popper-echo-mode 1))
 
 ;;; Completion
 (use-package vertico
@@ -1286,23 +1172,20 @@
               ("M-q" . vertico-quick-insert)
               ("RET" . vertico-directory-enter)
               ("DEL" . vertico-directory-delete-char))
-  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)
-  )
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
 (use-package orderless
   :custom
   (completion-styles '(basic substring initials flex orderless))
   (completion-category-defaults nil)
-  (completion-category-overrides
-   '((file (styles . (basic partial-completion orderless)))
-     (bookmark (styles . (basic substring)))
-     (library (styles . (basic substring)))
-     (embark-keybinding (styles . (basic substring)))
-     (imenu (styles . (basic substring orderless)))
-     (consult-location (styles . (basic substring orderless)))
-     (kill-ring (styles . (emacs22 orderless)))
-     (eglot (styles . (emacs22 substring orderless)))))
-  )
+  (completion-category-overrides '((file (styles . (basic partial-completion orderless)))
+                                   (bookmark (styles . (basic substring)))
+                                   (library (styles . (basic substring)))
+                                   (embark-keybinding (styles . (basic substring)))
+                                   (imenu (styles . (basic substring orderless)))
+                                   (consult-location (styles . (basic substring orderless)))
+                                   (kill-ring (styles . (emacs22 orderless)))
+                                   (eglot (styles . (emacs22 substring orderless))))))
 
 ;; %% embark
 (use-package embark
@@ -1344,11 +1227,10 @@
 ;; %% consult
 (use-package consult
   :config
-  (setq
-   consult-narrow-key "<"
-   xref-show-xrefs-function #'consult-xref
-   xref-show-definitions-function #'consult-xref
-   consult-ripgrep-args (concat consult-ripgrep-args " --hidden"))
+  (setq consult-narrow-key "<"
+        xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref
+        consult-ripgrep-args (concat consult-ripgrep-args " --hidden"))
   (consult-customize
    consult-theme :preview-key '(:debounce 0.2 any)
    consult-bookmark
@@ -1364,8 +1246,7 @@
   :after consult
   :bind (:map vertico-map
               ("C-x C-d" . consult-dir)
-              ("C-x C-j" . consult-dir-jump-file))
-  )
+              ("C-x C-j" . consult-dir-jump-file)))
 
 ;; %% corfu
 (use-package corfu
@@ -1379,7 +1260,8 @@
   (corfu-history-mode 1)
   (corfu-indexed-mode 1)
   (corfu-popupinfo-mode 1)
-  :bind (:map corfu-map ("M-q" . corfu-quick-insert)))
+  :bind (:map corfu-map
+              ("M-q" . corfu-quick-insert)))
 
 (use-package cape
   :init
@@ -1431,15 +1313,6 @@
   :custom
   (engine/browser-function 'browse-url-generic)
   :config
-  (yx/define-enines
-   '(("c" "https://github.com/search?q=%s")
-     ("g" "https://www.google.com/search?q=%s")
-     ("b" "https://cn.bing.com/search?q=%s&ensearch=1")
-     ("w" "https://zh.wikipedia.org/w/index.php?search=%s")
-     ("a" "https://www.wolframalpha.com/input/?i=%s")
-     ("z" "https://www.zhihu.com/search?q=%s")
-     ("d" "https://search.douban.com/book/subject_search?search_text=%s")))
-  :preface
   (defun yx/extract-name-from-url (url)
     (let* ((host (url-host (url-generic-parse-url url)))
            (host-trimmed (split-string host  "\\.")))
@@ -1450,7 +1323,15 @@
              (url  (cadr engi))
              (name (yx/extract-name-from-url url))
              (symn (make-symbol name)))
-        (eval `(defengine ,symn ,url :keybinding ,key))))))
+        (eval `(defengine ,symn ,url :keybinding ,key)))))
+  (yx/define-enines
+   '(("c" "https://github.com/search?q=%s")
+     ("g" "https://www.google.com/search?q=%s")
+     ("b" "https://cn.bing.com/search?q=%s&ensearch=1")
+     ("w" "https://zh.wikipedia.org/w/index.php?search=%s")
+     ("a" "https://www.wolframalpha.com/input/?i=%s")
+     ("z" "https://www.zhihu.com/search?q=%s")
+     ("d" "https://search.douban.com/book/subject_search?search_text=%s"))))
 
 (use-package posframe)
 
@@ -1475,12 +1356,11 @@
   :hook (after-init . ace-link-setup-default))
 
 (use-package helpful
-  :bind
-  (:map helpful-mode-map
-        ("q" . delete-window)
-        ("b" . yx/helpful-next-buffer)
-        ("f" . yx/helpful-prev-buffer))
-  :preface
+  :bind (:map helpful-mode-map
+              ("q" . delete-window)
+              ("b" . yx/helpful-next-buffer)
+              ("f" . yx/helpful-prev-buffer))
+  :config
   (defun yx/helpful-next-buffer ()
     (interactive)
     (cl-letf ((bufname (buffer-name))
@@ -1616,21 +1496,19 @@
   :commands
   (pyim-create-word-from-selection)
   :init
-  (setq
-   default-input-method "pyim"
-   pyim-outcome-trigger  nil
-   pyim-enable-shortcode nil
-   pyim-punctuation-dict nil
-   pyim-page-tooltip 'posframe
-   pyim-dcache-backend 'pyim-dregcach
-   pyim-indicator-list '(pyim-indicator-with-modeline)
-   pyim-dicts '((:name "big-dict" :file "~/.emacs.d/.cache/pyim-bigdict.pyim"))
-   pyim-english-input-switch-functions
-   '(pyim-probe-auto-english
-     pyim-probe-program-mode
-     pyim-probe-isearch-mode
-     pyim-probe-org-latex-mode
-     pyim-probe-org-structure-template))
+  (setq default-input-method "pyim"
+        pyim-outcome-trigger  nil
+        pyim-enable-shortcode nil
+        pyim-punctuation-dict nil
+        pyim-page-tooltip 'posframe
+        pyim-dcache-backend 'pyim-dregcach
+        pyim-indicator-list '(pyim-indicator-with-modeline)
+        pyim-dicts '((:name "big-dict" :file "~/.emacs.d/.cache/pyim-bigdict.pyim"))
+        pyim-english-input-switch-functions '(pyim-probe-auto-english
+                                              pyim-probe-program-mode
+                                              pyim-probe-isearch-mode
+                                              pyim-probe-org-latex-mode
+                                              pyim-probe-org-structure-template))
   :config
   (require 'pyim-dregcache)
   (pyim-default-scheme 'xiaohe-shuangpin)
@@ -1653,10 +1531,6 @@
         bing-dict-cache-auto-save nil
         bing-dict-show-thesaurus 'synonym
         bing-dict-vocabulary-file (no-littering-expand-var-file-name "bing-dict-vocabulary.org"))
-  (add-hook 'eww-mode-hook 'bing-dict-eldoc-mode)
-  (add-hook 'Info-mode-hook 'bing-dict-eldoc-mode)
-  (add-hook 'elfeed-show-hook 'bing-dict-eldoc-mode)
-  :preface
   (defun bing-dict-eldoc-documentation-function ()
     (let ((word (word-at-point)))
       (when (and word (> (length word) 5))
@@ -1671,18 +1545,19 @@
                (eldoc-mode +1))
       (setq-local eldoc-documentation-function #'ignore)
       (eldoc-mode -1)))
-  )
+  (add-hook 'eww-mode-hook 'bing-dict-eldoc-mode)
+  (add-hook 'Info-mode-hook 'bing-dict-eldoc-mode)
+  (add-hook 'elfeed-show-hook 'bing-dict-eldoc-mode))
 
 ;; %% Tools
 (use-package tldr)
 
 (use-package dwim-shell-command
-  :bind
-  (([remap shell-command] . dwim-shell-command)
-   :map dired-mode-map
-   ([remap dired-do-async-shell-command] . dwim-shell-command)
-   ([remap dired-do-shell-command] . dwim-shell-command)
-   ([remap dired-smart-shell-command] . dwim-shell-command)))
+  :bind (([remap shell-command] . dwim-shell-command)
+         :map dired-mode-map
+         ([remap dired-do-async-shell-command] . dwim-shell-command)
+         ([remap dired-do-shell-command] . dwim-shell-command)
+         ([remap dired-smart-shell-command] . dwim-shell-command)))
 
 (use-package outli
   :vc (:url "https://github.com/jdtsmith/outli" :rev :newest)
@@ -1722,9 +1597,8 @@
 
 ;; %% dired+
 (use-package diredfl
-  :hook
-  (dired-mode . diredfl-mode)
-  (dirvish-directory-view-mode . diredfl-mode)
+  :hook ((dired-mode . diredfl-mode)
+         (dirvish-directory-view-mode . diredfl-mode))
   :config
   (set-face-attribute 'diredfl-dir-name nil :bold t))
 
@@ -1772,116 +1646,107 @@
         ("M-j" . dirvish-fd-jump)))
 
 ;;; Gnus
-(setq
- gnus-home-directory "~/.gnus.d/"
- gnus-default-directory gnus-home-directory
- mm-default-directory gnus-home-directory
- message-directory (expand-file-name "Mail/" gnus-home-directory))
+(setq gnus-home-directory "~/.gnus.d/"
+      gnus-default-directory gnus-home-directory
+      mm-default-directory gnus-home-directory
+      message-directory (expand-file-name "Mail/" gnus-home-directory))
 
-(setq
- read-mail-command 'gnus
- message-confirm-send t
- message-from-style 'angles
- message-kill-buffer-on-exit t
- mail-user-agent 'gnus-user-agent
- mail-envelope-from 'header
- mail-specify-envelope-from t
- sendmail-program "/usr/local/bin/msmtp"
- send-mail-function 'message-send-mail-with-sendmail
- message-send-mail-function 'message-send-mail-with-sendmail
- )
+(setq read-mail-command 'gnus
+      message-confirm-send t
+      message-from-style 'angles
+      message-kill-buffer-on-exit t
+      mail-user-agent 'gnus-user-agent
+      mail-envelope-from 'header
+      mail-specify-envelope-from t
+      sendmail-program "/usr/local/bin/msmtp"
+      send-mail-function 'message-send-mail-with-sendmail
+      message-send-mail-function 'message-send-mail-with-sendmail)
 
 (setq mm-inline-large-images t)
 
-(setq
- mml-default-sign-method "pgpmime"
- mml-secure-openpgp-sign-with-sender t)
+(setq mml-default-sign-method "pgpmime"
+      mml-secure-openpgp-sign-with-sender t)
 
 (use-package gnus
   :commands (gnus)
   :ensure nil
   :config
-  (setq
-   mail-sources
-   '((imap
-      :server "imap.qq.com"
-      :port 993
-      :user "yangxue.cs@foxmail.com"
-      :mailbox "INBOX"
-      :fetchflag "\\Seen"
-      :stream tls
-      :dontexpunge t)))
-  (setq
-   gnus-select-method '(nnnil "")
-   gnus-secondary-select-methods
-   '((nnml "foxmail.cs")
-     (nnimap
-      "foxmail.wk"
-      (nnimap-address "imap.qq.com")
-      (nnimap-server-port 993)
-      (nnimap-user "yangxue.wk@foxmail.com")
-      (nnimap-stream ssl)
-      (nnimap-expunge 'nerver)
-      (nnimap-search-engine imap)
-      (nnimap-inbox "INBOX")
-      (nnimap-split-methods default))
-     (nnimap
-      "outlook.cs"
-      (nnimap-user "yangxue.cs@outlook.com")
-      (nnimap-stream ssl)
-      (nnimap-server-port 993)
-      (nnimap-address "outlook.office365.com")
-      (nnimap-expunge 'nerver)
-      (nnimap-search-engine imap)
-      (nnimap-inbox "INBOX")
-      (nnimap-split-methods default))))
-  (setq
-   nnmail-expiry-wait '30
-   nnmail-resplit-incoming t
-   nnmail-split-fancy-match-partial-words t
-   nnmail-split-methods 'nnmail-split-fancy
-   nnmail-split-fancy
-   '(|
-     (: nnmail-split-fancy-with-parent)
-     (to  "yangxue.cs@foxmail.com" "INBOX.foxmail.cs")
-     (to  "yangxue.wk@foxmail.com" "INBOX.foxmail.wk")
-     (to  "yangxue.cs@outlook.com" "INBOX.outlook.cs")
-     (any "emacs-devel@gnu.org"    "INBOX.emacs-devel")
-     (any "emacs-orgmode@gnu.org"  "INBOX.emacs-orgmode")
-     (any "help-gnu-emacs@gnu.org" "INBOX.help-gnu-emacs")
-     "INBOX.Misc"))
+  (setq mail-sources
+        '((imap
+           :server "imap.qq.com"
+           :port 993
+           :user "yangxue.cs@foxmail.com"
+           :mailbox "INBOX"
+           :fetchflag "\\Seen"
+           :stream tls
+           :dontexpunge t)))
+  (setq gnus-select-method '(nnnil "")
+        gnus-secondary-select-methods
+        '((nnml "foxmail.cs")
+          (nnimap
+           "foxmail.wk"
+           (nnimap-address "imap.qq.com")
+           (nnimap-server-port 993)
+           (nnimap-user "yangxue.wk@foxmail.com")
+           (nnimap-stream ssl)
+           (nnimap-expunge 'nerver)
+           (nnimap-search-engine imap)
+           (nnimap-inbox "INBOX")
+           (nnimap-split-methods default))
+          (nnimap
+           "outlook.cs"
+           (nnimap-user "yangxue.cs@outlook.com")
+           (nnimap-stream ssl)
+           (nnimap-server-port 993)
+           (nnimap-address "outlook.office365.com")
+           (nnimap-expunge 'nerver)
+           (nnimap-search-engine imap)
+           (nnimap-inbox "INBOX")
+           (nnimap-split-methods default))))
+  (setq nnmail-expiry-wait '30
+        nnmail-resplit-incoming t
+        nnmail-split-fancy-match-partial-words t
+        nnmail-split-methods 'nnmail-split-fancy
+        nnmail-split-fancy
+        '(|
+          (: nnmail-split-fancy-with-parent)
+          (to  "yangxue.cs@foxmail.com" "INBOX.foxmail.cs")
+          (to  "yangxue.wk@foxmail.com" "INBOX.foxmail.wk")
+          (to  "yangxue.cs@outlook.com" "INBOX.outlook.cs")
+          (any "emacs-devel@gnu.org"    "INBOX.emacs-devel")
+          (any "emacs-orgmode@gnu.org"  "INBOX.emacs-orgmode")
+          (any "help-gnu-emacs@gnu.org" "INBOX.help-gnu-emacs")
+          "INBOX.Misc"))
 
-  (setq
-   gnus-asynchronous t
-   gnus-use-header-prefetch t
-   gnus-use-cache t
-   gnus-use-scoring t
-   gnus-suppress-duplicates t
-   gnus-novice-user nil
-   gnus-expert-user t
-   gnus-interactive-exit 'quiet
-   gnus-inhibit-startup-message t)
-  (setq
-   gnus-save-newsrc-file nil
-   gnus-read-newsrc-file nil
-   gnus-save-killed-list nil
-   gnus-read-active-file nil
-   gnus-use-dribble-file t
-   gnus-always-read-dribble-file t
-   gnus-message-archive-group nil
-   gnus-inhibit-user-auto-expire t
-   gnus-search-use-parsed-queries t
-   gnus-article-browse-delete-temp t
-   gnus-check-new-newsgroups 'ask-server
-   gnus-mime-display-multipart-related-as-mixed t
-   gnus-subscribe-newsgroup-method 'gnus-subscribe-zombies)
-  (setq
-   gnus-cache-remove-articles '(read)
-   gnus-cacheable-groups "^\\(nntp\\|nnimap\\)"
-   gnus-cache-enter-articles '(ticked dormant unread))
+  (setq gnus-asynchronous t
+        gnus-use-header-prefetch t
+        gnus-use-cache t
+        gnus-use-scoring t
+        gnus-suppress-duplicates t
+        gnus-novice-user nil
+        gnus-expert-user t
+        gnus-interactive-exit 'quiet
+        gnus-inhibit-startup-message t)
 
-  (setq
-   nnrss-ignore-article-fields '(description guid pubData dc:creator link))
+  (setq gnus-save-newsrc-file nil
+        gnus-read-newsrc-file nil
+        gnus-save-killed-list nil
+        gnus-read-active-file nil
+        gnus-use-dribble-file t
+        gnus-always-read-dribble-file t
+        gnus-message-archive-group nil
+        gnus-inhibit-user-auto-expire t
+        gnus-search-use-parsed-queries t
+        gnus-article-browse-delete-temp t
+        gnus-check-new-newsgroups 'ask-server
+        gnus-mime-display-multipart-related-as-mixed t
+        gnus-subscribe-newsgroup-method 'gnus-subscribe-zombies)
+
+  (setq gnus-cache-remove-articles '(read)
+        gnus-cacheable-groups "^\\(nntp\\|nnimap\\)"
+        gnus-cache-enter-articles '(ticked dormant unread))
+
+  (setq nnrss-ignore-article-fields '(description guid pubData dc:creator link))
 
   (gnus-demon-add-handler 'gnus-demon-scan-mail nil 10))
 
@@ -1889,90 +1754,82 @@
   :ensure nil
   :hook (gnus-select-group . gnus-group-set-timestamp)
   :config
-  (setq
-   gnus-sum-thread-tree-root            "◉ "
-   gnus-sum-thread-tree-false-root      "◎ "
-   gnus-sum-thread-tree-single-indent   "◌ "
-   gnus-sum-thread-tree-vertical        "| "
-   gnus-sum-thread-tree-indent          "  "
-   gnus-sum-thread-tree-leaf-with-other "+-> "
-   gnus-sum-thread-tree-single-leaf     "`-> "
-   gnus-summary-line-format "%U%R%z%B%[%4L: %-10,10f%] %s\n")
-  (setq
-   gnus-summary-make-false-root 'adopt
-   gnus-summary-ignore-duplicates t
-   gnus-summary-gather-subject-limit 'fuzzy
-   gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
-   gnus-simplify-subject-functions '(gnus-simplify-subject-re gnus-simplify-whitespace))
-  (setq
-   gnus-use-trees t
-   gnus-show-threads t
-   gnus-fetch-old-headers t
-   gnus-tree-minimize-window t
-   gnus-generate-tree-function
-   'gnus-generate-horizontal-tree
-   gnus-build-sparse-threads 'some
-   gnus-fetch-old-ephemeral-headers 2
-   gnus-thread-indent-level 2
-   gnus-thread-hide-subtree nil
-   gnus-thread-sort-functions
-   '(gnus-thread-sort-by-subject
-     gnus-thread-sort-by-most-recent-number))
-  (setq
-   gnus-thread-sort-functions '(gnus-thread-sort-by-most-recent-date)
-   gnus-subthread-sort-functions '(gnus-thread-sort-by-date))
-  (setq
-   gnus-view-pseudos 'automatic
-   gnus-view-pseudos-separately t
-   gnus-view-pseudo-asynchronously t)
-  (setq
-   gnus-auto-select-first t
-   gnus-auto-select-next nil
-   gnus-paging-select-next nil)
+  (setq gnus-sum-thread-tree-root            "◉ "
+        gnus-sum-thread-tree-false-root      "◎ "
+        gnus-sum-thread-tree-single-indent   "◌ "
+        gnus-sum-thread-tree-vertical        "| "
+        gnus-sum-thread-tree-indent          "  "
+        gnus-sum-thread-tree-leaf-with-other "+-> "
+        gnus-sum-thread-tree-single-leaf     "`-> "
+        gnus-summary-line-format "%U%R%z%B%[%4L: %-10,10f%] %s\n")
 
-  (setq
-   gnus-group-sort-function '(gnus-group-sort-by-method)
-   gnus-group-line-format "%M%S%p%P %0{%5y%} %B%{%G%}\n")
+  (setq gnus-summary-make-false-root 'adopt
+        gnus-summary-ignore-duplicates t
+        gnus-summary-gather-subject-limit 'fuzzy
+        gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
+        gnus-simplify-subject-functions '(gnus-simplify-subject-re gnus-simplify-whitespace))
+
+  (setq gnus-use-trees t
+        gnus-show-threads t
+        gnus-fetch-old-headers t
+        gnus-tree-minimize-window t
+        gnus-build-sparse-threads 'some
+        gnus-fetch-old-ephemeral-headers 2
+        gnus-thread-indent-level 2
+        gnus-thread-hide-subtree nil
+        gnus-generate-tree-function #'gnus-generate-horizontal-tree
+        gnus-thread-sort-functions '(gnus-thread-sort-by-subject
+                                     gnus-thread-sort-by-most-recent-number))
+
+  (setq gnus-thread-sort-functions '(gnus-thread-sort-by-most-recent-date)
+        gnus-subthread-sort-functions '(gnus-thread-sort-by-date))
+
+  (setq gnus-view-pseudos 'automatic
+        gnus-view-pseudos-separately t
+        gnus-view-pseudo-asynchronously t)
+
+  (setq gnus-auto-select-first t
+        gnus-auto-select-next nil
+        gnus-paging-select-next nil)
+
+  (setq gnus-group-sort-function '(gnus-group-sort-by-method)
+        gnus-group-line-format "%M%S%p%P %0{%5y%} %B%{%G%}\n")
 
   (add-hook 'gnus-group-mode-hook 'gnus-topic-mode))
 
 ;;; Shell
-(setq
- comint-input-ignoredups t
- comint-prompt-read-only t
- comint-completion-autolist t
- comint-completion-addsuffix t
- comint-buffer-maximum-size 9999
- comint-scroll-to-bottom-on-input t
- comint-scroll-show-maximum-output t
- comint-scroll-to-bottom-on-output nil)
+(setq comint-input-ignoredups t
+      comint-prompt-read-only t
+      comint-completion-autolist t
+      comint-completion-addsuffix t
+      comint-buffer-maximum-size 9999
+      comint-scroll-to-bottom-on-input t
+      comint-scroll-show-maximum-output t
+      comint-scroll-to-bottom-on-output nil)
 
-(setq
- shell-kill-buffer-on-exit t
- shell-highlight-undef-enable t
- shell-command-prompt-show-cwd t)
+(setq shell-kill-buffer-on-exit t
+      shell-highlight-undef-enable t
+      shell-command-prompt-show-cwd t)
 
 (use-package eshell
   :init
-  (setq
-   eshell-kill-on-exit t
-   eshell-history-append t
-   eshell-save-history-on-exit t
-   eshell-kill-processes-on-exit 'ask
-   eshell-destroy-buffer-when-process-dies nil
-   eshell-hist-ignoredups t
-   eshell-error-if-no-glob t
-   eshell-prefer-lisp-functions t
-   eshell-rm-removes-directories t
-   eshell-scroll-to-bottom-on-input 'all
-   eshell-scroll-to-bottom-on-output 'all
-   eshell-prompt-function 'yx/eshell-prompt)
+  (setq eshell-kill-on-exit t
+        eshell-history-append t
+        eshell-save-history-on-exit t
+        eshell-kill-processes-on-exit 'ask
+        eshell-destroy-buffer-when-process-dies nil
+        eshell-hist-ignoredups t
+        eshell-error-if-no-glob t
+        eshell-prefer-lisp-functions t
+        eshell-rm-removes-directories t
+        eshell-scroll-to-bottom-on-input 'all
+        eshell-scroll-to-bottom-on-output 'all
+        eshell-prompt-function 'yx/eshell-prompt)
   :config
   (add-to-list 'eshell-modules-list #'eshell-tramp)
   (add-to-list 'eshell-modules-list #'eshell-rebind)
   (add-to-list 'eshell-modules-list #'eshell-elecslash)
   (add-hook 'eshell-mode-hook 'yx/eshell-setup)
-
   :preface
   (defun yx/eshell-setup ()
     (keymap-set eshell-mode-map "C-l" 'yx/eshell-clear)
@@ -2147,9 +2004,8 @@
   (org-fontify-quote-and-verse-blocks t)
   (org-fontify-whole-block-delimiter-line t)
 
-  (org-refile-targets
-   '((nil :maxlevel . 3)
-     (org-agenda-files :maxlevel . 3)))
+  (org-refile-targets '((nil :maxlevel . 3)
+                        (org-agenda-files :maxlevel . 3)))
   (org-refile-use-outline-path 'file)
   (org-refile-allow-creating-parent-nodes 'confirm)
 
@@ -2182,18 +2038,15 @@
   (org-src-window-setup 'split-window-right)
   (org-src-ask-before-returning-to-edit-buffer nil)
 
-  (org-babel-default-header-args
-   '(
-     (:evel    . "never-export")
-     (:session . "none")
-     (:results . "replace")
-     (:exports . "both")
-     (:cache   . "no")
-     (:noweb   . "no")
-     (:hlines  . "no")
-     (:wrap    . "results")
-     (:tangle  . "no")
-     ))
+  (org-babel-default-header-args '((:evel    . "never-export")
+                                   (:session . "none")
+                                   (:results . "replace")
+                                   (:exports . "both")
+                                   (:cache   . "no")
+                                   (:noweb   . "no")
+                                   (:hlines  . "no")
+                                   (:wrap    . "results")
+                                   (:tangle  . "no")))
 
   (org-modules '(ol-info ol-eww ol-docview org-habit org-tempo))
 
@@ -2215,8 +2068,7 @@
   (org-enforce-todo-checkbox-dependencies t)
   (org-treat-S-cursor-todo-selection-as-state-change nil)
 
-  (org-default-notes-file
-   (expand-file-name "inbox.org" org-directory))
+  (org-default-notes-file (expand-file-name "inbox.org" org-directory))
 
   (org-capture-bookmark nil)
   (org-capture-templates
@@ -2283,22 +2135,17 @@
   (org-clock-report-include-clocking-task t)
   (org-use-last-clock-out-time-as-effective-time t)
 
-  (org-global-properties
-   '(("STYLE_ALL"  . "habit")
-     ("Score_ALL"  . "1 2 3 5 8")
-     ("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00")))
+  (org-global-properties '(("STYLE_ALL"  . "habit")
+                           ("Score_ALL"  . "1 2 3 5 8")
+                           ("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00")))
   (org-columns-default-format "%50ITEM(Task) %2PRIORITY %10Effort(Effort){:} %10CLOCKSUM")
 
-  (org-cite-csl-styles-dir
-   (expand-file-name "styles/" yx/zotero-dir))
-  (org-cite-export-processors
-   '((latex biblatex)
-     (t . (csl "ieee.csl"))))
-  (org-cite-global-bibliography
-   (list (expand-file-name "bibliography.bib" yx/org-dir)))
+  (org-cite-csl-styles-dir (expand-file-name "styles/" yx/zotero-dir))
+  (org-cite-global-bibliography (list (expand-file-name "bibliography.bib" yx/org-dir)))
+  (org-cite-export-processors '((latex biblatex)
+                                (t . (csl "ieee.csl"))))
 
-  (org-attach-id-dir
-   (expand-file-name "data/" yx/org-dir))
+  (org-attach-id-dir (expand-file-name "data/" yx/org-dir))
   (org-attach-dir-relative t)
   (org-attach-store-link-p 'attach)
   (org-attach-sync-delete-empty-dir t)
@@ -2316,21 +2163,20 @@
   (with-eval-after-load 'ox-latex
     (setq org-latex-logfiles-extensions
           (append org-latex-logfiles-extensions '("toc" "dvi" "tex" "bbl"))))
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((emacs-lisp . t)
-     (python . t)
-     (C . t)
-     (R . t)
-     (julia . t)
-     (org . t)
-     (shell . t)
-     (latex . t)
-     (dot . t)
-     (gnuplot . t)
-     (lisp . t)
-     (scheme . t)
-     (jupyter . t)))
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '((emacs-lisp . t)
+                                 (python . t)
+                                 (C . t)
+                                 (R . t)
+                                 (julia . t)
+                                 (org . t)
+                                 (shell . t)
+                                 (latex . t)
+                                 (dot . t)
+                                 (gnuplot . t)
+                                 (lisp . t)
+                                 (scheme . t)
+                                 (jupyter . t)))
   (org-crypt-use-before-save-magic)
   (org-clock-persistence-insinuate)
   (org-clock-auto-clockout-insinuate)
@@ -2382,8 +2228,7 @@
      ["Toggle"
       ("L" "org-toggle-link-display" org-toggle-link-display)
       ("I" "org-toggle-inline-images" org-toggle-inline-images)
-      ("F" "org-preview-latex-fragment" org-preview-latex-fragment)]
-     ]))
+      ("F" "org-preview-latex-fragment" org-preview-latex-fragment)]]))
 
 ;; %% org+
 (use-package org-ql
@@ -2566,8 +2411,7 @@ set to \\='(template title keywords subdirectory)."
   :demand t
   :config
   (setq citar-denote-subdir t)
-  (citar-denote-mode)
-  )
+  (citar-denote-mode))
 
 (use-package edit-indirect)
 (use-package org-transclusion)
@@ -2576,39 +2420,32 @@ set to \\='(template title keywords subdirectory)."
   :ensure t
   :mode (("README\\.md\\'" . gfm-mode))
   :init
-  (setq
-   markdown-command "pandoc"
-   markdown-enable-math t
-   markdown-header-scaling t))
+  (setq markdown-command "pandoc"
+        markdown-enable-math t
+        markdown-header-scaling t))
 
 ;; %% bibtex
-(setq
- bibtex-dialect 'biblatex
- bibtex-align-at-equal-sign t)
+(setq bibtex-dialect 'biblatex
+      bibtex-align-at-equal-sign t)
 
 ;; %% latex
 (use-package tex
   :ensure auctex
   :mode ("\\.tex\\'" . latex-mode)
   :config
-  (setq-default
-   Tex-master nil
-   TeX-engine 'xetex)
-  (setq
-   TeX-auto-save t
-   TeX-parse-self t
-   reftex-plug-into-AUCTeX t
-   TeX-source-correlate-start-server t)
+  (setq-default Tex-master nil
+                TeX-engine 'xetex)
+  (setq TeX-auto-save t
+        TeX-parse-self t
+        reftex-plug-into-AUCTeX t
+        TeX-source-correlate-start-server t)
 
-  (setq TeX-view-program-list
-        '(("pdf-tools" TeX-pdf-tools-sync-view)
-          ("Skim" "displayline -b -g %n %o %b"))
-        TeX-view-program-selection
-        `((output-pdf ,(cond
-                        (IS-MAC "Skim")
-                        (t "pdf-tools")))
-          (output-dvi  ,yx/default-open-program)
-          (output-html ,yx/default-open-program)))
+  (setq TeX-view-program-list '(("pdf-tools" TeX-pdf-tools-sync-view)
+                                ("Skim" "displayline -b -g %n %o %b"))
+        TeX-view-program-selection `((output-pdf ,(cond (IS-MAC "Skim")
+                                                        (t "pdf-tools")))
+                                     (output-dvi  ,yx/default-open-program)
+                                     (output-html ,yx/default-open-program)))
 
   (defun yx/latex-mode-setup ()
     (TeX-PDF-mode 1)
@@ -2618,16 +2455,16 @@ set to \\='(template title keywords subdirectory)."
     (prettify-symbols-mode 1)
     (turn-on-reftex)
     (push 'cape-tex completion-at-point-functions))
+
   (add-hook 'tex-mode-hook 'yx/latex-mode-setup)
   (add-hook 'TeX-after-comilation-finished-functions 'TeX-revert-document-buffer)
+
   (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs '(latex-mode "texlab")))
-  )
+    (add-to-list 'eglot-server-programs '(latex-mode "texlab"))))
 
 (use-package cdlatex
-  :hook
-  ((LaTeX-mode . turn-on-cdlatex)
-   (org-mode   . turn-on-org-cdlatex)))
+  :hook ((LaTeX-mode . turn-on-cdlatex)
+         (org-mode   . turn-on-org-cdlatex)))
 
 (use-package transform
   :ensure nil
@@ -2646,9 +2483,8 @@ set to \\='(template title keywords subdirectory)."
   (citar-library-paths `(,yx/zotero-dir))
   (citar-at-point-function 'embark-act)
   (citar-bibliography org-cite-global-bibliography)
-  :hook
-  (org-mode . citar-capf-setup)
-  (LaTeX-mode . citar-capf-setup))
+  :hook ((org-mode . citar-capf-setup)
+         (LaTeX-mode . citar-capf-setup)))
 
 (use-package citar-embark
   :after citar embark
@@ -2658,9 +2494,6 @@ set to \\='(template title keywords subdirectory)."
 
 ;;; Programming
 (defun yx/prog-common-setup ()
-  (setq-local
-   whitespace-style
-   '(face trailing lines-char space-before-tab space-after-tab))
   (whitespace-mode            1)
   (hl-line-mode               1)
   (hs-minor-mode              1)
@@ -2676,18 +2509,16 @@ set to \\='(template title keywords subdirectory)."
 (add-hook 'prog-mode-hook 'yx/prog-common-setup)
 
 ;; project
-(setq
- project-file-history-behavior 'relativize
- project-vc-extra-root-markers '(".envrc" ".dir-locals.el" ".project.el"))
+(setq project-file-history-behavior 'relativize
+      project-vc-extra-root-markers '(".envrc" ".dir-locals.el" ".project.el"))
 
 ;; diff
-(setq
- diff-default-read-only t
- diff-update-on-the-fly t
- ediff-show-clashes-only t
- ediff-floating-control-frame t
- ediff-window-setup-function 'ediff-setup-windows-plain
- ediff-split-window-function 'split-window-horizontally)
+(setq diff-default-read-only t
+      diff-update-on-the-fly t
+      ediff-show-clashes-only t
+      ediff-floating-control-frame t
+      ediff-window-setup-function 'ediff-setup-windows-plain
+      ediff-split-window-function 'split-window-horizontally)
 
 (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
 
@@ -2711,16 +2542,15 @@ set to \\='(template title keywords subdirectory)."
   :config
   (setq elisp-flymake-byte-compile-load-path
         (append elisp-flymake-byte-compile-load-path load-path))
-  :bind
-  (:map flymake-mode-map
-        ("s-; s"   . flymake-start)
-        ("M-g d"   . flymake-show-buffer-diagnostics)
-        ("M-g M-d" . flymake-show-project-diagnostics)
-        ("M-g M-n" . flymake-goto-next-error)
-        ("M-g M-p" . flymake-goto-prev-error)
-        :repeat-map flymake-repeatmap
-        ("p" . flymake-goto-prev-error)
-        ("n" . flymake-goto-next-error)))
+  :bind (:map flymake-mode-map
+              ("s-; s"   . flymake-start)
+              ("M-g d"   . flymake-show-buffer-diagnostics)
+              ("M-g M-d" . flymake-show-project-diagnostics)
+              ("M-g M-n" . flymake-goto-next-error)
+              ("M-g M-p" . flymake-goto-prev-error)
+              :repeat-map flymake-repeatmap
+              ("p" . flymake-goto-prev-error)
+              ("n" . flymake-goto-next-error)))
 
 (use-package apheleia
   :init (apheleia-global-mode +1))
@@ -2798,8 +2628,8 @@ set to \\='(template title keywords subdirectory)."
 ;; %% doc
 (use-package devdocs
   :bind (:map prog-mode-map
-              ("s-; d" . devdocs-lookup))
-  )
+              ("s-; d" . devdocs-lookup)))
+
 (add-hook 'julia-ts-mode-hook
           (lambda () (setq-local devdocs-current-docs '("julia~1.9"))))
 (add-hook 'python-base-mode-hook
@@ -2833,8 +2663,7 @@ set to \\='(template title keywords subdirectory)."
       (color-rg-search-input regexp (color-rg-project-root-dir)))))
 
 (use-package symbol-overlay
-  :custom
-  (symbol-overlay-priority 0)
+  :custom (symbol-overlay-priority 0)
   :hook ((prog-mode conf-mode) . symbol-overlay-mode)
   :bind (:map symbol-overlay-map
               ("u" . symbol-overlay-remove-all)))
@@ -2845,18 +2674,17 @@ set to \\='(template title keywords subdirectory)."
 (use-package treesit
   :ensure nil
   :init
-  (setq
-   treesit-font-lock-level 4
-   treesit-language-source-alist
-   '((c      "https://github.com/tree-sitter/tree-sitter-c")
-     (cpp    "https://github.com/tree-sitter/tree-sitter-cpp")
-     (lua    "https://github.com/MunifTanjim/tree-sitter-lua")
-     (org    "https://github.com/milisims/tree-sitter-org")
-     (bash   "https://github.com/tree-sitter/tree-sitter-bash")
-     (julia  "https://github.com/tree-sitter/tree-sitter-julia")
-     (python "https://github.com/tree-sitter/tree-sitter-python"))
-   treesit-load-name-override-list '((c++ "libtree-sitter-cpp"))
-   treesit-extra-load-path (list (no-littering-expand-var-file-name "tree-sitter")))
+  (setq treesit-font-lock-level 4
+        treesit-language-source-alist
+        '((c      "https://github.com/tree-sitter/tree-sitter-c")
+          (cpp    "https://github.com/tree-sitter/tree-sitter-cpp")
+          (lua    "https://github.com/MunifTanjim/tree-sitter-lua")
+          (org    "https://github.com/milisims/tree-sitter-org")
+          (bash   "https://github.com/tree-sitter/tree-sitter-bash")
+          (julia  "https://github.com/tree-sitter/tree-sitter-julia")
+          (python "https://github.com/tree-sitter/tree-sitter-python"))
+        treesit-load-name-override-list '((c++ "libtree-sitter-cpp"))
+        treesit-extra-load-path (list (no-littering-expand-var-file-name "tree-sitter")))
   (defun yx/treesit--install-language-grammar (lang-pair)
     (let ((lang (car lang-pair)))
       (unless (treesit-language-available-p lang)
@@ -2885,48 +2713,43 @@ set to \\='(template title keywords subdirectory)."
   :hook ((prog-mode sgml-mode nxml-mode) . puni-mode)
   :custom
   (puni-confirm-when-delete-unbalanced-active-region nil)
-  :bind
-  (:map
-   puni-mode-map
-   ("C-)"     . puni-slurp-forward)
-   ("C-("     . puni-slurp-backward)
-   ("C-}"     . puni-barf-forward)
-   ("C-{"     . puni-barf-backward)
-   ("C-M-@"   . puni-mark-sexp-at-point)
-   ("C-M-2"   . puni-mark-sexp-around-point)
-   ("C-M-r"   . puni-raise)
-   ("C-M-z"   . puni-squeeze)
-   ("C-M-t"   . puni-transpose)
-   ("C-M-="   . puni-expand-region)
-   ("C-M--"   . puni-contract-region)))
+  :bind (:map puni-mode-map
+              ("C-)"     . puni-slurp-forward)
+              ("C-("     . puni-slurp-backward)
+              ("C-}"     . puni-barf-forward)
+              ("C-{"     . puni-barf-backward)
+              ("C-M-@"   . puni-mark-sexp-at-point)
+              ("C-M-2"   . puni-mark-sexp-around-point)
+              ("C-M-r"   . puni-raise)
+              ("C-M-z"   . puni-squeeze)
+              ("C-M-t"   . puni-transpose)
+              ("C-M-="   . puni-expand-region)
+              ("C-M--"   . puni-contract-region)))
 
 ;; %% lsp
 (use-package eglot
   :ensure nil
-  :hook
-  ((c-mode
-    c-ts-mode
-    R-mode
-    python-mode
-    python-ts-mode
-    julia-mode
-    julia-ts-mode
-    LaTeX-mode
-    haskell-mode) . eglot-ensure)
-  :init
-  (setq
-   eglot-autoshutdown t
-   eglot-extend-to-xref t
-   eglot-sync-connect nil
-   eglot-report-progress nil
-   eglot-events-buffer-size 0
-   eglot-send-changes-idle-time 0.3)
-  :bind
-  (:map eglot-mode-map
-        ("s-; r" . eglot-rename)
-        ("s-; f" . eglot-format)
-        ("s-; a" . eglot-code-actions)
-        ("s-; g" . consult-eglot-symbols))
+  :hook ((c-mode
+          c-ts-mode
+          R-mode
+          python-mode
+          python-ts-mode
+          julia-mode
+          julia-ts-mode
+          LaTeX-mode
+          haskell-mode) . eglot-ensure)
+  :custom
+  (eglot-autoshutdown t)
+  (eglot-extend-to-xref t)
+  (eglot-sync-connect nil)
+  (eglot-report-progress nil)
+  (eglot-events-buffer-size 0)
+  (eglot-send-changes-idle-time 0.3)
+  :bind (:map eglot-mode-map
+              ("s-; r" . eglot-rename)
+              ("s-; f" . eglot-format)
+              ("s-; a" . eglot-code-actions)
+              ("s-; g" . consult-eglot-symbols))
   :config
   (fset #'jsonrpc--log-event #'ignore) ; massive perf boost---don't log every event
   )
@@ -2936,10 +2759,8 @@ set to \\='(template title keywords subdirectory)."
 
 (use-package dape
   :init
-  (setq
-   dape-adapter-dir
-   (no-littering-expand-var-file-name "dape-debug-adapters")
-   dape-buffer-window-arrangment 'right))
+  (setq dape-adapter-dir (no-littering-expand-var-file-name "dape-debug-adapters")
+        dape-buffer-window-arrangment 'right))
 
 (use-package quickrun
   :custom
@@ -2955,9 +2776,9 @@ set to \\='(template title keywords subdirectory)."
           (lambda () (prettify-symbols-mode 1)))
 
 ;; %% c/c++
-(setq c-basic-offset 4
+(setq c-basic-offset 8
       c-default-style 'linux
-      c-ts-mode-indent-offset 4
+      c-ts-mode-indent-offset 8
       c-ts-mode-indent-style 'linux)
 
 (add-hook 'c-mode-common-hook
@@ -2994,23 +2815,21 @@ set to \\='(template title keywords subdirectory)."
   )
 
 ;; %% python
-(setq
- python-shell-dedicated t
- python-skeleton-autoinsert t
- python-indent-block-paren-deeper t
- python-indent-guess-indent-offset t
- python-indent-guess-indent-offset-verbose nil
- python-shell-virtualenv-root yx/default-python-env
- python-shell-interpreter "jupyter"
- python-shell-interpreter-args "console --simple-prompt"
- python-shell-completion-native-disabled-interpreters '("ipython" "jupyter"))
+(setq python-shell-dedicated t
+      python-skeleton-autoinsert t
+      python-indent-block-paren-deeper t
+      python-indent-guess-indent-offset t
+      python-indent-guess-indent-offset-verbose nil
+      python-shell-virtualenv-root yx/default-python-env
+      python-shell-interpreter "jupyter"
+      python-shell-interpreter-args "console --simple-prompt"
+      python-shell-completion-native-disabled-interpreters '("ipython" "jupyter"))
 
 (defun yx/python-mode-setup ()
-  (setq-local
-   tab-width 4
-   python-indent-offset 4
-   electric-indent-inhibit t
-   imenu-create-index-function 'python-imenu-create-flat-index)
+  (setq-local tab-width 4
+              python-indent-offset 4
+              electric-indent-inhibit t
+              imenu-create-index-function 'python-imenu-create-flat-index)
   (flymake-mode 1))
 (add-hook 'python-ts-mode-hook 'yx/python-mode-setup)
 
@@ -3046,10 +2865,9 @@ set to \\='(template title keywords subdirectory)."
 (use-package ess-site
   :ensure ess
   :init
-  (setq
-   ess-eval-visibly-p 'nowait
-   ess-local-process-name "R"
-   ess-ask-for-ess-directory nil)
+  (setq ess-eval-visibly-p 'nowait
+        ess-local-process-name "R"
+        ess-ask-for-ess-directory nil)
   :config
   (keymap-set ess-r-mode-map ";" 'ess-insert-assign)
   (keymap-set inferior-ess-r-mode-map ";" 'ess-insert-assign))
@@ -3103,14 +2921,12 @@ set to \\='(template title keywords subdirectory)."
   )
 
 ;; %% misc lang
-(add-hook
- 'sh-mode-hook
- (lambda()
-   (setq sh-indentation 2
-         sh-basic-offset 2)
-   (electric-pair-mode -1)
-   (compilation-shell-minor-mode 1)
-   ))
+(add-hook 'sh-mode-hook
+          (lambda()
+            (setq sh-indentation 2
+                  sh-basic-offset 2)
+            (electric-pair-mode -1)
+            (compilation-shell-minor-mode 1)))
 
 (use-package vimrc-mode
   :mode "\\.?vim\\(rc\\)?\\'")
