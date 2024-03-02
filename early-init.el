@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2024-03-02 23:06:22 yx>
+;; Modified: <2024-03-03 05:44:37 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,12 +11,11 @@
 ;;
 
 ;;; Code:
-(setq
- load-prefer-newer t
- byte-compile-warnings nil
- package-native-compile t
- package-enable-at-startup nil
- native-comp-async-report-warnings-errors nil)
+(setq load-prefer-newer t
+      byte-compile-warnings nil
+      package-native-compile t
+      package-enable-at-startup nil
+      native-comp-async-report-warnings-errors nil)
 
 (push '(width . 78) default-frame-alist)
 (push '(height . 32) default-frame-alist)
@@ -30,12 +29,11 @@
 (scroll-bar-mode -1)
 (fringe-mode '(8 . 12))
 
-(setq
- frame-inhibit-implied-resize t
- ffap-machine-p-known 'reject
- read-process-output-max (* 4 1024 1024)
- gc-cons-threshold most-positive-fixnum
- redisplay-skip-fontification-on-input t)
+(setq frame-inhibit-implied-resize t
+      ffap-machine-p-known 'reject
+      read-process-output-max (* 4 1024 1024)
+      gc-cons-threshold most-positive-fixnum
+      redisplay-skip-fontification-on-input t)
 
 ;; %% 文件句柄
 (let ((old-file-name-handler-alist file-name-handler-alist))

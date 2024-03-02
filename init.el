@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-03 05:02:11 yx>
+;; Modified: <2024-03-03 06:02:34 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -64,10 +64,11 @@
 (defconst IS-ANDROID (eq system-type 'android))
 
 (defvar yx/default-open-program
-  (cond (IS-WIN   "start")
-        (IS-MAC   "open")
-        (IS-LINUX "xdg-open")
-        (t "")))
+  (cond
+   (IS-WIN   "start")
+   (IS-MAC   "open")
+   (IS-LINUX "xdg-open")
+   (t "")))
 
 (defconst yx/templates-dir
   (expand-file-name "templates" no-littering-etc-directory))
@@ -252,35 +253,36 @@
 (set-language-environment 'utf-8)
 (set-default-coding-systems 'utf-8)
 
+(setq-default abbrev-mode t)
+
 (setq-default tab-width 8
-              abbrev-mode t
-              fill-column 78
-              truncate-lines t
               indent-tabs-mode nil
               tab-always-indent 'complete)
+
+(setq visible-bell nil)
+
+(setq use-short-answers t
+      y-or-n-p-use-read-key t)
+
+(setq hl-line-sticky-flag nil
+      global-hl-line-sticky-flag nil)
+
+(setq-default fill-column 78
+              truncate-lines t)
 
 (setq track-eol t
       line-move-visual nil
       word-wrap-by-category t
-      initial-scratch-message ""
-      find-file-visit-truename t
-      delete-by-moving-to-trash t
       set-mark-command-repeat-pop t
-      cursor-in-non-selected-windows nil
-      compilation-scroll-output 'first-error
-      backward-delete-char-untabify-method 'hungry
-      sentence-end-double-space nil
+      backward-delete-char-untabify-method 'hungry)
+
+(setq find-file-visit-truename t
+      delete-by-moving-to-trash t)
+
+(setq sentence-end-double-space nil
       sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
 
-(setq visible-bell nil
-      use-dialog-box nil
-      use-file-dialog nil
-      use-short-answers t
-      y-or-n-p-use-read-key t)
-
-(setq hl-line-sticky-flag nil
-      global-hl-line-sticky-flag nil
-      confirm-kill-processes nil
+(setq confirm-kill-processes nil
       disabled-command-function nil
       confirm-nonexistent-file-or-buffer nil)
 
@@ -308,7 +310,7 @@
       auto-save-visited-interval 15
       auto-save-visited-predicate
       (lambda () (and (buffer-modified-p)
-                      (not (string-suffix-p "gpg" (file-name-extension (buffer-name)) t)))))
+                 (not (string-suffix-p "gpg" (file-name-extension (buffer-name)) t)))))
 
 (setq version-control t
       backup-by-copying t
@@ -422,12 +424,11 @@
       abbrev-suggest-hint-threshold 2)
 
 (setq hippie-expand-max-buffers 5
-      hippie-expand-try-functions-list
-      '(try-complete-file-name
-        try-complete-file-name-partially
-        try-expand-dabbrev
-        try-expand-dabbrev-from-kill
-        try-expand-dabbrev-all-buffers))
+      hippie-expand-try-functions-list '(try-complete-file-name
+                                         try-complete-file-name-partially
+                                         try-expand-dabbrev
+                                         try-expand-dabbrev-from-kill
+                                         try-expand-dabbrev-all-buffers))
 
 ;; %% isearch
 (setq isearch-lazy-count t
@@ -444,8 +445,7 @@
 (add-hook 'occur-mode-hook #'hl-line-mode)
 
 ;; %% epa
-(setq auth-sources
-      `(,(no-littering-expand-etc-file-name "authinfo.gpg"))
+(setq auth-sources `(,(no-littering-expand-etc-file-name "authinfo.gpg"))
       auth-source-debug t
       epa-pinentry-mode 'loopback
       epa-file-select-keys yx/gpg-encrypt-key)
@@ -454,8 +454,7 @@
       password-cache-expiry (* 60 60))
 
 ;; %% mouse
-(setq mouse-highlight nil
-      mouse-yank-at-point t
+(setq mouse-yank-at-point t
       mouse-wheel-tilt-scroll t
       mouse-wheel-follow-mouse t
       mouse-drag-mode-line-buffer t
@@ -490,25 +489,26 @@
       proced-enable-color-flag t
       proced-auto-update-flag nil)
 
-;; %% media
+;; %% browser-url
+(setq shr-use-fonts nil
+      shr-use-colors nil
+      shr-image-animate nil
+      shr-inhibit-images t
+      shr-max-image-proportion 0.6)
+
 (setq image-use-external-converter t)
 
 (setq browse-url-browser-function 'eww-browse-url
       browse-url-secondary-browser-function 'browse-url-default-browser
-      browse-url-generic-program yx/default-open-program
-      eww-auto-rename-buffer 'title
+      browse-url-generic-program yx/default-open-program)
+
+(setq eww-auto-rename-buffer 'title
       eww-search-prefix "http://www.google.com/search?q="
       eww-use-external-browser-for-content-type "\\`\\(video/\\|audio\\)"
       eww-browse-url-new-window-is-tab nil)
 
 (with-eval-after-load 'eww
   (add-hook 'eww-after-render-hook 'eww-readable))
-
-(setq shr-use-fonts nil
-      shr-use-colors nil
-      shr-image-animate nil
-      shr-inhibit-images t
-      shr-max-image-proportion 0.6)
 
 (setq webjump-sites
       '(("OrgSite"    . "https://orgmode.org")
@@ -521,6 +521,7 @@
 (setq ispell-dictionary "english"
       ispell-program-name "aspell"
       ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))
+
 (with-eval-after-load 'flyspell
   (keymap-unset flyspell-mode-map "C-,")
   (keymap-unset flyspell-mode-map "C-.")
@@ -560,7 +561,6 @@
           doc-view-mode
           elfeed-search-mode)))
 
-;; %% tramp speed up
 (setq tramp-verbose 1
       tramp-chunksize 2000
       tramp-default-method "ssh"
@@ -583,24 +583,25 @@
               bidi-paragraph-direction 'left-to-right)
 
 ;; %% calendar
-(setq calendar-holidays '((holiday-chinese 12 30 "春节")
-                          (holiday-chinese 5 5   "端午节")
-                          (holiday-chinese 1 15  "元宵节")
-                          (holiday-chinese 7 7   "七夕节")
-                          (holiday-chinese 9 9   "重阳节")
-                          (holiday-chinese 8 15  "中秋节")
-                          (holiday-fixed 1 1     "元旦")
-                          (holiday-fixed 10 1    "国庆节")
-                          (holiday-fixed 3 8     "妇女节")
-                          (holiday-fixed 5 1     "劳动节")
-                          (holiday-fixed 5 4     "青年节")
-                          (holiday-fixed 6 1     "儿童节")
-                          (holiday-fixed 9 10    "教师节")
-                          (holiday-fixed 2 14    "情人节")
-                          (holiday-float 5 0 2   "母亲节")
-                          (holiday-float 6 0 3   "父亲节")
-                          (holiday-float 11 4 4  "感恩节")
-                          (holiday-fixed 12 25   "圣诞节")))
+(setq calendar-holidays
+      '((holiday-chinese 12 30 "春节")
+        (holiday-chinese 5 5   "端午节")
+        (holiday-chinese 1 15  "元宵节")
+        (holiday-chinese 7 7   "七夕节")
+        (holiday-chinese 9 9   "重阳节")
+        (holiday-chinese 8 15  "中秋节")
+        (holiday-fixed 1 1     "元旦")
+        (holiday-fixed 10 1    "国庆节")
+        (holiday-fixed 3 8     "妇女节")
+        (holiday-fixed 5 1     "劳动节")
+        (holiday-fixed 5 4     "青年节")
+        (holiday-fixed 6 1     "儿童节")
+        (holiday-fixed 9 10    "教师节")
+        (holiday-fixed 2 14    "情人节")
+        (holiday-float 5 0 2   "母亲节")
+        (holiday-float 6 0 3   "父亲节")
+        (holiday-float 11 4 4  "感恩节")
+        (holiday-fixed 12 25   "圣诞节")))
 
 (setq appt-audible t
       appt-display-interval 10
@@ -625,15 +626,16 @@
 (add-hook 'calendar-today-visible-hook #'calendar-mark-today)
 
 ;; %% os specific settings stay here
-(cond (IS-MAC
-       (setq mac-option-modifier  'meta
-             mac-command-modifier 'super
-             ns-function-modifier 'hyper
-             ns-use-thin-smoothing t
-             ns-use-native-fullscreen nil))
-      (IS-WIN
-       (setq w32-apps-modifier 'hyper
-             w32-lwindow-modifier 'super)))
+(cond
+ (IS-MAC
+  (setq mac-option-modifier  'meta
+        mac-command-modifier 'super
+        ns-function-modifier 'hyper
+        ns-use-thin-smoothing t
+        ns-use-native-fullscreen nil))
+ (IS-WIN
+  (setq w32-apps-modifier 'hyper
+        w32-lwindow-modifier 'super)))
 
 (ffap-bindings)
 
@@ -889,8 +891,14 @@
     ("t l" "command-log" clm/toggle-command-log-buffer)]])
 
 ;;; Ui
+(setq use-dialog-box nil
+      use-file-dialog nil)
+
+(setq initial-scratch-message "")
+
 (setq x-stretch-cursor nil
       x-underline-at-descent-line t
+      cursor-in-non-selected-windows nil
       inhibit-splash-screen t
       inhibit-startup-message t)
 
@@ -2442,8 +2450,9 @@ set to \\='(template title keywords subdirectory)."
 
   (setq TeX-view-program-list '(("pdf-tools" TeX-pdf-tools-sync-view)
                                 ("Skim" "displayline -b -g %n %o %b"))
-        TeX-view-program-selection `((output-pdf ,(cond (IS-MAC "Skim")
-                                                        (t "pdf-tools")))
+        TeX-view-program-selection `((output-pdf ,(cond
+                                                   (IS-MAC "Skim")
+                                                   (t "pdf-tools")))
                                      (output-dvi  ,yx/default-open-program)
                                      (output-html ,yx/default-open-program)))
 
@@ -2529,8 +2538,8 @@ set to \\='(template title keywords subdirectory)."
   (global-semantic-idle-summary-mode 1)
   (global-semantic-idle-scheduler-mode 1))
 
-;; gud
 (setq gud-highlight-current-line t)
+(setq compilation-scroll-output 'first-error)
 
 ;; %% formatter & linter & profiler
 (use-package flymake
@@ -2772,8 +2781,6 @@ set to \\='(template title keywords subdirectory)."
 
 ;; %% emacs-lisp
 (define-auto-insert "\\.el$" 'yx/auto-insert-el-header)
-(add-hook 'emacs-lisp-mode-hook
-          (lambda () (prettify-symbols-mode 1)))
 
 ;; %% c/c++
 (setq c-basic-offset 8
