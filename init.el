@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-03 06:02:34 yx>
+;; Modified: <2024-03-03 06:47:11 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -21,14 +21,15 @@
              '("melpa" . "http://melpa.org/packages/") t)
 
 (setq package-quickstart nil
-      use-package-verbose t
-      use-package-always-defer t
-      use-package-always-ensure t
-      use-package-expand-minimally t
-      use-package-enable-imenu-support t
       package-install-upgrade-built-in nil
       package-user-dir (expand-file-name "elpa" yx/var-dir)
       package-gnupghome-dir (expand-file-name "gnupg" package-user-dir))
+
+(setq use-package-verbose t
+      use-package-always-defer t
+      use-package-always-ensure t
+      use-package-expand-minimally t
+      use-package-enable-imenu-support t)
 
 (when (daemonp)
   (setq use-package-always-demand t))
@@ -310,7 +311,7 @@
       auto-save-visited-interval 15
       auto-save-visited-predicate
       (lambda () (and (buffer-modified-p)
-                 (not (string-suffix-p "gpg" (file-name-extension (buffer-name)) t)))))
+                      (not (string-suffix-p "gpg" (file-name-extension (buffer-name)) t)))))
 
 (setq version-control t
       backup-by-copying t
@@ -970,7 +971,7 @@
 (setq ns-pop-up-frames nil
       window-sides-vertical nil
       split-height-threshold 30
-      split-width-threshold 125
+      split-width-threshold 120
       even-window-sizes 'height-only
       frame-resize-pixelwise t
       window-resize-pixelwise t
@@ -978,6 +979,7 @@
       fit-frame-to-buffer nil
       fit-window-to-buffer-horizontally nil)
 
+(setq buffer-quit-function 'winner-undo)
 
 (setq display-buffer-alist
       '(("\\`\\*[hH]elp"
@@ -1022,6 +1024,7 @@
                  "*Backtrac"
                  "*Flymake"
                  "*Error"
+                 "*tldr"
                  "*devdocs"
                  "*Messages"
                  "*color-rg")
@@ -1067,8 +1070,6 @@
       winner-boring-buffers-regexp "^\\*")
 (add-hook 'after-init-hook 'winner-mode)
 (add-hook 'after-init-hook 'temp-buffer-resize-mode)
-
-(setq buffer-quit-function 'winner-undo)
 
 (setq switch-to-buffer-in-dedicated-window nil
       switch-to-buffer-obey-display-actions t
@@ -1154,17 +1155,30 @@
          ("M-`" . popper-cycle)
          ("C-M-`" . popper-toggle-type))
   :config
-  (setq popper-display-control 'user
+  (setq popper-display-control nil
+        popper-echo-dispatch-actions t
         popper-group-function #'popper-group-by-directory)
   (setq popper-reference-buffers
         '("\\*julia\\*$"
-          "\\*color-rg\\*$"
           "\\*Python\\*$"
-          (compilation-mode . hide)
-          help-mode
-          helpful-mode
-          occur-mode
-          color-rg-mode))
+          "\\*tldr\\*$"
+          "\\*quickrun\\*$"
+          "\\*Calendar\\*$"
+          "\\*vc-.*\\**"
+          "\\*Apropos\\*$"
+          "\\*Backtrace\\*$"
+          "\\*Async Shell Command\\*"
+          "\\*Embark \\(Collect\\|Live\\):.*\\*$"
+          "^\\*eshell.*\\*$" eshell-mode
+          "^\\*shell.*\\*$"  shell-mode
+          "^\\*term.*\\*$"   term-mode
+          help-mode helpful-mode
+          grep-mode occur-mode color-rg-mode
+          bookmark-bmenu-mode
+          comint-mode
+          devdocs-mode
+          compilation-mode
+          flymake-diagnostics-buffer-mode))
   (popper-mode 1)
   (popper-echo-mode 1))
 
