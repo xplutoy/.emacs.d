@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2024-03-01 04:37:54 yx>
+;; Modified: <2024-03-02 23:06:22 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -33,7 +33,7 @@
 (setq
  frame-inhibit-implied-resize t
  ffap-machine-p-known 'reject
- read-process-output-max (* 1024 1024)
+ read-process-output-max (* 4 1024 1024)
  gc-cons-threshold most-positive-fixnum
  redisplay-skip-fontification-on-input t)
 

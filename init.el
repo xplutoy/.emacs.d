@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-01 20:16:34 yx>
+;; Modified: <2024-03-02 23:18:29 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -1053,11 +1053,9 @@
 
 ;;; Layout
 (setq
- window-min-height 3
- window-min-width 30
  ns-pop-up-frames nil
  window-sides-vertical nil
- split-height-threshold 80
+ split-height-threshold 30
  split-width-threshold 125
  even-window-sizes 'height-only
  frame-resize-pixelwise t
@@ -1227,7 +1225,7 @@
   (tabspaces-include-buffers '("*scratch*"))
   (tabspaces-initialize-project-with-todo nil)
   (tabspaces-session t)
-  (tabspaces-session-auto-restore t)
+  (tabspaces-session-auto-restore nil)
   (tabspaces-session-file (no-littering-expand-var-file-name "tabsession.el")))
 
 ;; %% buffer manager
@@ -2699,7 +2697,7 @@ set to \\='(template title keywords subdirectory)."
 ;; project
 (setq
  project-file-history-behavior 'relativize
- project-vc-extra-root-markers '(".dir-locals.el" ".project.el"))
+ project-vc-extra-root-markers '(".envrc" ".dir-locals.el" ".project.el"))
 
 ;; diff
 (setq
@@ -2949,35 +2947,32 @@ set to \\='(template title keywords subdirectory)."
    eglot-events-buffer-size 0
    eglot-send-changes-idle-time 0.3)
   :bind
-  (:map
-   eglot-mode-map
-   ("s-; r" . eglot-rename)
-   ("s-; f" . eglot-format)
-   ("s-; a" . eglot-code-actions)
-   ("s-; g" . consult-eglot-symbols))
+  (:map eglot-mode-map
+        ("s-; r" . eglot-rename)
+        ("s-; f" . eglot-format)
+        ("s-; a" . eglot-code-actions)
+        ("s-; g" . consult-eglot-symbols))
   :config
   (fset #'jsonrpc--log-event #'ignore) ; massive perf boost---don't log every event
   )
 
 (use-package consult-eglot
-  :after consult
-  )
+  :after consult)
 
 (use-package dape
   :init
   (setq
    dape-adapter-dir
    (no-littering-expand-var-file-name "dape-debug-adapters")
-   dape-buffer-window-arrangment 'right)
-  )
+   dape-buffer-window-arrangment 'right))
 
 (use-package quickrun
   :custom
-  (quickrun-focus-p nil)
-  )
+  (quickrun-focus-p nil))
 
 ;;; Langs
 (defvar yx/default-python-env "~/workspace/.venv/")
+(add-to-list 'exec-path (expand-file-name "bin" yx/default-python-env))
 
 ;; %% emacs-lisp
 (define-auto-insert "\\.el$" 'yx/auto-insert-el-header)
@@ -3046,17 +3041,19 @@ set to \\='(template title keywords subdirectory)."
 
 (define-auto-insert "\\.py$" 'yx/auto-insert-common-header)
 
-(use-package pyvenv
-  :hook (after-init . yx/active-default-pyvenv)
-  :preface
-  (defun yx/active-default-pyvenv ()
-    (interactive)
-    (pyvenv-activate yx/default-python-env)
-    )
-  )
+(use-package inheritenv
+  :demand t
+  :config
+  (inheritenv-add-advice #'org-babel-eval)
+  (inheritenv-add-advice #'with-temp-buffer)
+  (inheritenv-add-advice #'async-shell-command)
+  (inheritenv-add-advice #'shell-command-to-string))
 
-(use-package pyvenv-auto
-  :hook (python-ts-mode . pyvenv-auto-run))
+(use-package buffer-env
+  :config
+  (add-hook 'comint-mode-hook #'buffer-env-update)
+  (add-hook 'hack-local-variables-hook #'buffer-env-update)
+  (add-to-list 'buffer-env-command-alist '("/\\.envrc\\'" . "direnv exec . env -0")))
 
 (use-package poetry
   :hook (python-ts-mode . poetry-tracking-mode))
