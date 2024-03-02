@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-02 23:18:29 yx>
+;; Modified: <2024-03-03 02:26:50 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -1384,8 +1384,8 @@
 (use-package cape
   :init
   (setq cape-dabbrev-min-length 3)
-  (dolist (ele '(cape-abbrev cape-file))
-    (add-to-list 'completion-at-point-functions ele))
+  (add-to-list 'completion-at-point-functions #'cape-abbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file)
   :bind (("C-c p p" . completion-at-point)
          ("C-c p t" . complete-tag)
          ("C-c p a" . cape-abbrev)
@@ -1444,15 +1444,13 @@
     (let* ((host (url-host (url-generic-parse-url url)))
            (host-trimmed (split-string host  "\\.")))
       (car (last host-trimmed 2))))
-
   (defun yx/define-enines (engines)
     (dolist (engi engines)
       (let* ((key  (car engi))
              (url  (cadr engi))
              (name (yx/extract-name-from-url url))
              (symn (make-symbol name)))
-        (eval `(defengine ,symn ,url :keybinding ,key)))))
-  )
+        (eval `(defengine ,symn ,url :keybinding ,key))))))
 
 (use-package posframe)
 
@@ -1463,8 +1461,7 @@
   :autoload (yx/def-org-maybe-surround)
   :config
   (crux-with-region-or-buffer indent-region)
-  (crux-reopen-as-root-mode 1)
-  )
+  (crux-reopen-as-root-mode 1))
 
 (use-package which-key
   :hook (after-init . which-key-mode)
@@ -1499,8 +1496,7 @@
       (previous-buffer)
       (unless (string= (buffer-name) bufname)
         (while (not (eq major-mode 'helpful-mode))
-          (previous-buffer))))
-    ))
+          (previous-buffer))))))
 
 (use-package command-log-mode
   :custom
@@ -1536,13 +1532,11 @@
 (use-package hungry-delete
   :hook (after-init . global-hungry-delete-mode)
   :custom
-  (hungry-delete-join-reluctantly t)
-  )
+  (hungry-delete-join-reluctantly t))
 
 (use-package easy-kill
   :bind (([remap kill-ring-save] . easy-kill)
-         ([remap mark-sexp] . easy-mark))
-  )
+         ([remap mark-sexp] . easy-mark)))
 
 (use-package drag-stuff
   :hook ((text-mode prog-mode) . drag-stuff-mode)
@@ -1974,10 +1968,9 @@
    eshell-scroll-to-bottom-on-output 'all
    eshell-prompt-function 'yx/eshell-prompt)
   :config
-  (dolist (m '(eshell-tramp
-               eshell-rebind
-               eshell-elecslash))
-    (add-to-list 'eshell-modules-list m))
+  (add-to-list 'eshell-modules-list #'eshell-tramp)
+  (add-to-list 'eshell-modules-list #'eshell-rebind)
+  (add-to-list 'eshell-modules-list #'eshell-elecslash)
   (add-hook 'eshell-mode-hook 'yx/eshell-setup)
 
   :preface
@@ -2001,8 +1994,7 @@
                 '(cape-file
                   pcomplete-completions-at-point
                   cape-elisp-symbol
-                  t))
-    )
+                  t)))
 
   (defun yx/eshell-prompt()
     (setq eshell-prompt-regexp "^[^#$\n]*[#$] ")
@@ -2024,14 +2016,14 @@
   (defun yx/eshell-here ()
     (interactive)
     (let* ((project (project-current))
-           (name (if project (project-name project) ""))
-           (eshell-buffer-name (concat "*eshell-" name "*"))
+           (name (if project (concat "-" (project-name project)) ""))
            (dir (if (buffer-file-name)
                     (file-name-directory (buffer-file-name))
                   default-directory))
            (height (/ (frame-height) 3)))
+      (setq eshell-buffer-name (concat "*eshell" name "*"))
       (eshell)
-      (eshell/clear)
+      (yx/eshell-clear)
       (eshell/cd dir)))
 
   (defun eshell/z ()
@@ -2398,42 +2390,37 @@
   :after org)
 
 (use-package org-super-agenda
-  :init
-  (setq
-   org-super-agenda-groups
-   '((:name "Today"
-            :time-grid t
-            :deadline today
-            :scheduled today)
-     (:name "Important"
-            :tag "urgent"
-            :priority>= "A")
-     (:name "Overdue"
-            :deadline past)
-     (:name "Next"
-            :todo "NEXT")
-     (:name "Someday/Hold"
-            :todo "HOLD"
-            :todo "WAITING"
-            :todo "SOMEDAY")
-     (:name "Other"
-            :anything))
-   )
   :hook (org-agenda-mode . org-super-agenda-mode)
-  )
+  :init
+  (setq org-super-agenda-groups
+        '((:name "Today"
+                 :time-grid t
+                 :deadline today
+                 :scheduled today)
+          (:name "Important"
+                 :tag "urgent"
+                 :priority>= "A")
+          (:name "Overdue"
+                 :deadline past)
+          (:name "Next"
+                 :todo "NEXT")
+          (:name "Someday/Hold"
+                 :todo "HOLD"
+                 :todo "WAITING"
+                 :todo "SOMEDAY")
+          (:name "Other"
+                 :anything))))
 
 (use-package org-modern
   :after org
   :demand t
   :config
-  (global-org-modern-mode)
-  )
+  (global-org-modern-mode))
 
 (use-package valign
   :hook (org-mode . valign-mode)
   :custom
-  (valign-fancy-bar 1)
-  )
+  (valign-fancy-bar 1))
 
 (use-package mixed-pitch
   :hook (org-mode . mixed-pitch-mode))
@@ -2446,8 +2433,7 @@
   (org-appear-inside-latex t)
   (org-appear-autoentities t)
   (org-appear-autoemphasis t)
-  (org-appear-autosubmarkers t)
-  )
+  (org-appear-autosubmarkers t))
 
 (use-package org-download
   :after org
@@ -2458,11 +2444,9 @@
   (org-download-screenshot-method "screencapture -i %s")
   (org-download-image-dir
    (expand-file-name (concat org-attach-directory "images/") yx/org-dir))
-  :bind
-  (:map org-mode-map
-        ("C-c y" . org-download-screenshot)
-        ("C-c C-y" . org-download-clipboard))
-  )
+  :bind (:map org-mode-map
+              ("C-c y" . org-download-screenshot)
+              ("C-c C-y" . org-download-clipboard)))
 
 (use-package org-web-tools)
 
@@ -2496,31 +2480,31 @@
               ("q" . yx/elfeed-kill-entry)
               :map elfeed-search-mode-map
               ("R" . yx/elfeed-mark-all-as-read))
-  :custom
-  (elfeed-feeds
-   '(("http://www.zhihu.com/rss" new)
-     ("https://www.inference.vc/rss" ai)
-     ("https://spaces.ac.cn/feed" ai webkit)
-     ("https://ruder.io/rss/index.rss" ai)
-     ("https://lilianweng.github.io/index.xml" ai webkit)
-     ("https://www.juliabloggers.com/feed/" julia)
-     ("https://planet.lisp.org/rss20.xml" lisp)
-     ("https://planet.scheme.org/atom.xml" scheme)
-     ("https://planet.haskell.org/rss20.xml" haskell)
-     ("https://planet.emacslife.com/atom.xml" emacs)
-     ("http://wingolog.org/feed/atom" lang)
-     ("http://lambda-the-ultimate.org/rss.xml" lang)
-     ("https://matt.might.net/articles/feed.rss" lang)
-     ("http://www.ruanyifeng.com/blog/atom.xml" tech webkit)
-     ("https://vimtricks.com/feed/" vim)
-     ("https://egh0bww1.com/rss.xml" emacs)
-     ("https://karthinks.com/index.xml" emacs)
-     ("https://manateelazycat.github.io/feed.xml" emacs)
-     ("https://matt.might.net/articles/feed.rss" emacs)
-     ("https://andreyor.st/categories/emacs/feed.xml" emacs)
-     ("https://sachachua.com/blog/category/emacs/feed/" emacs)))
-  (elfeed-search-filter "@6-months-ago +unread")
-  (elfeed-search-print-entry-function 'yx/elfeed-search-print-entry--better-default)
+  :init
+  (setq elfeed-feeds
+        '(("http://www.zhihu.com/rss" new)
+          ("https://www.inference.vc/rss" ai)
+          ("https://spaces.ac.cn/feed" ai webkit)
+          ("https://ruder.io/rss/index.rss" ai)
+          ("https://lilianweng.github.io/index.xml" ai webkit)
+          ("https://www.juliabloggers.com/feed/" julia)
+          ("https://planet.lisp.org/rss20.xml" lisp)
+          ("https://planet.scheme.org/atom.xml" scheme)
+          ("https://planet.haskell.org/rss20.xml" haskell)
+          ("https://planet.emacslife.com/atom.xml" emacs)
+          ("http://wingolog.org/feed/atom" lang)
+          ("http://lambda-the-ultimate.org/rss.xml" lang)
+          ("https://matt.might.net/articles/feed.rss" lang)
+          ("http://www.ruanyifeng.com/blog/atom.xml" tech webkit)
+          ("https://vimtricks.com/feed/" vim)
+          ("https://egh0bww1.com/rss.xml" emacs)
+          ("https://karthinks.com/index.xml" emacs)
+          ("https://manateelazycat.github.io/feed.xml" emacs)
+          ("https://matt.might.net/articles/feed.rss" emacs)
+          ("https://andreyor.st/categories/emacs/feed.xml" emacs)
+          ("https://sachachua.com/blog/category/emacs/feed/" emacs)))
+  (setq elfeed-search-filter "@6-months-ago +unread"
+        elfeed-search-print-entry-function 'yx/elfeed-search-print-entry--better-default)
   :hook (elfeed-show . olivetti-mode)
   :config
   (run-at-time nil (* 4 60 60) 'elfeed-update)
@@ -2643,14 +2627,12 @@ set to \\='(template title keywords subdirectory)."
 (use-package cdlatex
   :hook
   ((LaTeX-mode . turn-on-cdlatex)
-   (org-mode   . turn-on-org-cdlatex))
-  )
+   (org-mode   . turn-on-org-cdlatex)))
 
 (use-package transform
   :ensure nil
   :commands (transform-greek-help
-             transform-previous-char)
-  )
+             transform-previous-char))
 
 ;; %% citar
 (use-package citar
@@ -2666,8 +2648,7 @@ set to \\='(template title keywords subdirectory)."
   (citar-bibliography org-cite-global-bibliography)
   :hook
   (org-mode . citar-capf-setup)
-  (LaTeX-mode . citar-capf-setup)
-  )
+  (LaTeX-mode . citar-capf-setup))
 
 (use-package citar-embark
   :after citar embark
@@ -2777,8 +2758,7 @@ set to \\='(template title keywords subdirectory)."
     "Restore window configuration and kill all Magit buffers."
     (interactive)
     (magit-restore-window-configuration)
-    (mapc #'kill-buffer (magit-mode-get-buffers)))
-  )
+    (mapc #'kill-buffer (magit-mode-get-buffers))))
 
 (use-package diff-hl
   :hook
@@ -2844,24 +2824,20 @@ set to \\='(template title keywords subdirectory)."
           ("ISSUE" . "#e45649")))
   (setq hl-todo-require-punctuation t
         hl-todo-highlight-punctuation ":")
-
   (defun yx/hl-todo-rg-project ()
     "Use `rg' to find all TODO or similar keywords."
     (interactive)
     (unless (require 'color-rg nil t)
       (error "`color-rg' is not installed"))
     (let* ((regexp (replace-regexp-in-string "\\\\[<>]*" "" (hl-todo--regexp))))
-      (color-rg-search-input regexp (color-rg-project-root-dir))
-      ))
-  )
+      (color-rg-search-input regexp (color-rg-project-root-dir)))))
 
 (use-package symbol-overlay
   :custom
   (symbol-overlay-priority 0)
   :hook ((prog-mode conf-mode) . symbol-overlay-mode)
   :bind (:map symbol-overlay-map
-              ("u" . symbol-overlay-remove-all))
-  )
+              ("u" . symbol-overlay-remove-all)))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -2896,8 +2872,7 @@ set to \\='(template title keywords subdirectory)."
   :defer 2
   :custom
   (color-rg-search-no-ignore-file nil)
-  (color-rg-mac-load-path-from-shell nil)
-  )
+  (color-rg-mac-load-path-from-shell nil))
 
 ;; %% structured edit
 (use-package iedit)
