@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-03 06:47:11 yx>
+;; Modified: <2024-03-03 19:03:44 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -17,11 +17,11 @@
 (setenv "https_proxy" "http://127.0.0.1:7890")
 
 (require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
 (setq package-quickstart nil
-      package-install-upgrade-built-in nil
+      package-install-upgrade-built-in t
       package-user-dir (expand-file-name "elpa" yx/var-dir)
       package-gnupghome-dir (expand-file-name "gnupg" package-user-dir))
 
@@ -36,6 +36,9 @@
 
 (unless (bound-and-true-p package--initialized)
   (package-initialize))
+
+(setq custom-file (expand-file-name "custom.el" yx/etc-dir))
+(load custom-file 'noerror)
 
 ;; %% benchmark
 (use-package benchmark-init)
@@ -242,10 +245,6 @@
   )
 
 ;;; Defaults
-(setq custom-file
-      (expand-file-name "custom.el" yx/etc-dir))
-(load custom-file 'noerror)
-
 (setq user-full-name "yangxue")
 (setq user-mail-address "yangxue.cs@foxmail.com")
 
@@ -864,9 +863,8 @@
            ("C-h B"     . embark-bindings-at-point))
 
 ;; %% transient key
-(with-eval-after-load 'transient
-  (transient-bind-q-to-quit)
-  (keymap-set transient-map "<escape>" 'transient-quit-all))
+(require 'transient)
+(transient-bind-q-to-quit)
 
 (transient-define-prefix yx/transient-global-simple ()
   "Global transient for frequently used functions."
@@ -891,17 +889,20 @@
    ["]]3"
     ("t l" "command-log" clm/toggle-command-log-buffer)]])
 
+
+
 ;;; Ui
 (setq use-dialog-box nil
       use-file-dialog nil)
 
-(setq initial-scratch-message "")
-
 (setq x-stretch-cursor nil
       x-underline-at-descent-line t
-      cursor-in-non-selected-windows nil
+      inhibit-default-init t
       inhibit-splash-screen t
-      inhibit-startup-message t)
+      inhibit-startup-message t
+      initial-scratch-message "")
+
+(setq cursor-in-non-selected-windows nil)
 
 (when IS-MAC (menu-bar-mode 1))
 
@@ -909,7 +910,7 @@
       which-func-display 'header)
 
 ;; %% font
-(defvar yx/font-height 150)
+(defvar yx/font-height 140)
 (defvar yx/font "JetBrains Mono NL")
 (defvar yx/fixed-font "JetBrains Mono NL")
 (defvar yx/serif-font "Latin Modern Mono")
@@ -934,10 +935,10 @@
 (add-hook 'window-setup-hook 'yx/setup-fonts)
 (add-hook 'server-after-make-frame-hook 'yx/setup-fonts)
 
-(setq-default fringes-outside-margins t)
-(setq window-divider-default-bottom-width 1
-      window-divider-default-places 'bottom-only)
-(add-hook 'after-init-hook 'window-divider-mode)
+(setq window-divider-default-places t
+      window-divider-default-right-width 1
+      window-divider-default-bottom-width 1)
+(add-hook 'window-setup-hook #'window-divider-mode)
 
 (setq modus-themes-mixed-fonts t
       modus-themes-variable-pitch-ui t
