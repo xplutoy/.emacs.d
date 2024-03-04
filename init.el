@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-05 03:48:40 yx>
+;; Modified: <2024-03-05 04:04:08 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -705,8 +705,6 @@
            ("C-#"       . consult-register-load)
            ("M-#"       . consult-register-store)
            ("C-c #"     . consult-register)
-           ("M-["       . bs-cycle-previous)
-           ("M-]"       . bs-cycle-next)
            ("M-o"       . duplicate-dwim)
            ("M-z"       . avy-zap-to-char-dwim)
            ("M-Z"       . avy-zap-up-to-char-dwim)
@@ -888,19 +886,6 @@
   :hook ((prog-mode org-mode) . breadcrumb-local-mode))
 
 ;;; Layout
-(setq ns-pop-up-frames nil
-      window-sides-vertical nil
-      split-height-threshold 30
-      split-width-threshold 120
-      even-window-sizes 'height-only
-      frame-resize-pixelwise t
-      window-resize-pixelwise t
-      window-combination-resize t
-      fit-frame-to-buffer nil
-      fit-window-to-buffer-horizontally nil)
-
-(setq buffer-quit-function 'winner-undo)
-
 (setq display-buffer-alist
       '(("\\`\\*[hH]elp"
          (display-buffer-reuse-mode-window
@@ -949,29 +934,21 @@
   (popper-mode 1)
   (popper-echo-mode 1))
 
-;; %% @see http://yummymelon.com/devnull/using-bookmarks-in-emacs-like-you-do-in-web-browsers.html
-(easy-menu-define yx/bookmarks-menu nil
-  "Keymap for CC Bookmarks Menu"
-  '("Bookmarks"
-    ["Edit Bookmarks" list-bookmarks
-     :help "Display a list of existing bookmarks."]
-    ["--" nil]
-    ["Add Bookmark…" bookmark-set
-     :help "Set a bookmark named NAME at the current location."]
-    ["---" nil]
-    ["Jump to Bookmark…" bookmark-jump
-     :help "Jump to bookmark"]))
-
-(easy-menu-add-item global-map '(menu-bar)
-                    yx/bookmarks-menu
-                    "Tools")
-
-(define-key global-map [menu-bar edit bookmark] nil)
+(setq ns-pop-up-frames nil
+      window-sides-vertical nil
+      split-height-threshold 30
+      even-window-sizes 'height-only
+      frame-resize-pixelwise t
+      window-resize-pixelwise t
+      fit-frame-to-buffer nil
+      fit-window-to-buffer-horizontally nil)
 
 (setq winner-dont-bind-my-keys t
       winner-boring-buffers-regexp "^\\*")
 (add-hook 'after-init-hook 'winner-mode)
 (add-hook 'after-init-hook 'temp-buffer-resize-mode)
+
+(setq buffer-quit-function 'winner-undo)
 
 (setq switch-to-buffer-in-dedicated-window nil
       switch-to-buffer-obey-display-actions t
@@ -979,8 +956,27 @@
       switch-to-prev-buffer-skip 'visible
       switch-to-prev-buffer-skip-regexp "^\\*\\|^magit.*")
 
+(use-package zoom
+  :custom
+  (zoom-size '(0.618 . 0.618)))
+
 (use-package burly
   :hook (after-init . burly-tabs-mode))
+
+(setq ibuffer-expert t
+      ibuffer-display-summary nil
+      ibuffer-show-empty-filter-groups nil
+      ibuffer-default-sorting-mode 'major-mode)
+
+(defun yx/ibuffer-setup ()
+  (hl-line-mode 1)
+  (ibuffer-auto-mode 1)
+  (ibuffer-do-sort-by-recency))
+(add-hook 'ibuffer-mode-hook 'yx/ibuffer-setup)
+
+(use-package ibuffer-vc
+  :init
+  :hook (ibuffer . ibuffer-vc-set-filter-groups-by-vc-root))
 
 ;; %% tabbar
 (setq tab-bar-show t
@@ -1031,25 +1027,6 @@
   (tabspaces-session t)
   (tabspaces-session-auto-restore nil)
   (tabspaces-session-file (no-littering-expand-var-file-name "tabsession.el")))
-
-(use-package zoom
-  :custom
-  (zoom-size '(0.618 . 0.618)))
-
-(setq ibuffer-expert t
-      ibuffer-display-summary nil
-      ibuffer-show-empty-filter-groups nil
-      ibuffer-default-sorting-mode 'major-mode)
-
-(defun yx/ibuffer-setup ()
-  (hl-line-mode 1)
-  (ibuffer-auto-mode 1)
-  (ibuffer-do-sort-by-recency))
-(add-hook 'ibuffer-mode-hook 'yx/ibuffer-setup)
-
-(use-package ibuffer-vc
-  :init
-  :hook (ibuffer . ibuffer-vc-set-filter-groups-by-vc-root))
 
 ;;; Completion
 (use-package vertico
@@ -1441,7 +1418,7 @@
   (add-hook 'elfeed-show-hook 'bing-dict-eldoc-mode))
 
 (use-package cal-china-x
-  :demand t
+  :defer 2
   :config
   (setq mark-holidays-in-calendar t)
   (setq cal-china-x-important-holidays cal-china-x-chinese-holidays)
@@ -2293,7 +2270,35 @@
     "Mark all feeds in buffer as read."
     (interactive)
     (mark-whole-buffer)
-    (elfeed-search-untag-all-unread)))
+    (elfeed-search-untag-all-unread))
+  (defun yx/elfeed-search-print-entry--better-default (entry)
+    "Print ENTRY to the buffer."
+    (let* ((date (elfeed-search-format-date (elfeed-entry-date entry)))
+           (date-width (car (cdr elfeed-search-date-format)))
+           (title (concat (or (elfeed-meta entry :title)
+                              (elfeed-entry-title entry) "")
+                          " "))
+           (title-faces (elfeed-search--faces (elfeed-entry-tags entry)))
+           (feed (elfeed-entry-feed entry))
+           (feed-title (when feed (or (elfeed-meta feed :title) (elfeed-feed-title feed))))
+           (tags (mapcar #'symbol-name (elfeed-entry-tags entry)))
+           (tags-str (mapconcat (lambda (s) (propertize s 'face 'elfeed-search-tag-face)) tags ","))
+           (title-width (- (frame-width)
+                           ;; (window-width (get-buffer-window (elfeed-search-buffer) t))
+                           date-width elfeed-search-trailing-width))
+           (title-column (elfeed-format-column
+                          title (elfeed-clamp
+                                 elfeed-search-title-min-width
+                                 title-width
+                                 elfeed-search-title-max-width) :left))
+           (align-to-feed-pixel (+ date-width
+                                   (max elfeed-search-title-min-width
+                                        (min title-width elfeed-search-title-max-width)))))
+      (insert (propertize date 'face 'elfeed-search-date-face) " ")
+      (insert (propertize title-column 'face title-faces 'kbd-help title))
+      (put-text-property (1- (point)) (point) 'display `(space :align-to ,align-to-feed-pixel))
+      (when feed-title (insert (propertize feed-title 'face 'elfeed-search-feed-face) " "))
+      (when tags (insert "(" tags-str ")")))))
 
 (use-package elfeed-webkit
   :after elfeed
