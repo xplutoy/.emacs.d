@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-03 19:03:44 yx>
+;; Modified: <2024-03-05 02:36:12 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -2518,6 +2518,7 @@ set to \\='(template title keywords subdirectory)."
 
 ;;; Programming
 (defun yx/prog-common-setup ()
+  (setq-local line-spacing 0.15)
   (whitespace-mode            1)
   (hl-line-mode               1)
   (hs-minor-mode              1)
@@ -2566,15 +2567,15 @@ set to \\='(template title keywords subdirectory)."
   :config
   (setq elisp-flymake-byte-compile-load-path
         (append elisp-flymake-byte-compile-load-path load-path))
-  :bind (:map flymake-mode-map
-              ("s-; s"   . flymake-start)
-              ("M-g d"   . flymake-show-buffer-diagnostics)
-              ("M-g M-d" . flymake-show-project-diagnostics)
-              ("M-g M-n" . flymake-goto-next-error)
-              ("M-g M-p" . flymake-goto-prev-error)
-              :repeat-map flymake-repeatmap
-              ("p" . flymake-goto-prev-error)
-              ("n" . flymake-goto-next-error)))
+  :bind (("C-x c l" . flymake-start)
+         :map flymake-mode-map
+         ("M-g d"   . flymake-show-buffer-diagnostics)
+         ("M-g M-d" . flymake-show-project-diagnostics)
+         ("M-g M-n" . flymake-goto-next-error)
+         ("M-g M-p" . flymake-goto-prev-error)
+         :repeat-map flymake-repeatmap
+         ("p" . flymake-goto-prev-error)
+         ("n" . flymake-goto-next-error)))
 
 (use-package apheleia
   :init (apheleia-global-mode +1))
@@ -2753,15 +2754,12 @@ set to \\='(template title keywords subdirectory)."
 ;; %% lsp
 (use-package eglot
   :ensure nil
-  :hook ((c-mode
-          c-ts-mode
-          R-mode
-          python-mode
-          python-ts-mode
-          julia-mode
-          julia-ts-mode
+  :hook ((R-mode
           LaTeX-mode
-          haskell-mode) . eglot-ensure)
+          haskell-mode
+          c-mode c-ts-mode
+          python-mode python-ts-mode
+          julia-mode julia-ts-mode) . eglot-ensure)
   :custom
   (eglot-autoshutdown t)
   (eglot-extend-to-xref t)
@@ -2770,16 +2768,31 @@ set to \\='(template title keywords subdirectory)."
   (eglot-events-buffer-size 0)
   (eglot-send-changes-idle-time 0.3)
   :bind (:map eglot-mode-map
-              ("s-; r" . eglot-rename)
-              ("s-; f" . eglot-format)
-              ("s-; a" . eglot-code-actions)
-              ("s-; g" . consult-eglot-symbols))
+              ("C-x c r" . eglot-rename)
+              ("C-x c f" . eglot-format)
+              ("C-x c a" . eglot-code-actions)
+              ("C-x c g" . consult-eglot-symbols))
   :config
   (fset #'jsonrpc--log-event #'ignore) ; massive perf boost---don't log every event
   )
 
 (use-package consult-eglot
   :after consult)
+
+(use-package citre
+  :bind (:map prog-mode-map
+              ("C-x c ."   . citre-jump)
+              ("C-x c ,"   . citre-jump-back)
+              ("C-x c p"   . citre-peek)
+              ("C-x c u"   . citre-update-this-tags-file))
+  :custom
+  (citre-prompt-language-for-ctags-command t)
+  (citre-use-project-root-when-creating-tags t)
+  (citre-default-create-tags-file-location 'global-cache)
+  (citre-auto-enable-citre-mode-modes '(c-ts-mode python-ts-mode))
+  :config
+  (with-eval-after-load 'cc-mode (require 'citre-lang-c))
+  (with-eval-after-load 'dired (require 'citre-lang-fileref)))
 
 (use-package dape
   :init
@@ -2965,4 +2978,5 @@ set to \\='(template title keywords subdirectory)."
 (autoload 'imath-mode "imath" "Imath mode for math formula input" t)
 (setq imaxima-use-maxima-mode-flag t)
 (add-to-list 'auto-mode-alist '("\\.ma[cx]\\'" . maxima-mode))
+
 ;;; init.el ends here
