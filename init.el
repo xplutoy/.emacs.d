@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-05 02:36:12 yx>
+;; Modified: <2024-03-05 03:31:38 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -77,18 +77,6 @@
 (defconst yx/templates-dir
   (expand-file-name "templates" no-littering-etc-directory))
 
-(defconst yx/cal-china-x-days
-  ["日" "一" "二" "三" "四" "五" "六"])
-
-(defconst yx/cal-china-x-month-name
-  ["正月" "二月" "三月" "四月" "五月" "六月" "七月" "八月" "九月" "十月" "冬月" "腊月"])
-
-(defconst yx/cal-china-x-day-name
-  ["初一" "初二" "初三" "初四" "初五" "初六" "初七" "初八" "初九" "初十"
-   "十一" "十二" "十三" "十四" "十五" "十六" "十七" "十八" "十九"  "廿"
-   "廿一" "廿二" "廿三" "廿四" "廿五" "廿六" "廿七" "廿八" "廿九" "三十"
-   "卅一" "卅二" "卅三" "卅四" "卅五" "卅六" "卅七" "卅八" "卅九" "卅十"])
-
 ;; %% functions
 (defun yx/pwd-replace-home (pwd)
   "Replace home in PWD with tilde (~) character."
@@ -109,49 +97,6 @@
   (with-temp-buffer
     (insert-file-contents file)
     (buffer-string)))
-
-(defun yx/org-agenda-format-date-aligned (date)
-  "Format a DATE string for display in the daily/weekly agenda, or timeline.
-  This function makes sure that dates are aligned for easy reading."
-  (let* ((dayname (aref yx/cal-china-x-days
-                        (calendar-day-of-week date)))
-         (day (cadr date))
-         (month (car date))
-         (year (nth 2 date))
-         (cn-date (calendar-chinese-from-absolute (calendar-absolute-from-gregorian date)))
-         (cn-month (cl-caddr cn-date))
-         (cn-day (cl-cadddr cn-date))
-         (cn-month-string (concat (aref yx/cal-china-x-month-name
-                                        (1- (floor cn-month)))
-                                  (if (integerp cn-month)
-                                      ""
-                                    "[闰]")))
-         (cn-day-string (aref yx/cal-china-x-day-name
-                              (1- cn-day))))
-    (format "%04d-%02d-%02d 周%-8s 农历%s%s" year month
-            day dayname cn-month-string cn-day-string)))
-
-(defun yx/diary-sunrise-sunset-split ()
-  "Split `solar-sunrise-sunset-string' into sunrise, sunset, and daylight hours."
-  (let* ((string (solar-sunrise-sunset-string (calendar-current-date)))
-         (regexp (rx (group "Sunrise " (1+ (or digit ":")) (or "am" "pm")) " "
-                     (group "(" (1+ alpha) ")") ", "
-                     (group "sunset " (1+ (or digit ":")) (or "am" "pm")) " "
-                     (group "(" (1+ alpha) ")")
-                     (1+ anything)
-                     "(" (group (1+ (or digit ":")))))
-         (sunrise (progn
-                    (string-match regexp string)
-                    (match-string 1 string)) )
-         (sunset (capitalize (match-string 3 string)))
-         (daylight (format "%s of daylight" (match-string 5 string))))
-    (list sunrise sunset daylight)))
-
-(defun yx/diary-sunrise ()
-  (elt (yx/diary-sunrise-sunset-split) 0))
-
-(defun yx/diary-sunset ()
-  (elt (yx/diary-sunrise-sunset-split) 1))
 
 ;; %% tempo skeleton
 (tempo-define-template
@@ -582,27 +527,6 @@
 (setq-default bidi-display-reordering nil
               bidi-paragraph-direction 'left-to-right)
 
-;; %% calendar
-(setq calendar-holidays
-      '((holiday-chinese 12 30 "春节")
-        (holiday-chinese 5 5   "端午节")
-        (holiday-chinese 1 15  "元宵节")
-        (holiday-chinese 7 7   "七夕节")
-        (holiday-chinese 9 9   "重阳节")
-        (holiday-chinese 8 15  "中秋节")
-        (holiday-fixed 1 1     "元旦")
-        (holiday-fixed 10 1    "国庆节")
-        (holiday-fixed 3 8     "妇女节")
-        (holiday-fixed 5 1     "劳动节")
-        (holiday-fixed 5 4     "青年节")
-        (holiday-fixed 6 1     "儿童节")
-        (holiday-fixed 9 10    "教师节")
-        (holiday-fixed 2 14    "情人节")
-        (holiday-float 5 0 2   "母亲节")
-        (holiday-float 6 0 3   "父亲节")
-        (holiday-float 11 4 4  "感恩节")
-        (holiday-fixed 12 25   "圣诞节")))
-
 (setq appt-audible t
       appt-display-interval 10
       appt-display-duration 5
@@ -615,13 +539,8 @@
       calendar-longitude +104.07
       calendar-date-style 'iso
       calendar-week-start-day 1
-      calendar-mode-line-format nil
       calendar-mark-holidays-flag t
-      calendar-mark-diary-entries-flag nil
-      calendar-chinese-celestial-stem
-      ["甲" "乙" "丙" "丁" "戊" "己" "庚" "辛" "壬" "癸"]
-      calendar-chinese-terrestrial-branch
-      ["子" "丑" "寅" "卯" "辰" "巳" "午" "未" "申" "酉" "戌" "亥"])
+      calendar-mark-diary-entries-flag t)
 
 (add-hook 'calendar-today-visible-hook #'calendar-mark-today)
 
@@ -1289,7 +1208,7 @@
 (use-package cape
   :init
   (setq cape-dabbrev-min-length 3)
-  (add-to-list 'completion-at-point-functions #'cape-abbrev)
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-file)
   :bind (("C-c p p" . completion-at-point)
          ("C-c p t" . complete-tag)
@@ -1369,10 +1288,10 @@
 
 (use-package which-key
   :hook (after-init . which-key-mode)
+  :custom
+  (which-key-idle-delay 0.8)
+  (which-key-show-early-on-C-h t)
   :config
-  (setq which-key-show-early-on-C-h t
-        which-key-idle-delay most-positive-fixnum
-        which-key-idle-secondary-delay 1e-100)
   (which-key-setup-side-window-bottom))
 
 (use-package ace-link
@@ -1571,6 +1490,16 @@
   (add-hook 'eww-mode-hook 'bing-dict-eldoc-mode)
   (add-hook 'Info-mode-hook 'bing-dict-eldoc-mode)
   (add-hook 'elfeed-show-hook 'bing-dict-eldoc-mode))
+
+(use-package cal-china-x
+  :demand t
+  :config
+  (setq mark-holidays-in-calendar t)
+  (setq cal-china-x-important-holidays cal-china-x-chinese-holidays)
+  (setq cal-china-x-general-holidays '((holiday-lunar 1 15 "元宵节")))
+  (setq calendar-holidays
+        (append cal-china-x-important-holidays
+                cal-china-x-general-holidays)))
 
 ;; %% Tools
 (use-package tldr)
@@ -2238,6 +2167,28 @@
   (defun yx/org-clock-in ()
     (interactive)
     (org-clock-in '(4)))
+
+  (defun yx/org-agenda-format-date-aligned (date)
+    "Format a DATE string for display in the daily/weekly agenda, or timeline.
+  This function makes sure that dates are aligned for easy reading."
+    (require 'cal-china-x)
+    (let* ((dayname (aref cal-china-x-days
+                          (calendar-day-of-week date)))
+           (day (cadr date))
+           (month (car date))
+           (year (nth 2 date))
+           (cn-date (calendar-chinese-from-absolute (calendar-absolute-from-gregorian date)))
+           (cn-month (cl-caddr cn-date))
+           (cn-day (cl-cadddr cn-date))
+           (cn-month-string (concat (aref cal-china-x-month-name
+                                          (1- (floor cn-month)))
+                                    (if (integerp cn-month)
+                                        ""
+                                      "[闰]")))
+           (cn-day-string (aref cal-china-x-day-name
+                                (1- cn-day))))
+      (format "%04d-%02d-%02d 周%-8s 农历%s%s" year month
+              day dayname cn-month-string cn-day-string)))
 
   (transient-define-prefix yx/transient-org ()
     "Org commands."
