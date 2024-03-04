@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-05 04:37:38 yx>
+;; Modified: <2024-03-05 05:21:37 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -2155,16 +2155,6 @@
 (use-package mixed-pitch
   :hook (org-mode . mixed-pitch-mode))
 
-(use-package org-appear
-  :hook (org-mode . org-appear-mode)
-  :custom
-  (org-appear-delay 1)
-  (org-appear-autolinks nil)
-  (org-appear-inside-latex t)
-  (org-appear-autoentities t)
-  (org-appear-autoemphasis t)
-  (org-appear-autosubmarkers t))
-
 (use-package org-download
   :after org
   :hook (dired-mode . org-download-enable)
@@ -2633,8 +2623,8 @@ set to \\='(template title keywords subdirectory)."
               ("C-("     . puni-slurp-backward)
               ("C-}"     . puni-barf-forward)
               ("C-{"     . puni-barf-backward)
-              ("C-M-@"   . puni-mark-sexp-at-point)
-              ("C-M-2"   . puni-mark-sexp-around-point)
+              ([remap mark-sexp] . puni-mark-sexp-at-point)
+              ("C-M-@"   . puni-mark-sexp-around-point)
               ("C-M-r"   . puni-raise)
               ("C-M-z"   . puni-squeeze)
               ("C-M-t"   . puni-transpose)
