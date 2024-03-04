@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-05 05:21:37 yx>
+;; Modified: <2024-03-05 07:13:50 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -831,11 +831,6 @@
 (add-hook 'window-setup-hook 'yx/setup-fonts)
 (add-hook 'server-after-make-frame-hook 'yx/setup-fonts)
 
-(setq window-divider-default-places t
-      window-divider-default-right-width 1
-      window-divider-default-bottom-width 1)
-(add-hook 'window-setup-hook #'window-divider-mode)
-
 (setq modus-themes-mixed-fonts t
       modus-themes-variable-pitch-ui t
       modus-themes-italic-constructs t
@@ -859,10 +854,22 @@
 
 (use-package minions
   :demand t
-  :hook (after-init . minions-mode))
+  :hook (emacs-startup . minions-mode))
+
+(use-package spacious-padding
+  :custom
+  (spacious-padding-subtle-mode-line nil)
+  (spacious-padding-widths '( :internal-border-width 4
+                              :header-line-width 2
+                              :mode-line-width 2
+                              :tab-width 4
+                              :right-divider-width 12
+                              :fringe-width 8))
+  :init (spacious-padding-mode 1))
 
 (use-package breadcrumb
-  :hook ((prog-mode org-mode) . breadcrumb-local-mode))
+  :demand t
+  :hook (emacs-startup . breadcrumb-mode))
 
 ;;; Layout
 (setq display-buffer-alist
