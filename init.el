@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-05 03:31:38 yx>
+;; Modified: <2024-03-05 03:48:40 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -75,7 +75,7 @@
    (t "")))
 
 (defconst yx/templates-dir
-  (expand-file-name "templates" no-littering-etc-directory))
+  (no-littering-expand-etc-file-name "templates"))
 
 ;; %% functions
 (defun yx/pwd-replace-home (pwd)
@@ -909,63 +909,45 @@
          (window-height . 0.4)
          (direction . bottom)
          (mode . (help-mode helpful-mode)))
-        ("\\`\\*Async Shell Command\\*\\'"
-         (display-buffer-no-window)
-         (allow-no-window . t))
-        ("\\`\\(\\*Org L\\|\\*Org Select\\|CAPTURE\\)"
-         (display-buffer-reuse-mode-window
-          display-buffer-below-selected))
-        ("\\`\\*Embark"
-         (display-buffer-reuse-mode-window
-          display-buffer-below-selected)
-         (window-height . 0.4)
-         (window-parameters . ((no-other-window . t)
-                               (mode-line-format . none))))
-        ("\\`\\(\\*Calendar\\|\\*Bookmark\\)"
-         (display-buffer-reuse-mode-window
-          display-buffer-below-selected)
-         (dedicated . t)
-         (window-height . fit-window-to-buffer))
         ("\\`\\(\\*Proced\\*\\|\\*Ibuffer\\|\\*Man\\|\\*WoMan\\|\\*info\\|magit\\|\\*Org Agenda\\)"
          (display-buffer-full-frame))))
 
-(add-to-list 'display-buffer-alist
-             `(,(yx/prefixs-to-regex
-                 "*R"
-                 "*julia"
-                 "*lua"
-                 "*Lua"
-                 "*Python"
-                 "*eshell"
-                 "*Eshell"
-                 "*term"
-                 "*grep*"
-                 "*Occur"
-                 "*Backtrac"
-                 "*Flymake"
-                 "*Error"
-                 "*tldr"
-                 "*devdocs"
-                 "*Messages"
-                 "*color-rg")
-               (display-buffer-reuse-mode-window
-                display-buffer-in-side-window)
-               (side . bottom)
-               (window-height . 0.4)))
-
-(add-to-list 'display-buffer-alist
-             `(,(yx/prefixs-to-regex
-                 "*vc-git"
-                 "*Warnings"
-                 "*quickrun"
-                 "*Dictionary"
-                 "*stardict*"
-                 "*Compile-Log*")
-               (display-buffer-reuse-mode-window
-                display-buffer-in-side-window)
-               (side . bottom)
-               (window-height . 0.4)
-               (post-command-select-window . nil)))
+(use-package popper
+  :defer 2
+  :bind (("C-`" . popper-toggle)
+         ("M-`" . popper-cycle)
+         ("C-M-`" . popper-toggle-type))
+  :config
+  (setq popper-display-control 'user
+        popper-echo-dispatch-actions t
+        popper-group-function #'popper-group-by-directory)
+  (setq popper-reference-buffers
+        '("\\*R\\*$"
+          "\\*julia\\*$"
+          "\\*Python\\*$"
+          "\\*tldr\\*$"
+          "\\*quickrun\\*$"
+          "\\*Calendar\\*$"
+          "\\*vc-.*\\**"
+          "\\*Apropos\\*$"
+          "\\*gud-debug\\*$"
+          "\\*Backtrace\\*$"
+          "\\*Async Shell Command\\*"
+          "\\*Embark \\(Collect\\|Live\\):.*\\*$"
+          "\\*Agenda Commands\\*" "\\*Org Select\\*"
+          "\\*Capture\\*" "^CAPTURE-.*\\.org*"
+          "^\\*eshell.*\\*$" eshell-mode
+          "^\\*shell.*\\*$"  shell-mode
+          "^\\*term.*\\*$"   term-mode
+          help-mode helpful-mode
+          grep-mode occur-mode color-rg-mode
+          bookmark-bmenu-mode
+          comint-mode
+          devdocs-mode
+          compilation-mode
+          flymake-diagnostics-buffer-mode))
+  (popper-mode 1)
+  (popper-echo-mode 1))
 
 ;; %% @see http://yummymelon.com/devnull/using-bookmarks-in-emacs-like-you-do-in-web-browsers.html
 (easy-menu-define yx/bookmarks-menu nil
@@ -1068,39 +1050,6 @@
 (use-package ibuffer-vc
   :init
   :hook (ibuffer . ibuffer-vc-set-filter-groups-by-vc-root))
-
-(use-package popper
-  :defer 2
-  :bind (("C-`" . popper-toggle)
-         ("M-`" . popper-cycle)
-         ("C-M-`" . popper-toggle-type))
-  :config
-  (setq popper-display-control nil
-        popper-echo-dispatch-actions t
-        popper-group-function #'popper-group-by-directory)
-  (setq popper-reference-buffers
-        '("\\*julia\\*$"
-          "\\*Python\\*$"
-          "\\*tldr\\*$"
-          "\\*quickrun\\*$"
-          "\\*Calendar\\*$"
-          "\\*vc-.*\\**"
-          "\\*Apropos\\*$"
-          "\\*Backtrace\\*$"
-          "\\*Async Shell Command\\*"
-          "\\*Embark \\(Collect\\|Live\\):.*\\*$"
-          "^\\*eshell.*\\*$" eshell-mode
-          "^\\*shell.*\\*$"  shell-mode
-          "^\\*term.*\\*$"   term-mode
-          help-mode helpful-mode
-          grep-mode occur-mode color-rg-mode
-          bookmark-bmenu-mode
-          comint-mode
-          devdocs-mode
-          compilation-mode
-          flymake-diagnostics-buffer-mode))
-  (popper-mode 1)
-  (popper-echo-mode 1))
 
 ;;; Completion
 (use-package vertico
