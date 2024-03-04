@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-05 04:04:08 yx>
+;; Modified: <2024-03-05 04:37:38 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -602,27 +602,6 @@
 ;; This avoids the ugly accidentally action of scaling text with using the trackpad
 (keymap-global-unset "C-<wheel-up>")
 (keymap-global-unset "C-<wheel-down>")
-
-(use-package define-repeat-map
-  :vc (:url "https://tildegit.org/acdw/define-repeat-map.el" :rev :newest)
-  :commands (define-repeat-map))
-
-(define-repeat-map puni-expand-region
-  ("+" puni-expand-region
-   "-" puni-contract-region)
-  (:enter mark-word
-          mark-sexp
-          mark-defun
-          puni-mark-sexp-at-point
-          puni-mark-sexp-around-point
-          puni-mark-list-around-point))
-
-(define-repeat-map org-heading-navigate
-  ("u" outline-up-heading
-   "p" org-previous-visible-heading
-   "n" org-next-visible-heading
-   "f" org-forward-heading-same-level
-   "b" org-backward-heading-same-level))
 
 (use-package key-chord
   :init
@@ -1813,7 +1792,13 @@
         ("C-c t h" . org-toggle-heading)
         ("C-c t l" . org-toggle-link-display)
         ("C-c t v" . yx/org-display-subtree-inline-images)
-        ("C-x n h" . yx/org-show-current-heading-tidily))
+        ("C-x n h" . yx/org-show-current-heading-tidily)
+        :repeat-map org-heading-navigate-repeat-map
+        ("u" . outline-up-heading)
+        ("p" . org-previous-visible-heading)
+        ("n" . org-next-visible-heading)
+        ("f" . org-forward-heading-same-level)
+        ("b" . org-backward-heading-same-level))
   :autoload (org-calendar-holiday)
   :hook
   (org-mode . yx/org-mode-setup)
@@ -2654,7 +2639,10 @@ set to \\='(template title keywords subdirectory)."
               ("C-M-z"   . puni-squeeze)
               ("C-M-t"   . puni-transpose)
               ("C-M-="   . puni-expand-region)
-              ("C-M--"   . puni-contract-region)))
+              ("C-M--"   . puni-contract-region)
+              :repeat-map puni-e/c-repeat-map
+              ("=" . puni-expand-region)
+              ("-" . puni-contract-region)))
 
 ;; %% lsp
 (use-package eglot
