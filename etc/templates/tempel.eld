@@ -1,4 +1,3 @@
-;;;
 fundamental-mode
 
 (today (format-time-string "%Y-%m-%d"))
@@ -6,14 +5,12 @@ fundamental-mode
 (yesterday (format-time-string "<%Y-%0m-%0d %a>" (time-subtract nil (* 24 60 60))))
 (tomorrow (format-time-string "<%Y-%0m-%0d %a>" (time-add nil (* 24 60 60))))
 
-;;;
 prog-mode
 
 (todo (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "TODO: ")
 (fail (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "FAIL: ")
 (fixme (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "FIXME: ")
 
-;;;
 python-base-mode
 
 (for "for " p " in " p ":" n> q)
@@ -31,7 +28,6 @@ python-base-mode
 (try "try:" n> p n> "except " p ":" n> q)
 (tryelse "try:" n> p n> "except " p ":" n> p n> "else:" n> q)
 
-;;;
 emacs-lisp-mode
 
 (autoload ";;;###autoload")
@@ -99,7 +95,6 @@ emacs-lisp-mode
                 "(provide '" (s file) ")" n
                 ";;; " (s file) ".el ends here")
 
-;;;
 org-mode
 
 ($  "\\(" p "\\)")
@@ -116,3 +111,8 @@ org-mode
 (gnuplot "#+begin_src gnuplot :var data=" (p "table") " :file " (p "plot.png") n r n "#+end_src" :post (org-edit-src-code))
 (elisp "#+begin_src elisp" n r n "#+end_src" :post (org-edit-src-code))
 (inlsrc "src_" p "{" q "}")
+
+;; Local Variables:
+;; mode: lisp-data
+;; outline-regexp: "[a-z]"
+;; End:

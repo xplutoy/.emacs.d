@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2024-03-03 05:44:37 yx>
+;; Modified: <2024-03-05 19:32:47 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -12,6 +12,7 @@
 
 ;;; Code:
 (setq load-prefer-newer t
+      inhibit-default-init t
       byte-compile-warnings nil
       package-native-compile t
       package-enable-at-startup nil

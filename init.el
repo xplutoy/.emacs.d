@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-05 19:31:13 yx>
+;; Modified: <2024-03-05 21:51:36 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -550,12 +550,15 @@
  (IS-MAC
   (setq mac-option-modifier  'meta
         mac-command-modifier 'super
-        ns-function-modifier 'hyper
-        ns-use-thin-smoothing t
+        ns-function-modifier 'hyper)
+  (setq ns-use-thin-smoothing t
         ns-use-native-fullscreen nil))
  (IS-WIN
   (setq w32-apps-modifier 'hyper
-        w32-lwindow-modifier 'super)))
+        w32-lwindow-modifier 'super)
+  (setq w32-get-true-file-attributes nil
+        w32-pipe-read-delay 0
+        w32-pipe-buffer-size  (* 64 1024))))
 
 ;; %% hook
 (defun yx/text-mode-setup ()
@@ -1017,31 +1020,36 @@
   (setq vertico-resize nil
         vertico-preselect 'directory)
   (vertico-mode 1)
-  (vertico-mouse-mode 1)
-  (vertico-indexed-mode 1)
   :bind (:map vertico-map
               ("M-q" . vertico-quick-insert)
+              ("M-r" . vertico-repeat-select)
               ("RET" . vertico-directory-enter)
               ("DEL" . vertico-directory-delete-char))
-  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+  :hook ((minibuffer-setup-hook vertico-repeat-save)
+         (rfn-eshadow-update-overlay . vertico-directory-tidy))
+  :config
+  (vertico-mouse-mode 1)
+  (vertico-indexed-mode 1)
+  (with-eval-after-load 'savehist
+    (add-to-list 'savehist-additional-variables 'vertico-repeat-history)))
 
 (use-package orderless
-  :init
-  (setq completion-styles '(orderless basic)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles . (basic partial-completion)))
-                                        (buffer (styles . (basic partial-completion)))
-                                        (command (styles yx/orderless-initialism+))
-                                        (symbol (styles yx/orderless-initialism+))
-                                        (variable (styles yx/orderless-initialism+))
-                                        (eglot (styles yx/orderless-initialism+))
-                                        (eglot-capf (styles yx/orderless-initialism+))))
+  :demand t
   :custom
   (orderless-matching-styles '(orderless-literal orderless-regexp orderless-flex))
   (orderless-component-separator  #'orderless-escapable-split-on-space)
   :config
   (orderless-define-completion-style yx/orderless-initialism+
-    (orderless-matching-styles '(orderless-initialism orderless-literal orderless-regexp))))
+    (orderless-matching-styles '(orderless-initialism orderless-literal orderless-regexp)))
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles basic partial-completion))
+                                        (buffer (styles basic partial-completion))
+                                        (command (styles yx/orderless-initialism+))
+                                        (symbol (styles yx/orderless-initialism+))
+                                        (variable (styles yx/orderless-initialism+))
+                                        (eglot (styles yx/orderless-initialism+))
+                                        (eglot-capf (styles yx/orderless-initialism+)))))
 
 ;; %% embark
 (use-package embark
@@ -2030,6 +2038,7 @@
   (org-export-with-sub-superscripts '{})
 
   :config
+  (add-hook 'org-trigger-hook #'save-buffer)
   (plist-put org-format-latex-options :scale 1.8)
   (plist-put org-format-latex-options :background "Transparent")
   (with-eval-after-load 'ox-latex
