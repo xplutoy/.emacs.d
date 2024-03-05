@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-05 21:51:36 yx>
+;; Modified: <2024-03-06 01:11:21 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -683,6 +683,7 @@
            ("C-^"       . crux-top-join-line)
            ("C-M-/"     . vundo)
            ("C-#"       . consult-register-load)
+           ("C-O"       . crux-smart-open-line-above)
            ("M-#"       . consult-register-store)
            ("C-c #"     . consult-register)
            ("M-o"       . duplicate-dwim)
@@ -731,6 +732,7 @@
            ("C-c z"     . hs-toggle-hiding)
            ("C-c Z"     . hs-show-all)
            ("C-c f"     . dirvish-fd)
+           ("C-c M-f"   . ffap)
            ("C-x a a"   . align)
            ("C-x a r"   . align-regexp)
            ("C-x / /"   . webjump)
@@ -754,6 +756,10 @@
            ("C-c n C-b" . denote-org-dblock-insert-backlinks)
            ("C-c n t"   . org-transclusion-add)
            ("C-c n C-t" . org-transclusion-add-all)
+           ("C-c q a"   . org-ql-find-in-agenda)
+           ("C-c q d"   . org-ql-find-in-org-directory)
+           ("C-c q s"   . org-ql-search)
+           ("C-c q v"   . org-ql-view)
            ("C-h b"     . embark-bindings)
            ("C-h C-m"   . which-key-show-full-major-mode)
            ("C-h B"     . embark-bindings-at-point))
@@ -2135,7 +2141,10 @@
 
 ;; %% org+
 (use-package org-ql
-  :after org)
+  :after org
+  :bind (:map org-mode-map
+              ("C-c q f" . org-ql-find)
+              ("C-c q r" . org-ql-refile)))
 
 (use-package org-super-agenda
   :hook (org-agenda-mode . org-super-agenda-mode)
@@ -2452,7 +2461,10 @@ set to \\='(template title keywords subdirectory)."
   (global-semantic-idle-scheduler-mode 1))
 
 (setq gud-highlight-current-line t)
-(setq compilation-scroll-output 'first-error)
+(setq compilation-always-kill t
+      compilation-ask-about-save nil
+      compilation-auto-jump-to-first-error t
+      compilation-scroll-output 'first-error)
 
 ;; %% formatter & linter & profiler
 (use-package flymake
@@ -2724,6 +2736,7 @@ set to \\='(template title keywords subdirectory)."
       c-ts-mode-indent-style 'linux)
 
 (add-hook 'c-mode-common-hook
+          (setq-local indent-tabs-mode nil)
           (lambda () (c-toggle-auto-hungry-state 1)))
 
 (define-auto-insert
