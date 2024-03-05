@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-06 01:11:21 yx>
+;; Modified: <2024-03-06 04:43:32 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -689,7 +689,6 @@
            ("M-o"       . duplicate-dwim)
            ("M-z"       . avy-zap-to-char-dwim)
            ("M-Z"       . avy-zap-up-to-char-dwim)
-           ("M-0"       . delete-window)
            ("M-g ;"     . goto-last-change)
            ("M-g a"     . consult-org-agenda)
            ("M-g M"     . consult-man)
@@ -851,7 +850,7 @@
   (setq ef-themes-mixed-fonts t
         ef-themes-variable-pitch-ui t))
 
-(load-theme 'modus-operandi t)
+(load-theme 'modus-operandi-tinted t)
 
 (use-package lin
   :hook (after-init . lin-global-mode)
@@ -1261,7 +1260,7 @@
   (setq avy-style 'at
         avy-timeout-seconds 0.8)
   :bind (:map isearch-mode-map
-              ("C-'" . avy-isearch))
+              ("M-j" . avy-isearch))
   :config
   (defun avy-action-mark-to-char (pt)
     (activate-mark)
@@ -1702,7 +1701,7 @@
         eshell-error-if-no-glob t
         eshell-prefer-lisp-functions t
         eshell-rm-removes-directories t
-        eshell-scroll-to-bottom-on-input 'all
+        eshell-scroll-to-bottom-on-input  'all
         eshell-scroll-to-bottom-on-output 'all
         eshell-prompt-function 'yx/eshell-prompt)
   :config
@@ -2515,6 +2514,8 @@ set to \\='(template title keywords subdirectory)."
   :custom
   (magit-diff-refine-hunk 'all)
   (magit-show-long-lines-warning nil)
+  (magit-bury-buffer-function #'magit-restore-window-configuration)
+  (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   :bind (:map magit-status-mode-map
               ("q" . #'yx/magit-kill-buffers))
   :preface
@@ -2556,13 +2557,14 @@ set to \\='(template title keywords subdirectory)."
   :custom
   (snap-indent-format '(delete-trailing-whitespace)))
 
-(use-package aggressive-indent
-  :hook ((emacs-lisp-mode scheme-mode-hook) . aggressive-indent-mode))
+(use-package isayt
+  :vc (:url https://gitlab.com/andreyorst/isayt.el :rev :newest)
+  :hook ((emacs-lisp-mode scheme-mode-hook) . isayt-mode))
 
 ;; %% doc
 (use-package devdocs
   :bind (:map prog-mode-map
-              ("s-; d" . devdocs-lookup)))
+              ("C-x c d" . devdocs-lookup)))
 
 (add-hook 'julia-ts-mode-hook
           (lambda () (setq-local devdocs-current-docs '("julia~1.9"))))
@@ -2641,24 +2643,28 @@ set to \\='(template title keywords subdirectory)."
 
 (use-package surround
   :defer 2
-  :bind-keymap ("M-'" . surround-keymap))
+  :bind-keymap ("M-0" . surround-keymap))
 
 (use-package puni
   :hook ((prog-mode sgml-mode nxml-mode) . puni-mode)
   :custom
   (puni-confirm-when-delete-unbalanced-active-region nil)
   :bind (:map puni-mode-map
-              ("C-)"     . puni-slurp-forward)
-              ("C-("     . puni-slurp-backward)
-              ("C-}"     . puni-barf-forward)
-              ("C-{"     . puni-barf-backward)
-              ([remap mark-sexp] . puni-mark-sexp-at-point)
-              ("C-M-@"   . puni-mark-sexp-around-point)
-              ("C-M-r"   . puni-raise)
-              ("C-M-z"   . puni-squeeze)
-              ("C-M-t"   . puni-transpose)
-              ("C-M-="   . puni-expand-region)
-              ("C-M--"   . puni-contract-region)
+              ("DEL"         . nil)     ; confict with hungry-delete
+              ("C-M-f"       . puni-forward-sexp-or-up-list)
+              ("C-M-b"       . puni-backward-sexp-or-up-list)
+              ("C-M-<right>" . puni-slurp-forward)
+              ("C-M-<left>"  . puni-slurp-backward)
+              ("C-M-<up>"    . puni-barf-forward)
+              ("C-M-<down>"  . puni-barf-backward)
+              ("C-M-SPC"     . puni-mark-sexp-at-point)
+              ("C-M-@"       . puni-mark-sexp-around-point)
+              ("C-M-r"       . puni-raise)
+              ("C-M-0"       . puni-splice)
+              ("C-M-z"       . puni-squeeze)
+              ("C-M-t"       . puni-transpose)
+              ("C-M-="       . puni-expand-region)
+              ("C-M--"       . puni-contract-region)
               :repeat-map puni-e/c-repeat-map
               ("=" . puni-expand-region)
               ("-" . puni-contract-region)))
