@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-06 04:43:32 yx>
+;; Modified: <2024-03-06 06:12:18 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -95,9 +95,9 @@
         (concat "~" (substring pwd home-len))
       pwd)))
 
-(defmacro yx/prefixs-to-regex (&rest prefixs)
-  "Convert a list of buffer-name prefex to regex."
-  `(rx bos (or ,@prefixs)))
+(defun yx/prefixes-to-regex(&rest prefixs)
+  "Convert a list of match-prefex to regex string."
+  (rx bos (regex (regexp-opt prefixs))))
 
 (defun yx/file-contents-2-str (file)
   "File contents to string."
@@ -878,15 +878,31 @@
 
 ;;; Layout
 (setq display-buffer-alist
-      '(("\\`\\*[hH]elp"
+      `(("\\`\\*[hH]elp"
          (display-buffer-reuse-mode-window
           display-buffer-in-direction)
          (window . root)
          (window-height . 0.4)
          (direction . bottom)
          (mode . (help-mode helpful-mode)))
+        ("\\`\\(\\*Calendar\\|\\*Bookmark\\)"
+         (display-buffer-reuse-mode-window
+          display-buffer-below-selected)
+         (dedicated . t)
+         (window-height . fit-window-to-buffer))
         ("\\`\\(\\*Proced\\*\\|\\*Ibuffer\\|\\*Man\\|\\*WoMan\\|\\*info\\|magit\\|\\*Org Agenda\\)"
-         (display-buffer-full-frame))))
+         (display-buffer-full-frame))
+        (,(yx/prefixes-to-regex
+           "*R" "*julia" "*lua" "*Lua" "*Python"
+           "*eshell" "*term" "*grep" "*Occur"
+           "*Org L" "*Org Select" "CAPTURE" "*Messages" "*Warnings"
+           "*Backtrac" "*Flymake" "*Error" "*Compile-Log" "*vc-git"
+           "*tldr" "*devdocs" "*color-rg" "*quickrun"
+           "*stardict" "*Dictionary")
+         (display-buffer-reuse-mode-window
+          display-buffer-in-side-window)
+         (side . bottom)
+         (window-height . 0.45))))
 
 (use-package popper
   :defer 2
@@ -894,30 +910,16 @@
          ("M-`" . popper-cycle)
          ("C-M-`" . popper-toggle-type))
   :config
-  (setq popper-display-control 'user
+  (setq popper-display-control nil
         popper-echo-dispatch-actions t
         popper-group-function #'popper-group-by-directory)
   (setq popper-reference-buffers
-        '("\\*R\\*$"
-          "\\*julia\\*$"
-          "\\*Python\\*$"
-          "\\*tldr\\*$"
-          "\\*quickrun\\*$"
-          "\\*Calendar\\*$"
-          "\\*vc-.*\\**"
-          "\\*Apropos\\*$"
-          "\\*gud-debug\\*$"
-          "\\*Backtrace\\*$"
-          "\\*Async Shell Command\\*"
-          "\\*Embark \\(Collect\\|Live\\):.*\\*$"
-          "\\*Agenda Commands\\*" "\\*Org Select\\*"
-          "\\*Capture\\*" "^CAPTURE-.*\\.org*"
+        '("\\*tldr\\*$"
           "^\\*eshell.*\\*$" eshell-mode
           "^\\*shell.*\\*$"  shell-mode
           "^\\*term.*\\*$"   term-mode
-          help-mode helpful-mode
+          helpful-mode
           grep-mode occur-mode color-rg-mode
-          bookmark-bmenu-mode
           comint-mode
           devdocs-mode
           compilation-mode
@@ -1079,6 +1081,10 @@
                     'consult--candidate))
            (headline-name (org-entry-get nil "ITEM")))
       (org-insert-link nil headline-name)))
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none))))
   :bind (("C-." . embark-act)
          :map dired-mode-map
          ("e" . yx/dired-open-externally)
