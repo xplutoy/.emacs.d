@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-05 07:13:50 yx>
+;; Modified: <2024-03-05 19:31:13 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -17,8 +17,13 @@
 (setenv "https_proxy" "http://127.0.0.1:7890")
 
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;; (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(setq package-archives
+      '(("gnu"          . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+        ("nongnu"       . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
+        ("melpa"        . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+        ("melpa-stable" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/stable-melpa/")))
 
 (setq package-quickstart nil
       package-install-upgrade-built-in t
@@ -38,7 +43,9 @@
   (package-initialize))
 
 (setq custom-file (expand-file-name "custom.el" yx/etc-dir))
-(load custom-file 'noerror)
+
+(when (file-exists-p custom-file)
+  (load custom-file 'noerror))
 
 ;; %% benchmark
 (use-package benchmark-init)
@@ -489,22 +496,16 @@
 
 ;; %% session
 (setq desktop-save t
-      desktop-restore-eager 1
-      desktop-restore-frames nil
+      desktop-restore-eager 5
       desktop-auto-save-timeout 60
-      desktop-load-locked-desktop t)
-
-(with-eval-after-load 'desktop
-  (mapc (lambda (mode)
-          (push mode desktop-modes-not-to-save))
-        '(eww-mode
-          Info-mode
-          magit-mode
-          magit-log-mode
-          dired-mode
-          comint-mode
-          doc-view-mode
-          elfeed-search-mode)))
+      desktop-modes-not-to-sav '(tags-table-mode
+                                 dired-mode
+                                 eww-mode
+                                 comint-mode
+                                 elfeed-search-mode
+                                 doc-view-mode
+                                 Info-mode info-lookup-mode
+                                 magit-mode magit-log-mode))
 
 (setq tramp-verbose 1
       tramp-chunksize 2000
@@ -556,8 +557,6 @@
   (setq w32-apps-modifier 'hyper
         w32-lwindow-modifier 'super)))
 
-(ffap-bindings)
-
 ;; %% hook
 (defun yx/text-mode-setup ()
   (setq-local word-wrap t
@@ -594,10 +593,9 @@
 (with-current-buffer "*scratch*"
   (emacs-lock-mode 'kill))
 
-;;; Keymaps
-;; %% simple
-(defalias 'qrr 'query-replace-regexp)
 
+
+;;; Keymaps
 ;; %% 全局按键
 ;; This avoids the ugly accidentally action of scaling text with using the trackpad
 (keymap-global-unset "C-<wheel-up>")
@@ -688,7 +686,6 @@
            ("M-z"       . avy-zap-to-char-dwim)
            ("M-Z"       . avy-zap-up-to-char-dwim)
            ("M-0"       . delete-window)
-           ;; M-' surround-keymap
            ("M-g ;"     . goto-last-change)
            ("M-g a"     . consult-org-agenda)
            ("M-g M"     . consult-man)
@@ -1029,17 +1026,22 @@
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
 (use-package orderless
+  :init
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles . (basic partial-completion)))
+                                        (buffer (styles . (basic partial-completion)))
+                                        (command (styles yx/orderless-initialism+))
+                                        (symbol (styles yx/orderless-initialism+))
+                                        (variable (styles yx/orderless-initialism+))
+                                        (eglot (styles yx/orderless-initialism+))
+                                        (eglot-capf (styles yx/orderless-initialism+))))
   :custom
-  (completion-styles '(basic substring initials flex orderless))
-  (completion-category-defaults nil)
-  (completion-category-overrides '((file (styles . (basic partial-completion orderless)))
-                                   (bookmark (styles . (basic substring)))
-                                   (library (styles . (basic substring)))
-                                   (embark-keybinding (styles . (basic substring)))
-                                   (imenu (styles . (basic substring orderless)))
-                                   (consult-location (styles . (basic substring orderless)))
-                                   (kill-ring (styles . (emacs22 orderless)))
-                                   (eglot (styles . (emacs22 substring orderless))))))
+  (orderless-matching-styles '(orderless-literal orderless-regexp orderless-flex))
+  (orderless-component-separator  #'orderless-escapable-split-on-space)
+  :config
+  (orderless-define-completion-style yx/orderless-initialism+
+    (orderless-matching-styles '(orderless-initialism orderless-literal orderless-regexp))))
 
 ;; %% embark
 (use-package embark
@@ -1125,6 +1127,7 @@
   :bind (("C-c p p" . completion-at-point)
          ("C-c p t" . complete-tag)
          ("C-c p a" . cape-abbrev)
+         ("C-c p d" . cape-dabbrev)
          ("C-c p k" . cape-keyword)
          ("C-c p h" . cape-history)
          ("C-c p l" . cape-line)
@@ -1138,8 +1141,7 @@
 (use-package marginalia
   :hook (after-init . marginalia-mode)
   :bind (:map minibuffer-local-map
-              ("M-A" . marginalia-cycle))
-  )
+              ("M-A" . marginalia-cycle)))
 
 ;;; Misc
 (use-package gcmh
@@ -2415,8 +2417,7 @@ set to \\='(template title keywords subdirectory)."
   (electric-indent-mode       1)
   (electric-layout-mode       1)
   (display-line-numbers-mode  1)
-  (keymap-local-set "RET" 'newline-and-indent)
-  (push 'cape-keyword completion-at-point-functions))
+  (keymap-local-set "RET" 'newline-and-indent))
 
 (add-hook 'prog-mode-hook 'yx/prog-common-setup)
 
@@ -2664,7 +2665,14 @@ set to \\='(template title keywords subdirectory)."
               ("C-x c g" . consult-eglot-symbols))
   :config
   (fset #'jsonrpc--log-event #'ignore) ; massive perf boost---don't log every event
-  )
+  (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
+  (defun yx/eglot-capf ()
+    (setq-local completion-at-point-functions
+                (list (cape-capf-super
+                       #'eglot-completion-at-point
+                       #'tempel-expand
+                       #'cape-file))))
+  (add-hook 'eglot-managed-mode-hook #'yx/eglot-capf))
 
 (use-package consult-eglot
   :after consult)
