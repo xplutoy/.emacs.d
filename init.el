@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-06 19:49:41 yx>
+;; Modified: <2024-03-06 20:32:33 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -594,14 +594,17 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 ;; %% os specific settings stay here
 (cond
  (IS-MAC
-  (setq mac-option-modifier  'meta
-        mac-command-modifier 'super
-        ns-function-modifier 'hyper)
+  (setq ns-command-modifier   'super
+        ns-alternate-modifier 'meta
+        ns-function-modifier  'hyper)
+
   (setq ns-use-thin-smoothing t
+        ns-pop-up-frames nil
         ns-use-native-fullscreen nil))
  (IS-WIN
-  (setq w32-apps-modifier 'hyper
+  (setq w32-apps-modifier    'hyper
         w32-lwindow-modifier 'super)
+
   (setq w32-get-true-file-attributes nil
         w32-pipe-read-delay 0
         w32-pipe-buffer-size  (* 64 1024))))
@@ -953,9 +956,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
          ("M-`" . popper-cycle)
          ("C-M-`" . popper-toggle-type))
   :config
-  (setq popper-display-control nil
+  (setq popper-echo-lines 1
+        popper-display-control nil
         popper-echo-dispatch-actions t
-        popper-group-function #'popper-group-by-directory)
+        popper-group-function #'popper-group-by-project)
   (setq popper-reference-buffers
         '("\\*tldr\\*$"
           "^\\*eshell.*\\*$" eshell-mode
@@ -970,8 +974,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (popper-mode 1)
   (popper-echo-mode 1))
 
-(setq ns-pop-up-frames nil
-      window-sides-vertical nil
+(setq window-sides-vertical nil
       split-height-threshold 30
       even-window-sizes 'height-only
       frame-resize-pixelwise t
@@ -2087,8 +2090,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (plist-put org-format-latex-options :scale 1.8)
   (plist-put org-format-latex-options :background "Transparent")
   (with-eval-after-load 'ox-latex
-    (setq org-latex-logfiles-extensions
-          (append org-latex-logfiles-extensions '("toc" "dvi" "tex" "bbl"))))
+    (appendq! org-latex-logfiles-extensions '("toc" "dvi" "tex" "bbl")))
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((emacs-lisp . t)
                                  (python . t)
@@ -2513,8 +2515,7 @@ set to \\='(template title keywords subdirectory)."
   (flymake-show-diagnostics-at-end-of-line t)
   (flymake-fringe-indicator-position 'right-fring)
   :config
-  (setq elisp-flymake-byte-compile-load-path
-        (append elisp-flymake-byte-compile-load-path load-path))
+  (appendq! elisp-flymake-byte-compile-load-path load-path)
   :bind (("C-x c l" . flymake-start)
          :map flymake-mode-map
          ("M-g d"   . flymake-show-buffer-diagnostics)
@@ -2526,7 +2527,8 @@ set to \\='(template title keywords subdirectory)."
          ("n" . flymake-goto-next-error)))
 
 (use-package apheleia
-  :init (apheleia-global-mode +1))
+  :defer 2
+  :config (apheleia-global-mode +1))
 
 (use-package ws-butler
   :hook ((prog-mode conf-mode) . ws-butler-mode))
@@ -2613,9 +2615,12 @@ set to \\='(template title keywords subdirectory)."
 
 ;; %% symbol highlight
 (use-package rainbow-mode
+  :hook
+  (css-base-mode . rainbow-mode)
+  (emacs-lisp-mode . rainbow-mode)
+  ((help-mode helpful-mode) . rainbow-mode)
   :custom
-  (rainbow-x-colors nil)
-  :hook (emacs-lisp . rainbow-mode))
+  (rainbow-x-colors nil))
 
 (use-package hl-todo
   :hook ((text-mode prog-mode) . hl-todo-mode)
