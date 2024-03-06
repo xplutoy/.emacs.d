@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-06 06:12:18 yx>
+;; Modified: <2024-03-06 19:49:41 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -62,8 +62,6 @@
   (no-littering-theme-backups))
 
 ;;; Utils
-(require 'tempo)
-
 (defvar yx/org-dir         "~/yxdocs/org-notes/")
 (defvar yx/zotero-dir      "~/Zotero/")
 (defvar yx/gpg-sign-key    "67B86CB8A5630C51!")
@@ -74,7 +72,7 @@
 (defconst IS-LINUX   (eq system-type 'gnu/linux))
 (defconst IS-ANDROID (eq system-type 'android))
 
-(defvar yx/default-open-program
+(defvar yx/default-open
   (cond
    (IS-WIN   "start")
    (IS-MAC   "open")
@@ -84,7 +82,23 @@
 (defconst yx/templates-dir
   (no-littering-expand-etc-file-name "templates"))
 
-;; %% functions
+(defmacro appendq! (sym &rest lists)
+  "Append LISTS to SYM in place."
+  `(setq ,sym (append ,sym ,@lists)))
+
+(defmacro prependq! (sym &rest lists)
+  "Prepend LISTS to SYM in place."
+  `(setq ,sym (append ,@lists ,sym)))
+
+(defmacro delq! (elt list &optional fetcher)
+  "`delq' ELT from LIST in-place.
+
+If FETCHER is a function, ELT is used as the key in LIST (an alist)."
+  `(setq ,list (delq ,(if fetcher
+                          `(funcall ,fetcher ,elt ,list)
+                        elt)
+                     ,list)))
+
 (defun yx/pwd-replace-home (pwd)
   "Replace home in PWD with tilde (~) character."
   (let* ((home (expand-file-name (getenv "HOME")))
@@ -105,7 +119,8 @@
     (insert-file-contents file)
     (buffer-string)))
 
-;; %% tempo skeleton
+;;; Templates
+(require 'tempo)
 (tempo-define-template
  "yx/tex-note-tmpl"
  `(,(yx/file-contents-2-str (expand-file-name "math-note.tmpl.tex" yx/templates-dir))))
@@ -250,6 +265,7 @@
 
 ;; %% font-lock
 (setq jit-lock-defer-time 0
+      jit-lock-chunk-size 4096
       jit-lock-stealth-time 2.0
       jit-lock-stealth-nice 0.2)
 
@@ -271,11 +287,6 @@
 
 (add-to-list 'backup-directory-alist
              (cons tramp-file-name-regexp nil))
-
-(setq auto-revert-verbose nil
-      auto-revert-avoid-polling t
-      auto-revert-check-vc-info t)
-(customize-set-variable 'auto-revert-use-notify nil)
 
 (setq auto-insert-query nil
       auto-insert-alist nil
@@ -314,21 +325,24 @@
 ;; re-builder
 (setq reb-re-syntax 'string)
 
-;; %% recentf
-(setq recentf-max-menu-items 15
-      recentf-max-saved-items 50
-      recentf-auto-cleanup "1:00am"
-      recentf-exclude
-      '("\\.?cache.*" "^/.*" "^/ssh:" "\\.git/.+$"
-        "COMMIT_MSG" "COMMIT_EDITMSG" "/Downloads/" "/elpa/"
-        "\\.\\(?:gif\\|svg\\|png\\|jpe?g\\|bmp\\|xpm\\)$"
-        "\\.\\(?:gz\\|zip\\|gpg\\)$"
-        file-remote-p))
+(use-package recentf
+  :ensure nil
+  :hook (after-init . recentf-mode)
+  :config
+  (setq recentf-max-saved-items 100
+        recentf-auto-cleanup "1:00am"
+        recentf-exclude
+        '("\\.?cache.*" "^/.*" "^/ssh:" "\\.git/.+$"
+          "COMMIT_MSG" "COMMIT_EDITMSG" "/Downloads/" "/elpa/"
+          "\\.\\(?:gif\\|svg\\|png\\|jpe?g\\|bmp\\|xpm\\)$"
+          "\\.\\(?:gz\\|zip\\|gpg\\)$"
+          file-remote-p))
 
-(with-eval-after-load 'recentf
   (add-to-list 'recentf-exclude
-               (recentf-expand-file-name no-littering-var-directory)))
-(add-hook 'after-init-hook 'recentf-mode)
+               (recentf-expand-file-name no-littering-var-directory))
+
+  ;; Text properties inflate the size of recentf's files
+  (add-to-list 'recentf-filename-handlers #'substring-no-properties))
 
 ;; %% whitespace
 (setq whitespace-style
@@ -452,7 +466,7 @@
 
 (setq browse-url-browser-function 'eww-browse-url
       browse-url-secondary-browser-function 'browse-url-default-browser
-      browse-url-generic-program yx/default-open-program)
+      browse-url-generic-program yx/default-open)
 
 (setq eww-auto-rename-buffer 'title
       eww-search-prefix "http://www.google.com/search?q="
@@ -479,20 +493,58 @@
   (keymap-unset flyspell-mode-map "C-.")
   (keymap-unset flyspell-mode-map "C-;"))
 
+(use-package autorevert
+  :ensure nil
+  :config
+  (setq auto-revert-verbose nil
+        auto-revert-use-notify nil
+        revert-without-query '(".")
+        auto-revert-check-vc-info t)
+  (global-auto-revert-mode 1))
+
+;; %% long line
+(setq bidi-inhibit-bpa t
+      long-line-threshold 1000
+      syntax-wholeline-max 1000
+      large-hscroll-threshold 1000)
+
+(use-package so-long
+  :ensure nil
+  :hook (after-init . global-so-long-mode)
+  :config
+  (add-to-list 'so-long-variable-overrides '(save-place-alist . nil))
+  (add-to-list 'so-long-variable-overrides '(font-lock-maximum-decoration . 1))
+  (appendq! so-long-minor-modes '(eldoc-mode
+                                  highlight-numbers-mode
+                                  ws-butler-mode
+                                  indent-guide-mode )))
+
 (setq dictionary-server "dict.org"
       dictionary-default-popup-strategy "lev"
       dictionary-create-buttons nil
       dictionary-display-definition-function 'dictionary-display-definition-in-help-buffer)
 
-;; %% savehist
-(setq history-delete-duplicates t
-      savehist-save-minibuffer-history t
-      savehist-additional-variables '(mark-ring
-                                      global-mark-ring
-                                      search-ring
-                                      regexp-search-ring
-                                      command-history
-                                      extended-command-history))
+(use-package saveplace
+  :ensure nil
+  :hook (after-init . save-place-mode))
+
+(use-package savehist
+  :ensure nil
+  :config
+  (setq history-delete-duplicates t
+        savehist-save-minibuffer-history t
+        savehist-additional-variables '(kill-ring
+                                        mark-ring global-mark-ring
+                                        search-ring regexp-search-ring
+                                        command-history)))
+
+(use-package server
+  :ensure nil
+  :defer 1
+  :custom (server-client-instructions nil)
+  :config
+  (unless (server-running-p)
+    (server-mode)))
 
 ;; %% session
 (setq desktop-save t
@@ -518,12 +570,6 @@
 (setq vc-handled-backends '(Git)
       vc-git-diff-switches '("--histogram")
       vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
-
-;; %% long line
-(setq bidi-inhibit-bpa t
-      long-line-threshold 1000
-      syntax-wholeline-max 1000
-      large-hscroll-threshold 1000)
 
 (setq-default bidi-display-reordering nil
               bidi-paragraph-direction 'left-to-right)
@@ -572,19 +618,15 @@
 
 (defun yx/global-mirror-mode-toggle ()
   (repeat-mode            1)
-  (savehist-mode          1)
-  (save-place-mode        1)
   (desktop-save-mode     -1)
   (blink-cursor-mode     -1)
   (global-reveal-mode     1)
   (auto-compression-mode  1)
   (delete-selection-mode  1)
   (auto-save-visited-mode 1)
-  (global-so-long-mode    1)
   (mouse-avoidance-mode 'cat-and-mouse)
   (unless (display-graphic-p)
     (xterm-mouse-mode 1))
-  (global-auto-revert-mode 1)
   (pixel-scroll-precision-mode 1)
   (minibuffer-depth-indicate-mode 1)
   (auth-source-pass-enable)
@@ -612,9 +654,8 @@
   (key-chord-define-global "jk"     'avy-goto-word-1)
   (key-chord-define-global "jl"     'avy-goto-line)
   (with-eval-after-load 'org
-    (key-chord-define
-     org-mode-map
-     "jh" 'avy-org-goto-heading-timer)))
+    (key-chord-define org-mode-map
+                      "jh" 'avy-org-goto-heading-timer)))
 
 (defvar-keymap yx/app-prefix-map
   :doc "Keymap for app"
@@ -850,7 +891,9 @@
   (setq ef-themes-mixed-fonts t
         ef-themes-variable-pitch-ui t))
 
-(load-theme 'modus-operandi-tinted t)
+(if (display-graphic-p)
+    (load-theme 'modus-operandi-tinted t)
+  (load-theme 'modus-vivendi-tinted t))
 
 (use-package lin
   :hook (after-init . lin-global-mode)
@@ -1170,13 +1213,6 @@
         gcmh-auto-idle-delay-factor 10
         gcmh-high-cons-threshold #x1000000)) ; 16MB
 
-(use-package server
-  :defer 1
-  :ensure nil
-  :commands (server-running-p)
-  :custom (server-client-instructions nil)
-  :config (or (server-running-p) (server-mode)))
-
 (when (featurep 'xwidget-internal)
   (use-package xwidget
     :ensure nil
@@ -1467,7 +1503,7 @@
   (wdired-create-parent-directories t)
   (wdired-allow-to-change-permissions t)
   (dired-guess-shell-alist-user
-   `(("\\.\\(?:docx\\|pdf\\|djvu\\gif)\\'" ,yx/default-open-program)))
+   `(("\\.\\(?:docx\\|pdf\\|djvu\\gif)\\'" ,yx/default-open)))
   :config
   (defun yx/dired-setup ()
     (setq
@@ -1719,10 +1755,8 @@
   (defun yx/eshell-setup ()
     (keymap-set eshell-mode-map "C-l" 'yx/eshell-clear)
     (keymap-set eshell-mode-map "C-r" 'consult-history)
-    (setq
-     eshell-visual-commands
-     '("vim" "ssh" "tail" "top" "htop" "tmux" "less" "more")
-     eshell-visual-subcommands '(("git" "log" "diff" "show")))
+    (setq eshell-visual-commands'("vim" "ssh" "tail" "top" "htop" "tmux" "less" "more")
+          eshell-visual-subcommands '(("git" "log" "diff" "show")))
     (eshell/alias "q"    "exit")
     (eshell/alias "r"    "consult-recent-file")
     (eshell/alias "d"    "dired $1")
@@ -2380,8 +2414,8 @@ set to \\='(template title keywords subdirectory)."
         TeX-view-program-selection `((output-pdf ,(cond
                                                    (IS-MAC "Skim")
                                                    (t "pdf-tools")))
-                                     (output-dvi  ,yx/default-open-program)
-                                     (output-html ,yx/default-open-program)))
+                                     (output-dvi  ,yx/default-open)
+                                     (output-html ,yx/default-open)))
 
   (defun yx/latex-mode-setup ()
     (TeX-PDF-mode 1)
@@ -2712,6 +2746,8 @@ set to \\='(template title keywords subdirectory)."
 
 (use-package citre
   :bind (:map prog-mode-map
+              ("M-]"       . citre-jump)
+              ("M-]"       . citre-jump-back)
               ("C-x c ."   . citre-jump)
               ("C-x c ,"   . citre-jump-back)
               ("C-x c p"   . citre-peek)
