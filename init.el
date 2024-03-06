@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-06 20:32:33 yx>
+;; Modified: <2024-03-06 22:06:02 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -302,19 +302,30 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (add-hook 'view-mode-hook
           (lambda () (setq cursor-type (if view-mode 'hollow 'box))))
 
-(setq eldoc-idle-delay 0.3
-      eldoc-echo-area-use-multiline-p nil
-      eldoc-echo-area-display-truncation-message nil)
+(use-package eldoc
+  :ensure nil
+  :custom
+  (eldoc-idle-delay 0.3)
+  (eldoc-echo-area-use-multiline-p nil)
+  (eldoc-echo-area-display-truncation-message nil))
 
-(setq help-window-select t
-      help-window-keep-selected t)
-(add-hook 'help-fns-describe-function-functions #'shortdoc-help-fns-examples-function)
+(use-package help
+  :ensure nil
+  :custom
+  (help-window-select t)
+  (help-window-keep-selected t)
+  (help-enable-variable-value-editing t)
+  :config
+  (add-hook 'help-fns-describe-function-functions #'shortdoc-help-fns-examples-function))
 
-(setq uniquify-strip-common-suffix t
-      uniquify-after-kill-buffer-p t
-      uniquify-ignore-buffers-re "^\\*"
-      uniquify-buffer-name-style 'post-forward-angle-brackets
-      uniquify-dirname-transform 'project-uniquify-dirname-transform)
+(use-package uniquify
+  :ensure nil
+  :custom
+  (uniquify-strip-common-suffix t)
+  (uniquify-after-kill-buffer-p t)
+  (uniquify-ignore-buffers-re "^\\*")
+  (uniquify-buffer-name-style 'post-forward-angle-brackets)
+  (uniquify-dirname-transform 'project-uniquify-dirname-transform))
 
 ;; %% line number
 (setq display-line-numbers-type t
@@ -344,10 +355,11 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   ;; Text properties inflate the size of recentf's files
   (add-to-list 'recentf-filename-handlers #'substring-no-properties))
 
-;; %% whitespace
-(setq whitespace-style
-      '(face trailing lines-char space-before-tab space-after-tab)
-      show-trailing-whitespace nil)
+(use-package whitespace
+  :ensure nil
+  :hook ((prog-mode conf-mode) . whitespace-mode)
+  :custom
+  (whitespace-style '(face trailing space-before-tab space-after-tab)))
 
 ;; prettify
 (setq prettify-symbols-unprettify-at-point 'right-edge)
@@ -355,12 +367,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 ;; %% xref
 (when-let ((rg (executable-find "rg")))
   (setq grep-program rg))
-
-(setq xref-search-program 'ripgrep
-      xref-file-name-display 'project-relative
-      xref-history-storage 'xref-window-local-history
-      xref-show-xrefs-function 'xref-show-definitions-buffer
-      xref-show-definitions-function 'xref-show-definitions-completing-read)
 
 ;; %% completion minibuffer
 (setq resize-mini-windows t
@@ -396,17 +402,23 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                                          try-expand-dabbrev-from-kill
                                          try-expand-dabbrev-all-buffers))
 
-;; %% isearch
-(setq isearch-lazy-count t
-      isearch-lazy-highlight t
-      isearch-allow-motion t
-      isearch-repeat-on-direction-change t
-      apropos-sort-by-scores t
-      lazy-highlight-no-delay-length 3)
 
-(keymap-set isearch-mode-map "M->" 'isearch-end-of-buffer)
-(keymap-set isearch-mode-map "M-<" 'isearch-beginning-of-buffer)
-(if IS-MAC (keymap-set isearch-mode-map "s-v" 'isearch-yank-kill))
+(use-package isearch
+  :ensure nil
+  :bind (:map isearch-mode-map
+              ([remap isearch-delete-char] . isearch-del-char))
+  :custom
+  (isearch-lazy-count t)
+  (isearch-lazy-highlight t)
+  (isearch-allow-motion t)
+  (isearch-motion-changes-direction t)
+  (isearch-repeat-on-direction-change t)
+  :config
+  (keymap-set isearch-mode-map "M->" 'isearch-end-of-buffer)
+  (keymap-set isearch-mode-map "M-<" 'isearch-beginning-of-buffer)
+
+  (if IS-MAC
+      (keymap-set isearch-mode-map "s-v" 'isearch-yank-kill)))
 
 (add-hook 'occur-mode-hook #'hl-line-mode)
 
@@ -476,12 +488,13 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (with-eval-after-load 'eww
   (add-hook 'eww-after-render-hook 'eww-readable))
 
-(setq webjump-sites
-      '(("OrgSite"    . "https://orgmode.org")
-        ("Wikipedia"  . [simple-query "wikipedia.org" "wikipedia.org/wiki/" ""])
-        ("DuckDuckGo" . [simple-query "duckduckgo.com" "duckduckgo.com/?q=" ""])
-        ("Google"     . [simple-query "www.google.com" "www.google.com/search?q=" ""]))
-      webjump-use-internal-browser t)
+(use-package webjump
+  :ensure nil
+  :custom
+  (webjump-sites '(("Org"        . "https://orgmode.org")
+                   ("Google"     . [simple-query "www.google.com" "www.google.com/search?q=" ""])
+                   ("DuckDuckGo" . [simple-query "duckduckgo.com" "duckduckgo.com/?q=" ""])
+                   ("Wikipedia"  . [simple-query "wikipedia.org" "wikipedia.org/wiki/" ""]))))
 
 ;; %% flyspell
 (setq ispell-dictionary "english"
@@ -2467,7 +2480,6 @@ set to \\='(template title keywords subdirectory)."
 ;;; Programming
 (defun yx/prog-common-setup ()
   (setq-local line-spacing 0.15)
-  (whitespace-mode            1)
   (hl-line-mode               1)
   (hs-minor-mode              1)
   (superword-mode             1)
@@ -2501,11 +2513,31 @@ set to \\='(template title keywords subdirectory)."
   (global-semantic-idle-summary-mode 1)
   (global-semantic-idle-scheduler-mode 1))
 
-(setq gud-highlight-current-line t)
-(setq compilation-always-kill t
-      compilation-ask-about-save nil
-      compilation-auto-jump-to-first-error t
-      compilation-scroll-output 'first-error)
+(use-package gud
+  :ensure nil
+  :hook (gud-mode . gud-tooltip-mode)
+  :custom
+  (gud-highlight-current-line t))
+
+(use-package compile
+  :ensure nil
+  :hook (compilation-filter . ansi-color-compilation-filter)
+  :custom
+  (compilation-always-kill t)
+  (compilation-ask-about-save nil)
+  (compilation-scroll-output t)
+  (compilation-scroll-output 'first-error)
+  (compilation-auto-jump-to-first-error t))
+
+(use-package xref
+  :ensure nil
+  :hook ((xref-after-return xref-after-jump) . recenter)
+  :custom
+  (xref-search-program 'ripgrep)
+  (xref-file-name-display 'project-relative)
+  (xref-history-storage 'xref-window-local-history)
+  (xref-show-xrefs-function 'xref-show-definitions-buffer)
+  (xref-show-definitions-function 'xref-show-definitions-completing-read))
 
 ;; %% formatter & linter & profiler
 (use-package flymake
@@ -2775,6 +2807,20 @@ set to \\='(template title keywords subdirectory)."
   :custom
   (quickrun-focus-p nil))
 
+(use-package inheritenv
+  :demand t
+  :config
+  (inheritenv-add-advice #'org-babel-eval)
+  (inheritenv-add-advice #'with-temp-buffer)
+  (inheritenv-add-advice #'async-shell-command)
+  (inheritenv-add-advice #'shell-command-to-string))
+
+(use-package buffer-env
+  :config
+  (add-hook 'comint-mode-hook #'buffer-env-update)
+  (add-hook 'hack-local-variables-hook #'buffer-env-update)
+  (add-to-list 'buffer-env-command-alist '("/\\.envrc\\'" . "direnv exec . env -0")))
+
 ;;; Langs
 (defvar yx/default-python-env "~/workspace/.venv/")
 (add-to-list 'exec-path (expand-file-name "bin" yx/default-python-env))
@@ -2823,39 +2869,28 @@ set to \\='(template title keywords subdirectory)."
   )
 
 ;; %% python
-(setq python-shell-dedicated t
-      python-skeleton-autoinsert t
-      python-indent-block-paren-deeper t
-      python-indent-guess-indent-offset t
-      python-indent-guess-indent-offset-verbose nil
-      python-shell-virtualenv-root yx/default-python-env
-      python-shell-interpreter "jupyter"
-      python-shell-interpreter-args "console --simple-prompt"
-      python-shell-completion-native-disabled-interpreters '("ipython" "jupyter"))
-
-(defun yx/python-mode-setup ()
-  (setq-local tab-width 4
-              python-indent-offset 4
-              electric-indent-inhibit t
-              imenu-create-index-function 'python-imenu-create-flat-index)
-  (flymake-mode 1))
-(add-hook 'python-ts-mode-hook 'yx/python-mode-setup)
-
-(define-auto-insert "\\.py$" 'yx/auto-insert-common-header)
-
-(use-package inheritenv
-  :demand t
+(use-package python
+  :ensure nil
   :config
-  (inheritenv-add-advice #'org-babel-eval)
-  (inheritenv-add-advice #'with-temp-buffer)
-  (inheritenv-add-advice #'async-shell-command)
-  (inheritenv-add-advice #'shell-command-to-string))
+  (setq python-shell-dedicated t
+        python-skeleton-autoinsert t
+        python-indent-block-paren-deeper t
+        python-indent-guess-indent-offset t
+        python-indent-guess-indent-offset-verbose nil
+        python-shell-virtualenv-root yx/default-python-env
+        python-shell-interpreter "jupyter"
+        python-shell-interpreter-args "console --simple-prompt"
+        python-shell-completion-native-disabled-interpreters '("ipython" "jupyter"))
 
-(use-package buffer-env
-  :config
-  (add-hook 'comint-mode-hook #'buffer-env-update)
-  (add-hook 'hack-local-variables-hook #'buffer-env-update)
-  (add-to-list 'buffer-env-command-alist '("/\\.envrc\\'" . "direnv exec . env -0")))
+  (defun yx/python-mode-setup ()
+    (setq-local tab-width 4
+                python-indent-offset 4
+                electric-indent-inhibit t
+                imenu-create-index-function 'python-imenu-create-flat-index)
+    (flymake-mode 1))
+  (add-hook 'python-base-mode-hook 'yx/python-mode-setup)
+
+  (define-auto-insert "\\.py$" 'yx/auto-insert-common-header))
 
 (use-package poetry
   :hook (python-ts-mode . poetry-tracking-mode))
@@ -2866,8 +2901,7 @@ set to \\='(template title keywords subdirectory)."
   :config
   (setq jupyter-eval-use-overlays nil)
   ;; @see https://github.com/emacs-jupyter/jupyter/issues/478
-  (setf (alist-get "python" org-src-lang-modes nil nil #'equal) 'python-ts)
-  )
+  (setf (alist-get "python" org-src-lang-modes nil nil #'equal) 'python-ts))
 
 ;; %% R/julia
 (use-package ess-site
@@ -2929,12 +2963,30 @@ set to \\='(template title keywords subdirectory)."
   )
 
 ;; %% misc lang
-(add-hook 'sh-mode-hook
-          (lambda()
-            (setq sh-indentation 2
-                  sh-basic-offset 2)
-            (electric-pair-mode -1)
-            (compilation-shell-minor-mode 1)))
+(use-package sh-script
+  :ensure nil
+  :hook (sh-mode . yx/sh-mode-setup)
+  :config
+  (defun yx/sh-mode-setup ()
+    (electric-pair-local-mode -1)
+    (compilation-shell-minor-mode 1))
+  :custom
+  (sh-indentation 2)
+  (sh-basic-offset 2))
+
+(use-package sgml-mode
+  :ensure nil
+  :hook
+  (html-mode . sgml-name-8bit-mode)
+  (html-mode . sgml-electric-tag-pair-mode)
+  :custom
+  (sgml-basic-offset 2))
+
+(use-package nxml-mode
+  :ensure nil
+  :custom
+  (nxml-slash-auto-complete-flag t)
+  (nxml-auto-insert-xml-declaration-flag t))
 
 (use-package vimrc-mode
   :mode "\\.?vim\\(rc\\)?\\'")
