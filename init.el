@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-06 22:06:02 yx>
+;; Modified: <2024-03-08 04:42:56 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -1954,21 +1954,16 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (org-goto-interface 'outline-path-completion)
   (org-outline-path-complete-in-steps nil)
 
-  (org-latex-compiler "xelatex")
-  (org-latex-packages-alist '(("" "ctex" t)
-                              ("" "bm")
-                              ("" "amsfonts")
-                              ("" "xcolor" t)
-                              ("" "minted" t)))
-  (org-latex-minted-options '(("breaklines")
-                              ("bgcolor" "bg")))
-  (org-latex-src-block-backend 'minted)
-  ;; (org-latex-preview-numbered t)
   (org-startup-with-latex-preview nil)
-  (org-highlight-latex-and-related '(latex))
+  (org-highlight-latex-and-related '(native entities))
+  (org-preview-latex-image-directory (no-littering-expand-var-file-name "ltximg/"))
   (org-preview-latex-default-process 'dvisvgm)
-  (org-latex-preview-ltxpng-directory
-   (no-littering-expand-var-file-name "ltximg/"))
+  (org-preview-latex-process-alist '((dvisvgm :programs ("xelatex" "dvisvgm")
+                                              :description "xdv > svg"
+                                              :message "you need to install the programs: xelatex and dvisvgm."
+                                              :image-input-type "xdv" :image-output-type "svg" :image-size-adjust (1.7 . 1.5)
+                                              :latex-compiler ("xelatex -no-pdf -interaction nonstopmode -output-directory %o %f")
+                                              :image-converter ("dvisvgm %o/%b.xdv --no-fonts --exact-bbox --scale=%S --output=%O"))))
 
   (org-footnote-auto-adjust nil)
 
@@ -2100,10 +2095,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
   :config
   (add-hook 'org-trigger-hook #'save-buffer)
-  (plist-put org-format-latex-options :scale 1.8)
+  (plist-put org-format-latex-options :scale 1.5)
   (plist-put org-format-latex-options :background "Transparent")
-  (with-eval-after-load 'ox-latex
-    (appendq! org-latex-logfiles-extensions '("toc" "dvi" "tex" "bbl")))
+
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((emacs-lisp . t)
                                  (python . t)
@@ -2192,6 +2186,32 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
       ("L" "org-toggle-link-display" org-toggle-link-display)
       ("I" "org-toggle-inline-images" org-toggle-inline-images)
       ("F" "org-preview-latex-fragment" org-preview-latex-fragment)]]))
+
+(use-package ox-latex
+  :ensure nil
+  :custom
+  (org-latex-classes nil)
+  (org-latex-compiler "xelatex")
+  (org-latex-default-class "ctexart")
+  (org-latex-packages-alist '(("" "ctex" t)
+                              ("" "bm")
+                              ("" "amsfonts")
+                              ("" "xcolor" t)
+                              ("cache=false" "minted" t)))
+  (org-latex-src-block-backend 'minted)
+  (org-latex-minted-options '(("breaklines")
+                              ("bgcolor" "bg")))
+  (org-latex-pdf-process '("latexmk -f -xelatex -shell-escape -output-directory=%o %f" ))
+  :config
+  (add-to-list 'org-latex-classes
+               '("ctexart"
+                 "\\documentclass{ctexart}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  (appendq! org-latex-logfiles-extensions '("toc" "dvi" "tex" "bbl" "aux" "fls" "fdb_latexmk" "log")))
 
 ;; %% org+
 (use-package org-ql
