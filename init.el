@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-08 04:42:56 yx>
+;; Modified: <2024-03-08 07:29:12 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -1954,10 +1954,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (org-goto-interface 'outline-path-completion)
   (org-outline-path-complete-in-steps nil)
 
-  (org-startup-with-latex-preview nil)
-  (org-highlight-latex-and-related '(native entities))
-  (org-preview-latex-image-directory (no-littering-expand-var-file-name "ltximg/"))
-  (org-preview-latex-default-process 'dvisvgm)
+
   (org-preview-latex-process-alist '((dvisvgm :programs ("xelatex" "dvisvgm")
                                               :description "xdv > svg"
                                               :message "you need to install the programs: xelatex and dvisvgm."
@@ -2086,12 +2083,15 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (org-attach-store-link-p 'attach)
   (org-attach-sync-delete-empty-dir t)
 
-  (org-export-with-toc t)
-  (org-export-with-drawers nil)
-  (oeg-export-with-footnotes t)
   (org-export-with-broken-links t)
   (org-export-with-section-numbers nil)
   (org-export-with-sub-superscripts '{})
+
+  :custom-face
+  (org-level-1 ((t (:height 1.3))))
+  (org-level-2 ((t (:height 1.2))))
+  (org-level-3 ((t (:height 1.1))))
+  (org-document-title ((t (:height 1.5))))
 
   :config
   (add-hook 'org-trigger-hook #'save-buffer)
@@ -2119,12 +2119,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (yx/def-org-maybe-surround "~" "=" "*" "/" "+")
   (add-hook 'org-ctrl-c-ctrl-c-hook 'yx/check-latex-fragment)
 
-  :custom-face
-  (org-level-1 ((t (:height 1.3))))
-  (org-level-2 ((t (:height 1.2))))
-  (org-level-3 ((t (:height 1.1))))
-  (org-document-title ((t (:height 1.5))))
-
   :preface
   (defun yx/org-mode-setup ()
     (auto-fill-mode -1)
@@ -2146,10 +2140,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (defun yx/org-babel-display-image ()
     (when org-inline-image-overlays
       (org-redisplay-inline-images)))
-
-  (defun yx/org-clock-in ()
-    (interactive)
-    (org-clock-in '(4)))
 
   (defun yx/org-agenda-format-date-aligned (date)
     "Format a DATE string for display in the daily/weekly agenda, or timeline.
@@ -2190,11 +2180,11 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package ox-latex
   :ensure nil
   :custom
-  (org-latex-classes nil)
   (org-latex-compiler "xelatex")
+  (org-latex-prefer-user-labels t)
   (org-latex-default-class "ctexart")
-  (org-latex-packages-alist '(("" "ctex" t)
-                              ("" "bm")
+  (org-latex-packages-alist '(("" "bm")
+                              ("" "amsthm")
                               ("" "amsfonts")
                               ("" "xcolor" t)
                               ("cache=false" "minted" t)))
@@ -2202,10 +2192,27 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (org-latex-minted-options '(("breaklines")
                               ("bgcolor" "bg")))
   (org-latex-pdf-process '("latexmk -f -xelatex -shell-escape -output-directory=%o %f" ))
+
+  (org-startup-with-latex-preview nil)
+  (org-highlight-latex-and-related '(native entities))
+  (org-preview-latex-image-directory (no-littering-expand-var-file-name "ltximg/"))
+  (org-preview-latex-default-process 'dvisvgm)
+  (org-preview-latex-process-alist'((dvisvgm :programs
+                                             ("xelatex" "dvisvgm")
+                                             :description "xdv > svg"
+                                             :message "you need to install the programs: xelatex and dvisvgm."
+                                             :use-xcolor t
+                                             :image-input-type "xdv"
+                                             :image-output-type "svg"
+                                             :image-size-adjust (1.7 . 1.5)
+                                             :latex-compiler
+                                             ("xelatex -no-pdf -interaction nonstopmode -shell-escape -output-directory %o %f")
+                                             :image-converter
+                                             ("dvisvgm %f -e -n -b min -c %S -o %O"))))
   :config
   (add-to-list 'org-latex-classes
                '("ctexart"
-                 "\\documentclass{ctexart}"
+                 "\\documentclass[11pt]{ctexart}"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
@@ -2514,7 +2521,7 @@ set to \\='(template title keywords subdirectory)."
 
 ;; project
 (setq project-file-history-behavior 'relativize
-      project-vc-extra-root-markers '(".envrc" ".dir-locals.el" ".project.el"))
+      project-vc-extra-root-markers '(".envrc" "pyproject.toml"))
 
 ;; diff
 (setq diff-default-read-only t
@@ -2836,15 +2843,13 @@ set to \\='(template title keywords subdirectory)."
   (inheritenv-add-advice #'shell-command-to-string))
 
 (use-package buffer-env
-  :config
+  :init
   (add-hook 'comint-mode-hook #'buffer-env-update)
   (add-hook 'hack-local-variables-hook #'buffer-env-update)
+  :config
   (add-to-list 'buffer-env-command-alist '("/\\.envrc\\'" . "direnv exec . env -0")))
 
 ;;; Langs
-(defvar yx/default-python-env "~/workspace/.venv/")
-(add-to-list 'exec-path (expand-file-name "bin" yx/default-python-env))
-
 ;; %% emacs-lisp
 (define-auto-insert "\\.el$" 'yx/auto-insert-el-header)
 
@@ -2897,7 +2902,6 @@ set to \\='(template title keywords subdirectory)."
         python-indent-block-paren-deeper t
         python-indent-guess-indent-offset t
         python-indent-guess-indent-offset-verbose nil
-        python-shell-virtualenv-root yx/default-python-env
         python-shell-interpreter "jupyter"
         python-shell-interpreter-args "console --simple-prompt"
         python-shell-completion-native-disabled-interpreters '("ipython" "jupyter"))
@@ -2911,9 +2915,6 @@ set to \\='(template title keywords subdirectory)."
   (add-hook 'python-base-mode-hook 'yx/python-mode-setup)
 
   (define-auto-insert "\\.py$" 'yx/auto-insert-common-header))
-
-(use-package poetry
-  :hook (python-ts-mode . poetry-tracking-mode))
 
 (use-package jupyter
   :after org
