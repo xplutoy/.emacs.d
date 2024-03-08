@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-08 07:29:12 yx>
+;; Modified: <2024-03-08 08:37:57 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -2252,8 +2252,11 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package org-modern
   :after org
   :demand t
+  :custom-face
+  (org-modern-block-name ((t (:height 0.9))))
   :config
-  (global-org-modern-mode))
+  (setq org-modern-block-fringe 0)
+  (global-org-modern-mode 1))
 
 (use-package valign
   :hook (org-mode . valign-mode)
@@ -2507,14 +2510,14 @@ set to \\='(template title keywords subdirectory)."
 ;;; Programming
 (defun yx/prog-common-setup ()
   (setq-local line-spacing 0.15)
-  (hl-line-mode               1)
-  (hs-minor-mode              1)
-  (superword-mode             1)
-  (show-paren-mode            1)
-  (electric-pair-mode         1)
-  (electric-indent-mode       1)
-  (electric-layout-mode       1)
-  (display-line-numbers-mode  1)
+  (hl-line-mode 1)
+  (hs-minor-mode 1)
+  (superword-mode 1)
+  (show-paren-mode 1)
+  (display-line-numbers-mode 1)
+  (electric-pair-local-mode 1)
+  (electric-indent-local-mode 1)
+  (electric-layout-local-mode 1)
   (keymap-local-set "RET" 'newline-and-indent))
 
 (add-hook 'prog-mode-hook 'yx/prog-common-setup)
