@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-08 08:37:57 yx>
+;; Modified: <2024-03-08 12:30:20 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -234,12 +234,14 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (setq hl-line-sticky-flag nil
       global-hl-line-sticky-flag nil)
 
-(setq-default fill-column 78
+(setq-default word-wrap t
+              fill-column 89
               truncate-lines t)
 
 (setq track-eol t
       line-move-visual nil
       word-wrap-by-category t
+      truncate-partial-width-windows nil
       set-mark-command-repeat-pop t
       backward-delete-char-untabify-method 'hungry)
 
@@ -333,8 +335,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
       display-line-numbers-major-tick 10
       display-line-numbers-width-start t)
 
-;; re-builder
-(setq reb-re-syntax 'string)
+(use-package re-builder
+  :ensure nil
+  :custom (reb-re-syntax 'string))
 
 (use-package recentf
   :ensure nil
@@ -727,6 +730,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("s-t"       . tab-bar-new-tab)
            ("s-j"       . avy-goto-char-timer)
            ("s-d"       . dirvish-side)
+           ("s-i"       . symbols-outline-show)
            ("s-o"       . ace-window)
            ("s-w"       . tabspaces-close-workspace)
            ("s-<right>" . ns-next-frame)
@@ -988,7 +992,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (popper-echo-mode 1))
 
 (setq window-sides-vertical nil
-      split-height-threshold 30
       even-window-sizes 'height-only
       frame-resize-pixelwise t
       window-resize-pixelwise t
@@ -1102,20 +1105,20 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package orderless
   :demand t
   :custom
-  (orderless-matching-styles '(orderless-literal orderless-regexp orderless-flex))
   (orderless-component-separator  #'orderless-escapable-split-on-space)
+  (orderless-matching-styles '(orderless-literal orderless-regexp orderless-flex))
   :config
-  (orderless-define-completion-style yx/orderless-initialism+
+  (orderless-define-completion-style yx/orderless-with-initialism
     (orderless-matching-styles '(orderless-initialism orderless-literal orderless-regexp)))
   (setq completion-styles '(orderless basic)
         completion-category-defaults nil
         completion-category-overrides '((file (styles basic partial-completion))
                                         (buffer (styles basic partial-completion))
-                                        (command (styles yx/orderless-initialism+))
-                                        (symbol (styles yx/orderless-initialism+))
-                                        (variable (styles yx/orderless-initialism+))
-                                        (eglot (styles yx/orderless-initialism+))
-                                        (eglot-capf (styles yx/orderless-initialism+)))))
+                                        (command (styles yx/orderless-with-initialism))
+                                        (symbol (styles yx/orderless-with-initialism))
+                                        (variable (styles yx/orderless-with-initialism))
+                                        (eglot (styles yx/orderless-with-initialism))
+                                        (eglot-capf (styles yx/orderless-with-initialism)))))
 
 ;; %% embark
 (use-package embark
@@ -1172,9 +1175,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
    consult--source-buffer
    consult--source-recent-file :preview-key "M-.")
   :bind (:map minibuffer-local-map
-              ("M-s" . consult-history)
-              ("M-r" . consult-history))
-  )
+              ("M-h" . consult-history)))
 
 (use-package consult-dir
   :after consult
@@ -1749,30 +1750,42 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
       shell-command-prompt-show-cwd t)
 
 (use-package eshell
+  :bind (:map eshell-mode-map
+              ("C-l" . yx/eshell-clear)
+              ("M-h" . consult-history))
+  :custom
+  (eshell-kill-on-exit t)
+  (eshell-history-append t)
+  (eshell-save-history-on-exit t)
+  (eshell-hist-ignoredups t)
+  (eshell-error-if-no-glob t)
+  (eshell-prefer-lisp-functions t)
+  (eshell-scroll-to-bottom-on-input  'all)
+  (eshell-scroll-to-bottom-on-output 'all)
+  (eshell-prompt-function 'yx/eshell-prompt)
+
   :init
-  (setq eshell-kill-on-exit t
-        eshell-history-append t
-        eshell-save-history-on-exit t
-        eshell-kill-processes-on-exit 'ask
-        eshell-destroy-buffer-when-process-dies nil
-        eshell-hist-ignoredups t
-        eshell-error-if-no-glob t
-        eshell-prefer-lisp-functions t
-        eshell-rm-removes-directories t
-        eshell-scroll-to-bottom-on-input  'all
-        eshell-scroll-to-bottom-on-output 'all
-        eshell-prompt-function 'yx/eshell-prompt)
+  (defun yx/eshell-here ()
+    (interactive)
+    (let* ((project (project-current))
+           (name (if project (concat "-" (project-name project)) ""))
+           (dir (if (buffer-file-name)
+                    (file-name-directory (buffer-file-name))
+                  default-directory))
+           (height (/ (frame-height) 3)))
+      (setq eshell-buffer-name (concat "*eshell" name "*"))
+      (eshell)
+      (yx/eshell-clear)
+      (eshell/cd dir)))
+
   :config
+  (setenv "PAGER" "cat")
+
   (add-to-list 'eshell-modules-list #'eshell-tramp)
   (add-to-list 'eshell-modules-list #'eshell-rebind)
   (add-to-list 'eshell-modules-list #'eshell-elecslash)
-  (add-hook 'eshell-mode-hook 'yx/eshell-setup)
-  :preface
-  (defun yx/eshell-setup ()
-    (keymap-set eshell-mode-map "C-l" 'yx/eshell-clear)
-    (keymap-set eshell-mode-map "C-r" 'consult-history)
-    (setq eshell-visual-commands'("vim" "ssh" "tail" "top" "htop" "tmux" "less" "more")
-          eshell-visual-subcommands '(("git" "log" "diff" "show")))
+
+  (with-eval-after-load 'em-alias
     (eshell/alias "q"    "exit")
     (eshell/alias "r"    "consult-recent-file")
     (eshell/alias "d"    "dired $1")
@@ -1781,12 +1794,22 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
     (eshell/alias "gd"   "magit-diff-unstaged")
     (eshell/alias "gds"  "magit-diff-staged")
     (eshell/alias "gv"   "magit-dispatch")
-    (eshell/alias "ll"   "ls -AlohG --color=always")
-    (setq-local completion-at-point-functions
-                '(cape-file
-                  pcomplete-completions-at-point
-                  cape-elisp-symbol
-                  t)))
+    (eshell/alias "la"   "ls -laAFh $*")
+    (eshell/alias "ll"   "ls -AlohG --color=always"))
+
+  (with-eval-after-load 'em-term
+    (appendq! eshell-visual-subcommands '(("git" "log" "diff" "show"))))
+
+  (defun yx/eshell-setup ()
+    (set-window-fringes nil 0 0)
+    (set-window-margins nil 1 nil)
+    (visual-line-mode +1)
+    (add-to-list 'completion-at-point-functions 'cape-elisp-symbol)
+    (add-to-list 'completion-at-point-functions 'cape-file)
+    (setq-local corfu-auto nil)
+    (corfu-mode 1))
+
+  (add-hook 'eshell-mode-hook #'yx/eshell-setup)
 
   (defun yx/eshell-prompt()
     (setq eshell-prompt-regexp "^[^#$\n]*[#$] ")
@@ -1804,19 +1827,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
     (let ((inhibit-read-only t))
       (erase-buffer)
       (eshell-send-input)))
-
-  (defun yx/eshell-here ()
-    (interactive)
-    (let* ((project (project-current))
-           (name (if project (concat "-" (project-name project)) ""))
-           (dir (if (buffer-file-name)
-                    (file-name-directory (buffer-file-name))
-                  default-directory))
-           (height (/ (frame-height) 3)))
-      (setq eshell-buffer-name (concat "*eshell" name "*"))
-      (eshell)
-      (yx/eshell-clear)
-      (eshell/cd dir)))
 
   (defun eshell/z ()
     (let ((dir (completing-read "Directory: " (ring-elements eshell-last-dir-ring) nil t)))
@@ -2852,8 +2862,22 @@ set to \\='(template title keywords subdirectory)."
   :config
   (add-to-list 'buffer-env-command-alist '("/\\.envrc\\'" . "direnv exec . env -0")))
 
+(use-package symbols-outline
+  :custom
+  (symbols-outline-window-width 35)
+  :config
+  (unless (executable-find "ctags")
+    (setq symbols-outline-fetch-fn #'symbols-outline-lsp-fetch))
+  (symbols-outline-follow-mode 1))
+
 ;;; Langs
 ;; %% emacs-lisp
+(use-package macrostep
+  :custom
+  (macrostep-expand-in-separate-buffer t)
+  :bind (:map emacs-lisp-mode-map
+              ("C-c e" . macrostep-expand)))
+
 (define-auto-insert "\\.el$" 'yx/auto-insert-el-header)
 
 ;; %% c/c++
