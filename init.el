@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-09 00:02:37 yx>
+;; Modified: <2024-03-09 03:23:21 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -693,12 +693,12 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :doc "Keymap for app"
   "g" #'gnus
   "c" #'calendar
+  "C" #'calc
   "r" #'elfeed
-  "e" #'erc-tls
-  "i" #'info
+  "E" #'erc-tls
   "v" #'vterm
-  "m" #'emms-browser
-  "t" #'proced
+  "e" #'emms-browser
+  "P" #'proced
   "a" #'org-agenda-list
   "p" #'package-list-packages)
 (keymap-global-set "s-a" yx/app-prefix-map)
@@ -968,7 +968,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            "*eshell" "*term" "*grep" "*Occur"
            "*Org L" "*Org Select" "CAPTURE" "*Messages" "*Warnings"
            "*Backtrac" "*Flymake" "*Error" "*Compile-Log" "*vc-git"
-           "*tldr" "*devdocs" "*color-rg" "*quickrun"
+           "*tldr" "*color-rg" "*quickrun"
            "*stardict" "*Dictionary")
          (display-buffer-reuse-mode-window
           display-buffer-in-side-window)
@@ -1000,6 +1000,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (popper-echo-mode 1))
 
 (setq window-sides-vertical nil
+      split-width-threshold 60
       even-window-sizes 'height-only
       frame-resize-pixelwise t
       window-resize-pixelwise t
@@ -2134,6 +2135,13 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (org-clock-auto-clockout-insinuate)
   (run-at-time t 7200 'org-agenda-to-appt)
   (yx/def-org-maybe-surround "~" "=" "*" "/" "+")
+
+  (font-lock-add-keywords
+   'org-mode
+   '(("\\(\\(?:\\\\\\(?:label\\|ref\\|eqref\\)\\)\\){\\(.+?\\)}"
+      (1 font-lock-keyword-face)
+      (2 font-lock-constant-face))))
+
   (add-hook 'org-ctrl-c-ctrl-c-hook 'yx/check-latex-fragment)
 
   (defun yx/org-reformat-buffer ()
@@ -2457,36 +2465,27 @@ set to \\='(template title keywords subdirectory)."
 (use-package tex
   :ensure auctex
   :mode ("\\.tex\\'" . latex-mode)
+  :hook ((LaTeX-mode . prettify-symbols-mode)
+         (LaTeX-mode . electric-pair-local-mode)
+         (LaTeX-mode . turn-on-reftex)
+         (LaTeX-mode . LaTeX-math-mode)
+         (LaTeX-mode . TeX-fold-mode)
+         (LaTeX-mode . TeX-source-correlate-mode)
+         (LaTex-mode . (lambda ()
+                         (push #'cape-tex completion-at-point-functions))))
   :config
-  (setq-default Tex-master nil
-                TeX-engine 'xetex)
+  (setq-default Tex-master nil)
+  (setq-default TeX-engine 'xetex)
+
   (setq TeX-auto-save t
+        TeX-save-query nil
         TeX-parse-self t
-        reftex-plug-into-AUCTeX t
-        TeX-source-correlate-start-server t)
+        TeX-source-correlate-start-server t
+        TeX-view-program-selection '((output-pdf "PDF Tools")))
 
-  (setq TeX-view-program-list '(("pdf-tools" TeX-pdf-tools-sync-view)
-                                ("Skim" "displayline -b -g %n %o %b"))
-        TeX-view-program-selection `((output-pdf ,(cond
-                                                   (IS-MAC "Skim")
-                                                   (t "pdf-tools")))
-                                     (output-dvi  ,yx/default-open)
-                                     (output-html ,yx/default-open)))
+  (setq reftex-plug-into-AUCTeX t)
 
-  (defun yx/latex-mode-setup ()
-    (TeX-PDF-mode 1)
-    (TeX-fold-mode 1)
-    (TeX-source-correlate-mode 1)
-    (LaTeX-math-mode 1)
-    (prettify-symbols-mode 1)
-    (turn-on-reftex)
-    (push 'cape-tex completion-at-point-functions))
-
-  (add-hook 'tex-mode-hook 'yx/latex-mode-setup)
-  (add-hook 'TeX-after-comilation-finished-functions 'TeX-revert-document-buffer)
-
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs '(latex-mode "texlab"))))
+  (add-hook 'TeX-after-comilation-finished-functions 'TeX-revert-document-buffer))
 
 (use-package cdlatex
   :hook ((LaTeX-mode . turn-on-cdlatex)
