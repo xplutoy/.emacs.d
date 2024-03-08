@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-08 12:30:20 yx>
+;; Modified: <2024-03-09 00:02:37 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -255,6 +255,14 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
       disabled-command-function nil
       confirm-nonexistent-file-or-buffer nil)
 
+(use-package startup
+  :ensure nil
+  :custom
+  (inhibit-default-init t)
+  (inhibit-splash-screen t)
+  (inhibit-startup-message t)
+  (initial-scratch-message nil))
+
 ;; %% paren
 (setq blink-matching-paren nil
       show-paren-style 'parenthesis
@@ -329,11 +337,14 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (uniquify-buffer-name-style 'post-forward-angle-brackets)
   (uniquify-dirname-transform 'project-uniquify-dirname-transform))
 
-;; %% line number
-(setq display-line-numbers-type t
-      display-line-numbers-width 4
-      display-line-numbers-major-tick 10
-      display-line-numbers-width-start t)
+(use-package display-line-numbers
+  :ensure nil
+  :hook ((prog-mode conf-mode) . display-line-numbers-mode)
+  :custom
+  (display-line-numbers-type t)
+  (display-line-numbers-width 4)
+  (display-line-numbers-major-tick 20)
+  (display-line-numbers-width-start t))
 
 (use-package re-builder
   :ensure nil
@@ -451,6 +462,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
       scroll-conservatively 101
       fast-but-imprecise-scrolling t
       scroll-preserve-screen-position 'always)
+
+(use-package pixel-scroll
+  :ensure nil
+  :hook (after-init . pixel-scroll-precision-mode))
 
 (setq auto-window-vscroll nil
       auto-hscroll-mode 'current-line)
@@ -612,16 +627,15 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
  (IS-MAC
   (setq ns-command-modifier   'super
         ns-alternate-modifier 'meta
-        ns-function-modifier  'hyper)
-
-  (setq ns-use-thin-smoothing t
+        ns-function-modifier  'hyper
         ns-pop-up-frames nil
+        ns-use-thin-smoothing t
         ns-use-native-fullscreen nil))
  (IS-WIN
   (setq w32-apps-modifier    'hyper
-        w32-lwindow-modifier 'super)
-
-  (setq w32-get-true-file-attributes nil
+        w32-lwindow-modifier 'super
+        w32-pass-lwindow-to-system nil
+        w32-get-true-file-attributes nil
         w32-pipe-read-delay 0
         w32-pipe-buffer-size  (* 64 1024))))
 
@@ -646,7 +660,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (mouse-avoidance-mode 'cat-and-mouse)
   (unless (display-graphic-p)
     (xterm-mouse-mode 1))
-  (pixel-scroll-precision-mode 1)
   (minibuffer-depth-indicate-mode 1)
   (auth-source-pass-enable)
   (windmove-default-keybindings 'control))
@@ -723,7 +736,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (bind-keys ("C-<f5>"    . dape)
            ("<f5>"      . quickrun)
-           ("<f10>"     . yx/eshell-here)
            ("s-s"       . yx/transient-global-simple)
            ("s-/"       . transform-previous-char)
            ("s-r"       . consult-recent-file)
@@ -745,6 +757,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("C-M-/"     . vundo)
            ("C-#"       . consult-register-load)
            ("C-O"       . crux-smart-open-line-above)
+           ("M-RET"     . yx/eshell-here)
            ("M-#"       . consult-register-store)
            ("C-c #"     . consult-register)
            ("M-o"       . duplicate-dwim)
@@ -778,7 +791,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("M-s M-s"   . color-rg-search-symbol)
            ("M-s p"     . color-rg-search-input-in-project)
            ("M-s M-p"   . color-rg-search-symbol-in-project)
-           ("C-c ;"     . flyspell-correct-next)
            ("C-c k"     . kill-buffer-and-window)
            ("C-c v"     . magit-file-dispatch)
            ("C-c C-v"   . magit-dispatch)
@@ -858,11 +870,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
       use-file-dialog nil)
 
 (setq x-stretch-cursor nil
-      x-underline-at-descent-line t
-      inhibit-default-init t
-      inhibit-splash-screen t
-      inhibit-startup-message t
-      initial-scratch-message "")
+      x-underline-at-descent-line t)
 
 (setq cursor-in-non-selected-windows nil)
 
@@ -1872,7 +1880,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :defer 2
   :bind
   (:map org-mode-map
-        ("M-<f10>" . yx/transient-org)
         ("RET"     . yx/org-return-dwim)
         ("M-g h"   . consult-org-heading)
         ("C-c M-y" . yx/org-link-copy)
@@ -2129,6 +2136,14 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (yx/def-org-maybe-surround "~" "=" "*" "/" "+")
   (add-hook 'org-ctrl-c-ctrl-c-hook 'yx/check-latex-fragment)
 
+  (defun yx/org-reformat-buffer ()
+    (interactive)
+    (when (y-or-n-p "Really format current buffer? ")
+      (let ((document (org-element-interpret-data (org-element-parse-buffer))))
+        (erase-buffer)
+        (insert document)
+        (goto-char (point-min)))))
+
   :preface
   (defun yx/org-mode-setup ()
     (auto-fill-mode -1)
@@ -2171,21 +2186,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            (cn-day-string (aref cal-china-x-day-name
                                 (1- cn-day))))
       (format "%04d-%02d-%02d 周%-8s 农历%s%s" year month
-              day dayname cn-month-string cn-day-string)))
-
-  (transient-define-prefix yx/transient-org ()
-    "Org commands."
-    [["Misc"
-      ("@" "org-cite-insert" org-cite-insert)
-      ("a" "org-archive-subtree" org-archive-subtree)
-      ("g" "org-goto" org-goto)
-      ("i" "org-clock-in" org-clock-in)
-      ("o" "org-clock-out" org-clock-out)
-      ("n" "org-narrow-to-subtree" org-narrow-to-subtree)]
-     ["Toggle"
-      ("L" "org-toggle-link-display" org-toggle-link-display)
-      ("I" "org-toggle-inline-images" org-toggle-inline-images)
-      ("F" "org-preview-latex-fragment" org-preview-latex-fragment)]]))
+              day dayname cn-month-string cn-day-string))))
 
 (use-package ox-latex
   :ensure nil
@@ -2524,7 +2525,6 @@ set to \\='(template title keywords subdirectory)."
   (hs-minor-mode 1)
   (superword-mode 1)
   (show-paren-mode 1)
-  (display-line-numbers-mode 1)
   (electric-pair-local-mode 1)
   (electric-indent-local-mode 1)
   (electric-layout-local-mode 1)
@@ -2579,15 +2579,8 @@ set to \\='(template title keywords subdirectory)."
   (xref-show-xrefs-function 'xref-show-definitions-buffer)
   (xref-show-definitions-function 'xref-show-definitions-completing-read))
 
-;; %% formatter & linter & profiler
 (use-package flymake
   :ensure nil
-  :custom
-  (flymake-no-changes-timeout nil)
-  (flymake-show-diagnostics-at-end-of-line t)
-  (flymake-fringe-indicator-position 'right-fring)
-  :config
-  (appendq! elisp-flymake-byte-compile-load-path load-path)
   :bind (("C-x c l" . flymake-start)
          :map flymake-mode-map
          ("M-g d"   . flymake-show-buffer-diagnostics)
@@ -2596,7 +2589,17 @@ set to \\='(template title keywords subdirectory)."
          ("M-g M-p" . flymake-goto-prev-error)
          :repeat-map flymake-repeatmap
          ("p" . flymake-goto-prev-error)
-         ("n" . flymake-goto-next-error)))
+         ("n" . flymake-goto-next-error))
+  :custom
+  (flymake-no-changes-timeout nil)
+  (flymake-show-diagnostics-at-end-of-line t)
+  (flymake-fringe-indicator-position 'right-fring)
+  :config
+  (advice-add #'elisp-flymake-byte-compile :around
+              (defun yx/elisp-flymake-byte-compile-around (oldfun &rest args)
+                (let ((elisp-flymake-byte-compile-load-path
+                       (cons "./" load-path)))
+                  (apply oldfun args)))))
 
 (use-package apheleia
   :defer 2
