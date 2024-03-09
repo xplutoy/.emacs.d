@@ -3,12 +3,10 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-09 19:37:14 yx>
+;; Modified: <2024-03-09 23:59:06 yx>
 ;; Licence: GPLv3
 
 ;;; Init
-(add-to-list 'load-path "~/.emacs.d/site-lisp/")
-
 (defvar yx/etc-dir "~/.emacs.d/etc/")
 (defvar yx/var-dir "~/.emacs.d/.cache/")
 
@@ -16,7 +14,10 @@
 (setenv "http_proxy"  "http://127.0.0.1:7890")
 (setenv "https_proxy" "http://127.0.0.1:7890")
 
+(add-to-list 'load-path "~/.emacs.d/site-lisp/")
+
 (require 'package)
+(require 'use-package-ensure)
 ;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 ;; (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (setq package-archives
@@ -42,15 +43,10 @@
 (unless (bound-and-true-p package--initialized)
   (package-initialize))
 
-(setq custom-file (expand-file-name "custom.el" yx/etc-dir))
-
-(when (file-exists-p custom-file)
-  (load custom-file 'noerror))
-
 ;; %% benchmark
 (use-package benchmark-init)
-(benchmark-init/activate)
-(add-hook 'after-init-hook 'benchmark-init/deactivate)
+;; (benchmark-init/activate)
+;; (add-hook 'after-init-hook 'benchmark-init/deactivate)
 
 ;; %% no-littering
 (use-package no-littering
@@ -219,6 +215,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (prefer-coding-system 'utf-8)
 (set-language-environment 'utf-8)
 (set-default-coding-systems 'utf-8)
+
+(setq custom-file
+      (no-littering-expand-etc-file-name "custom.el"))
 
 (setq-default abbrev-mode t)
 
@@ -451,7 +450,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
       mouse-wheel-follow-mouse t
       mouse-drag-mode-line-buffer t
       mouse-avoidance-nudge-dist 8
-      mouse-wheel-progressive-speed nil
       mouse-drag-and-drop-region-cross-program t
       mouse-wheel-scroll-amount-horizontal 2
       mouse-wheel-scroll-amount '(2 ((shift) . hscroll)))
@@ -1404,6 +1402,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 ;; %% emms
 (use-package emms
+  :hook ((emms-playlist-mode . hl-line-mode))
   :custom
   (emms-lyrics-dir "~/Music/lyrics/")
   (emms-source-file-default-directory "~/Music/")
@@ -1915,7 +1914,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (org-num-max-level 2)
   (org-reverse-note-order t)
   (org-list-allow-alphabetical t)
-  (org-return-follows-link nil)
+  (org-return-follows-link t)
   (org-mouse-1-follows-link nil)
   (org-crypt-key yx/gpg-encrypt-key)
   (org-hide-leading-stars t)
@@ -2554,13 +2553,6 @@ set to \\='(template title keywords subdirectory)."
 
 (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
 
-;; semantic
-(add-hook 'prog-mode-hook #'semantic-mode)
-(with-eval-after-load 'semantic
-  (global-semanticdb-minor-mode 1)
-  (global-semantic-idle-summary-mode 1)
-  (global-semantic-idle-scheduler-mode 1))
-
 (use-package gud
   :ensure nil
   :hook (gud-mode . gud-tooltip-mode)
@@ -3064,4 +3056,5 @@ set to \\='(template title keywords subdirectory)."
 (setq imaxima-use-maxima-mode-flag t)
 (add-to-list 'auto-mode-alist '("\\.ma[cx]\\'" . maxima-mode))
 
+(load custom-file t)
 ;;; init.el ends here
