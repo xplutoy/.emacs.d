@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-09 03:23:21 yx>
+;; Modified: <2024-03-09 19:37:14 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -533,7 +533,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
         auto-revert-check-vc-info t)
   (global-auto-revert-mode 1))
 
-;; %% long line
+;; %% https://emacs-china.org/t/emacs-1w/25802/20
 (setq bidi-inhibit-bpa t
       long-line-threshold 1000
       syntax-wholeline-max 1000
@@ -736,6 +736,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (bind-keys ("C-<f5>"    . dape)
            ("<f5>"      . quickrun)
+           ("s-e"       . yx/eshell-here)
            ("s-s"       . yx/transient-global-simple)
            ("s-/"       . transform-previous-char)
            ("s-r"       . consult-recent-file)
@@ -757,7 +758,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("C-M-/"     . vundo)
            ("C-#"       . consult-register-load)
            ("C-O"       . crux-smart-open-line-above)
-           ("M-RET"     . yx/eshell-here)
            ("M-#"       . consult-register-store)
            ("C-c #"     . consult-register)
            ("M-o"       . duplicate-dwim)
@@ -1405,11 +1405,20 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 ;; %% emms
 (use-package emms
   :custom
-  (emms-player-list '(emms-player-mpv))
-  (emms-info-functions '(emms-info-native))
+  (emms-lyrics-dir "~/Music/lyrics/")
   (emms-source-file-default-directory "~/Music/")
+  (emms-source-playlist-default-format 'm3u)
+  (emms-player-list '(emms-player-mpv))
+  (emms-player-mpv-update-metadata t)
+  (emms-info-asynchronously t)
+  (emms-info-functions '(emms-info-native))
+  (emms-browser-covers #'emms-browser-cache-thumbnail-async)
+  (emms-browser-thumbnail-small-size 64)
+  (emms-browser-thumbnail-medium-size 128)
   :config
-  (emms-minimalistic))
+  (require 'emms-setup)
+  (emms-all)
+  (emms-history-load))
 
 ;; %% spell
 (use-package jinx
@@ -2630,6 +2639,7 @@ set to \\='(template title keywords subdirectory)."
   :custom
   (magit-diff-refine-hunk 'all)
   (magit-show-long-lines-warning nil)
+  (magit-log-arguments '("--color" "--graph" "--decorate"))
   (magit-bury-buffer-function #'magit-restore-window-configuration)
   (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   :bind (:map magit-status-mode-map
