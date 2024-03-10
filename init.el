@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-09 23:59:06 yx>
+;; Modified: <2024-03-11 06:21:46 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -15,6 +15,9 @@
 (setenv "https_proxy" "http://127.0.0.1:7890")
 
 (add-to-list 'load-path "~/.emacs.d/site-lisp/")
+
+(setq custom-file
+      (expand-file-name "custom.el" yx/etc-dir))
 
 (require 'package)
 (require 'use-package-ensure)
@@ -58,22 +61,20 @@
   (no-littering-theme-backups))
 
 ;;; Utils
-(defvar yx/org-dir         "~/yxdocs/org-notes/")
-(defvar yx/zotero-dir      "~/Zotero/")
+(defvar yx/org-root         "~/yxdocs/org-notes/")
+(defvar yx/zotero-root      "~/Zotero/")
 (defvar yx/gpg-sign-key    "67B86CB8A5630C51!")
 (defvar yx/gpg-encrypt-key "8B1F9B207AF00BCF!")
 
 (defconst IS-MAC     (eq system-type 'darwin))
 (defconst IS-WIN     (eq system-type 'windows-nt))
 (defconst IS-LINUX   (eq system-type 'gnu/linux))
-(defconst IS-ANDROID (eq system-type 'android))
 
-(defvar yx/default-open
-  (cond
-   (IS-WIN   "start")
-   (IS-MAC   "open")
-   (IS-LINUX "xdg-open")
-   (t "")))
+(defvar yx/default-open (cond
+                         (IS-WIN   "start")
+                         (IS-MAC   "open")
+                         (IS-LINUX "xdg-open")
+                         (t "")))
 
 (defconst yx/templates-dir
   (no-littering-expand-etc-file-name "templates"))
@@ -104,10 +105,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
          (equal home (substring pwd 0 home-len)))
         (concat "~" (substring pwd home-len))
       pwd)))
-
-(defun yx/prefixes-to-regex(&rest prefixs)
-  "Convert a list of match-prefex to regex string."
-  (rx bos (regex (regexp-opt prefixs))))
 
 (defun yx/file-contents-2-str (file)
   "File contents to string."
@@ -215,9 +212,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (prefer-coding-system 'utf-8)
 (set-language-environment 'utf-8)
 (set-default-coding-systems 'utf-8)
-
-(setq custom-file
-      (no-littering-expand-etc-file-name "custom.el"))
 
 (setq-default abbrev-mode t)
 
@@ -947,34 +941,27 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 ;;; Layout
 (setq display-buffer-alist
-      `(("\\`\\*[hH]elp"
-         (display-buffer-reuse-mode-window
-          display-buffer-in-direction)
-         (window . root)
-         (window-height . 0.4)
-         (direction . bottom)
+      `(("\\`\\(\\*Calendar\\|\\*Bookmark\\)"
+         (display-buffer-reuse-mode-window display-buffer-below-selected)
+         (window-height . fit-window-to-buffer) (dedicated . t))
+        ("\\`\\(\\*[e]?shell\\|\\*term\\|\\*R\\|\\*julia\\|\\*lua\\|\\*Python\\)"
+         (display-buffer-reuse-mode-window display-buffer-in-side-window)
+         (side . bottom) (window-height . 0.45))
+        ("\\`\\(\\*[hH]elp\\)"
+         (display-buffer-reuse-mode-window display-buffer-in-direction)
+         (window . root) (direction . bottom) (window-height . 0.45)
          (mode . (help-mode helpful-mode)))
-        ("\\`\\(\\*Calendar\\|\\*Bookmark\\)"
-         (display-buffer-reuse-mode-window
-          display-buffer-below-selected)
-         (dedicated . t)
-         (window-height . fit-window-to-buffer))
-        ("\\`\\(\\*Proced\\*\\|\\*Ibuffer\\|\\*Man\\|\\*WoMan\\|\\*info\\|magit\\|\\*Org Agenda\\)"
-         (display-buffer-full-frame))
-        (,(yx/prefixes-to-regex
-           "*R" "*julia" "*lua" "*Lua" "*Python"
-           "*eshell" "*term" "*grep" "*Occur"
-           "*Org L" "*Org Select" "CAPTURE" "*Messages" "*Warnings"
-           "*Backtrac" "*Flymake" "*Error" "*Compile-Log" "*vc-git"
-           "*tldr" "*color-rg" "*quickrun"
-           "*stardict" "*Dictionary")
-         (display-buffer-reuse-mode-window
-          display-buffer-in-side-window)
-         (side . bottom)
-         (window-height . 0.45))))
+        ("\\`\\(\\*grep\\|\\*Occur\\|\\*color-rg\\|\\*tldr\\|\\*stardict\\|\\*Dictionary\\)"
+         (display-buffer-reuse-mode-window display-buffer-in-direction)
+         (window .root) (direction . bottom) (window-height . 0.45))
+        ("\\`\\(\\*Org S\\|\\*Org L\\|CAPTURE\\)"
+         (display-buffer-reuse-mode-window display-buffer-in-direction)
+         (window .root) (direction . bottom) (window-height . 0.45))
+        ("\\`\\(\\*Proced\\*\\|\\*Ibuffer\\|\\*Man\\|\\*WoMan\\|\\*info\\|\\*Org Agenda\\)"
+         (display-buffer-full-frame))))
 
 (use-package popper
-  :defer 2
+  :hook (after-init . popper-mode)
   :bind (("C-`" . popper-toggle)
          ("M-`" . popper-cycle)
          ("C-M-`" . popper-toggle-type))
@@ -984,17 +971,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
         popper-echo-dispatch-actions t
         popper-group-function #'popper-group-by-project)
   (setq popper-reference-buffers
-        '("\\*tldr\\*$"
-          "^\\*eshell.*\\*$" eshell-mode
-          "^\\*shell.*\\*$"  shell-mode
-          "^\\*term.*\\*$"   term-mode
-          helpful-mode
-          grep-mode occur-mode color-rg-mode
-          comint-mode
-          devdocs-mode
-          compilation-mode
-          flymake-diagnostics-buffer-mode))
-  (popper-mode 1)
+        '("\\`\\*eshell.*\\*$" eshell-mode
+          "\\`\\*term.*\\*$"   term-mode
+          "\\`\\*shell.*\\*$"  shell-mode
+          comint-mode devdocs-mode))
   (popper-echo-mode 1))
 
 (setq window-sides-vertical nil
@@ -1291,27 +1271,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :hook (after-init . ace-link-setup-default))
 
 (use-package helpful
-  :bind (:map helpful-mode-map
-              ("q" . delete-window)
-              ("b" . yx/helpful-next-buffer)
-              ("f" . yx/helpful-prev-buffer))
+  :custom
+  (helpful-max-buffers 2)
   :config
-  (defun yx/helpful-next-buffer ()
-    (interactive)
-    (cl-letf ((bufname (buffer-name))
-              (switch-to-prev-buffer-skip-regexp nil))
-      (next-buffer)
-      (unless (string= (buffer-name) bufname)
-        (while (not (eq major-mode 'helpful-mode))
-          (next-buffer)))))
-  (defun yx/helpful-prev-buffer ()
-    (interactive)
-    (cl-letf ((bufname (buffer-name))
-              (switch-to-prev-buffer-skip-regexp nil))
-      (previous-buffer)
-      (unless (string= (buffer-name) bufname)
-        (while (not (eq major-mode 'helpful-mode))
-          (previous-buffer))))))
+  (keymap-set helpful-mode-map "q" #'kill-buffer-and-window))
 
 (use-package command-log-mode
   :custom
@@ -1909,7 +1872,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (org-agenda-finalize . yx/org-agenda-finalize-setup)
   (org-babel-after-execute . yx/org-babel-display-image)
   :custom
-  (org-directory yx/org-dir)
+  (org-directory yx/org-root)
   (org-ellipsis nil)
   (org-num-max-level 2)
   (org-reverse-note-order t)
@@ -2076,7 +2039,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                                 "---------------------------------")))
   (org-agenda-current-time-string "Now - - - - - - - - - - - - - - - - - - - - -")
   (org-agenda-diary-file
-   (expand-file-name "diary.org" yx/org-dir))
+   (expand-file-name "diary.org" yx/org-root))
   (org-agenda-include-diary t)
   (org-agenda-show-future-repeats 'next)
   (org-agenda-format-date 'yx/org-agenda-format-date-aligned)
@@ -2099,12 +2062,12 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                            ("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00")))
   (org-columns-default-format "%50ITEM(Task) %2PRIORITY %10Effort(Effort){:} %10CLOCKSUM")
 
-  (org-cite-csl-styles-dir (expand-file-name "styles/" yx/zotero-dir))
-  (org-cite-global-bibliography (list (expand-file-name "bibliography.bib" yx/org-dir)))
+  (org-cite-csl-styles-dir (expand-file-name "styles/" yx/zotero-root))
+  (org-cite-global-bibliography (list (expand-file-name "bibliography.bib" yx/org-root)))
   (org-cite-export-processors '((latex biblatex)
                                 (t . (csl "ieee.csl"))))
 
-  (org-attach-id-dir (expand-file-name "data/" yx/org-dir))
+  (org-attach-id-dir (expand-file-name "data/" yx/org-root))
   (org-attach-dir-relative t)
   (org-attach-store-link-p 'attach)
   (org-attach-sync-delete-empty-dir t)
@@ -2301,7 +2264,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (org-download-heading-lvl nil)
   (org-download-screenshot-method "screencapture -i %s")
   (org-download-image-dir
-   (expand-file-name (concat org-attach-directory "images/") yx/org-dir))
+   (expand-file-name (concat org-attach-directory "images/") yx/org-root))
   :bind (:map org-mode-map
               ("C-c y" . org-download-screenshot)
               ("C-c C-y" . org-download-clipboard)))
@@ -2426,7 +2389,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :after org
   :demand t
   :custom
-  (denote-directory yx/org-dir)
+  (denote-directory yx/org-root)
   (denote-infer-keywords t)
   (denote-known-keywords nil)
   (denote-date-prompt-use-org-read-date t)
@@ -2512,8 +2475,8 @@ set to \\='(template title keywords subdirectory)."
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
-  (citar-notes-paths `(,yx/org-dir))
-  (citar-library-paths `(,yx/zotero-dir))
+  (citar-notes-paths `(,yx/org-root))
+  (citar-library-paths `(,yx/zotero-root))
   (citar-at-point-function 'embark-act)
   (citar-bibliography org-cite-global-bibliography)
   :hook ((org-mode . citar-capf-setup)
