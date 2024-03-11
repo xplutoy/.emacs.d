@@ -3,12 +3,12 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-11 08:37:37 yx>
+;; Modified: <2024-03-11 19:20:23 yx>
 ;; Licence: GPLv3
 
 ;;; Init
 (defvar yx/etc-dir "~/.emacs.d/etc/")
-(defvar yx/var-dir "~/.emacs.d/.cache/")
+(defvar yx/var-dir "~/.emacs.d/.local/")
 
 ;; env
 (setenv "http_proxy"  "http://127.0.0.1:7890")
@@ -955,6 +955,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :custom
   (popper-echo-lines 1)
   (popper-display-control t)
+  (popper-window-height 0.5)
   (popper-group-function #'popper-group-by-project)
   (popper-reference-buffers '("\\*Messages\\*$"
                               "Output\\*$" "\\*Pp Eval Output\\*$"
@@ -975,6 +976,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                               "\\*Agenda Commands\\*"
                               "\\*Org Select\\*"
                               "\\*Capture\\*" "^CAPTURE-.*\\.org*"
+                              color-rg-mode
                               bookmark-bmenu-mode
                               help-mode helpful-mode
                               tabulated-list-mode
@@ -986,13 +988,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                               devdocs-mode grep-mode occur-mode
                               "^\\*Process List\\*$" process-menu-mode))
   :config
-  (defun yx/popper-fit-window-height (win)
-    "Determine the height of popup window WIN by fitting it to the buffer's content."
-    (fit-window-to-buffer
-     win
-     (floor (frame-height) 2)
-     (floor (frame-height) 4)))
-  (setq popper-window-height #'yx/popper-fit-window-height)
   (add-to-list 'display-buffer-alist
                '(("\\`\\(\\*Proced\\*\\|\\*Ibuffer\\|\\*Man\\|\\*WoMan\\|\\*info\\|\\*Org Agenda\\)"
                   (display-buffer-full-frame))))
@@ -1088,7 +1083,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (tabspaces-include-buffers '("*scratch*"))
   (tabspaces-initialize-project-with-todo nil)
   (tabspaces-session t)
-  (tabspaces-session-auto-restore nil)
+  (tabspaces-session-auto-restore t)
   (tabspaces-session-file (no-littering-expand-var-file-name "tabsession.el")))
 
 ;;; Completion
@@ -2463,7 +2458,8 @@ set to \\='(template title keywords subdirectory)."
          (LaTeX-mode . LaTeX-math-mode)
          (LaTeX-mode . TeX-fold-mode)
          (LaTeX-mode . TeX-source-correlate-mode)
-         (LaTex-mode . (lambda ()
+         (LaTeX-mode . (lambda ()
+                         (eglot-ensure)
                          (push #'cape-tex completion-at-point-functions))))
   :config
   (setq-default Tex-master nil)
@@ -2777,19 +2773,14 @@ set to \\='(template title keywords subdirectory)."
 ;; %% lsp
 (use-package eglot
   :ensure nil
-  :hook ((R-mode
-          LaTeX-mode
-          haskell-mode
-          c-mode c-ts-mode
-          python-mode python-ts-mode
-          julia-mode julia-ts-mode) . eglot-ensure)
   :custom
   (eglot-autoshutdown t)
   (eglot-extend-to-xref t)
   (eglot-sync-connect nil)
   (eglot-report-progress nil)
   (eglot-events-buffer-size 0)
-  (eglot-send-changes-idle-time 0.3)
+  (eglot-send-changes-idle-time 0.5)
+  (eglot-auto-display-help-buffer nil)
   :bind (:map eglot-mode-map
               ("C-x c r" . eglot-rename)
               ("C-x c f" . eglot-format)
@@ -2868,22 +2859,25 @@ set to \\='(template title keywords subdirectory)."
 
 (define-auto-insert "\\.el$" 'yx/auto-insert-el-header)
 
-;; %% c/c++
-(setq c-basic-offset 8
-      c-default-style 'linux
-      c-ts-mode-indent-offset 8
-      c-ts-mode-indent-style 'linux)
+;; c / c++
+(use-package cc-mode
+  :ensure nil
+  :hook (c-mode . eglot-ensure)
+  :init (set-default c-basic-offset 8)
+  :config
+  (define-auto-insert
+    "\\.\\([Hh]\\|hh\\|hpp\\|hxx\\|h\\+\\+\\)\\'"
+    'yx/auto-insert-h-header)
+  (define-auto-insert
+    "\\.\\([Cc]\\|cc\\|cpp\\|cxx\\|c\\+\\+\\)\\'"
+    'yx/auto-insert-c-header)
+  (add-hook 'c-mode-common-hook
+            (lambda () (c-toggle-auto-hungry-state 1))))
 
-(add-hook 'c-mode-common-hook
-          (setq-local indent-tabs-mode nil)
-          (lambda () (c-toggle-auto-hungry-state 1)))
-
-(define-auto-insert
-  "\\.\\([Hh]\\|hh\\|hpp\\|hxx\\|h\\+\\+\\)\\'"
-  'yx/auto-insert-h-header)
-(define-auto-insert
-  "\\.\\([Cc]\\|cc\\|cpp\\|cxx\\|c\\+\\+\\)\\'"
-  'yx/auto-insert-c-header)
+(use-package c-ts-mode
+  :ensure nil
+  :hook (c-ts-mode . eglot-ensure)
+  :init (setq c-ts-mode-indent-offset 8))
 
 ;; %% code-cell
 (use-package code-cells
@@ -2926,9 +2920,9 @@ set to \\='(template title keywords subdirectory)."
                 python-indent-offset 4
                 electric-indent-inhibit t
                 imenu-create-index-function 'python-imenu-create-flat-index)
+    (eglot-ensure)
     (flymake-mode 1))
   (add-hook 'python-base-mode-hook 'yx/python-mode-setup)
-
   (define-auto-insert "\\.py$" 'yx/auto-insert-common-header))
 
 (use-package jupyter
@@ -2942,17 +2936,17 @@ set to \\='(template title keywords subdirectory)."
 ;; %% R/julia
 (use-package ess-site
   :ensure ess
-  :init
+  :hook (R-mode . eglot-ensure)
+  :config
   (setq ess-eval-visibly-p 'nowait
         ess-local-process-name "R"
         ess-ask-for-ess-directory nil)
-  :config
   (keymap-set ess-r-mode-map ";" 'ess-insert-assign)
   (keymap-set inferior-ess-r-mode-map ";" 'ess-insert-assign))
 
 (use-package julia-mode)
 (use-package julia-ts-mode
-  :mode "\\.jl$")
+  :hook (julia-ts-mode . eglot-ensure))
 
 (use-package eglot-jl
   :init
@@ -2983,20 +2977,20 @@ set to \\='(template title keywords subdirectory)."
   :hook (lisp-mode . sly-mode))
 
 (use-package haskell-mode
-  :hook (haskell-mode . yx/haskell-mode-setup)
   :custom
   (haskell-stylish-on-save t)
   (haskell-process-log t)
   (haskell-process-auto-import-loaded-modules t)
-  :preface
+  :config
   (defun yx/haskell-mode-setup ()
     (haskell-collapse-mode 1)
     (haskell-decl-scan-mode 1)
     (haskell-auto-insert-module-template)
     (speedbar-add-supported-extension ".hs")
     (eval-after-load "which-func"
-      '(add-to-list 'which-func-modes 'haskell-mode)))
-  )
+      '(add-to-list 'which-func-modes 'haskell-mode))
+    (eglot-ensure))
+  (add-hook 'haskell-mode-hook #'yx/haskell-mode-setup))
 
 ;; %% misc lang
 (use-package sh-script

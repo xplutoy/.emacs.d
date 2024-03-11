@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2024-03-05 19:32:47 yx>
+;; Modified: <2024-03-11 18:02:58 yx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -18,8 +18,6 @@
       package-enable-at-startup nil
       native-comp-async-report-warnings-errors nil)
 
-(push '(width . 78) default-frame-alist)
-(push '(height . 32) default-frame-alist)
 (push '(undecorated-round . t) default-frame-alist)
 (push '(fullscreen . maximized) initial-frame-alist)
 (when (featurep 'ns) (push '(ns-transparent-titlebar . t) default-frame-alist))
@@ -49,7 +47,7 @@
 (when (fboundp 'startup-redirect-eln-cache)
   (startup-redirect-eln-cache
    (convert-standard-filename
-    (expand-file-name ".cache/eln-cache" user-emacs-directory))))
+    (expand-file-name ".local/eln-cache" user-emacs-directory))))
 
 (defun display-startup-echo-area-message ()
   (message nil))
