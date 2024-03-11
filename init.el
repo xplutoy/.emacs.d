@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-11 06:21:46 yx>
+;; Modified: <2024-03-11 08:37:37 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -569,6 +569,13 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (unless (server-running-p)
     (server-mode)))
 
+(use-package midnight-mode
+  :ensure nil
+  :defer 2
+  :config
+  (setq midnight-period 7200)
+  (midnight-mode +1))
+
 ;; %% session
 (setq desktop-save t
       desktop-restore-eager 5
@@ -940,42 +947,56 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :hook (emacs-startup . breadcrumb-mode))
 
 ;;; Layout
-(setq display-buffer-alist
-      `(("\\`\\(\\*Calendar\\|\\*Bookmark\\)"
-         (display-buffer-reuse-mode-window display-buffer-below-selected)
-         (window-height . fit-window-to-buffer) (dedicated . t))
-        ("\\`\\(\\*[e]?shell\\|\\*term\\|\\*R\\|\\*julia\\|\\*lua\\|\\*Python\\)"
-         (display-buffer-reuse-mode-window display-buffer-in-side-window)
-         (side . bottom) (window-height . 0.45))
-        ("\\`\\(\\*[hH]elp\\)"
-         (display-buffer-reuse-mode-window display-buffer-in-direction)
-         (window . root) (direction . bottom) (window-height . 0.45)
-         (mode . (help-mode helpful-mode)))
-        ("\\`\\(\\*grep\\|\\*Occur\\|\\*color-rg\\|\\*tldr\\|\\*stardict\\|\\*Dictionary\\)"
-         (display-buffer-reuse-mode-window display-buffer-in-direction)
-         (window .root) (direction . bottom) (window-height . 0.45))
-        ("\\`\\(\\*Org S\\|\\*Org L\\|CAPTURE\\)"
-         (display-buffer-reuse-mode-window display-buffer-in-direction)
-         (window .root) (direction . bottom) (window-height . 0.45))
-        ("\\`\\(\\*Proced\\*\\|\\*Ibuffer\\|\\*Man\\|\\*WoMan\\|\\*info\\|\\*Org Agenda\\)"
-         (display-buffer-full-frame))))
-
 (use-package popper
   :hook (after-init . popper-mode)
   :bind (("C-`" . popper-toggle)
          ("M-`" . popper-cycle)
          ("C-M-`" . popper-toggle-type))
+  :custom
+  (popper-echo-lines 1)
+  (popper-display-control t)
+  (popper-group-function #'popper-group-by-project)
+  (popper-reference-buffers '("\\*Messages\\*$"
+                              "Output\\*$" "\\*Pp Eval Output\\*$"
+                              "^\\*eldoc.*\\*$"
+                              "\\*Compile-Log\\*$"
+                              "\\*Completions\\*$"
+                              "\\*Warnings\\*$"
+                              "\\*Async Shell Command\\*$"
+                              "\\*Apropos\\*$"
+                              "\\*Backtrace\\*$"
+                              "^\\*.*eshell.*\\*.*$"
+                              "^\\*.*shell.*\\*.*$"
+                              "^\\*.*terminal.*\\*.*$"
+                              "\\*gud-debug\\*$"
+                              "\\*quickrun\\*$"
+                              "\\*tldr\\*$" "\\*vc-.*\\**"
+                              "\\*diff-hl\\**"
+                              "\\*Agenda Commands\\*"
+                              "\\*Org Select\\*"
+                              "\\*Capture\\*" "^CAPTURE-.*\\.org*"
+                              bookmark-bmenu-mode
+                              help-mode helpful-mode
+                              tabulated-list-mode
+                              Buffer-menu-mode
+                              list-environment-mode
+                              inferior-python-mode
+                              comint-mode compilation-mode
+                              flymake-diagnostics-buffer-mode
+                              devdocs-mode grep-mode occur-mode
+                              "^\\*Process List\\*$" process-menu-mode))
   :config
-  (setq popper-echo-lines 1
-        popper-display-control nil
-        popper-echo-dispatch-actions t
-        popper-group-function #'popper-group-by-project)
-  (setq popper-reference-buffers
-        '("\\`\\*eshell.*\\*$" eshell-mode
-          "\\`\\*term.*\\*$"   term-mode
-          "\\`\\*shell.*\\*$"  shell-mode
-          comint-mode devdocs-mode))
-  (popper-echo-mode 1))
+  (defun yx/popper-fit-window-height (win)
+    "Determine the height of popup window WIN by fitting it to the buffer's content."
+    (fit-window-to-buffer
+     win
+     (floor (frame-height) 2)
+     (floor (frame-height) 4)))
+  (setq popper-window-height #'yx/popper-fit-window-height)
+  (add-to-list 'display-buffer-alist
+               '(("\\`\\(\\*Proced\\*\\|\\*Ibuffer\\|\\*Man\\|\\*WoMan\\|\\*info\\|\\*Org Agenda\\)"
+                  (display-buffer-full-frame))))
+  (popper-echo-mode +1))
 
 (setq window-sides-vertical nil
       split-width-threshold 60
