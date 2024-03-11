@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-11 19:20:23 yx>
+;; Modified: <2024-03-11 19:33:49 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -133,76 +133,50 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                    (upcase
                     (file-name-nondirectory buffer-file-name))))
   "/**\n***************************************************"
-  "\n* @author: "
-  (user-full-name)
-  "\n* @date: "
-  (format-time-string "%F %T")
-  "\n* @brief: "
-  (skeleton-read "brief: ")
+  "\n* @author: " (user-full-name)
+  "\n* @date: " (format-time-string "%F %T")
+  "\n* @brief: " (skeleton-read "brief: ")
   "\n* @modified: <>"
   "\n**************************************************\n*/"
   "\n\n#ifndef " str \n "#define " str
   "\n\n" @ _
-  "\n\n#endif"
-  )
+  "\n\n#endif")
 
 (define-skeleton yx/auto-insert-c-header
   ""
   nil
   "/**\n***************************************************"
-  "\n* @author: "
-  (user-full-name)
-  "\n* @date: "
-  (format-time-string "%F %T")
+  "\n* @author: " (user-full-name)
+  "\n* @date: " (format-time-string "%F %T")
   "\n* @modified: <>"
   "\n**************************************************\n*/"
-  "\n\n" @ _ "\n"
-  )
+  "\n\n" @ _ "\n")
 
 (define-skeleton yx/auto-insert-common-header
   ""
   nil
   "# --------------------------------------------------"
-  "\n# Author: "
-  (user-full-name)
-  "\n# Date: "
-  (format-time-string "%F %T")
+  "\n# Author: " (user-full-name)
+  "\n# Date: " (format-time-string "%F %T")
   "\n# Modified: <>\n#"
-  "\n# Description: "
-  (skeleton-read "Description: ")
+  "\n# Description: " (skeleton-read "Description: ")
   "\n#\n#\n"
   "# --------------------------------------------------"
-  "\n\n" @ _ "\n"
-  )
+  "\n\n" @ _ "\n")
 
 (define-skeleton yx/auto-insert-el-header
   ""
   nil
   ";;; -*- lexical-binding: t -*-"
-  '(setq lexical-binding t)
-  "\n\n;; Author: "
-  (user-full-name)
-  " <"
-  (progn user-mail-address)
-  ">"
-  "\n;; Copyright (C) "
-  (format-time-string "%Y")
-  ", "
-  (user-full-name)
-  ", all right reserved."
-  "\n;; Created: "
-  (format-time-string "%F %T")
+  "\n\n;; Author: " (user-full-name) " <" (progn user-mail-address) ">"
+  "\n;; Copyright (C) " (format-time-string "%Y") ", " (user-full-name) ", all right reserved."
+  "\n;; Created: " (format-time-string "%F %T")
   "\n;; Modified: <>"
   "\n;; Licence: GPLv3"
   "\n\n;;; Commentary:\n\n;; " @ _
-  "\n\n;;; Code:\n\n(provide '"
-  (file-name-base
-   (buffer-file-name))
-  ")\n;;; "
-  (file-name-nondirectory
-   (buffer-file-name))
-  " ends here\n"
-  )
+  "\n\n;;; Code:"
+  "\n\n(provide '" (file-name-base (buffer-file-name)) ")"
+  "\n;;; " (file-name-nondirectory (buffer-file-name)) " ends here\n")
 
 ;;; Defaults
 (setq user-full-name "yangxue")
@@ -2863,7 +2837,7 @@ set to \\='(template title keywords subdirectory)."
 (use-package cc-mode
   :ensure nil
   :hook (c-mode . eglot-ensure)
-  :init (set-default c-basic-offset 8)
+  :init (setq-default c-basic-offset 8)
   :config
   (define-auto-insert
     "\\.\\([Hh]\\|hh\\|hpp\\|hxx\\|h\\+\\+\\)\\'"
