@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-11 19:33:49 yx>
+;; Modified: <2024-03-13 02:43:43 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -527,13 +527,17 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (use-package savehist
   :ensure nil
-  :config
-  (setq history-delete-duplicates t
-        savehist-save-minibuffer-history t
-        savehist-additional-variables '(kill-ring
-                                        mark-ring global-mark-ring
-                                        search-ring regexp-search-ring
-                                        command-history)))
+  :hook (after-init . savehist-mode)
+  :custom
+  (history-delete-duplicates t)
+  (savehist-autosave-interval nil)
+  (savehist-save-minibuffer-history t)
+  (savehist-additional-variables '(kill-ring
+                                   mark-ring
+                                   global-mark-ring
+                                   search-ring
+                                   regexp-search-ring
+                                   command-history)))
 
 (use-package server
   :ensure nil
@@ -550,18 +554,21 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (setq midnight-period 7200)
   (midnight-mode +1))
 
-;; %% session
-(setq desktop-save t
-      desktop-restore-eager 5
-      desktop-auto-save-timeout 60
-      desktop-modes-not-to-sav '(tags-table-mode
-                                 dired-mode
-                                 eww-mode
-                                 comint-mode
-                                 elfeed-search-mode
-                                 doc-view-mode
-                                 Info-mode info-lookup-mode
-                                 magit-mode magit-log-mode))
+
+(use-package desktop
+  :ensure nil
+  :custom
+  (desktop-save t)
+  (desktop-restore-eager 5)
+  (desktop-auto-save-timeout 60)
+  :config
+  (appendq! desktop-modes-not-to-save
+            '(dired-mode
+              eww-mode comint-mode
+              elfeed-search-mode
+              doc-view-mode
+              Info-mode info-lookup-mode
+              magit-mode magit-log-mode)))
 
 (setq tramp-verbose 1
       tramp-chunksize 2000
@@ -578,22 +585,26 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (setq-default bidi-display-reordering nil
               bidi-paragraph-direction 'left-to-right)
 
-(setq appt-audible t
-      appt-display-interval 10
-      appt-display-duration 5
-      appt-display-format 'window
-      appt-message-warning-time 20)
+(use-package appt
+  :ensure nil
+  :hook (emacs-startup . appt-activate)
+  :custom
+  (appt-audible t)
+  (appt-display-interval 10)
+  (appt-display-duration 5)
+  (appt-display-format 'window)
+  (appt-message-warning-time 2))
 
-(add-hook 'emacs-startup-hook #'appt-activate)
-
-(setq calendar-latitude +30.67
-      calendar-longitude +104.07
-      calendar-date-style 'iso
-      calendar-week-start-day 1
-      calendar-mark-holidays-flag t
-      calendar-mark-diary-entries-flag t)
-
-(add-hook 'calendar-today-visible-hook #'calendar-mark-today)
+(use-package calendar
+  :ensure nil
+  :hook (calendar-today-visible . calendar-mark-today)
+  :custom
+  (calendar-latitude +30.67)
+  (calendar-longitude +104.07)
+  (calendar-date-style 'iso)
+  (calendar-week-start-day 1)
+  (calendar-mark-holidays-flag t)
+  (calendar-mark-diary-entries-flag t))
 
 ;; %% os specific settings stay here
 (cond
@@ -1370,7 +1381,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :config
   (require 'emms-setup)
   (emms-all)
-  (emms-history-load))
+  (emms-history-load)
+  (emms-playing-time-display-mode -1))
 
 ;; %% spell
 (use-package jinx
