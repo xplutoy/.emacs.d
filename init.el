@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-13 02:43:43 yx>
+;; Modified: <2024-03-13 05:04:57 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -383,7 +383,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                                          try-expand-dabbrev-from-kill
                                          try-expand-dabbrev-all-buffers))
 
-
 (use-package isearch
   :ensure nil
   :bind (:map isearch-mode-map
@@ -514,7 +513,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (appendq! so-long-minor-modes '(eldoc-mode
                                   highlight-numbers-mode
                                   ws-butler-mode
-                                  indent-guide-mode )))
+                                  indent-guide-mode)))
 
 (setq dictionary-server "dict.org"
       dictionary-default-popup-strategy "lev"
@@ -562,13 +561,15 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (desktop-restore-eager 5)
   (desktop-auto-save-timeout 60)
   :config
-  (appendq! desktop-modes-not-to-save
-            '(dired-mode
-              eww-mode comint-mode
-              elfeed-search-mode
-              doc-view-mode
-              Info-mode info-lookup-mode
-              magit-mode magit-log-mode)))
+  (appendq! desktop-modes-not-to-save '(dired-mode
+                                        eww-mode
+                                        comint-mode
+                                        elfeed-search-mode
+                                        doc-view-mode
+                                        Info-mode
+                                        info-lookup-mode
+                                        magit-mode
+                                        magit-log-mode)))
 
 (setq tramp-verbose 1
       tramp-chunksize 2000
@@ -889,14 +890,13 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (add-hook 'window-setup-hook 'yx/setup-fonts)
 (add-hook 'server-after-make-frame-hook 'yx/setup-fonts)
 
-(setq modus-themes-mixed-fonts t
-      modus-themes-variable-pitch-ui t
-      modus-themes-italic-constructs t
-      modus-themes-common-palette-overrides '((fringe unspecifield)
-                                              (fg-line-number-active fg-main)
-                                              (bg-line-number-active unspecifield)
-                                              (fg-line-number-inactive "gray50")
-                                              (bg-line-number-inactive unspecifield)))
+(use-package modus
+  :ensure nil
+  :custom
+  (modus-themes-mixed-fonts t)
+  (modus-themes-italic-constructs t)
+  (modus-themes-bold-constructs t)
+  (modus-themes-variable-pitch-ui t))
 
 (use-package ef-themes
   :init
@@ -1566,77 +1566,30 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
         ("M-j" . dirvish-fd-jump)))
 
 ;;; Gnus
-(setq gnus-home-directory "~/.gnus.d/"
+(setq gnus-home-directory no-littering-var-directory
       gnus-default-directory gnus-home-directory
-      mm-default-directory gnus-home-directory
-      message-directory (expand-file-name "Mail/" gnus-home-directory))
+      gnus-startup-file (no-littering-expand-var-file-name "newsrc"))
 
 (setq read-mail-command 'gnus
       message-confirm-send t
-      message-from-style 'angles
       message-kill-buffer-on-exit t
       mail-user-agent 'gnus-user-agent
       mail-envelope-from 'header
       mail-specify-envelope-from t
-      sendmail-program "/usr/local/bin/msmtp"
-      send-mail-function 'message-send-mail-with-sendmail
-      message-send-mail-function 'message-send-mail-with-sendmail)
-
-(setq mm-inline-large-images t)
+      send-mail-function 'message-send-mail-with-sendmail)
 
 (setq mml-default-sign-method "pgpmime"
       mml-secure-openpgp-sign-with-sender t)
 
 (use-package gnus
-  :commands (gnus)
   :ensure nil
   :config
-  (setq mail-sources
-        '((imap
-           :server "imap.qq.com"
-           :port 993
-           :user "yangxue.cs@foxmail.com"
-           :mailbox "INBOX"
-           :fetchflag "\\Seen"
-           :stream tls
-           :dontexpunge t)))
   (setq gnus-select-method '(nnnil "")
         gnus-secondary-select-methods
-        '((nnml "foxmail.cs")
-          (nnimap
-           "foxmail.wk"
-           (nnimap-address "imap.qq.com")
-           (nnimap-server-port 993)
-           (nnimap-user "yangxue.wk@foxmail.com")
-           (nnimap-stream ssl)
-           (nnimap-expunge 'nerver)
-           (nnimap-search-engine imap)
-           (nnimap-inbox "INBOX")
-           (nnimap-split-methods default))
-          (nnimap
-           "outlook.cs"
-           (nnimap-user "yangxue.cs@outlook.com")
-           (nnimap-stream ssl)
-           (nnimap-server-port 993)
-           (nnimap-address "outlook.office365.com")
-           (nnimap-expunge 'nerver)
-           (nnimap-search-engine imap)
-           (nnimap-inbox "INBOX")
-           (nnimap-split-methods default))))
-  (setq nnmail-expiry-wait '30
-        nnmail-resplit-incoming t
-        nnmail-split-fancy-match-partial-words t
-        nnmail-split-methods 'nnmail-split-fancy
-        nnmail-split-fancy
-        '(|
-          (: nnmail-split-fancy-with-parent)
-          (to  "yangxue.cs@foxmail.com" "INBOX.foxmail.cs")
-          (to  "yangxue.wk@foxmail.com" "INBOX.foxmail.wk")
-          (to  "yangxue.cs@outlook.com" "INBOX.outlook.cs")
-          (any "emacs-devel@gnu.org"    "INBOX.emacs-devel")
-          (any "emacs-orgmode@gnu.org"  "INBOX.emacs-orgmode")
-          (any "help-gnu-emacs@gnu.org" "INBOX.help-gnu-emacs")
-          "INBOX.Misc"))
+        '((nnimap "foxmail.cs"
+                  (nnimap-address "imap.qq.com"))
+          (nnimap "outlook.cs"
+                  (nnimap-address "outlook.office365.com"))))
 
   (setq gnus-asynchronous t
         gnus-use-header-prefetch t
@@ -1652,19 +1605,23 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
         gnus-read-newsrc-file nil
         gnus-save-killed-list nil
         gnus-read-active-file nil
-        gnus-use-dribble-file t
         gnus-always-read-dribble-file t
         gnus-message-archive-group nil
-        gnus-inhibit-user-auto-expire t
-        gnus-search-use-parsed-queries t
         gnus-article-browse-delete-temp t
-        gnus-check-new-newsgroups 'ask-server
-        gnus-mime-display-multipart-related-as-mixed t
-        gnus-subscribe-newsgroup-method 'gnus-subscribe-zombies)
+        gnus-mime-display-multipart-related-as-mixed t)
 
-  (setq gnus-cache-remove-articles '(read)
-        gnus-cacheable-groups "^\\(nntp\\|nnimap\\)"
-        gnus-cache-enter-articles '(ticked dormant unread))
+  (setq nnmail-expiry-wait '30
+        nnmail-resplit-incoming t
+        nnmail-split-fancy-match-partial-words t
+        nnmail-split-methods 'nnmail-split-fancy
+        nnmail-split-fancy
+        '(| (: nnmail-split-fancy-with-parent)
+            (to  "yangxue.cs@foxmail.com" "INBOX.foxmail.cs")
+            (to  "yangxue.cs@outlook.com" "INBOX.outlook.cs")
+            (any "emacs-devel@gnu.org"    "INBOX.emacs-devel")
+            (any "emacs-orgmode@gnu.org"  "INBOX.emacs-orgmode")
+            (any "help-gnu-emacs@gnu.org" "INBOX.help-gnu-emacs")
+            "INBOX.Misc"))
 
   (setq nnrss-ignore-article-fields '(description guid pubData dc:creator link))
 
@@ -1692,25 +1649,11 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (setq gnus-use-trees t
         gnus-show-threads t
         gnus-fetch-old-headers t
-        gnus-tree-minimize-window t
         gnus-build-sparse-threads 'some
-        gnus-fetch-old-ephemeral-headers 2
         gnus-thread-indent-level 2
-        gnus-thread-hide-subtree nil
         gnus-generate-tree-function #'gnus-generate-horizontal-tree
         gnus-thread-sort-functions '(gnus-thread-sort-by-subject
                                      gnus-thread-sort-by-most-recent-number))
-
-  (setq gnus-thread-sort-functions '(gnus-thread-sort-by-most-recent-date)
-        gnus-subthread-sort-functions '(gnus-thread-sort-by-date))
-
-  (setq gnus-view-pseudos 'automatic
-        gnus-view-pseudos-separately t
-        gnus-view-pseudo-asynchronously t)
-
-  (setq gnus-auto-select-first t
-        gnus-auto-select-next nil
-        gnus-paging-select-next nil)
 
   (setq gnus-group-sort-function '(gnus-group-sort-by-method)
         gnus-group-line-format "%M%S%p%P %0{%5y%} %B%{%G%}\n")
