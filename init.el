@@ -3,14 +3,16 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-13 11:36:31 yx>
+;; Modified: <2024-03-13 15:53:25 yx>
 ;; Licence: GPLv3
 
 ;;; Init
 (defvar yx/etc-dir "~/.emacs.d/etc/")
 (defvar yx/var-dir "~/.emacs.d/.local/")
 
-;; env
+(prefer-coding-system 'utf-8)
+(set-language-environment 'utf-8)
+
 (setenv "http_proxy"  "http://127.0.0.1:7890")
 (setenv "https_proxy" "http://127.0.0.1:7890")
 
@@ -21,8 +23,6 @@
 
 (require 'package)
 (require 'use-package-ensure)
-;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-;; (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (setq package-archives
       '(("gnu"          . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
         ("nongnu"       . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
@@ -112,115 +112,72 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
     (insert-file-contents file)
     (buffer-string)))
 
-;;; Templates
-(require 'tempo)
-(tempo-define-template
- "yx/tex-note-tmpl"
- `(,(yx/file-contents-2-str (expand-file-name "math-note.tmpl.tex" yx/templates-dir))))
-
-(define-skeleton yx/latex-graphics-skl
-  "Insert centered picture."
-  nil
-  > "\\begin{center}" \n
-  > "\\includegraphics[width=" @ (skeleton-read "Width: ") "]{" @ _ "}" \n
-  > "\\begin{center}" > \n @)
-
-(define-skeleton yx/auto-insert-h-header
-  ""
-  (replace-regexp-in-string
-   "[^A-Z0-9]" "_"
-   (string-replace "+" "P"
-                   (upcase
-                    (file-name-nondirectory buffer-file-name))))
-  "/**\n***************************************************"
-  "\n* @author: " (user-full-name)
-  "\n* @date: " (format-time-string "%F %T")
-  "\n* @brief: " (skeleton-read "brief: ")
-  "\n* @modified: <>"
-  "\n**************************************************\n*/"
-  "\n\n#ifndef " str \n "#define " str
-  "\n\n" @ _
-  "\n\n#endif")
-
-(define-skeleton yx/auto-insert-c-header
-  ""
-  nil
-  "/**\n***************************************************"
-  "\n* @author: " (user-full-name)
-  "\n* @date: " (format-time-string "%F %T")
-  "\n* @modified: <>"
-  "\n**************************************************\n*/"
-  "\n\n" @ _ "\n")
-
-(define-skeleton yx/auto-insert-common-header
-  ""
-  nil
-  "# --------------------------------------------------"
-  "\n# Author: " (user-full-name)
-  "\n# Date: " (format-time-string "%F %T")
-  "\n# Modified: <>\n#"
-  "\n# Description: " (skeleton-read "Description: ")
-  "\n#\n#\n"
-  "# --------------------------------------------------"
-  "\n\n" @ _ "\n")
-
-(define-skeleton yx/auto-insert-el-header
-  ""
-  nil
-  ";;; -*- lexical-binding: t -*-"
-  "\n\n;; Author: " (user-full-name) " <" (progn user-mail-address) ">"
-  "\n;; Copyright (C) " (format-time-string "%Y") ", " (user-full-name) ", all right reserved."
-  "\n;; Created: " (format-time-string "%F %T")
-  "\n;; Modified: <>"
-  "\n;; Licence: GPLv3"
-  "\n\n;;; Commentary:\n\n;; " @ _
-  "\n\n;;; Code:"
-  "\n\n(provide '" (file-name-base (buffer-file-name)) ")"
-  "\n;;; " (file-name-nondirectory (buffer-file-name)) " ends here\n")
-
 ;;; Defaults
-(setq user-full-name "yangxue")
-(setq user-mail-address "yangxue.cs@foxmail.com")
+(use-package emacs
+  :ensure nil
+  :custom
+  (tab-width 8)
+  (visible-bell nil)
+  (fill-column 89)
+  (auto-save-no-message t)
+  (system-time-locale "C")
+  (word-wrap t)
+  (word-wrap-by-category t)
+  (truncate-lines t)
+  (abbrev-mode t)
+  (use-short-answers t)
+  (delete-by-moving-to-trash t)
+  (window-resize-pixelwise t)
+  (frame-resize-pixelwise t)
+  (kill-buffer-delete-auto-save-files t)
+  (user-full-name "yangxue")
+  (bidi-display-reordering nil)
+  (bidi-paragraph-direction 'left-to-right)
+  (auto-window-vscroll nil)
+  (auto-hscroll-mode 'current-line)
+  (scroll-step 1)
+  (scroll-margin 1)
+  (scroll-conservatively 101)
+  (fast-but-imprecise-scrolling t)
+  (scroll-preserve-screen-position 'always))
 
-(setq system-time-locale "C")
-(prefer-coding-system 'utf-8)
-(set-language-environment 'utf-8)
-(set-default-coding-systems 'utf-8)
+(use-package simple
+  :ensure nil
+  :custom
+  (track-eol t)
+  (line-move-visual nil)
+  (indent-tabs-mode nil)
+  (blink-matching-paren nil)
+  (truncate-partial-width-windows nil)
+  (set-mark-command-repeat-pop t)
+  (shell-command-prompt-show-cwd t)
+  (remote-file-name-inhibit-auto-save t)
+  (backward-delete-char-untabify-method 'hungry))
 
-(setq-default abbrev-mode t)
+(use-package files
+  :ensure nil
+  :custom
+  (view-read-only t)
+  (backup-by-copying t)
+  (version-control t)
+  (delete-old-versions t)
+  (kept-new-versions 5)
+  (save-silently t)
+  (auto-save-default t)
+  (auto-save-timeout 10)
+  (auto-save-visited-interval 15)
+  (find-file-visit-truename t)
+  (confirm-kill-processes nil)
+  (confirm-nonexistent-file-or-buffer nil)
+  (remote-file-name-inhibit-locks t)
+  (remote-file-name-inhibit-cache nil)
+  (remote-file-name-access-timeout 2)
+  (user-mail-address "yangxue.cs@foxmail.com"))
 
-(setq-default tab-width 8
-              indent-tabs-mode nil
-              tab-always-indent 'complete)
-
-(setq visible-bell nil)
-
-(setq use-short-answers t
-      y-or-n-p-use-read-key t)
-
-(setq hl-line-sticky-flag nil
-      global-hl-line-sticky-flag nil)
-
-(setq-default word-wrap t
-              fill-column 89
-              truncate-lines t)
-
-(setq track-eol t
-      line-move-visual nil
-      word-wrap-by-category t
-      truncate-partial-width-windows nil
-      set-mark-command-repeat-pop t
-      backward-delete-char-untabify-method 'hungry)
-
-(setq find-file-visit-truename t
-      delete-by-moving-to-trash t)
-
+(setq disabled-command-function nil)
 (setq sentence-end-double-space nil
       sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
-
-(setq confirm-kill-processes nil
-      disabled-command-function nil
-      confirm-nonexistent-file-or-buffer nil)
+(setq-default tab-always-indent 'complete)
 
 (use-package startup
   :ensure nil
@@ -230,11 +187,21 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (inhibit-startup-message t)
   (initial-scratch-message nil))
 
-;; %% paren
-(setq blink-matching-paren nil
-      show-paren-style 'parenthesis
-      show-paren-context-when-offscreen t
-      show-paren-when-point-inside-paren t)
+(use-package hl-line
+  :ensure nil
+  :custom
+  (hl-line-sticky-flag nil)
+  (global-hl-line-sticky-flag nil)
+  :config
+  (add-hook 'occur-mode-hook #'hl-line-mode))
+
+(use-package paren
+  :ensure nil
+  :hook (prog-mode . show-paren-mode)
+  :custom
+  (show-paren-style 'parenthesis)
+  (show-paren-context-when-offscreen t)
+  (show-paren-when-point-inside-paren t))
 
 (use-package elec-pair
   :ensure nil
@@ -244,43 +211,32 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
 
 ;; %% font-lock
-(setq jit-lock-defer-time 0
-      jit-lock-chunk-size 4096
-      jit-lock-stealth-time 2.0
-      jit-lock-stealth-nice 0.2)
+(use-package jit-lock
+  :ensure nil
+  :custom
+  (jit-lock-defer-time 0)
+  (jit-lock-chunk-size 4096)
+  (jit-lock-stealth-time 2.0)
+  (jit-lock-stealth-nice 0.2))
 
-;; %% auto save
-(setq save-silently t
-      auto-save-default t
-      auto-save-timeout 10
-      auto-save-no-message t
-      kill-buffer-delete-auto-save-files t
-      auto-save-visited-interval 15
-      auto-save-visited-predicate
-      (lambda () (and (buffer-modified-p)
-                      (not (string-suffix-p "gpg" (file-name-extension (buffer-name)) t)))))
+(use-package autoinsert
+  :ensure nil
+  :custom
+  (auto-insert-query nil)
+  (auto-insert-alist nil)
+  (auto-insert-directory (no-littering-expand-etc-file-name "templates/")))
 
-(setq version-control t
-      backup-by-copying t
-      kept-new-versions 5
-      delete-old-versions t)
+(use-package time-stamp
+  :ensure nil
+  :hook (before-save . time-stamp)
+  :custom
+  (time-stamp-pattern "10/^[@#;\*].*[Mm]odified: <%%>$"))
 
-(add-to-list 'backup-directory-alist
-             (cons tramp-file-name-regexp nil))
-
-(setq auto-insert-query nil
-      auto-insert-alist nil
-      auto-insert-directory (no-littering-expand-etc-file-name "templates/"))
-
-(setq time-stamp-pattern "10/^[@#;\*].*[Mm]odified: <%%>$")
-
-(add-hook 'before-save-hook 'time-stamp)
-
-(setq tempo-interactive t)
-
-(setq view-read-only t)
-(add-hook 'view-mode-hook
-          (lambda () (setq cursor-type (if view-mode 'hollow 'box))))
+(use-package tempo
+  :ensure nil
+  :commands (tempo-define-template)
+  :custom
+  (tempo-interactive t))
 
 (use-package eldoc
   :ensure nil
@@ -345,9 +301,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :custom
   (whitespace-style '(face trailing space-before-tab space-after-tab)))
 
-;; prettify
-(setq prettify-symbols-unprettify-at-point 'right-edge)
-
 ;; %% xref
 (when-let ((rg (executable-find "rg")))
   (setq grep-program rg))
@@ -375,9 +328,13 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
       '(read-only t cursor-intangible t face minibuffer-prompt))
 (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
-(setq abbrev-suggest t
-      save-abbrevs 'silently
-      abbrev-suggest-hint-threshold 2)
+
+(use-package abbrev
+  :ensure nil
+  :custom
+  (abbrev-suggest t)
+  (save-abbrevs 'silently)
+  (abbrev-suggest-hint-threshold 2))
 
 (setq hippie-expand-max-buffers 5
       hippie-expand-try-functions-list '(try-complete-file-name
@@ -403,8 +360,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (if IS-MAC
       (keymap-set isearch-mode-map "s-v" 'isearch-yank-kill)))
 
-(add-hook 'occur-mode-hook #'hl-line-mode)
-
 ;; %% epa
 (setq auth-sources `(,(no-littering-expand-etc-file-name "authinfo.gpg"))
       auth-source-debug t
@@ -424,34 +379,34 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
       mouse-wheel-scroll-amount-horizontal 2
       mouse-wheel-scroll-amount '(2 ((shift) . hscroll)))
 
-;; %% scroll
-(setq scroll-step 1
-      scroll-margin 1
-      scroll-conservatively 101
-      fast-but-imprecise-scrolling t
-      scroll-preserve-screen-position 'always)
-
 (use-package pixel-scroll
   :ensure nil
   :hook (after-init . pixel-scroll-precision-mode))
 
-(setq auto-window-vscroll nil
-      auto-hscroll-mode 'current-line)
+(use-package transient
+  :ensure nil
+  :commands (transient-define-prefix)
+  :custom
+  (transient-detect-key-conflicts t)
+  (transient-highlight-mismatched-keys nil)
+  :config
+  (transient-bind-q-to-quit))
 
-(setq transient-detect-key-conflicts t
-      transient-highlight-mismatched-keys nil)
+(use-package bookmark
+  :ensure nil
+  :custom
+  (bookmark-save-flag 1)
+  (bookmark-fringe-mark nil)
+  (bookmark-use-annotations nil)
+  (bookmark-automatically-show-annotations nil))
 
-;; bookmark
-(setq bookmark-save-flag 1
-      bookmark-fringe-mark nil
-      bookmark-use-annotations nil
-      bookmark-automatically-show-annotations nil)
-
-;; proced
-(setq proced-descend t
-      proced-filter 'user
-      proced-enable-color-flag t
-      proced-auto-update-flag nil)
+(use-package proced
+  :ensure nil
+  :custom
+  (proced-descend t)
+  (proced-filter 'user)
+  (proced-enable-color-flag t)
+  (proced-auto-update-flag nil))
 
 ;; %% browser-url
 (setq shr-use-fonts nil
@@ -582,20 +537,19 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                                         magit-mode
                                         magit-log-mode)))
 
-(setq tramp-verbose 1
-      tramp-chunksize 2000
-      tramp-default-method "ssh"
-      remote-file-name-inhibit-locks t
-      remote-file-name-inhibit-cache nil
-      remote-file-name-access-timeout 2
-      remote-file-name-inhibit-auto-save t)
+(use-package tramp
+  :ensure nil
+  :custom
+  (tramp-verbose 1)
+  (tramp-chunksize 2000)
+  (tramp-default-method "ssh")
+  :config
+  (add-to-list 'backup-directory-alist
+               (cons tramp-file-name-regexp nil)))
 
 (setq vc-handled-backends '(Git)
       vc-git-diff-switches '("--histogram")
       vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
-
-(setq-default bidi-display-reordering nil
-              bidi-paragraph-direction 'left-to-right)
 
 (use-package appt
   :ensure nil
@@ -831,10 +785,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("C-h C-m"   . which-key-show-full-major-mode)
            ("C-h B"     . embark-bindings-at-point))
 
-;; %% transient key
-(require 'transient)
-(transient-bind-q-to-quit)
-
 (transient-define-prefix yx/transient-global-simple ()
   "Global transient for frequently used functions."
   [["]]1"
@@ -857,8 +807,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
     ("E" "crux-sudo-edit" crux-sudo-edit)]
    ["]]3"
     ("t l" "command-log" clm/toggle-command-log-buffer)]])
-
-
 
 ;;; Ui
 (setq use-dialog-box nil
@@ -942,6 +890,28 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :hook (emacs-startup . breadcrumb-mode))
 
 ;;; Layout
+(use-package window
+  :ensure nil
+  :custom
+  (even-window-sizes t)
+  (window-sides-vertical nil)
+  (split-width-threshold 100)
+  (split-height-threshold nil)
+  (switch-to-buffer-obey-display-actions t)
+  (switch-to-buffer-in-dedicated-window nil)
+  (switch-to-buffer-preserve-window-point t)
+  (switch-to-prev-buffer-skip 'visible)
+  (switch-to-prev-buffer-skip-regexp "^\\*\\|^magit.*"))
+
+(use-package winner
+  :ensure nil
+  :hook (after-init . winner-mode)
+  :custom
+  (winner-dont-bind-my-keys t)
+  (winner-boring-buffers-regexp "^\\*")
+  :config
+  (setq buffer-quit-function 'winner-undo))
+
 (use-package popper
   :hook (after-init . popper-mode)
   :bind (("C-`" . popper-toggle)
@@ -985,30 +955,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                               "^\\*Process List\\*$" process-menu-mode))
   :config
   (add-to-list 'display-buffer-alist
-               '(("\\`\\(\\*Proced\\*\\|\\*Ibuffer\\|\\*Man\\|\\*WoMan\\|\\*info\\|\\*Org Agenda\\)"
+	       '(("\\`\\(\\*Proced\\*\\|\\*Ibuffer\\|\\*Man\\|\\*WoMan\\|\\*info\\|\\*Org Agenda\\)"
                   (display-buffer-full-frame))))
   (popper-echo-mode +1))
-
-(setq window-sides-vertical nil
-      split-width-threshold 60
-      even-window-sizes 'height-only
-      frame-resize-pixelwise t
-      window-resize-pixelwise t
-      fit-frame-to-buffer nil
-      fit-window-to-buffer-horizontally nil)
-
-(setq winner-dont-bind-my-keys t
-      winner-boring-buffers-regexp "^\\*")
-(add-hook 'after-init-hook 'winner-mode)
-(add-hook 'after-init-hook 'temp-buffer-resize-mode)
-
-(setq buffer-quit-function 'winner-undo)
-
-(setq switch-to-buffer-in-dedicated-window nil
-      switch-to-buffer-obey-display-actions t
-      switch-to-buffer-preserve-window-point t
-      switch-to-prev-buffer-skip 'visible
-      switch-to-prev-buffer-skip-regexp "^\\*\\|^magit.*")
 
 (use-package zoom
   :custom
@@ -1017,42 +966,45 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package burly
   :hook (after-init . burly-tabs-mode))
 
-(setq ibuffer-expert t
-      ibuffer-display-summary nil
-      ibuffer-show-empty-filter-groups nil
-      ibuffer-default-sorting-mode 'major-mode)
-
-(defun yx/ibuffer-setup ()
-  (hl-line-mode 1)
-  (ibuffer-auto-mode 1)
-  (ibuffer-do-sort-by-recency))
-(add-hook 'ibuffer-mode-hook 'yx/ibuffer-setup)
+(use-package ibuffer
+  :ensure nil
+  :custom
+  (ibuffer-expert t)
+  (ibuffer-display-summary nil)
+  (ibuffer-show-empty-filter-groups nil)
+  (ibuffer-default-sorting-mode 'major-mode)
+  :config
+  (defun yx/ibuffer-setup ()
+    (hl-line-mode 1)
+    (ibuffer-auto-mode 1)
+    (ibuffer-do-sort-by-recency))
+  (add-hook 'ibuffer-mode-hook 'yx/ibuffer-setup))
 
 (use-package ibuffer-vc
   :init
   :hook (ibuffer . ibuffer-vc-set-filter-groups-by-vc-root))
 
 ;; %% tabbar
-(setq tab-bar-show t
-      tab-bar-format '(tab-bar-format-menu-bar
-                       tab-bar-format-tabs
-                       tab-bar-separator
-                       tab-bar-format-add-tab)
-      tab-bar-tab-hints t
-      tab-bar-new-tab-to 'right
-      tab-bar-new-button-show t
-      tab-bar-close-button-show nil
-      tab-bar-new-tab-choice "*scratch*"
-      tab-bar-tab-name-truncated-max 20
-      tab-bar-select-tab-modifiers '(super))
-
-(defun yx/tab-bar-setup()
-  (tab-bar-mode 1)
+(use-package tab-bar
+  :ensure nil
+  :hook (after-init . tab-bar-mode)
+  :custom
+  (tab-bar-show t)
+  (tab-bar-format '(tab-bar-format-menu-bar
+                    tab-bar-format-tabs
+                    tab-bar-separator
+                    tab-bar-format-add-tab))
+  (tab-bar-tab-hints t)
+  (tab-bar-new-tab-to 'right)
+  (tab-bar-new-button-show t)
+  (tab-bar-close-button-show nil)
+  (tab-bar-new-tab-choice "*scratch*")
+  (tab-bar-tab-name-truncated-max 20)
+  (tab-bar-select-tab-modifiers '(super))
+  :config
   (tab-bar-history-mode 1)
-  (let ((map tab-bar-map))
-    (keymap-unset map "<wheel-up>")
-    (keymap-unset map "<wheel-down>")))
-(add-hook 'after-init-hook #'yx/tab-bar-setup)
+  (keymap-unset tab-bar-map "<wheel-up>")
+  (keymap-unset tab-bar-map "<wheel-down>"))
 
 (use-package sr-speedbar
   :ensure nil
@@ -1674,18 +1626,21 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (add-hook 'gnus-group-mode-hook 'gnus-topic-mode))
 
 ;;; Shell
-(setq comint-input-ignoredups t
-      comint-prompt-read-only t
-      comint-completion-autolist t
-      comint-completion-addsuffix t
-      comint-buffer-maximum-size 9999
-      comint-scroll-to-bottom-on-input t
-      comint-scroll-show-maximum-output t
-      comint-scroll-to-bottom-on-output nil)
+
+(use-package comint
+  :ensure nil
+  :bind (:map comint-mode-map
+	      ([remap kill-region] . comint-kill-regio)
+	      ([remap kill-whole-line] . comint-kill-whole-line))
+  :custom
+  (comint-input-ignoredups t)
+  (comint-prompt-read-only t)
+  (comint-completion-autolist t)
+  (comint-scroll-to-bottom-on-input t)
+  (comint-scroll-to-bottom-on-output t))
 
 (setq shell-kill-buffer-on-exit t
-      shell-highlight-undef-enable t
-      shell-command-prompt-show-cwd t)
+      shell-highlight-undef-enable t)
 
 (use-package eshell
   :bind (:map eshell-mode-map
@@ -1804,7 +1759,157 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :unless IS-WIN
   :custom (vterm-always-compile-module t))
 
-;;; Org
+;;; Templates
+(tempo-define-template
+ "yx/tex-note-tmpl"
+ `(,(yx/file-contents-2-str (expand-file-name "math-note.tmpl.tex" yx/templates-dir))))
+
+(define-skeleton yx/latex-graphics-skl
+  "Insert centered picture."
+  nil
+  > "\\begin{center}" \n
+  > "\\includegraphics[width=" @ (skeleton-read "Width: ") "]{" @ _ "}" \n
+  > "\\begin{center}" > \n @)
+
+(define-skeleton yx/auto-insert-h-header
+  ""
+  (replace-regexp-in-string
+   "[^A-Z0-9]" "_"
+   (string-replace "+" "P"
+                   (upcase
+                    (file-name-nondirectory buffer-file-name))))
+  "/**\n***************************************************"
+  "\n* @author: " (user-full-name)
+  "\n* @date: " (format-time-string "%F %T")
+  "\n* @brief: " (skeleton-read "brief: ")
+  "\n* @modified: <>"
+  "\n**************************************************\n*/"
+  "\n\n#ifndef " str \n "#define " str
+  "\n\n" @ _
+  "\n\n#endif")
+
+(define-skeleton yx/auto-insert-c-header
+  ""
+  nil
+  "/**\n***************************************************"
+  "\n* @author: " (user-full-name)
+  "\n* @date: " (format-time-string "%F %T")
+  "\n* @modified: <>"
+  "\n**************************************************\n*/"
+  "\n\n" @ _ "\n")
+
+(define-skeleton yx/auto-insert-common-header
+  ""
+  nil
+  "# --------------------------------------------------"
+  "\n# Author: " (user-full-name)
+  "\n# Date: " (format-time-string "%F %T")
+  "\n# Modified: <>\n#"
+  "\n# Description: " (skeleton-read "Description: ")
+  "\n#\n#\n"
+  "# --------------------------------------------------"
+  "\n\n" @ _ "\n")
+
+(define-skeleton yx/auto-insert-el-header
+  ""
+  nil
+  ";;; -*- lexical-binding: t -*-"
+  "\n\n;; Author: " (user-full-name) " <" (progn user-mail-address) ">"
+  "\n;; Copyright (C) " (format-time-string "%Y") ", " (user-full-name) ", all right reserved."
+  "\n;; Created: " (format-time-string "%F %T")
+  "\n;; Modified: <>"
+  "\n;; Licence: GPLv3"
+  "\n\n;;; Commentary:\n\n;; " @ _
+  "\n\n;;; Code:"
+  "\n\n(provide '" (file-name-base (buffer-file-name)) ")"
+  "\n;;; " (file-name-nondirectory (buffer-file-name)) " ends here\n")
+
+;;; Reading
+(setq
+ doc-view-continuous t
+ doc-view-resolution 300)
+
+(use-package pdf-tools
+  :hook (pdf-tools-enabled . pdf-isearch-minor-mode)
+  :init
+  (setq pdf-view-use-scaling t
+        pdf-view-use-imagemagick nil)
+  (setq-default pdf-view-display-size 'fit-width)
+  (pdf-loader-install))
+
+;; %% olivetti
+(use-package olivetti
+  :hook ((org-mode org-agenda-mode) . olivetti-mode)
+  :init
+  (setq olivetti-style nil
+        olivetti-mode-map nil
+        olivetti-body-width 0.66
+        olivetti-minimum-body-width (+ fill-column 2)))
+
+;; %% elfeed
+(use-package elfeed
+  :bind (:map elfeed-show-mode-map
+              ("w" . elfeed-show-yank)
+              ("%" . elfeed-webkit-toggle)
+              ("q" . yx/elfeed-kill-entry)
+              :map elfeed-search-mode-map
+              ("R" . yx/elfeed-mark-all-as-read))
+  :init
+  (setq elfeed-feeds
+        '(("http://www.zhihu.com/rss" new)
+          ("https://www.inference.vc/rss" ai)
+          ("https://spaces.ac.cn/feed" ai webkit)
+          ("https://ruder.io/rss/index.rss" ai)
+          ("https://lilianweng.github.io/index.xml" ai webkit)
+          ("https://www.juliabloggers.com/feed/" julia)
+          ("https://planet.lisp.org/rss20.xml" lisp)
+          ("https://planet.scheme.org/atom.xml" scheme)
+          ("https://planet.haskell.org/rss20.xml" haskell)
+          ("https://planet.emacslife.com/atom.xml" emacs)
+          ("http://wingolog.org/feed/atom" lang)
+          ("http://lambda-the-ultimate.org/rss.xml" lang)
+          ("https://matt.might.net/articles/feed.rss" lang)
+          ("http://www.ruanyifeng.com/blog/atom.xml" tech webkit)
+          ("https://vimtricks.com/feed/" vim)
+          ("https://egh0bww1.com/rss.xml" emacs)
+          ("https://karthinks.com/index.xml" emacs)
+          ("https://manateelazycat.github.io/feed.xml" emacs)
+          ("https://matt.might.net/articles/feed.rss" emacs)
+          ("https://andreyor.st/categories/emacs/feed.xml" emacs)
+          ("https://sachachua.com/blog/category/emacs/feed/" emacs)))
+  (setq elfeed-search-filter "@6-months-ago +unread")
+  :hook (elfeed-show . olivetti-mode)
+  :config
+  (defun yx/elfeed-kill-entry ()
+    "Like `elfeed-kill-entry' but pop elfeed search"
+    (interactive)
+    (elfeed-kill-buffer)
+    (switch-to-buffer "*elfeed-search*"))
+
+  (defun yx/elfeed-tag-selection-as (mytag)
+    (lambda ()
+      "Toggle a tag on an Elfeed search selection"
+      (interactive)
+      (elfeed-search-toggle-all mytag)))
+
+  (defun yx/elfeed-mark-all-as-read ()
+    "Mark all feeds in buffer as read."
+    (interactive)
+    (mark-whole-buffer)
+    (elfeed-search-untag-all-unread))
+
+  (run-at-time nil (* 4 60 60) 'elfeed-update)
+  (keymap-set elfeed-search-mode-map "m" (yx/elfeed-tag-selection-as 'star))
+  (keymap-set elfeed-search-mode-map "l" (yx/elfeed-tag-selection-as 'readlater)))
+
+(use-package elfeed-webkit
+  :after elfeed
+  :bind (:map elfeed-webkit-map
+              ("q" . yx/elfeed-kill-entry))
+  :config
+  (elfeed-webkit-auto-toggle-by-tag))
+
+;;; Writing
 (use-package org
   :ensure nil
   :defer 2
@@ -2228,93 +2333,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (use-package org-web-tools)
 
-;;; Reading
-(setq
- doc-view-continuous t
- doc-view-resolution 300)
-
-(use-package pdf-tools
-  :hook (pdf-tools-enabled . pdf-isearch-minor-mode)
-  :init
-  (setq pdf-view-use-scaling t
-        pdf-view-use-imagemagick nil)
-  (setq-default pdf-view-display-size 'fit-width)
-  (pdf-loader-install))
-
-;; %% olivetti
-(use-package olivetti
-  :hook ((org-mode org-agenda-mode) . olivetti-mode)
-  :init
-  (setq olivetti-style nil
-        olivetti-mode-map nil
-        olivetti-body-width 0.66
-        olivetti-minimum-body-width (+ fill-column 2)))
-
-;; %% elfeed
-(use-package elfeed
-  :bind (:map elfeed-show-mode-map
-              ("w" . elfeed-show-yank)
-              ("%" . elfeed-webkit-toggle)
-              ("q" . yx/elfeed-kill-entry)
-              :map elfeed-search-mode-map
-              ("R" . yx/elfeed-mark-all-as-read))
-  :init
-  (setq elfeed-feeds
-        '(("http://www.zhihu.com/rss" new)
-          ("https://www.inference.vc/rss" ai)
-          ("https://spaces.ac.cn/feed" ai webkit)
-          ("https://ruder.io/rss/index.rss" ai)
-          ("https://lilianweng.github.io/index.xml" ai webkit)
-          ("https://www.juliabloggers.com/feed/" julia)
-          ("https://planet.lisp.org/rss20.xml" lisp)
-          ("https://planet.scheme.org/atom.xml" scheme)
-          ("https://planet.haskell.org/rss20.xml" haskell)
-          ("https://planet.emacslife.com/atom.xml" emacs)
-          ("http://wingolog.org/feed/atom" lang)
-          ("http://lambda-the-ultimate.org/rss.xml" lang)
-          ("https://matt.might.net/articles/feed.rss" lang)
-          ("http://www.ruanyifeng.com/blog/atom.xml" tech webkit)
-          ("https://vimtricks.com/feed/" vim)
-          ("https://egh0bww1.com/rss.xml" emacs)
-          ("https://karthinks.com/index.xml" emacs)
-          ("https://manateelazycat.github.io/feed.xml" emacs)
-          ("https://matt.might.net/articles/feed.rss" emacs)
-          ("https://andreyor.st/categories/emacs/feed.xml" emacs)
-          ("https://sachachua.com/blog/category/emacs/feed/" emacs)))
-  (setq elfeed-search-filter "@6-months-ago +unread")
-  :hook (elfeed-show . olivetti-mode)
-  :config
-  (defun yx/elfeed-kill-entry ()
-    "Like `elfeed-kill-entry' but pop elfeed search"
-    (interactive)
-    (elfeed-kill-buffer)
-    (switch-to-buffer "*elfeed-search*"))
-
-  (defun yx/elfeed-tag-selection-as (mytag)
-    (lambda ()
-      "Toggle a tag on an Elfeed search selection"
-      (interactive)
-      (elfeed-search-toggle-all mytag)))
-
-  (defun yx/elfeed-mark-all-as-read ()
-    "Mark all feeds in buffer as read."
-    (interactive)
-    (mark-whole-buffer)
-    (elfeed-search-untag-all-unread))
-
-  (run-at-time nil (* 4 60 60) 'elfeed-update)
-  (keymap-set elfeed-search-mode-map "m" (yx/elfeed-tag-selection-as 'star))
-  (keymap-set elfeed-search-mode-map "l" (yx/elfeed-tag-selection-as 'readlater)))
-
-(use-package elfeed-webkit
-  :after elfeed
-  :bind (:map elfeed-webkit-map
-              ("q" . yx/elfeed-kill-entry))
-  :config
-  (elfeed-webkit-auto-toggle-by-tag))
-
-
-;;; Writing
 (use-package denote
   :after org
   :demand t
@@ -2419,31 +2437,34 @@ set to \\='(template title keywords subdirectory)."
   :config (citar-embark-mode +1))
 
 ;;; Programming
-(defun yx/prog-common-setup ()
-  (setq-local line-spacing 0.15)
-  (hl-line-mode 1)
-  (hs-minor-mode 1)
-  (superword-mode 1)
-  (show-paren-mode 1)
-  (electric-indent-local-mode 1)
-  (electric-layout-local-mode 1)
-  (keymap-local-set "RET" 'newline-and-indent))
+(use-package prog-mode
+  :ensure nil
+  :custom
+  (prettify-symbols-unprettify-at-point 'right-edge)
+  :config
+  (defun yx/prog-mode-setup ()
+    (hl-line-mode 1)
+    (hs-minor-mode 1)
+    (setq-local line-spacing 0.15))
+  (add-hook 'prog-mode-hook #'yx/prog-mode-setup))
 
-(add-hook 'prog-mode-hook 'yx/prog-common-setup)
+(use-package project
+  :ensure nil
+  :custom
+  (project-file-history-behavior 'relativize)
+  (project-vc-extra-root-markers '(".envrc" "pyproject.toml")))
 
-;; project
-(setq project-file-history-behavior 'relativize
-      project-vc-extra-root-markers '(".envrc" "pyproject.toml"))
-
-;; diff
-(setq diff-default-read-only t
-      diff-update-on-the-fly t
-      ediff-show-clashes-only t
-      ediff-floating-control-frame t
-      ediff-window-setup-function 'ediff-setup-windows-plain
-      ediff-split-window-function 'split-window-horizontally)
-
-(add-hook 'ediff-after-quit-hook-internal 'winner-undo)
+(use-package ediff
+  :ensure nil
+  :custom
+  (diff-default-read-only t)
+  (diff-update-on-the-fly t)
+  (ediff-show-clashes-only t)
+  (ediff-floating-control-frame t)
+  (ediff-window-setup-function #'ediff-setup-windows-plain)
+  (ediff-split-window-function #'split-window-horizontally)
+  :config
+  (add-hook 'ediff-after-quit-hook-internal 'winner-undo))
 
 (use-package gud
   :ensure nil
