@@ -116,11 +116,17 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package emacs
   :ensure nil
   :custom
+  (user-full-name "yangxue")
+  (system-time-locale "C")
+  (use-dialog-box nil)
+  (use-file-dialog nil)
   (tab-width 8)
   (visible-bell nil)
   (fill-column 89)
+  (cursor-in-non-selected-windows nil)
+  (x-stretch-cursor nil)
+  (x-underline-at-descent-line t)
   (auto-save-no-message t)
-  (system-time-locale "C")
   (word-wrap t)
   (word-wrap-by-category t)
   (truncate-lines t)
@@ -130,7 +136,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (window-resize-pixelwise t)
   (frame-resize-pixelwise t)
   (kill-buffer-delete-auto-save-files t)
-  (user-full-name "yangxue")
   (bidi-display-reordering nil)
   (bidi-paragraph-direction 'left-to-right)
   (auto-window-vscroll nil)
@@ -638,60 +643,140 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
     (key-chord-define org-mode-map
                       "jh" 'avy-org-goto-heading-timer)))
 
-(defvar-keymap yx/app-prefix-map
-  :doc "Keymap for app"
-  "g" #'gnus
-  "c" #'calendar
-  "C" #'calc
-  "r" #'elfeed
-  "E" #'erc-tls
-  "v" #'vterm
-  "e" #'emms-browser
-  "P" #'proced
+(defvar-keymap yx/file-prefix-map
+  :doc "Prefix map for file."
+  "f"   #'find-file
+  "M-f" #'ffap
+  "d"   #'consult-dir
+  "o"   #'find-file-other-window
+  "p"   #'find-file-at-point
+  "t"   #'find-file-other-tab
+  "r"   #'consult-recent-file
+  "R"   #'rename-visited-file
+  "D"   #'crux-delete-file-and-buffer
+  "E"   #'crux-sudo-edit)
+
+(keymap-global-set "C-c f" yx/file-prefix-map)
+
+(defvar-keymap yx/buffer-prefix-map
+  :doc "Prefix map for buffer"
+  "b" #'tabspaces-switch-to-buffer
+  "s" #'scratch-buffer
+  "n" #'yx/new-empty-buffer
+  "k" #'kill-buffer-and-window
+  "C" #'desktop-clear
+  "K" #'crux-kill-other-buffers)
+
+(keymap-global-set "C-c b" yx/buffer-prefix-map)
+
+(defvar-keymap yx/window-prefix-map
+  :doc "Prefix map for window and workspace"
+  "u"   #'winner-undo
+  "r"   #'winner-redo
+  "o"   #'ace-window
+  "C-b" #'burly-open-bookmark
+  "C-t" #'burly-reset-tab
+  "M-w" #'burly-bookmark-windows
+  "M-f" #'burly-bookmark-frames)
+
+(keymap-global-set "C-c w" yx/window-prefix-map)
+
+(defvar-keymap yx/note-prefix-map
+  :doc "Prefix map for note taking"
+  "c"   #'denote
+  "t"   #'denote-template
+  "n"   #'denote-open-or-create
+  "i"   #'denote-link-or-create
+  "C-l" #'denote-backlinks
+  "C-f" #'denote-find-link
+  "C-b" #'denote-find-backlink
+  "M-f" #'denote-org-dblock-insert-links
+  "M-b" #'denote-org-dblock-insert-backlinks
+  "C-t" #'org-transclusion-add
+  "M-t" #'org-transclusion-add-all
+  "C-c" #'citar-create-note
+  "C-d" #'citar-denote-dwim)
+
+(keymap-global-set "C-c n" yx/note-prefix-map)
+
+(defvar-keymap yx/ctrl-c-q-map
+  :doc "Prefix map for `C-c q'"
+  "a"   #'org-ql-find-in-agenda
+  "d"   #'org-ql-find-in-org-directory
+  "s"   #'org-ql-search
+  "v"   #'org-ql-view
+  "k"   #'which-key-show-full-major-mode
+  "C-a" #'ace-link-addr
+  "C-l" #'ace-link)
+
+(keymap-global-set "C-c q" yx/ctrl-c-q-map)
+
+(defvar-keymap yx/ctrl-c-o-map
+  :doc "Prefix map for `C-c o'"
+  "o" #'crux-open-with
   "a" #'org-agenda-list
-  "p" #'package-list-packages)
-(keymap-global-set "s-a" yx/app-prefix-map)
+  "c" #'calendar
+  "f" #'make-frame
+  "d" #'dirvish-side
+  "g" #'gnus
+  "r" #'elfeed
+  "e" #'yx/eshell-here
+  "v" #'vterm-other-window
+  "s" #'symbols-outline-show
+  "p" #'package-list-packages
+  "P" #'proced
+  "C" #'calc
+  "E" #'emms-browser)
+
+(keymap-global-set "C-c o" yx/ctrl-c-o-map)
+
+(defvar-keymap yx/ctrl-c-t-map
+  :doc "Prefix map for toggle mirror mode or others"
+  "f" #'flyspell-mode
+  "l" #'clm/toggle-command-log-buffer
+  "F" #'toggle-frame-maximized)
+
+(keymap-global-set "C-c t" yx/ctrl-c-t-map)
 
 (bind-keys ([remap move-beginning-of-line]        . crux-move-beginning-of-line) ; C-a
-           ([remap goto-line]                     . consult-goto-line) ;M-g g
-           ([remap switch-to-buffer]              . consult-buffer) ; C-x b
-           ([remap list-buffers]                  . ibuffer) ; C-x C-b
+           ([remap goto-line]                     . consult-goto-line)           ;M-g g
+           ([remap switch-to-buffer]              . consult-buffer)              ; C-x b
+           ([remap list-buffers]                  . ibuffer)                 ; C-x C-b
            ([remap repeat-complex-command]        . consult-complex-command) ; C-x M-:
            ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
            ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame)
            ([remap project-switch-to-buffer]      . consult-project-buffer) ; C-x p b
-           ([remap yank-pop]                      . consult-yank-pop) ;M-y
-           ([remap bookmark-jump]                 . consult-bookmark) ;C-x r b
-           ([remap imenu]                         . consult-imenu) ;M-g i
-           ([remap describe-function]             . helpful-callable) ; C-h f
-           ([remap describe-key]                  . helpful-key) ; C-h k
-           ([remap describe-command]              . helpful-command) ; C-h x
-           ([remap describe-variable]             . helpful-variable) ; C-h v
-           ([remap list-directory]                . zoxide-travel) ; C-x C-d
-           ([remap dired-at-point]                . consult-dir) ; C-x d
-           ([remap dabbrev-expand]                . hippie-expand) ; M-/
-           ([remap comment-dwim]                  . yx/comment-dwim) ; M-;
-           ([remap keyboard-quit]                 . yx/keyboard-quit-dwim) ; C-g
-           ([remap kill-buffer]                   . yx/kill-buffer-dwim) ; C-x k
-           ([remap save-buffers-kill-emacs]       . delete-frame) ; s-q
-           ([remap open-line]                     . crux-smart-open-line) ; C-o
-           ([remap fill-paragraph]                . yx/fill-unfill) ; M-q
-           ([remap upcase-word]                   . upcase-dwim) ; M-u
-           ([remap downcase-word]                 . downcase-dwim) ; M-l
-           ([remap capitalize-word]               . capitalize-dwim) ; M-c
-           ([remap goto-char]                     . avy-goto-char-timer) ; M-g c
-           ([remap suspend-frame]                 . repeat) ; C-z
+           ([remap yank-pop]                      . consult-yank-pop)       ;M-y
+           ([remap bookmark-jump]                 . consult-bookmark)       ;C-x r b
+           ([remap imenu]                         . consult-imenu)          ;M-g i
+           ([remap describe-function]             . helpful-callable)       ; C-h f
+           ([remap describe-key]                  . helpful-key)            ; C-h k
+           ([remap describe-command]              . helpful-command)        ; C-h x
+           ([remap describe-variable]             . helpful-variable)       ; C-h v
+           ([remap list-directory]                . zoxide-travel)          ; C-x C-d
+           ([remap dired-at-point]                . consult-dir)            ; C-x d
+           ([remap dabbrev-expand]                . hippie-expand)          ; M-/
+           ([remap comment-dwim]                  . yx/comment-dwim)        ; M-;
+           ([remap keyboard-quit]                 . yx/keyboard-quit-dwim)  ; C-g
+           ([remap kill-buffer]                   . yx/kill-buffer-dwim)    ; C-x k
+           ([remap save-buffers-kill-emacs]       . delete-frame)           ; s-q
+           ([remap open-line]                     . crux-smart-open-line)   ; C-o
+           ([remap fill-paragraph]                . yx/fill-unfill)         ; M-q
+           ([remap upcase-word]                   . upcase-dwim)            ; M-u
+           ([remap downcase-word]                 . downcase-dwim)          ; M-l
+           ([remap capitalize-word]               . capitalize-dwim)        ; M-c
+           ([remap goto-char]                     . avy-goto-char-timer)    ; M-g c
+           ([remap suspend-frame]                 . repeat)                 ; C-z
            )
 
 (bind-keys ("C-<f5>"    . dape)
            ("<f5>"      . quickrun)
            ("s-e"       . yx/eshell-here)
-           ("s-s"       . yx/transient-global-simple)
+           ("s-d"       . dirvish-side)
            ("s-/"       . transform-previous-char)
            ("s-r"       . consult-recent-file)
            ("s-t"       . tab-bar-new-tab)
            ("s-j"       . avy-goto-char-timer)
-           ("s-d"       . dirvish-side)
            ("s-i"       . symbols-outline-show)
            ("s-o"       . ace-window)
            ("s-w"       . tabspaces-close-workspace)
@@ -710,8 +795,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("M-#"       . consult-register-store)
            ("C-c #"     . consult-register)
            ("M-o"       . duplicate-dwim)
-           ("M-z"       . avy-zap-to-char-dwim)
-           ("M-Z"       . avy-zap-up-to-char-dwim)
+           ("M-z"       . avy-zap-up-to-char-dwim)
+           ("M-Z"       . avy-zap-to-char-dwim)
            ("M-g ;"     . goto-last-change)
            ("M-g a"     . consult-org-agenda)
            ("M-g M"     . consult-man)
@@ -728,6 +813,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("M-s t"     . yx/hl-todo-rg-project)
            ("M-s M-t"   . hl-todo-occur)
            ("M-s f"     . consult-fd)
+           ("M-s M-f"   . dirvish-fd)
            ("M-s M-h"   . symbol-overlay-put)
            ("M-s l"     . consult-line)
            ("M-s M l"   . consult-line-multi)
@@ -747,80 +833,22 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("C-c a"     . org-agenda)
            ("C-c c"     . org-capture)
            ("C-c l"     . org-store-link)
-           ("C-c b"     . tabspaces-switch-to-buffer)
            ("C-c d"     . bing-dict-brief)
            ("C-c r"     . query-replace-regexp)
            ("C-c z"     . hs-toggle-hiding)
            ("C-c Z"     . hs-show-all)
-           ("C-c f"     . dirvish-fd)
-           ("C-c M-f"   . ffap)
            ("C-x a a"   . align)
            ("C-x a r"   . align-regexp)
            ("C-x / /"   . webjump)
            ("C-x / o"   . browse-url-at-point)
-           ("C-x / a"   . ace-link-addr)
-           ("C-x / l"   . ace-link)
-           ("C-c w o"   . burly-open-bookmark)
-           ("C-c w r"   . burly-reset-tab)
-           ("C-c w w"   . burly-bookmark-windows)
-           ("C-c w f"   . burly-bookmark-frames)
-           ("C-c n c"   . denote)
-           ("C-c n t"   . denote-template)
-           ("C-c n C-c" . citar-create-note)
-           ("C-c n C-o" . citar-denote-dwim)
-           ("C-c n n"   . denote-open-or-create)
-           ("C-c n i"   . denote-link-or-create)
-           ("C-c n l"   . denote-backlinks)
-           ("C-c n f"   . denote-find-link)
-           ("C-c n C-f" . denote-org-dblock-insert-links)
-           ("C-c n b"   . denote-find-backlink)
-           ("C-c n C-b" . denote-org-dblock-insert-backlinks)
-           ("C-c n t"   . org-transclusion-add)
-           ("C-c n C-t" . org-transclusion-add-all)
-           ("C-c q a"   . org-ql-find-in-agenda)
-           ("C-c q d"   . org-ql-find-in-org-directory)
-           ("C-c q s"   . org-ql-search)
-           ("C-c q v"   . org-ql-view)
+           ("C-x t R"   . burly-reset-tab)
            ("C-h b"     . embark-bindings)
            ("C-h C-m"   . which-key-show-full-major-mode)
            ("C-h B"     . embark-bindings-at-point))
 
-(transient-define-prefix yx/transient-global-simple ()
-  "Global transient for frequently used functions."
-  [["]]1"
-    ("c" "whitespace-cleanup" whitespace-cleanup)
-    ("o" "crux-open-with" crux-open-with)
-    ("s" "scratch-buffer" yx/scratch-buffer)
-    ("n" "new-empty-buffer" yx/new-empty-buffer)
-    ("m" "major-mode-keybings" which-key-show-full-major-mode)
-    ("v" "magit-file-dispatch" magit-file-dispatch)
-    ("w" "pyim-create-word-from-selection" pyim-create-word-from-selection)
-    ("%" "query-replace-regexp" query-replace-regexp)
-    ("!" "shell-command" shell-command)]
-   ["]]2"
-    ("C" "desktop-clear" desktop-clear)
-    ("D" "crux-delete-file-and-buffer" crux-delete-file-and-buffer)
-    ("V" "magit-dispatch" magit-dispatch)
-    ("T" "consult-minor-mode-menu" consult-minor-mode-menu)
-    ("R" "rename-visited-file" rename-visited-file)
-    ("K" "crux-kill-other-buffers" crux-kill-other-buffers)
-    ("E" "crux-sudo-edit" crux-sudo-edit)]
-   ["]]3"
-    ("t l" "command-log" clm/toggle-command-log-buffer)]])
-
 ;;; Ui
-(setq use-dialog-box nil
-      use-file-dialog nil)
-
-(setq x-stretch-cursor nil
-      x-underline-at-descent-line t)
-
-(setq cursor-in-non-selected-windows nil)
-
-(when IS-MAC (menu-bar-mode 1))
-
-(setq project-mode-line t
-      which-func-display 'header)
+(when IS-MAC
+  (menu-bar-mode 1))
 
 ;; %% font
 (defvar yx/font-height 140)
@@ -2451,6 +2479,7 @@ set to \\='(template title keywords subdirectory)."
 (use-package project
   :ensure nil
   :custom
+  (project-mode-line t)
   (project-file-history-behavior 'relativize)
   (project-vc-extra-root-markers '(".envrc" "pyproject.toml")))
 
