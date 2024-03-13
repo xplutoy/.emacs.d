@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-13 05:04:57 yx>
+;; Modified: <2024-03-13 09:46:34 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -236,9 +236,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
       show-paren-context-when-offscreen t
       show-paren-when-point-inside-paren t)
 
-;; %% electric
-(setq electric-pair-preserve-balance nil
-      electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
+(use-package elec-pair
+  :ensure nil
+  :hook (after-init . electric-pair-mode)
+  :init (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
 
 ;; %% font-lock
 (setq jit-lock-defer-time 0
@@ -463,13 +464,19 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
       browse-url-secondary-browser-function 'browse-url-default-browser
       browse-url-generic-program yx/default-open)
 
-(setq eww-auto-rename-buffer 'title
-      eww-search-prefix "http://www.google.com/search?q="
-      eww-use-external-browser-for-content-type "\\`\\(video/\\|audio\\)"
-      eww-browse-url-new-window-is-tab nil)
+(use-package goto-addr
+  :ensure nil
+  :hook ((text-mode . goto-address-mode)
+         (prog-mode . goto-address-prog-mode)))
 
-(with-eval-after-load 'eww
-  (add-hook 'eww-after-render-hook 'eww-readable))
+(use-package eww
+  :ensure nil
+  :hook (eww-after-render . 'eww-readable)
+  :custom
+  (eww-auto-rename-buffer 'title)
+  (eww-search-prefix "http://www.google.com/search?q=")
+  (eww-use-external-browser-for-content-type "\\`\\(video/\\|audio\\)")
+  (eww-browse-url-new-window-is-tab nil))
 
 (use-package webjump
   :ensure nil
@@ -479,12 +486,14 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                    ("DuckDuckGo" . [simple-query "duckduckgo.com" "duckduckgo.com/?q=" ""])
                    ("Wikipedia"  . [simple-query "wikipedia.org" "wikipedia.org/wiki/" ""]))))
 
-;; %% flyspell
-(setq ispell-dictionary "english"
-      ispell-program-name "aspell"
-      ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))
-
-(with-eval-after-load 'flyspell
+(use-package flyspell
+  :ensure nil
+  :init
+  (setq ispell-dictionary "english"
+        ispell-program-name "aspell"
+        ispell-extra-args '("--sug-mode=ultra" "--lang=en_US")
+        flyspell-issue-message-flag nil)
+  :config
   (keymap-unset flyspell-mode-map "C-,")
   (keymap-unset flyspell-mode-map "C-.")
   (keymap-unset flyspell-mode-map "C-;"))
@@ -630,7 +639,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
               line-spacing 0.15)
   (superword-mode          1)
   (visual-line-mode        1)
-  (goto-address-mode       1)
   (variable-pitch-mode     1)
   (toggle-truncate-lines  -1))
 
@@ -950,6 +958,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                               "\\*Warnings\\*$"
                               "\\*Async Shell Command\\*$"
                               "\\*Apropos\\*$"
+                              "^\\*wclock\\*$"
                               "\\*Backtrace\\*$"
                               "^\\*.*eshell.*\\*.*$"
                               "^\\*.*shell.*\\*.*$"
@@ -1620,7 +1629,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
             (to  "yangxue.cs@outlook.com" "INBOX.outlook.cs")
             (any "emacs-devel@gnu.org"    "INBOX.emacs-devel")
             (any "emacs-orgmode@gnu.org"  "INBOX.emacs-orgmode")
-            (any "help-gnu-emacs@gnu.org" "INBOX.help-gnu-emacs")
+            (any "help-gnu-emacs@gnu.org" "INBOX.emacs-help")
             "INBOX.Misc"))
 
   (setq nnrss-ignore-article-fields '(description guid pubData dc:creator link))
@@ -1642,6 +1651,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
   (setq gnus-summary-make-false-root 'adopt
         gnus-summary-ignore-duplicates t
+        gnus-newsgroup-maximum-articles 1500
         gnus-summary-gather-subject-limit 'fuzzy
         gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
         gnus-simplify-subject-functions '(gnus-simplify-subject-re gnus-simplify-whitespace))
@@ -1795,22 +1805,21 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package org
   :ensure nil
   :defer 2
-  :bind
-  (:map org-mode-map
-        ("RET"     . yx/org-return-dwim)
-        ("M-g h"   . consult-org-heading)
-        ("C-c M-y" . yx/org-link-copy)
-        ("C-c M-i" . org-web-tools-insert-link-for-url)
-        ("C-c t h" . org-toggle-heading)
-        ("C-c t l" . org-toggle-link-display)
-        ("C-c t v" . yx/org-display-subtree-inline-images)
-        ("C-x n h" . yx/org-show-current-heading-tidily)
-        :repeat-map org-heading-navigate-repeat-map
-        ("u" . outline-up-heading)
-        ("p" . org-previous-visible-heading)
-        ("n" . org-next-visible-heading)
-        ("f" . org-forward-heading-same-level)
-        ("b" . org-backward-heading-same-level))
+  :bind (:map org-mode-map
+              ("RET"     . yx/org-return-dwim)
+              ("M-g h"   . consult-org-heading)
+              ("C-c M-y" . yx/org-link-copy)
+              ("C-c M-i" . org-web-tools-insert-link-for-url)
+              ("C-c t h" . org-toggle-heading)
+              ("C-c t l" . org-toggle-link-display)
+              ("C-c t v" . yx/org-display-subtree-inline-images)
+              ("C-x n h" . yx/org-show-current-heading-tidily)
+              :repeat-map org-heading-navigate-repeat-map
+              ("u" . outline-up-heading)
+              ("p" . org-previous-visible-heading)
+              ("n" . org-next-visible-heading)
+              ("f" . org-forward-heading-same-level)
+              ("b" . org-backward-heading-same-level))
   :autoload (org-calendar-holiday)
   :hook
   (org-mode . yx/org-mode-setup)
@@ -2068,7 +2077,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
         (insert document)
         (goto-char (point-min)))))
 
-  :preface
+  :config
   (defun yx/org-mode-setup ()
     (auto-fill-mode -1)
     (variable-pitch-mode 1)
@@ -2269,57 +2278,30 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
           ("https://matt.might.net/articles/feed.rss" emacs)
           ("https://andreyor.st/categories/emacs/feed.xml" emacs)
           ("https://sachachua.com/blog/category/emacs/feed/" emacs)))
-  (setq elfeed-search-filter "@6-months-ago +unread"
-        elfeed-search-print-entry-function 'yx/elfeed-search-print-entry--better-default)
+  (setq elfeed-search-filter "@6-months-ago +unread")
   :hook (elfeed-show . olivetti-mode)
   :config
-  (run-at-time nil (* 4 60 60) 'elfeed-update)
-  (keymap-set elfeed-search-mode-map "m" (yx/elfeed-tag-selection-as 'star))
-  (keymap-set elfeed-search-mode-map "l" (yx/elfeed-tag-selection-as 'readlater))
-  :preface
   (defun yx/elfeed-kill-entry ()
     "Like `elfeed-kill-entry' but pop elfeed search"
     (interactive)
     (elfeed-kill-buffer)
     (switch-to-buffer "*elfeed-search*"))
+
   (defun yx/elfeed-tag-selection-as (mytag)
     (lambda ()
       "Toggle a tag on an Elfeed search selection"
       (interactive)
       (elfeed-search-toggle-all mytag)))
+
   (defun yx/elfeed-mark-all-as-read ()
     "Mark all feeds in buffer as read."
     (interactive)
     (mark-whole-buffer)
     (elfeed-search-untag-all-unread))
-  (defun yx/elfeed-search-print-entry--better-default (entry)
-    "Print ENTRY to the buffer."
-    (let* ((date (elfeed-search-format-date (elfeed-entry-date entry)))
-           (date-width (car (cdr elfeed-search-date-format)))
-           (title (concat (or (elfeed-meta entry :title)
-                              (elfeed-entry-title entry) "")
-                          " "))
-           (title-faces (elfeed-search--faces (elfeed-entry-tags entry)))
-           (feed (elfeed-entry-feed entry))
-           (feed-title (when feed (or (elfeed-meta feed :title) (elfeed-feed-title feed))))
-           (tags (mapcar #'symbol-name (elfeed-entry-tags entry)))
-           (tags-str (mapconcat (lambda (s) (propertize s 'face 'elfeed-search-tag-face)) tags ","))
-           (title-width (- (frame-width)
-                           ;; (window-width (get-buffer-window (elfeed-search-buffer) t))
-                           date-width elfeed-search-trailing-width))
-           (title-column (elfeed-format-column
-                          title (elfeed-clamp
-                                 elfeed-search-title-min-width
-                                 title-width
-                                 elfeed-search-title-max-width) :left))
-           (align-to-feed-pixel (+ date-width
-                                   (max elfeed-search-title-min-width
-                                        (min title-width elfeed-search-title-max-width)))))
-      (insert (propertize date 'face 'elfeed-search-date-face) " ")
-      (insert (propertize title-column 'face title-faces 'kbd-help title))
-      (put-text-property (1- (point)) (point) 'display `(space :align-to ,align-to-feed-pixel))
-      (when feed-title (insert (propertize feed-title 'face 'elfeed-search-feed-face) " "))
-      (when tags (insert "(" tags-str ")")))))
+
+  (run-at-time nil (* 4 60 60) 'elfeed-update)
+  (keymap-set elfeed-search-mode-map "m" (yx/elfeed-tag-selection-as 'star))
+  (keymap-set elfeed-search-mode-map "l" (yx/elfeed-tag-selection-as 'readlater)))
 
 (use-package elfeed-webkit
   :after elfeed
@@ -2382,7 +2364,6 @@ set to \\='(template title keywords subdirectory)."
   :ensure auctex
   :mode ("\\.tex\\'" . latex-mode)
   :hook ((LaTeX-mode . prettify-symbols-mode)
-         (LaTeX-mode . electric-pair-local-mode)
          (LaTeX-mode . turn-on-reftex)
          (LaTeX-mode . LaTeX-math-mode)
          (LaTeX-mode . TeX-fold-mode)
@@ -2441,7 +2422,6 @@ set to \\='(template title keywords subdirectory)."
   (hs-minor-mode 1)
   (superword-mode 1)
   (show-paren-mode 1)
-  (electric-pair-local-mode 1)
   (electric-indent-local-mode 1)
   (electric-layout-local-mode 1)
   (keymap-local-set "RET" 'newline-and-indent))
