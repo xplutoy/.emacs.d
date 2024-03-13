@@ -2681,26 +2681,27 @@ set to \\='(template title keywords subdirectory)."
 
 (use-package treesit
   :ensure nil
-  :init
-  (setq treesit-font-lock-level 4
-        treesit-language-source-alist
-        '((c      "https://github.com/tree-sitter/tree-sitter-c")
-          (cpp    "https://github.com/tree-sitter/tree-sitter-cpp")
-          (lua    "https://github.com/MunifTanjim/tree-sitter-lua")
-          (org    "https://github.com/milisims/tree-sitter-org")
-          (bash   "https://github.com/tree-sitter/tree-sitter-bash")
-          (julia  "https://github.com/tree-sitter/tree-sitter-julia")
-          (python "https://github.com/tree-sitter/tree-sitter-python"))
-        treesit-load-name-override-list '((c++ "libtree-sitter-cpp"))
-        treesit-extra-load-path (list (no-littering-expand-var-file-name "tree-sitter")))
-  (defun yx/treesit--install-language-grammar (lang-pair)
-    (let ((lang (car lang-pair)))
-      (unless (treesit-language-available-p lang)
-        (treesit-install-language-grammar lang (car treesit-extra-load-path)))))
-  (mapc 'yx/treesit--install-language-grammar treesit-language-source-alist)
-  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
-  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode)))
+  :custom
+  (treesit-font-lock-level 4)
+  :config
+  (add-to-list 'treesit-extra-load-path
+               (no-littering-expand-var-file-name "tree-sitter")))
+
+(use-package treesit-auto
+  :hook (after-init . global-treesit-auto-mode)
+  :custom
+  (treesit-auto-install 'prompt)
+  (treesit-auto-langs '(c
+                        cpp
+                        julia
+                        latex
+                        lua
+                        python
+                        r
+                        yaml
+                        toml))
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all))
 
 ;; %% refoctor
 (use-package color-rg
