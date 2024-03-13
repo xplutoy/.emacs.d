@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:13:09
-;; Modified: <2024-03-13 09:46:34 yx>
+;; Modified: <2024-03-13 11:36:31 yx>
 ;; Licence: GPLv3
 
 ;;; Init
@@ -239,7 +239,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package elec-pair
   :ensure nil
   :hook (after-init . electric-pair-mode)
-  :init (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
+  :custom
+  (electric-pair-preserve-balance t)
+  (electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
 
 ;; %% font-lock
 (setq jit-lock-defer-time 0
@@ -1405,29 +1407,30 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :bind (:map flyspell-mode-map
               ("M-$" . flyspell-correct-wrapper)))
 
-;; %% chinese
+(use-package sis
+  :demand t
+  :config
+  (appendq! sis-prefix-override-keys '("M-s" "M-g"))
+  (sis-global-inline-mode  1)
+  (sis-global-respect-mode 1)
+  (sis-global-context-mode 1))
+
 (use-package pyim
-  :bind
-  (("s-," . pyim-convert-string-at-point)
-   :map pyim-mode-map
-   ("," . pyim-next-page)
-   ("." . pyim-previous-page))
   :commands
   (pyim-create-word-from-selection)
-  :init
-  (setq default-input-method "pyim"
-        pyim-outcome-trigger  nil
-        pyim-enable-shortcode nil
-        pyim-punctuation-dict nil
-        pyim-page-tooltip 'posframe
-        pyim-dcache-backend 'pyim-dregcach
-        pyim-indicator-list '(pyim-indicator-with-modeline)
-        pyim-dicts '((:name "big-dict" :file "~/.emacs.d/.cache/pyim-bigdict.pyim"))
-        pyim-english-input-switch-functions '(pyim-probe-auto-english
-                                              pyim-probe-program-mode
-                                              pyim-probe-isearch-mode
-                                              pyim-probe-org-latex-mode
-                                              pyim-probe-org-structure-template))
+  :custom
+  (default-input-method "pyim")
+  (pyim-outcome-trigger  nil)
+  (pyim-enable-shortcode nil)
+  (pyim-punctuation-dict nil)
+  (pyim-page-tooltip 'posframe)
+  (pyim-dcache-backend 'pyim-dregcach)
+  (pyim-indicator-list '(pyim-indicator-with-modeline))
+  (pyim-english-input-switch-functions '(pyim-probe-auto-english
+                                         pyim-probe-program-mode
+                                         pyim-probe-isearch-mode
+                                         pyim-probe-org-latex-mode
+                                         pyim-probe-org-structure-template))
   :config
   (require 'pyim-dregcache)
   (pyim-default-scheme 'xiaohe-shuangpin)
@@ -2696,7 +2699,8 @@ set to \\='(template title keywords subdirectory)."
               ("C-x c a" . eglot-code-actions)
               ("C-x c g" . consult-eglot-symbols))
   :config
-  (fset #'jsonrpc--log-event #'ignore) ; massive perf boost---don't log every event
+  (add-to-list 'eglot-stay-out-of 'yasnippet)
+  (fset #'jsonrpc--log-event #'ignore)
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
   (defun yx/eglot-capf ()
     (setq-local completion-at-point-functions
