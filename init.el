@@ -1299,6 +1299,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (use-package avy-zap)
 
+(use-package speedrect
+  :defer 2
+  :vc (:url "https://github.com/jdtsmith/speedrect" :rev :newest))
+
 (use-package hungry-delete
   :hook (after-init . global-hungry-delete-mode)
   :custom
