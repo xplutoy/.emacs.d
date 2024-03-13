@@ -194,11 +194,13 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (use-package hl-line
   :ensure nil
+  :hook ((prog-mode  . hl-line-mode)
+         (occur-mode . hl-line-mode)
+         (dired-mode . hl-line-mode)
+         (org-agenda-mode . hl-line-mode))
   :custom
   (hl-line-sticky-flag nil)
-  (global-hl-line-sticky-flag nil)
-  :config
-  (add-hook 'occur-mode-hook #'hl-line-mode))
+  (global-hl-line-sticky-flag nil))
 
 (use-package paren
   :ensure nil
@@ -287,12 +289,11 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :config
   (setq recentf-max-saved-items 100
         recentf-auto-cleanup "1:00am"
-        recentf-exclude
-        '("\\.?cache.*" "^/.*" "^/ssh:" "\\.git/.+$"
-          "COMMIT_MSG" "COMMIT_EDITMSG" "/Downloads/" "/elpa/"
-          "\\.\\(?:gif\\|svg\\|png\\|jpe?g\\|bmp\\|xpm\\)$"
-          "\\.\\(?:gz\\|zip\\|gpg\\)$"
-          file-remote-p))
+        recentf-exclude '("\\.?cache.*" "^/.*" "^/ssh:" "\\.git/.+$"
+                          "COMMIT_MSG" "COMMIT_EDITMSG" "/Downloads/" "/elpa/"
+                          "\\.\\(?:gif\\|svg\\|png\\|jpe?g\\|bmp\\|xpm\\)$"
+                          "\\.\\(?:gz\\|zip\\|gpg\\)$"
+                          file-remote-p))
 
   (add-to-list 'recentf-exclude
                (recentf-expand-file-name no-littering-var-directory))
@@ -852,29 +853,32 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 ;; %% font
 (defvar yx/font-height 140)
-(defvar yx/font "JetBrains Mono NL")
-(defvar yx/fixed-font "JetBrains Mono NL")
-(defvar yx/serif-font "Latin Modern Mono")
-(defvar yx/variable-font "Latin Modern Roman")
+(defvar yx/font "JetBrains Mono")
+(defvar yx/fixed-font "IBM Plex Mono")
+(defvar yx/serif-font "IBM Plex Serif")
+(defvar yx/variable-font "IBM Plex Sans")
 
 (defun yx/setup-fonts ()
-  (set-face-attribute 'default nil :family yx/font :height yx/font-height)
-  (set-face-attribute 'fixed-pitch nil :family yx/fixed-font)
-  (set-face-attribute 'fixed-pitch-serif nil :family yx/serif-font)
-  (set-face-attribute 'variable-pitch nil :family yx/variable-font)
-  (setq face-font-rescale-alist '(("LXGW WenKai Mono" . 1.0)))
-  (cl-loop for font in '( "LXGW WenKai Mono" "Microsoft Yahei" "PingFang SC")
-           when (x-list-fonts font)
-           return (set-fontset-font t '(#x4e00 . #x9fff) font))
-  (cl-loop for font in '("Segoe UI Symbol" "Symbola" "Symbol")
-           when (x-list-fonts font)
-           return (set-fontset-font t 'symbol (font-spec :family font) nil 'prepend))
-  (cl-loop for font in '("Noto Color Emoji" "Apple Color Emoji" "Segoe UI Emoji")
-           when (x-list-fonts font)
-           return (set-fontset-font t 'emoji  (font-spec :family font) nil 'prepend)))
+  "Setup fonts."
+  (when (display-graphic-p)
+    (set-face-attribute 'default nil :family yx/font :height yx/font-height)
+    (set-face-attribute 'fixed-pitch nil :family yx/fixed-font)
+    (set-face-attribute 'fixed-pitch-serif nil :family yx/serif-font)
+    (set-face-attribute 'variable-pitch nil :family yx/variable-font)
+    (setq face-font-rescale-alist '(("LXGW WenKai"  . 1.0)
+                                    ("Apple Color Emoji" . 0.8)))
+    (cl-loop for font in '("LXGW WenKai" "Microsoft Yahei" "PingFang SC")
+             when (x-list-fonts font)
+             return (set-fontset-font t '(#x4e00 . #x9fff) font))
+    (cl-loop for font in '("Segoe UI Symbol" "Symbola" "Symbol")
+             when (x-list-fonts font)
+             return (set-fontset-font t 'symbol (font-spec :family font) nil 'prepend))
+    (cl-loop for font in '("Noto Color Emoji" "Apple Color Emoji" "Segoe UI Emoji")
+             when (x-list-fonts font)
+             return (set-fontset-font t 'emoji  (font-spec :family font) nil 'prepend))))
 
-(add-hook 'window-setup-hook 'yx/setup-fonts)
-(add-hook 'server-after-make-frame-hook 'yx/setup-fonts)
+(add-hook 'after-init-hook #'yx/setup-fonts -100)
+(add-hook 'server-after-make-frame-hook #'yx/setup-fonts -100)
 
 (use-package modus
   :ensure nil
@@ -882,16 +886,16 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (modus-themes-mixed-fonts t)
   (modus-themes-italic-constructs t)
   (modus-themes-bold-constructs t)
-  (modus-themes-variable-pitch-ui t))
+  (modus-themes-variable-pitch-ui t)
+  :init
+  (if (display-graphic-p)
+      (load-theme 'modus-operandi-tinted t)
+    (load-theme 'modus-vivendi-tinted t)))
 
 (use-package ef-themes
   :init
   (setq ef-themes-mixed-fonts t
         ef-themes-variable-pitch-ui t))
-
-(if (display-graphic-p)
-    (load-theme 'modus-operandi-tinted t)
-  (load-theme 'modus-vivendi-tinted t))
 
 (use-package lin
   :hook (after-init . lin-global-mode)
@@ -899,10 +903,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (lin-face 'lin-magenta))
 
 (use-package minions
-  :demand t
-  :hook (emacs-startup . minions-mode))
+  :hook (after-init . minions-mode))
 
 (use-package spacious-padding
+  :hook (after-init . spacious-padding-mode)
   :custom
   (spacious-padding-subtle-mode-line nil)
   (spacious-padding-widths '( :internal-border-width 4
@@ -910,8 +914,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                               :mode-line-width 2
                               :tab-width 4
                               :right-divider-width 12
-                              :fringe-width 8))
-  :init (spacious-padding-mode 1))
+                              :fringe-width 8)))
 
 (use-package breadcrumb
   :demand t
@@ -2409,8 +2412,11 @@ set to \\='(template title keywords subdirectory)."
         markdown-header-scaling t))
 
 ;; %% bibtex
-(setq bibtex-dialect 'biblatex
-      bibtex-align-at-equal-sign t)
+(use-package bibtex
+  :ensure nil
+  :custom
+  (bibtex-dialect 'biblatex)
+  (bibtex-align-at-equal-sign t))
 
 ;; %% latex
 (use-package tex
@@ -2475,7 +2481,6 @@ set to \\='(template title keywords subdirectory)."
   (prettify-symbols-unprettify-at-point 'right-edge)
   :config
   (defun yx/prog-mode-setup ()
-    (hl-line-mode 1)
     (hs-minor-mode 1)
     (setq-local line-spacing 0.15))
   (add-hook 'prog-mode-hook #'yx/prog-mode-setup))
