@@ -197,6 +197,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :hook ((prog-mode  . hl-line-mode)
          (occur-mode . hl-line-mode)
          (dired-mode . hl-line-mode)
+         (ibuffer-mode . hl-line-mode)
          (org-agenda-mode . hl-line-mode))
   :custom
   (hl-line-sticky-flag nil)
@@ -463,12 +464,12 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (use-package autorevert
   :ensure nil
-  :config
-  (setq auto-revert-verbose nil
-        auto-revert-use-notify nil
-        revert-without-query '(".")
-        auto-revert-check-vc-info t)
-  (global-auto-revert-mode 1))
+  :hook (after-init . global-auto-revert-mode)
+  :custom
+  (auto-revert-verbose nil)
+  (revert-without-query '(".*"))
+  (auto-revert-check-vc-info t)
+  (global-auto-revert-non-file-buffers t))
 
 ;; %% https://emacs-china.org/t/emacs-1w/25802/20
 (setq bidi-inhibit-bpa t
@@ -767,8 +768,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ([remap downcase-word]                 . downcase-dwim)          ; M-l
            ([remap capitalize-word]               . capitalize-dwim)        ; M-c
            ([remap goto-char]                     . avy-goto-char-timer)    ; M-g c
-           ([remap suspend-frame]                 . repeat)                 ; C-z
-           )
+           ([remap suspend-frame]                 . repeat))                ; C-z
 
 (bind-keys ("C-<f5>"    . dape)
            ("<f5>"      . quickrun)
@@ -985,10 +985,15 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                               devdocs-mode grep-mode occur-mode
                               "^\\*Process List\\*$" process-menu-mode))
   :config
+  (popper-echo-mode +1)
   (add-to-list 'display-buffer-alist
-	       '(("\\`\\(\\*Proced\\*\\|\\*Ibuffer\\|\\*Man\\|\\*WoMan\\|\\*info\\|\\*Org Agenda\\)"
-                  (display-buffer-full-frame))))
-  (popper-echo-mode +1))
+	       `(,(regexp-opt '("*Proced"
+                                "*Ibuffer"
+                                "*Man"
+                                "*WoMan"
+                                "*info"
+                                "*Org Agenda"))
+                 (display-buffer-full-frame))))
 
 (use-package zoom
   :custom
@@ -999,17 +1004,13 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (use-package ibuffer
   :ensure nil
+  :hook ((ibuffer-mode . ibuffer-auto-mode)
+         (ibuffer-mode . ibuffer-do-sort-by-recency))
   :custom
   (ibuffer-expert t)
   (ibuffer-display-summary nil)
   (ibuffer-show-empty-filter-groups nil)
-  (ibuffer-default-sorting-mode 'major-mode)
-  :config
-  (defun yx/ibuffer-setup ()
-    (hl-line-mode 1)
-    (ibuffer-auto-mode 1)
-    (ibuffer-do-sort-by-recency))
-  (add-hook 'ibuffer-mode-hook 'yx/ibuffer-setup))
+  (ibuffer-default-sorting-mode 'major-mode))
 
 (use-package ibuffer-vc
   :init
@@ -1504,10 +1505,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
    `(("\\.\\(?:docx\\|pdf\\|djvu\\gif)\\'" ,yx/default-open)))
   :config
   (defun yx/dired-setup ()
-    (setq
-     dired-omit-files
-     (concat dired-omit-files "\\|^\\..*$"))
-    (hl-line-mode 1)
+    (setq dired-omit-files
+          (concat dired-omit-files "\\|^\\..*$"))
     (dired-omit-mode 1)
     (dired-hide-details-mode 1))
   (add-hook 'dired-mode-hook 'yx/dired-setup)
@@ -1565,10 +1564,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
         ("M-j" . dirvish-fd-jump)))
 
 ;;; Gnus
-(setq gnus-home-directory no-littering-var-directory
-      gnus-default-directory gnus-home-directory
-      gnus-startup-file (no-littering-expand-var-file-name "newsrc"))
-
 (setq read-mail-command 'gnus
       message-confirm-send t
       message-kill-buffer-on-exit t
@@ -1579,6 +1574,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (setq mml-default-sign-method "pgpmime"
       mml-secure-openpgp-sign-with-sender t)
+
+(setq gnus-home-directory no-littering-var-directory
+      gnus-default-directory gnus-home-directory
+      gnus-startup-file (no-littering-expand-var-file-name "newsrc"))
 
 (use-package gnus
   :ensure nil
