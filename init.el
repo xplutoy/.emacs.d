@@ -738,11 +738,12 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 ;; the most commonly used shortcut
 (bind-keys :map global-map
-           :prefix "C-z"
            :prefix-map yx/ctrl-z-prefix-map
+           :prefix "C-z"
            ("a" . org-agenda-list)
            ("c" . org-capture)
-           ("l" . org-store-link))
+           ("l" . org-store-link)
+           ("z" . zoom))
 
 (bind-keys ([remap move-beginning-of-line]        . crux-move-beginning-of-line) ; C-a
            ([remap goto-line]                     . consult-goto-line)           ;M-g g
@@ -1957,8 +1958,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :bind (:map org-mode-map
               ("RET"     . yx/org-return-dwim)
               ("M-g h"   . consult-org-heading)
-              :prefix "C-c l"
               :prefix-map yx/org-locle-leader-map
+              :prefix "C-c l"
               ("i"   . org-clock-in)
               ("o"   . org-clock-out)
               ("y"   . yx/org-link-copy)
