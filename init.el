@@ -740,10 +740,12 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (bind-keys :map global-map
            :prefix-map yx/ctrl-z-prefix-map
            :prefix "C-z"
-           ("a" . org-agenda-list)
-           ("c" . org-capture)
-           ("l" . org-store-link)
-           ("z" . zoom))
+           ("a"   . org-agenda-list)
+           ("c"   . org-capture)
+           ("l"   . org-store-link)
+           ("z"   . zoom)
+           ("/ /" . webjump)
+           ("/ o" . browse-url-at-point))
 
 (bind-keys ([remap move-beginning-of-line]        . crux-move-beginning-of-line) ; C-a
            ([remap goto-line]                     . consult-goto-line)           ;M-g g
@@ -842,8 +844,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("C-c Z"     . hs-show-all)
            ("C-x a a"   . align)
            ("C-x a r"   . align-regexp)
-           ("C-x / /"   . webjump)
-           ("C-x / o"   . browse-url-at-point)
            ("C-x t R"   . burly-reset-tab)
            ("C-h b"     . embark-bindings)
            ("C-h C-m"   . which-key-show-full-major-mode)
@@ -1231,6 +1231,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package engine-mode
   :hook (after-init . engine-mode)
   :custom
+  (engine/keybinding-prefix "C-z /")
   (engine/browser-function 'browse-url-generic)
   :config
   (defun yx/extract-name-from-url (url)
