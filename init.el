@@ -692,8 +692,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   "C-b" #'denote-find-backlink
   "M-f" #'denote-org-dblock-insert-links
   "M-b" #'denote-org-dblock-insert-backlinks
-  ;; "C-t" #'org-transclusion-add
-  ;; "M-t" #'org-transclusion-add-all
   "C-c" #'citar-create-note
   "C-d" #'citar-denote-dwim)
 
@@ -1964,8 +1962,15 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
               ("i"   . org-clock-in)
               ("o"   . org-clock-out)
               ("y"   . yx/org-link-copy)
+              ("p"   . org-download-clipboard)
+              ("C-p" . org-download-screenshot)
               ("i"   . org-web-tools-insert-link-for-url)
               ("h"   . org-toggle-heading)
+              ("t"   . org-transclusion-add)
+              ("q f" . org-ql-find)
+              ("q r" . org-ql-refile)
+              ("C-t" . org-transclusion-add-all)
+              ("M-t" . org-transclusion-remove)
               ("TAB" . yx/org-show-current-heading-tidily)
               ("C-l" . org-latex-preview)
               ("C-v" . yx/org-display-subtree-inline-images)
@@ -2375,10 +2380,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (org-download-heading-lvl nil)
   (org-download-screenshot-method "screencapture -i %s")
   (org-download-image-dir
-   (expand-file-name (concat org-attach-directory "images/") yx/org-root))
-  :bind (:map org-mode-map
-              ("C-c y" . org-download-screenshot)
-              ("C-c C-y" . org-download-clipboard)))
+   (expand-file-name (concat org-attach-directory "images/") yx/org-root)))
 
 (use-package org-web-tools)
 
