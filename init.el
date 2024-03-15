@@ -416,14 +416,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (proced-auto-update-flag nil))
 
 ;; %% browser-url
-(setq shr-use-fonts nil
-      shr-use-colors nil
-      shr-image-animate nil
-      shr-inhibit-images t
-      shr-max-image-proportion 0.6)
-
-(setq image-use-external-converter t)
-
 (setq browse-url-browser-function 'eww-browse-url
       browse-url-secondary-browser-function 'browse-url-default-browser
       browse-url-generic-program yx/default-open)
@@ -436,11 +428,17 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package eww
   :ensure nil
   :hook (eww-after-render . 'eww-readable)
-  :custom
-  (eww-auto-rename-buffer 'title)
-  (eww-search-prefix "http://www.google.com/search?q=")
-  (eww-use-external-browser-for-content-type "\\`\\(video/\\|audio\\)")
-  (eww-browse-url-new-window-is-tab nil))
+  :init
+  (setq shr-max-image-proportion 0.6
+        shr-use-xwidgets-for-media t)
+  (setq eww-search-prefix "http://www.google.com/search?q="
+        eww-auto-rename-buffer
+        (lambda () (format "*eww: %s*" (or (plist-get eww-data :title) "..."))))
+  :config
+  (defun yx/eww-tab-line-setup ()
+    (setq-local tab-line-tabs-function #'tab-line-tabs-mode-buffers)
+    (tab-line-mode +1))
+  (add-hook 'eww-mode-hook #'yx/eww-tab-line-setup))
 
 (use-package webjump
   :ensure nil
@@ -694,14 +692,14 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   "C-b" #'denote-find-backlink
   "M-f" #'denote-org-dblock-insert-links
   "M-b" #'denote-org-dblock-insert-backlinks
-  "C-t" #'org-transclusion-add
-  "M-t" #'org-transclusion-add-all
+  ;; "C-t" #'org-transclusion-add
+  ;; "M-t" #'org-transclusion-add-all
   "C-c" #'citar-create-note
   "C-d" #'citar-denote-dwim)
 
 (keymap-global-set "C-c n" yx/note-prefix-map)
 
-(defvar-keymap yx/ctrl-c-q-map
+(defvar-keymap yx/ctrl-c-q-prefix-map
   :doc "Prefix map for `C-c q'"
   "a"   #'org-ql-find-in-agenda
   "d"   #'org-ql-find-in-org-directory
@@ -711,9 +709,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   "C-a" #'ace-link-addr
   "C-l" #'ace-link)
 
-(keymap-global-set "C-c q" yx/ctrl-c-q-map)
+(keymap-global-set "C-c q" yx/ctrl-c-q-prefix-map)
 
-(defvar-keymap yx/ctrl-c-o-map
+(defvar-keymap yx/ctrl-c-o-prefix-map
   :doc "Prefix map for `C-c o'"
   "o" #'crux-open-with
   "a" #'org-agenda-list
@@ -730,15 +728,23 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   "C" #'calc
   "E" #'emms-browser)
 
-(keymap-global-set "C-c o" yx/ctrl-c-o-map)
+(keymap-global-set "C-c o" yx/ctrl-c-o-prefix-map)
 
-(defvar-keymap yx/ctrl-c-t-map
+(defvar-keymap yx/ctrl-c-t-prefix-map
   :doc "Prefix map for toggle mirror mode or others"
   "f" #'flyspell-mode
   "l" #'clm/toggle-command-log-buffer
   "F" #'toggle-frame-maximized)
 
-(keymap-global-set "C-c t" yx/ctrl-c-t-map)
+(keymap-global-set "C-c t" yx/ctrl-c-t-prefix-map)
+
+;; the most commonly used shortcut
+(bind-keys :map global-map
+           :prefix "C-z"
+           :prefix-map yx/ctrl-z-prefix-map
+           ("a" . org-agenda-list)
+           ("c" . org-capture)
+           ("l" . org-store-link))
 
 (bind-keys ([remap move-beginning-of-line]        . crux-move-beginning-of-line) ; C-a
            ([remap goto-line]                     . consult-goto-line)           ;M-g g
@@ -831,9 +837,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("C-c v"     . magit-file-dispatch)
            ("C-c C-v"   . magit-dispatch)
            ("C-c C-d"   . helpful-at-point)
-           ("C-c a"     . org-agenda)
-           ("C-c c"     . org-capture)
-           ("C-c l"     . org-store-link)
            ("C-c d"     . bing-dict-brief)
            ("C-c r"     . query-replace-regexp)
            ("C-c z"     . hs-toggle-hiding)
@@ -858,27 +861,29 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (defvar yx/serif-font "IBM Plex Serif")
 (defvar yx/variable-font "IBM Plex Sans")
 
-(defun yx/setup-fonts ()
-  "Setup fonts."
-  (when (display-graphic-p)
-    (set-face-attribute 'default nil :family yx/font :height yx/font-height)
-    (set-face-attribute 'fixed-pitch nil :family yx/fixed-font)
-    (set-face-attribute 'fixed-pitch-serif nil :family yx/serif-font)
-    (set-face-attribute 'variable-pitch nil :family yx/variable-font)
-    (setq face-font-rescale-alist '(("LXGW WenKai"  . 1.0)
-                                    ("Apple Color Emoji" . 0.8)))
-    (cl-loop for font in '("LXGW WenKai" "Microsoft Yahei" "PingFang SC")
-             when (x-list-fonts font)
-             return (set-fontset-font t '(#x4e00 . #x9fff) font))
-    (cl-loop for font in '("Segoe UI Symbol" "Symbola" "Symbol")
-             when (x-list-fonts font)
-             return (set-fontset-font t 'symbol (font-spec :family font) nil 'prepend))
-    (cl-loop for font in '("Noto Color Emoji" "Apple Color Emoji" "Segoe UI Emoji")
-             when (x-list-fonts font)
-             return (set-fontset-font t 'emoji  (font-spec :family font) nil 'prepend))))
+(defun yx/font-and-theme-setup ()
+  (if (display-graphic-p)
+      (progn
+        (set-face-attribute 'default nil :family yx/font :height yx/font-height)
+        (set-face-attribute 'fixed-pitch nil :family yx/fixed-font)
+        (set-face-attribute 'fixed-pitch-serif nil :family yx/serif-font)
+        (set-face-attribute 'variable-pitch nil :family yx/variable-font)
+        (setq face-font-rescale-alist '(("LXGW WenKai"  . 1.0)
+                                        ("Apple Color Emoji" . 0.8)))
+        (cl-loop for font in '("LXGW WenKai" "Microsoft Yahei" "PingFang SC")
+                 when (x-list-fonts font)
+                 return (set-fontset-font t '(#x4e00 . #x9fff) font))
+        (cl-loop for font in '("Segoe UI Symbol" "Symbola" "Symbol")
+                 when (x-list-fonts font)
+                 return (set-fontset-font t 'symbol (font-spec :family font) nil 'prepend))
+        (cl-loop for font in '("Noto Color Emoji" "Apple Color Emoji" "Segoe UI Emoji")
+                 when (x-list-fonts font)
+                 return (set-fontset-font t 'emoji  (font-spec :family font) nil 'prepend))
+        (load-theme 'modus-operandi-tinted t))
+    (load-theme 'modus-vivendi-tinted t)))
 
-(add-hook 'after-init-hook #'yx/setup-fonts -100)
-(add-hook 'server-after-make-frame-hook #'yx/setup-fonts -100)
+(add-hook 'after-init-hook #'yx/font-and-theme-setup -100)
+(add-hook 'server-after-make-frame-hook #'yx/font-and-theme-setup -100)
 
 (use-package modus
   :ensure nil
@@ -886,11 +891,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (modus-themes-mixed-fonts t)
   (modus-themes-italic-constructs t)
   (modus-themes-bold-constructs t)
-  (modus-themes-variable-pitch-ui t)
-  :init
-  (if (display-graphic-p)
-      (load-theme 'modus-operandi-tinted t)
-    (load-theme 'modus-vivendi-tinted t)))
+  (modus-themes-variable-pitch-ui t))
 
 (use-package ef-themes
   :init
@@ -1016,7 +1017,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :init
   :hook (ibuffer . ibuffer-vc-set-filter-groups-by-vc-root))
 
-;; %% tabbar
 (use-package tab-bar
   :ensure nil
   :hook (after-init . tab-bar-mode)
@@ -1025,18 +1025,25 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (tab-bar-format '(tab-bar-format-menu-bar
                     tab-bar-format-tabs
                     tab-bar-separator
-                    tab-bar-format-add-tab))
+                    tab-bar-format-add-tab
+                    tab-bar-format-align-right
+                    tab-bar-format-global))
   (tab-bar-tab-hints t)
-  (tab-bar-new-tab-to 'right)
-  (tab-bar-new-button-show t)
   (tab-bar-close-button-show nil)
   (tab-bar-new-tab-choice "*scratch*")
   (tab-bar-tab-name-truncated-max 20)
   (tab-bar-select-tab-modifiers '(super))
   :config
-  (tab-bar-history-mode 1)
+  (tab-bar-history-mode +1)
   (keymap-unset tab-bar-map "<wheel-up>")
   (keymap-unset tab-bar-map "<wheel-down>"))
+
+(use-package tab-line
+  :ensure nil
+  :custom
+  (tab-line-close-button-show 'selected)
+  (tab-line-tab-name-function #'tab-line-tab-name-truncated-buffer)
+  (tab-line-tab-name-truncated-max 25))
 
 (use-package sr-speedbar
   :ensure nil
@@ -1080,8 +1087,13 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :hook ((minibuffer-setup-hook vertico-repeat-save)
          (rfn-eshadow-update-overlay . vertico-directory-tidy))
   :config
-  (vertico-mouse-mode 1)
-  (vertico-indexed-mode 1)
+  (defun crm-indicator (args)
+    (cons (concat "[CRM] " (car args)) (cdr args)))
+  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+
+  (vertico-mouse-mode +1)
+  (vertico-indexed-mode +1)
+
   (with-eval-after-load 'savehist
     (add-to-list 'savehist-additional-variables 'vertico-repeat-history)))
 
@@ -1172,14 +1184,12 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :custom
   (corfu-auto t)
   (corfu-cycle t)
-  (corfu-echo-documentation nil)
   :config
   (corfu-echo-mode 1)
   (corfu-history-mode 1)
   (corfu-indexed-mode 1)
   (corfu-popupinfo-mode 1)
-  :bind (:map corfu-map
-              ("M-q" . corfu-quick-insert)))
+  (keymap-set corfu-map "M-q" #'corfu-quick-insert))
 
 (use-package cape
   :init
@@ -1612,14 +1622,13 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
         nnmail-resplit-incoming t
         nnmail-split-fancy-match-partial-words t
         nnmail-split-methods 'nnmail-split-fancy
-        nnmail-split-fancy
-        '(| (: nnmail-split-fancy-with-parent)
-            (to  "yangxue.cs@foxmail.com" "INBOX.foxmail.cs")
-            (to  "yangxue.cs@outlook.com" "INBOX.outlook.cs")
-            (any "emacs-devel@gnu.org"    "INBOX.emacs-devel")
-            (any "emacs-orgmode@gnu.org"  "INBOX.emacs-orgmode")
-            (any "help-gnu-emacs@gnu.org" "INBOX.emacs-help")
-            "INBOX.Misc"))
+        nnmail-split-fancy '(| (: nnmail-split-fancy-with-parent)
+                               (to  "yangxue.cs@foxmail.com" "INBOX.foxmail.cs")
+                               (to  "yangxue.cs@outlook.com" "INBOX.outlook.cs")
+                               (any "emacs-devel@gnu.org"    "INBOX.emacs-devel")
+                               (any "emacs-orgmode@gnu.org"  "INBOX.emacs-orgmode")
+                               (any "help-gnu-emacs@gnu.org" "INBOX.emacs-help")
+                               "INBOX.Misc"))
 
   (setq nnrss-ignore-article-fields '(description guid pubData dc:creator link))
 
@@ -1950,12 +1959,16 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :bind (:map org-mode-map
               ("RET"     . yx/org-return-dwim)
               ("M-g h"   . consult-org-heading)
-              ("C-c M-y" . yx/org-link-copy)
-              ("C-c M-i" . org-web-tools-insert-link-for-url)
-              ("C-c t h" . org-toggle-heading)
-              ("C-c t l" . org-toggle-link-display)
-              ("C-c t v" . yx/org-display-subtree-inline-images)
-              ("C-x n h" . yx/org-show-current-heading-tidily)
+              :prefix "C-c l"
+              :prefix-map yx/org-locle-leader-map
+              ("i"   . org-clock-in)
+              ("o"   . org-clock-out)
+              ("y"   . yx/org-link-copy)
+              ("i"   . org-web-tools-insert-link-for-url)
+              ("h"   . org-toggle-heading)
+              ("TAB" . yx/org-show-current-heading-tidily)
+              ("C-l" . org-latex-preview)
+              ("C-v" . yx/org-display-subtree-inline-images)
               :repeat-map org-heading-navigate-repeat-map
               ("u" . outline-up-heading)
               ("p" . org-previous-visible-heading)
@@ -2177,6 +2190,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (org-level-2 ((t (:height 1.2))))
   (org-level-3 ((t (:height 1.1))))
   (org-document-title ((t (:height 1.5))))
+  (org-drawer ((t (:height 0.85))))
+  (org-special-keyword ((t (:height 0.85))))
 
   :config
   (add-hook 'org-trigger-hook #'save-buffer)
@@ -2339,7 +2354,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :after org
   :demand t
   :custom-face
-  (org-modern-block-name ((t (:height 0.9))))
+  (org-modern-block-name ((t (:height 0.85))))
   :config
   (setq org-modern-block-fringe 0)
   (global-org-modern-mode 1))
@@ -2491,11 +2506,16 @@ set to \\='(template title keywords subdirectory)."
   (project-file-history-behavior 'relativize)
   (project-vc-extra-root-markers '(".envrc" "pyproject.toml")))
 
+(use-package diff-mode
+  :ensure nil
+  :hook (diff-mode . outline-minor-mode)
+  :custom
+  (diff-default-read-only t)
+  (diff-update-on-the-fly t))
+
 (use-package ediff
   :ensure nil
   :custom
-  (diff-default-read-only t)
-  (diff-update-on-the-fly t)
   (ediff-show-clashes-only t)
   (ediff-floating-control-frame t)
   (ediff-window-setup-function #'ediff-setup-windows-plain)
