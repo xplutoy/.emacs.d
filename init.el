@@ -112,6 +112,18 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
     (insert-file-contents file)
     (buffer-string)))
 
+(defun yx/smarter-selective-display (&optional level)
+  "Fold text indented same of more than the cursor.
+
+This function toggles folding according to the level of
+indentation at point. It's convenient not having to specify a
+number nor move point to the desired column.
+"
+  (interactive "P")
+  (if (eq selective-display (1+ (current-column)))
+      (set-selective-display 0)
+    (set-selective-display (or level (1+ (current-column))))))
+
 ;;; Defaults
 (use-package emacs
   :ensure nil
@@ -149,6 +161,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package simple
   :ensure nil
   :custom
+  (kill-whole-line t)
   (track-eol t)
   (line-move-visual nil)
   (indent-tabs-mode nil)
@@ -162,6 +175,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package files
   :ensure nil
   :custom
+  (enable-local-variables :all)
   (view-read-only t)
   (backup-by-copying t)
   (version-control t)
@@ -218,7 +232,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (electric-pair-preserve-balance t)
   (electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
 
-;; %% font-lock
 (use-package jit-lock
   :ensure nil
   :custom
@@ -309,8 +322,13 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (whitespace-style '(face trailing space-before-tab space-after-tab)))
 
 ;; %% xref
-(when-let ((rg (executable-find "rg")))
-  (setq grep-program rg))
+(use-package grep
+  :ensure nil
+  :config
+  (when-let ((rg (executable-find "rg")))
+    (setq grep-program rg))
+  (appendq! grep-find-ignored-directories '(".local"))
+  (appendq! grep-find-ignored-files '("*.mp3" "*.mp4" "*.jpg")))
 
 ;; %% completion minibuffer
 (setq resize-mini-windows t
@@ -716,14 +734,12 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   "c" #'calendar
   "f" #'make-frame
   "d" #'dirvish-side
-  "g" #'gnus
   "r" #'elfeed
   "e" #'yx/eshell-here
   "v" #'vterm-other-window
   "s" #'symbols-outline-show
   "p" #'package-list-packages
   "P" #'proced
-  "C" #'calc
   "E" #'emms-browser)
 
 (keymap-global-set "C-c o" yx/ctrl-c-o-prefix-map)
@@ -740,6 +756,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (bind-keys :map global-map
            :prefix-map yx/ctrl-z-prefix-map
            :prefix "C-z"
+           ("."   . repeat)
            ("a"   . org-agenda-list)
            ("c"   . org-capture)
            ("l"   . org-store-link)
@@ -775,7 +792,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ([remap downcase-word]                 . downcase-dwim)          ; M-l
            ([remap capitalize-word]               . capitalize-dwim)        ; M-c
            ([remap goto-char]                     . avy-goto-char-timer)    ; M-g c
-           ([remap suspend-frame]                 . repeat))                ; C-z
+           ([set-selective-display]               . yx/smarter-selective-display)) ; C-x $
 
 (bind-keys ("C-<f5>"    . dape)
            ("<f5>"      . quickrun)
@@ -1022,9 +1039,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :custom
   (tab-bar-show t)
   (tab-bar-format '(tab-bar-format-menu-bar
-                    tab-bar-format-tabs
-                    tab-bar-separator
-                    tab-bar-format-add-tab
+                    tab-bar-format-tabs-groups
                     tab-bar-format-align-right
                     tab-bar-format-global))
   (tab-bar-tab-hints t)
@@ -1375,7 +1390,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 ;; %% emms
 (use-package emms
-  :hook ((emms-playlist-mode . hl-line-mode))
+  :hook ((emms-browser-mode . hl-line-mode)
+         (emms-browser-mode . turn-on-follow-mode))
   :custom
   (emms-lyrics-dir "~/Music/lyrics/")
   (emms-source-file-default-directory "~/Music/")
@@ -1512,7 +1528,11 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (wdired-create-parent-directories t)
   (wdired-allow-to-change-permissions t)
   (dired-guess-shell-alist-user
-   `(("\\.\\(?:docx\\|pdf\\|djvu\\gif)\\'" ,yx/default-open)))
+   `(("\\.\\(?:docx\\|pdf\\|djvu\\)\\'" ,yx/default-open)
+     ("\\.\\(?:html?\\|csv\\|md\\)\\'" ,yx/default-open)
+     ("\\.\\(?:jpe?g\\|png\\|gif\\|xpm\\)\\'" ,yx/default-open)
+     ("\\.\\(?:mp3\\|flac\\|wav\\|ogg\\)\\'" ,yx/default-open)
+     ("\\.\\(?:mp4\\|mkv\\|avi\\|mov\\|wmv\\|flv\\|mpg\\)\\'" ,yx/default-open)))
   :config
   (defun yx/dired-setup ()
     (setq dired-omit-files
@@ -1868,9 +1888,11 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   "\n;;; " (file-name-nondirectory (buffer-file-name)) " ends here\n")
 
 ;;; Reading
-(setq
- doc-view-continuous t
- doc-view-resolution 300)
+(use-package doc-view
+  :ensure nil
+  :custom
+  (doc-view-continuous t)
+  (doc-view-resolution 300))
 
 (use-package pdf-tools
   :hook (pdf-tools-enabled . pdf-isearch-minor-mode)
@@ -1880,7 +1902,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (setq-default pdf-view-display-size 'fit-width)
   (pdf-loader-install))
 
-;; %% olivetti
 (use-package olivetti
   :hook ((org-mode org-agenda-mode) . olivetti-mode)
   :init
@@ -1889,7 +1910,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
         olivetti-body-width 0.66
         olivetti-minimum-body-width (+ fill-column 2)))
 
-;; %% elfeed
 (use-package elfeed
   :bind (:map elfeed-show-mode-map
               ("w" . elfeed-show-yank)
@@ -1903,7 +1923,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
           ("https://www.inference.vc/rss" ai)
           ("https://spaces.ac.cn/feed" ai webkit)
           ("https://ruder.io/rss/index.rss" ai)
-          ("https://lilianweng.github.io/index.xml" ai webkit)
+          ("https://lilianweng.github.io/index.xml" ai)
           ("https://www.juliabloggers.com/feed/" julia)
           ("https://planet.lisp.org/rss20.xml" lisp)
           ("https://planet.scheme.org/atom.xml" scheme)
@@ -1912,7 +1932,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
           ("http://wingolog.org/feed/atom" lang)
           ("http://lambda-the-ultimate.org/rss.xml" lang)
           ("https://matt.might.net/articles/feed.rss" lang)
-          ("http://www.ruanyifeng.com/blog/atom.xml" tech webkit)
+          ("http://www.ruanyifeng.com/blog/atom.xml" tech)
           ("https://vimtricks.com/feed/" vim)
           ("https://egh0bww1.com/rss.xml" emacs)
           ("https://karthinks.com/index.xml" emacs)
@@ -1949,8 +1969,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :after elfeed
   :bind (:map elfeed-webkit-map
               ("q" . yx/elfeed-kill-entry))
-  :config
-  (elfeed-webkit-auto-toggle-by-tag))
+  :init (elfeed-webkit-auto-toggle-by-tag))
 
 ;;; Writing
 (use-package org
@@ -2067,12 +2086,12 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                                               :latex-compiler ("xelatex -no-pdf -interaction nonstopmode -output-directory %o %f")
                                               :image-converter ("dvisvgm %o/%b.xdv --no-fonts --exact-bbox --scale=%S --output=%O"))))
 
-  (org-footnote-auto-adjust nil)
+  (org-footnote-auto-adjust t)
 
-  (org-src-fontify-natively t)
   (org-src-tab-acts-natively t)
+  (org-src-fontify-natively t)
   (org-confirm-babel-evaluate nil)
-  (org-src-preserve-indentation nil)
+  (org-src-preserve-indentation t)
   (org-src-window-setup 'split-window-right)
   (org-src-ask-before-returning-to-edit-buffer nil)
 
