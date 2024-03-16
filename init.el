@@ -135,6 +135,9 @@ number nor move point to the desired column.
   (tab-width 8)
   (visible-bell nil)
   (fill-column 89)
+  (long-line-threshold 1000)
+  (large-hscroll-threshold 1000)
+  (syntax-wholeline-max 1000)
   (cursor-in-non-selected-windows nil)
   (x-stretch-cursor nil)
   (x-underline-at-descent-line t)
@@ -146,8 +149,10 @@ number nor move point to the desired column.
   (use-short-answers t)
   (delete-by-moving-to-trash t)
   (window-resize-pixelwise t)
+  (window-combination-resize t)
   (frame-resize-pixelwise t)
   (kill-buffer-delete-auto-save-files t)
+  (bidi-inhibit-bpa t)
   (bidi-display-reordering nil)
   (bidi-paragraph-direction 'left-to-right)
   (auto-window-vscroll nil)
@@ -161,6 +166,8 @@ number nor move point to the desired column.
 (use-package simple
   :ensure nil
   :custom
+  (shell-command-prompt-show-cwd t)
+  (async-shell-command-display-buffer nil)
   (kill-whole-line t)
   (track-eol t)
   (line-move-visual nil)
@@ -168,7 +175,6 @@ number nor move point to the desired column.
   (blink-matching-paren nil)
   (truncate-partial-width-windows nil)
   (set-mark-command-repeat-pop t)
-  (shell-command-prompt-show-cwd t)
   (remote-file-name-inhibit-auto-save t)
   (backward-delete-char-untabify-method 'hungry))
 
@@ -263,6 +269,7 @@ number nor move point to the desired column.
   :ensure nil
   :custom
   (eldoc-idle-delay 0.3)
+  (eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly)
   (eldoc-echo-area-use-multiline-p nil)
   (eldoc-echo-area-display-truncation-message nil))
 
@@ -394,15 +401,19 @@ number nor move point to the desired column.
 (setq password-cache t
       password-cache-expiry (* 60 60))
 
-;; %% mouse
-(setq mouse-yank-at-point t
-      mouse-wheel-tilt-scroll t
-      mouse-wheel-follow-mouse t
-      mouse-drag-mode-line-buffer t
-      mouse-avoidance-nudge-dist 8
-      mouse-drag-and-drop-region-cross-program t
-      mouse-wheel-scroll-amount-horizontal 2
-      mouse-wheel-scroll-amount '(2 ((shift) . hscroll)))
+(use-package mouse
+  :ensure nil
+  :custom
+  (mouse-yank-at-point t)
+  (mouse-drag-mode-line-buffer t)
+  (mouse-drag-and-drop-region-cross-program t))
+
+(use-package mwheel
+  :ensure nil
+  :custom
+  (mouse-wheel-progressive-speed nil)
+  (mouse-wheel-scroll-amount-horizontal 2)
+  (mouse-wheel-scroll-amount '(2 ((shift) . hscroll))))
 
 (use-package pixel-scroll
   :ensure nil
@@ -487,12 +498,6 @@ number nor move point to the desired column.
   (auto-revert-check-vc-info t)
   (global-auto-revert-non-file-buffers t))
 
-;; %% https://emacs-china.org/t/emacs-1w/25802/20
-(setq bidi-inhibit-bpa t
-      long-line-threshold 1000
-      syntax-wholeline-max 1000
-      large-hscroll-threshold 1000)
-
 (use-package so-long
   :ensure nil
   :hook (after-init . global-so-long-mode)
@@ -558,7 +563,8 @@ number nor move point to the desired column.
                                         Info-mode
                                         info-lookup-mode
                                         magit-mode
-                                        magit-log-mode)))
+                                        magit-log-mode))
+  (desktop-save-mode +1))
 
 (use-package tramp
   :ensure nil
@@ -623,7 +629,6 @@ number nor move point to the desired column.
 
 (defun yx/global-mirror-mode-toggle ()
   (repeat-mode            1)
-  (desktop-save-mode     -1)
   (blink-cursor-mode     -1)
   (global-reveal-mode     1)
   (auto-compression-mode  1)
@@ -641,8 +646,6 @@ number nor move point to the desired column.
 
 (with-current-buffer "*scratch*"
   (emacs-lock-mode 'kill))
-
-
 
 ;;; Keymaps
 ;; %% 全局按键
@@ -769,30 +772,33 @@ number nor move point to the desired column.
            ([remap switch-to-buffer]              . consult-buffer)              ; C-x b
            ([remap list-buffers]                  . ibuffer)                 ; C-x C-b
            ([remap repeat-complex-command]        . consult-complex-command) ; C-x M-:
-           ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
-           ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame)
-           ([remap project-switch-to-buffer]      . consult-project-buffer) ; C-x p b
-           ([remap yank-pop]                      . consult-yank-pop)       ;M-y
-           ([remap bookmark-jump]                 . consult-bookmark)       ;C-x r b
-           ([remap imenu]                         . consult-imenu)          ;M-g i
-           ([remap describe-function]             . helpful-callable)       ; C-h f
-           ([remap describe-key]                  . helpful-key)            ; C-h k
-           ([remap describe-command]              . helpful-command)        ; C-h x
-           ([remap describe-variable]             . helpful-variable)       ; C-h v
-           ([remap list-directory]                . zoxide-travel)          ; C-x C-d
-           ([remap dired-at-point]                . consult-dir)            ; C-x d
-           ([remap dabbrev-expand]                . hippie-expand)          ; M-/
-           ([remap comment-dwim]                  . yx/comment-dwim)        ; M-;
-           ([remap keyboard-quit]                 . yx/keyboard-quit-dwim)  ; C-g
-           ([remap kill-buffer]                   . yx/kill-buffer-dwim)    ; C-x k
-           ([remap save-buffers-kill-emacs]       . delete-frame)           ; s-q
-           ([remap open-line]                     . crux-smart-open-line)   ; C-o
-           ([remap fill-paragraph]                . yx/fill-unfill)         ; M-q
-           ([remap upcase-word]                   . upcase-dwim)            ; M-u
-           ([remap downcase-word]                 . downcase-dwim)          ; M-l
-           ([remap capitalize-word]               . capitalize-dwim)        ; M-c
-           ([remap goto-char]                     . avy-goto-char-timer)    ; M-g c
-           ([set-selective-display]               . yx/smarter-selective-display)) ; C-x $
+           ([remap switch-to-buffer-other-window] . consult-buffer-other-window) ; C-x 4 b
+           ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame) ; C-x 5 b
+           ([remap project-switch-to-buffer]      . consult-project-buffer)     ; C-x p b
+           ([remap yank-pop]                      . consult-yank-pop)           ;M-y
+           ([remap bookmark-jump]                 . consult-bookmark)           ;C-x r b
+           ([remap imenu]                         . consult-imenu)              ;M-g i
+           ([remap describe-function]             . helpful-callable)           ; C-h f
+           ([remap describe-key]                  . helpful-key)                ; C-h k
+           ([remap describe-command]              . helpful-command)            ; C-h x
+           ([remap describe-variable]             . helpful-variable)           ; C-h v
+           ([remap list-directory]                . zoxide-travel)              ; C-x C-d
+           ([remap dired-at-point]                . consult-dir)                ; C-x d
+           ([remap dabbrev-expand]                . hippie-expand)              ; M-/
+           ([remap comment-dwim]                  . yx/comment-dwim)            ; M-;
+           ([remap keyboard-quit]                 . yx/keyboard-quit-dwim)      ; C-g
+           ([remap kill-buffer]                   . yx/kill-buffer-dwim)        ; C-x k
+           ([remap save-buffers-kill-emacs]       . delete-frame)               ; s-q
+           ([remap open-line]                     . crux-smart-open-line)       ; C-o
+           ([remap fill-paragraph]                . yx/fill-unfill)             ; M-q
+           ([remap upcase-word]                   . upcase-dwim)                ; M-u
+           ([remap downcase-word]                 . downcase-dwim)              ; M-l
+           ([remap capitalize-word]               . capitalize-dwim)            ; M-c
+           ([remap goto-char]                     . avy-goto-char-timer)        ; M-g c
+           ([remap text-scale-adjust]             . global-text-scale-adjust)   ; C-x C-+
+           ([remap global-text-scale-adjust]      . text-scale-adjust) ; C-x C-M-+
+           ([set-selective-display]               . yx/smarter-selective-display) ; C-x $
+           )
 
 (bind-keys ("C-<f5>"    . dape)
            ("<f5>"      . quickrun)
@@ -858,7 +864,7 @@ number nor move point to the desired column.
            ("C-c d"     . bing-dict-brief)
            ("C-c r"     . query-replace-regexp)
            ("C-c z"     . hs-toggle-hiding)
-           ("C-c Z"     . hs-show-all)
+           ("C-c C-z"   . hs-show-all)
            ("C-x a a"   . align)
            ("C-x a r"   . align-regexp)
            ("C-x t R"   . burly-reset-tab)
@@ -905,6 +911,7 @@ number nor move point to the desired column.
   :ensure nil
   :custom
   (modus-themes-mixed-fonts t)
+  (modus-themes-org-blocks 'tinted-background)
   (modus-themes-italic-constructs t)
   (modus-themes-bold-constructs t)
   (modus-themes-variable-pitch-ui t))
@@ -1158,7 +1165,7 @@ number nor move point to the desired column.
                  (window-parameters (mode-line-format . none))))
   :bind (("C-." . embark-act)
          :map dired-mode-map
-         ("e" . yx/dired-open-externally)
+         ("M-RET" . yx/dired-open-externally)
          :map minibuffer-local-map
          ("C-c C-e" . embark-export)
          ("C-c C-c" . embark-collect)
@@ -1192,12 +1199,13 @@ number nor move point to the desired column.
               ("C-x C-d" . consult-dir)
               ("C-x C-j" . consult-dir-jump-file)))
 
-;; %% corfu
 (use-package corfu
   :hook ((text-mode prog-mode) . corfu-mode)
   :custom
   (corfu-auto t)
+  (corfu-auto-delay 0.5)
   (corfu-cycle t)
+  (corfu-popupinfo-delay nil)
   :config
   (corfu-echo-mode 1)
   (corfu-history-mode 1)
@@ -1904,11 +1912,13 @@ number nor move point to the desired column.
 
 (use-package olivetti
   :hook ((org-mode org-agenda-mode) . olivetti-mode)
-  :init
-  (setq olivetti-style nil
-        olivetti-mode-map nil
-        olivetti-body-width 0.66
-        olivetti-minimum-body-width (+ fill-column 2)))
+  :bind (("<left-margin> <mouse-1>" . ignore)
+         ("<right-margin> <mouse-1>" . ignore))
+  :custom
+  (olivetti-style nil)
+  (olivetti-mode-map nil)
+  (olivetti-body-width 0.68)
+  (olivetti-minimum-body-width (+ fill-column 2)))
 
 (use-package elfeed
   :bind (:map elfeed-show-mode-map
@@ -2391,7 +2401,9 @@ number nor move point to the desired column.
   (valign-fancy-bar 1))
 
 (use-package mixed-pitch
-  :hook (org-mode . mixed-pitch-mode))
+  :hook ((org-mode
+          eww-mode
+          elfeed-show-mode) . mixed-pitch-mode))
 
 (use-package org-download
   :after org
@@ -2637,16 +2649,15 @@ set to \\='(template title keywords subdirectory)."
     (mapc #'kill-buffer (magit-mode-get-buffers))))
 
 (use-package diff-hl
-  :hook
-  (after-init . global-diff-hl-mode)
-  (dired-mode . diff-hl-dired-mode)
-  (magit-post-refresh . diff-hl-magit-post-refresh)
+  :hook ((after-init . global-diff-hl-mode)
+         (dired-mode . diff-hl-dired-mode)
+         (magit-post-refresh . diff-hl-magit-post-refresh))
   :custom
   (diff-hl-disable-on-remote t)
-  (diff-hl-show-staged-changes t)
+  (diff-hl-show-staged-changes nil)
   :config
-  (diff-hl-flydiff-mode 1)
-  (global-diff-hl-show-hunk-mouse-mode 1))
+  (diff-hl-flydiff-mode +1)
+  (global-diff-hl-show-hunk-mouse-mode -1))
 
 (use-package git-modes)
 
