@@ -242,9 +242,9 @@ number nor move point to the desired column.
   :ensure nil
   :custom
   (jit-lock-defer-time 0)
-  (jit-lock-chunk-size 4096)
   (jit-lock-stealth-time 2.0)
-  (jit-lock-stealth-nice 0.2))
+  (jit-lock-stealth-nice 0.2)
+  (jit-lock-chunk-size (* (window-body-height) fill-column)))
 
 (use-package autoinsert
   :ensure nil
@@ -307,18 +307,17 @@ number nor move point to the desired column.
 (use-package recentf
   :ensure nil
   :hook (after-init . recentf-mode)
+  :custom
+  (recentf-auto-cleanup 300)
+  (recentf-max-saved-items 100)
+  (recentf-exclude '("\\.?cache.*" "^/.*" "^/ssh:" "\\.git/.+$"
+                     "COMMIT_MSG" "COMMIT_EDITMSG" "/Downloads/" "/elpa/"
+                     "\\.\\(?:gif\\|svg\\|png\\|jpe?g\\|bmp\\|xpm\\)$"
+                     "\\.\\(?:gz\\|zip\\|gpg\\)$"
+                     file-remote-p))
   :config
-  (setq recentf-max-saved-items 100
-        recentf-auto-cleanup "1:00am"
-        recentf-exclude '("\\.?cache.*" "^/.*" "^/ssh:" "\\.git/.+$"
-                          "COMMIT_MSG" "COMMIT_EDITMSG" "/Downloads/" "/elpa/"
-                          "\\.\\(?:gif\\|svg\\|png\\|jpe?g\\|bmp\\|xpm\\)$"
-                          "\\.\\(?:gz\\|zip\\|gpg\\)$"
-                          file-remote-p))
-
   (add-to-list 'recentf-exclude
                (recentf-expand-file-name no-littering-var-directory))
-
   ;; Text properties inflate the size of recentf's files
   (add-to-list 'recentf-filename-handlers #'substring-no-properties))
 
@@ -328,7 +327,6 @@ number nor move point to the desired column.
   :custom
   (whitespace-style '(face trailing space-before-tab space-after-tab)))
 
-;; %% xref
 (use-package grep
   :ensure nil
   :config
@@ -460,7 +458,8 @@ number nor move point to the desired column.
   :init
   (setq shr-max-image-proportion 0.6
         shr-use-xwidgets-for-media t)
-  (setq eww-search-prefix "http://www.google.com/search?q="
+  (setq eww-restore-desktop t
+        eww-search-prefix "http://www.google.com/search?q="
         eww-auto-rename-buffer
         (lambda () (format "*eww: %s*" (or (plist-get eww-data :title) "..."))))
   :config
