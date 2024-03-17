@@ -11,7 +11,7 @@
 (defvar yx/var-dir "~/.emacs.d/.local/")
 
 (prefer-coding-system 'utf-8)
-(set-language-environment 'utf-8)
+(set-language-environment 'UTF-8)
 
 (setenv "http_proxy"  "http://127.0.0.1:7890")
 (setenv "https_proxy" "http://127.0.0.1:7890")
@@ -30,6 +30,7 @@
         ("melpa-stable" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/stable-melpa/")))
 
 (setq package-quickstart nil
+      package-native-compile t
       package-install-upgrade-built-in t
       package-user-dir (expand-file-name "elpa" yx/var-dir)
       package-gnupghome-dir (expand-file-name "gnupg" package-user-dir))
@@ -128,6 +129,7 @@ number nor move point to the desired column.
 (use-package emacs
   :ensure nil
   :custom
+  (load-prefer-newer t)
   (user-full-name "yangxue")
   (system-time-locale "C")
   (use-dialog-box nil)
@@ -151,21 +153,27 @@ number nor move point to the desired column.
   (window-resize-pixelwise t)
   (window-combination-resize t)
   (frame-resize-pixelwise t)
+  (frame-inhibit-implied-resize t)
+  (redisplay-skip-fontification-on-input t)
   (kill-buffer-delete-auto-save-files t)
   (bidi-inhibit-bpa t)
   (bidi-display-reordering nil)
   (bidi-paragraph-direction 'left-to-right)
+  (hscroll-margin 2)
+  (hscroll-step 1)
   (auto-window-vscroll nil)
   (auto-hscroll-mode 'current-line)
   (scroll-step 1)
-  (scroll-margin 1)
-  (scroll-conservatively 101)
+  (scroll-margin 0)
+  (scroll-conservatively 10)
   (fast-but-imprecise-scrolling t)
-  (scroll-preserve-screen-position 'always))
+  (scroll-preserve-screen-position t)
+  (inhibit-compacting-font-caches t))
 
 (use-package simple
   :ensure nil
   :custom
+  (idle-update-delay 1.0)
   (shell-command-prompt-show-cwd t)
   (async-shell-command-display-buffer nil)
   (kill-whole-line t)
@@ -207,6 +215,7 @@ number nor move point to the desired column.
 (use-package startup
   :ensure nil
   :custom
+  (initial-major-mode 'fundamental-mode)
   (inhibit-default-init t)
   (inhibit-splash-screen t)
   (inhibit-startup-message t)
@@ -295,8 +304,8 @@ number nor move point to the desired column.
   :ensure nil
   :hook ((prog-mode conf-mode) . display-line-numbers-mode)
   :custom
-  (display-line-numbers-type t)
-  (display-line-numbers-width 4)
+  (display-line-numbers-width 3)
+  (display-line-numbers-widen t)
   (display-line-numbers-major-tick 20)
   (display-line-numbers-width-start t))
 
@@ -581,13 +590,15 @@ number nor move point to the desired column.
 
 (use-package appt
   :ensure nil
-  :hook (emacs-startup . appt-activate)
+  :defer 5
   :custom
   (appt-audible t)
   (appt-display-interval 10)
   (appt-display-duration 5)
   (appt-display-format 'window)
-  (appt-message-warning-time 2))
+  (appt-message-warning-time 2)
+  :config
+  (appt-activate))
 
 (use-package calendar
   :ensure nil
@@ -616,6 +627,9 @@ number nor move point to the desired column.
         w32-get-true-file-attributes nil
         w32-pipe-read-delay 0
         w32-pipe-buffer-size  (* 64 1024))))
+
+(unless IS-WIN
+  (setq selection-coding-system 'utf-8))
 
 ;; %% hook
 (defun yx/text-mode-setup ()
@@ -872,9 +886,6 @@ number nor move point to the desired column.
            ("C-h B"     . embark-bindings-at-point))
 
 ;;; Ui
-(when IS-MAC
-  (menu-bar-mode 1))
-
 ;; %% font
 (defvar yx/font-height 140)
 (defvar yx/font "JetBrains Mono")

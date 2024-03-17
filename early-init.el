@@ -11,28 +11,23 @@
 ;;
 
 ;;; Code:
-(setq load-prefer-newer t
-      inhibit-default-init t
-      byte-compile-warnings nil
-      package-native-compile t
-      package-enable-at-startup nil
-      native-comp-async-report-warnings-errors nil)
+(setq package-enable-at-startup nil)
 
+(push '(menu-bar-lines . 0)    default-frame-alist)
+(push '(tool-bar-lines . 0)    default-frame-alist)
+(push '(vertical-scroll-bars)  default-frame-alist)
 (push '(undecorated-round . t) default-frame-alist)
 (push '(fullscreen . maximized) initial-frame-alist)
 (when (featurep 'ns) (push '(ns-transparent-titlebar . t) default-frame-alist))
 
 (tooltip-mode    -1)
-(tool-bar-mode   -1)
-(menu-bar-mode   -1)
-(scroll-bar-mode -1)
 (fringe-mode '(8 . 12))
 
-(setq frame-inhibit-implied-resize t
+(setq byte-compile-warnings nil
+      native-comp-async-report-warnings-errors nil
       ffap-machine-p-known 'reject
       read-process-output-max (* 4 1024 1024)
-      gc-cons-threshold most-positive-fixnum
-      redisplay-skip-fontification-on-input t)
+      gc-cons-threshold most-positive-fixnum)
 
 ;; %% 文件句柄
 (let ((old-file-name-handler-alist file-name-handler-alist))
@@ -49,7 +44,7 @@
    (convert-standard-filename
     (expand-file-name ".local/eln-cache" user-emacs-directory))))
 
-(defun display-startup-echo-area-message ()
-  (message nil))
+(advice-add #'display-startup-screen :override #'ignore)
+(advice-add #'display-startup-echo-area-message :override #'ignore)
 
 ;;; early-init.el ends here

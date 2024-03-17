@@ -490,7 +490,6 @@ INCLUDE-LINKED is passed to `org-display-inline-images'."
               (message "%d images displayed inline"
                        (length image-overlays))))))))
 
-;;; https://emacs-china.org/t/elfeed-nerd-icons/26125
 ;; borrow from https://protesilaos.com/emacs/dotemacs
 ;;;###autoload
 (defun yx/keyboard-quit-dwim ()
@@ -507,16 +506,16 @@ The DWIM behaviour of this command is as follows:
 - When the Completions buffer is selected, close it.
 - In every other case use the regular `keyboard-quit'."
   (interactive)
-  (cond
-   ((region-active-p)
-    (keyboard-quit))
-   ((derived-mode-p 'completion-list-mode)
-    (delete-completion-window))
-   ((> (minibuffer-depth) 0)
-    (abort-recursive-edit))
-   (t
-    (keyboard-quit)))
-  )
+  (cond ((region-active-p)
+         (keyboard-quit))
+        ;; don't abort macros
+        ((or defining-kbd-macro executing-kbd-macro) nil)
+        ((derived-mode-p 'completion-list-mode)
+         (delete-completion-window))
+        ((> (minibuffer-depth) 0)
+         (abort-recursive-edit))
+        (t
+         (keyboard-quit))))
 
 
 ;; %% end
