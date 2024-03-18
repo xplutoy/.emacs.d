@@ -362,32 +362,27 @@ and the entire buffer (in the absense of a region)."
     (kill-new url)
     (message (concat "Copied URL: " url))))
 
-
-;; https://emacs-china.org/t/org-link/13502
+;; @see doom  +org--toggle-inline-images-in-subtree
 ;;;###autoload
-(defun yx/org-display-subtree-inline-images ()
-  "Toggle the display of inline images.
-INCLUDE-LINKED is passed to `org-display-inline-images'."
+(defun yx/org-toggle-inline-images-in-subtree (&optional beg end refresh)
+  "Refresh inline image previews in the current heading/tree."
   (interactive)
-  (save-excursion
-    (save-restriction
-      (org-narrow-to-subtree)
-      (let* ((beg (point-min))
-             (end (point-max))
-             (image-overlays (cl-intersection
-                              org-inline-image-overlays
-                              (overlays-in beg end))))
-        (if image-overlays
-            (progn
-              (org-remove-inline-images)
-              (message "Inline image display turned off"))
-          (org-display-inline-images t t beg end)
-          (setq image-overlays (cl-intersection
-                                org-inline-image-overlays
-                                (overlays-in beg end)))
-          (if (and (org-called-interactively-p) image-overlays)
-              (message "%d images displayed inline"
-                       (length image-overlays))))))))
+  (let* ((beg (or beg
+                  (if (org-before-first-heading-p)
+                      (save-excursion (point-min))
+                    (save-excursion (org-back-to-heading) (point)))))
+         (end (or end
+                  (if (org-before-first-heading-p)
+                      (save-excursion (org-next-visible-heading 1) (point))
+                    (save-excursion (org-end-of-subtree) (point)))))
+         (overlays (cl-remove-if-not (lambda (ov) (overlay-get ov 'org-image-overlay))
+                                     (ignore-errors (overlays-in beg end)))))
+    (dolist (ov overlays nil)
+      (delete-overlay ov)
+      (setq org-inline-image-overlays (delete ov org-inline-image-overlays)))
+    (when (or refresh (not overlays))
+      (org-display-inline-images t t beg end)
+      t)))
 
 ;; @see https://protesilaos.com/emacs/dotemacs
 ;;;###autoload

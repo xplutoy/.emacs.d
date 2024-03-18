@@ -125,6 +125,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (tab-width 8)
   (visible-bell nil)
   (fill-column 89)
+  (resize-mini-windows t)
+  (enable-recursive-minibuffers t)
   (long-line-threshold 1000)
   (large-hscroll-threshold 1000)
   (syntax-wholeline-max 1000)
@@ -161,6 +163,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package simple
   :ensure nil
   :custom
+  (completion-show-help nil)
   (idle-update-delay 1.0)
   (shell-command-prompt-show-cwd t)
   (async-shell-command-display-buffer nil)
@@ -172,6 +175,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (truncate-partial-width-windows nil)
   (set-mark-command-repeat-pop t)
   (remote-file-name-inhibit-auto-save t)
+  (read-extended-command-predicate 'command-completion-default-include-p)
   (backward-delete-char-untabify-method 'hungry))
 
 (use-package files
@@ -332,29 +336,19 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (appendq! grep-find-ignored-directories '(".local"))
   (appendq! grep-find-ignored-files '("*.mp3" "*.mp4" "*.jpg")))
 
-;; %% completion minibuffer
-(setq resize-mini-windows t
-      max-mini-window-height 0.3
-      enable-recursive-minibuffers t)
-
-(setq completions-detailed t
-      completion-ignore-case t
-      completions-format 'one-column
-      completions-header-format nil
-      completions-max-height 30
-      completion-auto-help 'visible
-      completion-cycle-threshold 3
-      completion-show-help nil
-      completion-show-inline-help nil
-      completion-auto-select 'second-tab
-      minibuffer-visible-completions t)
-
-(setq read-extended-command-predicate 'command-completion-default-include-p)
-
-(setq minibuffer-prompt-properties
-      '(read-only t cursor-intangible t face minibuffer-prompt))
-(add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-
+(use-package minibuffer
+  :ensure nil
+  :custom
+  (completions-format 'one-column)
+  (completions-max-height 30)
+  (completions-header-format nil)
+  (completion-auto-help 'visible)
+  (completion-show-inline-help nil)
+  (completion-auto-select 'second-tab)
+  :init
+  (setq minibuffer-prompt-properties
+        '(read-only t cursor-intangible t face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode))
 
 (use-package abbrev
   :ensure nil
@@ -363,12 +357,15 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (save-abbrevs 'silently)
   (abbrev-suggest-hint-threshold 2))
 
-(setq hippie-expand-max-buffers 5
-      hippie-expand-try-functions-list '(try-complete-file-name
-                                         try-complete-file-name-partially
-                                         try-expand-dabbrev
-                                         try-expand-dabbrev-from-kill
-                                         try-expand-dabbrev-all-buffers))
+(use-package hippie-exp
+  :ensure nil
+  :custom
+  (hippie-expand-max-buffers 5)
+  (hippie-expand-try-functions-list '(try-expand-line
+                                      try-complete-file-name-partially
+                                      try-expand-dabbrev
+                                      try-expand-dabbrev-from-kill
+                                      try-expand-dabbrev-all-buffers)))
 
 (use-package isearch
   :ensure nil
@@ -387,14 +384,17 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (if IS-MAC
       (keymap-set isearch-mode-map "s-v" 'isearch-yank-kill)))
 
-;; %% epa
-(setq auth-sources `(,(no-littering-expand-etc-file-name "authinfo.gpg"))
-      auth-source-debug t
-      epa-pinentry-mode 'loopback
-      epa-file-select-keys yx/gpg-encrypt-key)
+(use-package epa
+  :ensure nil
+  :custom
+  (epa-pinentry-mode 'loopback)
+  (epa-file-select-keys yx/gpg-encrypt-key))
 
-(setq password-cache t
-      password-cache-expiry (* 60 60))
+(use-package auth-sources
+  :ensure nil
+  :custom
+  (auth-source-debug t)
+  (auth-sources `(,(no-littering-expand-etc-file-name "authinfo.gpg"))))
 
 (use-package mouse
   :ensure nil
@@ -440,7 +440,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (proced-auto-update-flag nil))
 
 ;; %% browser-url
-(setq browse-url-browser-function 'eww-browse-url
+(setq browse-url-browser-function #'eww-browse-url
       browse-url-secondary-browser-function 'browse-url-default-browser
       browse-url-generic-program yx/default-open)
 
@@ -508,7 +508,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (setq dictionary-server "dict.org"
       dictionary-default-popup-strategy "lev"
       dictionary-create-buttons nil
-      dictionary-display-definition-function 'dictionary-display-definition-in-help-buffer)
+      dictionary-display-definition-function #'dictionary-display-definition-in-help-buffer)
 
 (use-package saveplace
   :ensure nil
@@ -1083,13 +1083,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package tabspaces
   :hook (after-init . tabspaces-mode)
   :custom
-  (tabspaces-use-filtered-buffers-as-default nil)
-  (tabspaces-default-tab "Main")
-  (tabspaces-remove-to-default t)
-  (tabspaces-include-buffers '("*scratch*"))
   (tabspaces-initialize-project-with-todo nil)
+  (tabspaces-use-filtered-buffers-as-default nil)
   (tabspaces-session t)
-  (tabspaces-session-auto-restore t)
+  (tabspaces-session-auto-restore nil)
   (tabspaces-session-file (no-littering-expand-var-file-name "tabsession.el")))
 
 ;;; Completion
@@ -1516,6 +1513,17 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :hook ((prog-mode text-mode) . outli-mode)
   :bind (:map outli-mode-map
               ("C-c C-u" . (lambda () (interactive) (outline-back-to-heading)))))
+
+(use-package gptel
+  :custom
+  (gptel-default-mode 'org-mode)
+  (gptel-model "moonshot-v1-32k")
+  (gptel-backend (gptel-make-openai "moonshot"
+                   :key #'gptel-api-key
+                   :host "api.moonshot.cn"
+                   :models '("moonshot-v1-8k"
+                             "moonshot-v1-32k"
+                             "moonshot-v1-128k"))))
 
 ;;; Dired
 (use-package dired
@@ -2001,7 +2009,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
               ("M-t" . org-transclusion-remove)
               ("TAB" . yx/org-show-current-heading-tidily)
               ("C-l" . org-latex-preview)
-              ("C-v" . yx/org-display-subtree-inline-images)
+              ("C-v" . yx/org-toggle-inline-images-in-subtree)
               :repeat-map org-heading-navigate-repeat-map
               ("u" . outline-up-heading)
               ("p" . org-previous-visible-heading)
