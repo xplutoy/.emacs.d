@@ -70,8 +70,7 @@ When the region is active, comment its lines instead."
   "Switch to '*scratch*' buffer and maximize it"
   (interactive)
   (scratch-buffer)
-  (delete-other-windows)
-  )
+  (delete-other-windows))
 
 ;;;###autoload
 (defun yx/new-empty-buffer ()
@@ -80,16 +79,14 @@ Warning: new buffer is not prompted for save when killed, see `kill-buffer'."
   (interactive)
   (let ((xbuf (generate-new-buffer "untitled")))
     (set-buffer-major-mode xbuf)
-    (switch-to-buffer xbuf)
-    ))
+    (switch-to-buffer xbuf)))
 
 ;;;###autoload
 (defun yx/kill-buffer-dwim (&optional arg)
   (interactive "P")
   (if arg
       (call-interactively 'kill-buffer)
-    (kill-current-buffer))
-  )
+    (kill-current-buffer)))
 
 ;;;###autoload
 (defun crux-top-join-line ()
@@ -333,104 +330,7 @@ and the entire buffer (in the absense of a region)."
           (list (region-beginning) (region-end))
         (list (point) (line-end-position))))))
 
-;; %% yx/org-return-dwin
-(defun unpackaged/org-element-descendant-of (type element)
-  "Return non-nil if ELEMENT is a descendant of TYPE.
-TYPE should be an element type, like `item' or `paragraph'.
-ELEMENT should be a list like that returned by `org-element-context'."
-  ;; MAYBE: Use `org-element-lineage'.
-  (when-let* ((parent (org-element-property :parent element)))
-    (or (eq type (car parent))
-        (unpackaged/org-element-descendant-of type parent))))
-
-;;;###autoload
-(defun yx/org-return-dwim (&optional default)
-  "A helpful replacement for `org-return'.  With prefix, call `org-return'.
-
-On headings, move point to position after entry.  In
-lists, insert a new item or end the list, with checkbox if
-appropriate.  In tables, insert a new row or end the table."
-  ;; Inspired https://github.com/alphapapa/unpackaged.el#org-return-dwim
-  (interactive "P")
-  (if default
-      (org-return)
-    (cond
-     ((org-at-heading-p)
-      (org-reveal t)
-      (org-fold-show-entry)
-      (goto-char (org-entry-end-position))
-      (insert "\n")
-      (forward-line -1)
-      )
-
-     ((org-at-item-checkbox-p)
-      ;; Checkbox: Insert new item with checkbox.
-      (org-insert-todo-heading nil))
-
-     ((org-in-item-p)
-      ;; Plain list.  Yes, this gets a little complicated...
-      (let ((context (org-element-context)))
-        (if (or (eq 'plain-list (car context))  ; First item in list
-                (and (eq 'item (car context))
-                     (not (eq (org-element-property :contents-begin context)
-                              (org-element-property :contents-end context))))
-                (unpackaged/org-element-descendant-of 'item context))  ; Element in list item, e.g. a link
-            ;; Non-empty item: Add new item.
-            (org-insert-item)
-          ;; Empty item: Close the list.
-          ;; TODO: Do this with org functions rather than operating on the text. Can't seem to find the right function.
-          (delete-region (line-beginning-position) (line-end-position))
-          (insert "\n"))))
-
-     ((when (fboundp 'org-inlinetask-in-task-p)
-        (org-inlinetask-in-task-p))
-      ;; Inline task: Don't insert a new heading.
-      (org-return))
-
-     ((org-at-table-p)
-      (cond ((save-excursion
-               (beginning-of-line)
-               ;; See `org-table-next-field'.
-               (cl-loop with end = (line-end-position)
-                        for cell = (org-element-table-cell-parser)
-                        always (equal (org-element-property :contents-begin cell)
-                                      (org-element-property :contents-end cell))
-                        while (re-search-forward "|" end t)))
-             ;; Empty row: end the table.
-             (delete-region (line-beginning-position) (line-end-position))
-             (org-return))
-            (t
-             ;; Non-empty row: call `org-return'.
-             (org-return))))
-     (t
-      ;; All other cases: call `org-return'.
-      (org-return)))))
-
-;;;###autoload
-(defmacro yx/def-org-maybe-surround (&rest keys)
-  "Define and bind interactive commands for each of KEYS that surround the region or insert text.
-Commands are bound in `org-mode-map' to each of KEYS.  If the
-region is active, commands surround it with the key character,
-otherwise call `org-self-insert-command'."
-  `(progn
-     ,@(cl-loop for key in keys
-                for name = (intern (concat "unpackaged/org-maybe-surround-" key))
-                for docstring = (format "If region is active, surround it with \"%s\", otherwise call `org-self-insert-command'." key)
-                collect `(defun ,name ()
-                           ,docstring
-                           (interactive)
-                           (if (region-active-p)
-                               (let ((beg (region-beginning))
-                                     (end (region-end)))
-                                 (save-excursion
-                                   (goto-char end)
-                                   (insert ,key)
-                                   (goto-char beg)
-                                   (insert ,key)))
-                             (call-interactively #'org-self-insert-command)))
-                collect `(define-key org-mode-map (kbd ,key) #',name))))
-
-;; https://emacstil.com/til/2021/09/09/fold-heading/
+;; @see https://emacstil.com/til/2021/09/09/fold-heading/
 ;;;###autoload
 (defun yx/org-show-current-heading-tidily ()
   "Show next entry, keeping other entries closed."
@@ -449,8 +349,7 @@ otherwise call `org-self-insert-command'."
     (org-overview)
     (org-reveal t)
     (org-fold-show-entry)
-    (outline-show-children))
-  )
+    (outline-show-children)))
 
 ;;;###autoload
 (defun yx/org-link-copy (&optional arg)
@@ -490,7 +389,7 @@ INCLUDE-LINKED is passed to `org-display-inline-images'."
               (message "%d images displayed inline"
                        (length image-overlays))))))))
 
-;; borrow from https://protesilaos.com/emacs/dotemacs
+;; @see https://protesilaos.com/emacs/dotemacs
 ;;;###autoload
 (defun yx/keyboard-quit-dwim ()
   "Do-What-I-Mean behaviour for a general `keyboard-quit'.
@@ -517,6 +416,18 @@ The DWIM behaviour of this command is as follows:
         (t
          (keyboard-quit))))
 
+;;;###autoload
+(defun yx/smarter-selective-display (&optional level)
+  "Fold text indented same of more than the cursor.
+
+This function toggles folding according to the level of
+indentation at point. It's convenient not having to specify a
+number nor move point to the desired column.
+"
+  (interactive "P")
+  (if (eq selective-display (1+ (current-column)))
+      (set-selective-display 0)
+    (set-selective-display (or level (1+ (current-column))))))
 
 ;; %% end
 (provide 'crux)

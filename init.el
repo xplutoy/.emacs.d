@@ -113,18 +113,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
     (insert-file-contents file)
     (buffer-string)))
 
-(defun yx/smarter-selective-display (&optional level)
-  "Fold text indented same of more than the cursor.
-
-This function toggles folding according to the level of
-indentation at point. It's convenient not having to specify a
-number nor move point to the desired column.
-"
-  (interactive "P")
-  (if (eq selective-display (1+ (current-column)))
-      (set-selective-display 0)
-    (set-selective-display (or level (1+ (current-column))))))
-
 ;;; Defaults
 (use-package emacs
   :ensure nil
@@ -1996,7 +1984,6 @@ number nor move point to the desired column.
   :ensure nil
   :defer 2
   :bind (:map org-mode-map
-              ("RET"     . yx/org-return-dwim)
               ("M-g h"   . consult-org-heading)
               :prefix-map yx/org-locle-leader-map
               :prefix "C-c l"
@@ -2262,7 +2249,6 @@ number nor move point to the desired column.
   (org-clock-persistence-insinuate)
   (org-clock-auto-clockout-insinuate)
   (run-at-time t 7200 'org-agenda-to-appt)
-  (yx/def-org-maybe-surround "~" "=" "*" "/" "+")
 
   (font-lock-add-keywords
    'org-mode
@@ -2776,10 +2762,6 @@ set to \\='(template title keywords subdirectory)."
 
 ;; %% structured edit
 (use-package iedit)
-
-(use-package surround
-  :defer 2
-  :bind-keymap ("M-0" . surround-keymap))
 
 (use-package puni
   :hook ((prog-mode sgml-mode nxml-mode) . puni-mode)
