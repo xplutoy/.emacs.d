@@ -1517,13 +1517,18 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package gptel
   :custom
   (gptel-default-mode 'org-mode)
-  (gptel-model "moonshot-v1-32k")
-  (gptel-backend (gptel-make-openai "moonshot"
-                   :key #'gptel-api-key
-                   :host "api.moonshot.cn"
-                   :models '("moonshot-v1-8k"
-                             "moonshot-v1-32k"
-                             "moonshot-v1-128k"))))
+  :config
+  (let* ((auth-info (car (auth-source-search :user "moonshot-apikey")))
+         (host (plist-get auth-info :host))
+         (key (plist-get auth-info :secret)))
+    (setq-default gptel-model "moonshot-v1-32k"
+                  gptel-backend (gptel-make-openai "Moonshot"
+                                  :host host
+                                  :key key
+                                  :models '("moonshot-v1-32k"
+                                            "moonshot-v1-128k"))))
+  (add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
+  (add-hook 'gptel-post-response-functions 'gptel-end-of-response))
 
 ;;; Dired
 (use-package dired
