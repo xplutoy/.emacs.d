@@ -904,7 +904,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
         (cl-loop for font in '("Noto Color Emoji" "Apple Color Emoji" "Segoe UI Emoji")
                  when (x-list-fonts font)
                  return (set-fontset-font t 'emoji  (font-spec :family font) nil 'prepend))
-        (load-theme ''modus-operandi-tritanopia t))
+        (load-theme 'modus-operandi-tritanopia t))
     (load-theme 'modus-vivendi-deuteranopia t)))
 
 (add-hook 'after-init-hook #'yx/font-and-theme-setup -100)
@@ -2020,6 +2020,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
               ("i"   . org-web-tools-insert-link-for-url)
               ("h"   . org-toggle-heading)
               ("t"   . org-transclusion-add)
+              ("z"   . denote-refs-mode)
               ("q f" . org-ql-find)
               ("q r" . org-ql-refile)
               ("C-t" . org-transclusion-add-all)
@@ -2460,8 +2461,9 @@ set to \\='(template title keywords subdirectory)."
     (declare (interactive-only t))
     (interactive)
     (let ((denote-prompts '(template subdirectory title keywords)))
-      (call-interactively #'denote)))
-  )
+      (call-interactively #'denote))))
+
+(use-package denote-refs)
 
 (use-package citar-denote
   :after (citar denote)
