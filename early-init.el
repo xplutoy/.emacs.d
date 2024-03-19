@@ -27,16 +27,21 @@
       native-comp-async-report-warnings-errors nil
       ffap-machine-p-known 'reject
       read-process-output-max (* 4 1024 1024)
-      gc-cons-threshold most-positive-fixnum)
+      gc-cons-threshold most-positive-fixnum
+      gc-cons-percentage 1.0)
 
-;; %% 文件句柄
 (let ((old-file-name-handler-alist file-name-handler-alist))
   (setq-default file-name-handler-alist nil)
-  (defun yx/restore-file-name-handler-alist ()
-    (setq file-name-handler-alist
-          (delete-dups (append file-name-handler-alist old-file-name-handler-alist))
-          inhibit-trace nil))
-  (add-hook #'emacs-startup-hook #'yx/restore-file-name-handler-alist))
+  (defun yx/emacs-startup-post-h ()
+    (setq gc-cons-threshold 1600000
+          gc-cons-percentage 0.1
+          file-name-handler-alist (delete-dups (append file-name-handler-alist old-file-name-handler-alist)))
+    (run-with-idle-timer 5 t #'garbage-collect)
+    (message "Ready in %s with %d garbage collections."
+             (format "%.2f seconds" (float-time
+                                     (time-subtract after-init-time before-init-time)))
+             gcs-done))
+  (add-hook 'emacs-startup-hook #'yx/emacs-startup-post-h))
 
 ;; %% 设置eln缓存目录
 (when (fboundp 'startup-redirect-eln-cache)

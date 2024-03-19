@@ -68,7 +68,7 @@
 (defvar yx/gpg-encrypt-key "8B1F9B207AF00BCF!")
 
 (defconst IS-MAC     (eq system-type 'darwin))
-(defconst IS-WIN     (eq system-type 'windows-nt))
+(defconst IS-WIN     (memq system-type '(windows-nt ms-dos cygwin)))
 (defconst IS-LINUX   (eq system-type 'gnu/linux))
 
 (defvar yx/default-open (cond
@@ -117,7 +117,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package emacs
   :ensure nil
   :custom
+  (max-lisp-eval-depth 10000)
   (load-prefer-newer t)
+  (case-fold-search nil)
   (user-full-name "yangxue")
   (system-time-locale "C")
   (use-dialog-box nil)
@@ -456,6 +458,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (setq shr-max-image-proportion 0.6
         shr-use-xwidgets-for-media t)
   (setq eww-restore-desktop t
+        eww-header-line-format nil
         eww-search-prefix "http://www.google.com/search?q="
         eww-auto-rename-buffer
         (lambda () (format "*eww: %s*" (or (plist-get eww-data :title) "..."))))
@@ -739,6 +742,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   "f" #'make-frame
   "d" #'dirvish-side
   "r" #'elfeed
+  "g" #'gptel
   "e" #'yx/eshell-here
   "v" #'vterm-other-window
   "s" #'symbols-outline-show
@@ -765,6 +769,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("c"   . org-capture)
            ("l"   . org-store-link)
            ("z"   . zoom)
+           ("C-c" . gptel-send)
            ("/ /" . webjump)
            ("/ o" . browse-url-at-point))
 
@@ -1530,6 +1535,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
   (add-hook 'gptel-post-response-functions 'gptel-end-of-response))
 
+
 ;;; Dired
 (use-package dired
   :ensure nil
@@ -1593,24 +1599,23 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
         "-l --almost-all --human-readable --group-directories-first --no-group")
   (dirvish-peek-mode -1)
   (dirvish-side-follow-mode 1)
-  :bind
-  (:map dirvish-mode-map
-        ("a"   . dirvish-quick-access)
-        ("f"   . dirvish-file-info-menu)
-        ("y"   . dirvish-yank-menu)
-        ("N"   . dirvish-narrow)
-        ("h"   . dirvish-history-jump)
-        ("s"   . dirvish-quicksort)
-        ("v"   . dirvish-vc-menu)
-        ("TAB" . dirvish-subtree-toggle)
-        ("M-f" . dirvish-history-go-forward)
-        ("M-b" . dirvish-history-go-backward)
-        ("M-l" . dirvish-ls-switches-menu)
-        ("M-m" . dirvish-mark-menu)
-        ("M-t" . dirvish-layout-toggle)
-        ("M-s" . dirvish-setup-menu)
-        ("M-e" . dirvish-emerge-menu)
-        ("M-j" . dirvish-fd-jump)))
+  :bind (:map dirvish-mode-map
+              ("a"   . dirvish-quick-access)
+              ("f"   . dirvish-file-info-menu)
+              ("y"   . dirvish-yank-menu)
+              ("N"   . dirvish-narrow)
+              ("h"   . dirvish-history-jump)
+              ("s"   . dirvish-quicksort)
+              ("v"   . dirvish-vc-menu)
+              ("TAB" . dirvish-subtree-toggle)
+              ("M-f" . dirvish-history-go-forward)
+              ("M-b" . dirvish-history-go-backward)
+              ("M-l" . dirvish-ls-switches-menu)
+              ("M-m" . dirvish-mark-menu)
+              ("M-t" . dirvish-layout-toggle)
+              ("M-s" . dirvish-setup-menu)
+              ("M-e" . dirvish-emerge-menu)
+              ("M-j" . dirvish-fd-jump)))
 
 ;;; Gnus
 (setq read-mail-command 'gnus
@@ -2829,7 +2834,9 @@ set to \\='(template title keywords subdirectory)."
   (add-hook 'eglot-managed-mode-hook #'yx/eglot-capf))
 
 (use-package consult-eglot
-  :after consult)
+  :after consult eglot
+  :bind (:map eglot-mode-map
+              ([remap xref-find-apropos] . consult-eglot-symbols))) ; C-M .
 
 (use-package citre
   :bind (:map prog-mode-map
@@ -2902,6 +2909,7 @@ set to \\='(template title keywords subdirectory)."
   (define-auto-insert
     "\\.\\([Cc]\\|cc\\|cpp\\|cxx\\|c\\+\\+\\)\\'"
     'yx/auto-insert-c-header)
+  (add-to-list 'c-default-style '(c-mode . "linux"))
   (add-hook 'c-mode-common-hook
             (lambda () (c-toggle-auto-hungry-state 1))))
 
