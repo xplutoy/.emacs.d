@@ -904,8 +904,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
         (cl-loop for font in '("Noto Color Emoji" "Apple Color Emoji" "Segoe UI Emoji")
                  when (x-list-fonts font)
                  return (set-fontset-font t 'emoji  (font-spec :family font) nil 'prepend))
-        (load-theme 'modus-operandi-tinted t))
-    (load-theme 'modus-vivendi-tinted t)))
+        (load-theme ''modus-operandi-tritanopia t))
+    (load-theme 'modus-vivendi-deuteranopia t)))
 
 (add-hook 'after-init-hook #'yx/font-and-theme-setup -100)
 (add-hook 'server-after-make-frame-hook #'yx/font-and-theme-setup -100)
@@ -1212,6 +1212,13 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (corfu-indexed-mode 1)
   (corfu-popupinfo-mode 1)
   (keymap-set corfu-map "M-q" #'corfu-quick-insert))
+
+(use-package corfu-terminal
+  :unless (display-graphic-p)
+  :after corfu
+  :demand t
+  :config
+  (corfu-terminal-mode +1))
 
 (use-package cape
   :init
