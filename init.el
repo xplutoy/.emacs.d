@@ -61,11 +61,29 @@
   :config
   (no-littering-theme-backups))
 
+;; %% os specific settings stay here
+(cond
+ (IS-MAC
+  (setq ns-command-modifier   'super
+        ns-alternate-modifier 'meta
+        ns-function-modifier  'hyper
+        ns-pop-up-frames nil
+        ns-use-thin-smoothing t
+        ns-use-native-fullscreen nil))
+ (IS-WIN
+  (setq w32-apps-modifier    'hyper
+        w32-lwindow-modifier 'super
+        w32-pass-lwindow-to-system nil
+        w32-get-true-file-attributes nil
+        w32-pipe-read-delay 0
+        w32-pipe-buffer-size  (* 64 1024))))
+
+(unless IS-WIN
+  (setq selection-coding-system 'utf-8))
+
 ;;; Utils
 (defvar yx/org-root         "~/yxdocs/org-notes/")
 (defvar yx/zotero-root      "~/Zotero/")
-(defvar yx/gpg-sign-key    "67B86CB8A5630C51!")
-(defvar yx/gpg-encrypt-key "8B1F9B207AF00BCF!")
 
 (defconst IS-MAC     (eq system-type 'darwin))
 (defconst IS-WIN     (memq system-type '(windows-nt ms-dos cygwin)))
@@ -335,8 +353,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :config
   (when-let ((rg (executable-find "rg")))
     (setq grep-program rg))
-  (appendq! grep-find-ignored-directories '(".local"))
-  (appendq! grep-find-ignored-files '("*.mp3" "*.mp4" "*.jpg")))
+  (appendq! grep-find-ignored-directories '(".local" "node_modules"))
+  (appendq! grep-find-ignored-files '("*.mp3" "*.mp4" "*.jpg" "*.gz")))
 
 (use-package minibuffer
   :ensure nil
@@ -390,13 +408,19 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :ensure nil
   :custom
   (epa-pinentry-mode 'loopback)
-  (epa-file-select-keys yx/gpg-encrypt-key))
+  (epa-file-select-keys nil)
+  (epa-file-encrypt-to user-mail-address)
+  :config
+  (epa-file-enable))
 
 (use-package auth-sources
   :ensure nil
   :custom
   (auth-source-debug t)
-  (auth-sources `(,(no-littering-expand-etc-file-name "authinfo.gpg"))))
+  (auth-source-cache-expiry 300)
+  (auth-sources `(,(no-littering-expand-etc-file-name "authinfo.gpg")))
+  :config
+  (auth-source-pass-enable))
 
 (use-package mouse
   :ensure nil
@@ -478,11 +502,12 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (use-package flyspell
   :ensure nil
-  :init
-  (setq ispell-dictionary "english"
-        ispell-program-name "aspell"
-        ispell-extra-args '("--sug-mode=ultra" "--lang=en_US")
-        flyspell-issue-message-flag nil)
+  :custom
+  (ispell-dictionary "en_US")
+  (ispell-program-name "aspell")
+  (ispell-following-word t)
+  (ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))
+  (flyspell-issue-message-flag nil)
   :config
   (keymap-unset flyspell-mode-map "C-,")
   (keymap-unset flyspell-mode-map "C-.")
@@ -572,12 +597,15 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (tramp-chunksize 2000)
   (tramp-default-method "ssh")
   :config
-  (add-to-list 'backup-directory-alist
-               (cons tramp-file-name-regexp nil)))
+  (add-to-list 'backup-directory-alist (cons tramp-file-name-regexp nil)))
 
-(setq vc-handled-backends '(Git)
-      vc-git-diff-switches '("--histogram")
-      vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
+(use-package vc
+  :ensure nil
+  :custom
+  (vc-follow-symlinks t)
+  (vc-handled-backends '(Git))
+  (vc-git-diff-switches '("--histogram"))
+  (vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp)))
 
 (use-package appt
   :ensure nil
@@ -602,26 +630,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (calendar-mark-holidays-flag t)
   (calendar-mark-diary-entries-flag t))
 
-;; %% os specific settings stay here
-(cond
- (IS-MAC
-  (setq ns-command-modifier   'super
-        ns-alternate-modifier 'meta
-        ns-function-modifier  'hyper
-        ns-pop-up-frames nil
-        ns-use-thin-smoothing t
-        ns-use-native-fullscreen nil))
- (IS-WIN
-  (setq w32-apps-modifier    'hyper
-        w32-lwindow-modifier 'super
-        w32-pass-lwindow-to-system nil
-        w32-get-true-file-attributes nil
-        w32-pipe-read-delay 0
-        w32-pipe-buffer-size  (* 64 1024))))
-
-(unless IS-WIN
-  (setq selection-coding-system 'utf-8))
-
 ;; %% hook
 (defun yx/text-mode-setup ()
   (setq-local word-wrap t
@@ -642,7 +650,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (unless (display-graphic-p)
     (xterm-mouse-mode 1))
   (minibuffer-depth-indicate-mode 1)
-  (auth-source-pass-enable)
   (windmove-default-keybindings 'control))
 
 (add-hook 'text-mode 'yx/text-mode-setup)
@@ -771,7 +778,22 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("z"   . zoom)
            ("C-c" . gptel-send)
            ("/ /" . webjump)
-           ("/ o" . browse-url-at-point))
+           ("/ o" . browse-url-at-point)
+           :prefix-map yx/ctrl-c-p-prefix-map
+           :prefix "C-c p"
+           ("p" . completion-at-point)
+           ("t" . complete-tag)
+           ("a" . cape-abbrev)
+           ("d" . cape-dabbrev)
+           ("k" . cape-keyword)
+           ("h" . cape-history)
+           ("l" . cape-line)
+           ("w" . cape-dict)
+           ("f" . cape-file)
+           ("/" . cape-tex)
+           (":" . cape-emoji)
+           ("&" . cape-sgml)
+           ("r" . cape-rfc1345))
 
 (bind-keys ([remap move-beginning-of-line]        . crux-move-beginning-of-line) ; C-a
            ([remap goto-line]                     . consult-goto-line)           ;M-g g
@@ -827,9 +849,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("C-/"       . undo-only)
            ("C-^"       . crux-top-join-line)
            ("C-M-/"     . vundo)
-           ("C-#"       . consult-register-load)
            ("C-O"       . crux-smart-open-line-above)
+           ("C-#"       . consult-register-load)
            ("M-#"       . consult-register-store)
+           ("C-M-#"     . consult-register)
            ("C-c #"     . consult-register)
            ("M-o"       . duplicate-dwim)
            ("M-z"       . avy-zap-up-to-char-dwim)
@@ -953,8 +976,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :custom
   (even-window-sizes t)
   (window-sides-vertical nil)
-  (split-width-threshold 100)
-  (split-height-threshold nil)
+  (split-width-threshold 80)
   (switch-to-buffer-obey-display-actions t)
   (switch-to-buffer-in-dedicated-window nil)
   (switch-to-buffer-preserve-window-point t)
@@ -978,7 +1000,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :custom
   (popper-echo-lines 1)
   (popper-display-control t)
-  (popper-window-height 0.5)
+  (popper-window-height 0.4)
   (popper-group-function #'popper-group-by-project)
   (popper-reference-buffers '("\\*Messages\\*$"
                               "Output\\*$" "\\*Pp Eval Output\\*$"
@@ -1179,11 +1201,15 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 ;; %% consult
 (use-package consult
+  :custom
+  (consult-narrow-key "<")
+  (consult-line-start-from-top t)
   :config
-  (setq consult-narrow-key "<"
-        xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref
-        consult-ripgrep-args (concat consult-ripgrep-args " --hidden"))
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
+  (setq register-preview-function #'consult-register-format)
+  (advice-add #'register-preview :override #'consult-register-window)
+  (setq consult-ripgrep-args (concat consult-ripgrep-args " --hidden"))
   (consult-customize
    consult-theme :preview-key '(:debounce 0.2 any)
    consult-bookmark
@@ -1225,19 +1251,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (setq cape-dabbrev-min-length 3)
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-file)
-  :bind (("C-c p p" . completion-at-point)
-         ("C-c p t" . complete-tag)
-         ("C-c p a" . cape-abbrev)
-         ("C-c p d" . cape-dabbrev)
-         ("C-c p k" . cape-keyword)
-         ("C-c p h" . cape-history)
-         ("C-c p l" . cape-line)
-         ("C-c p w" . cape-dict)
-         ("C-c p f" . cape-file)
-         ("C-c p /" . cape-tex)
-         ("C-c p :" . cape-emoji)
-         ("C-c p &" . cape-sgml)
-         ("C-c p r" . cape-rfc1345)))
+  :config
+  (cape-wrap-prefix-length #'cape-dict 4)
+  (cape-wrap-prefix-length #'cape-line 4))
 
 (use-package marginalia
   :hook (after-init . marginalia-mode)
@@ -1251,12 +1267,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (setq gcmh-idle-delay 'auto
         gcmh-auto-idle-delay-factor 10
         gcmh-high-cons-threshold #x1000000)) ; 16MB
-
-(when (featurep 'xwidget-internal)
-  (use-package xwidget
-    :ensure nil
-    :bind (:map xwidget-webkit-mode-map
-                ("W" . xwidget-webkit-fit-width))))
 
 (use-package engine-mode
   :hook (after-init . engine-mode)
@@ -1370,8 +1380,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (pulsar-delay 0.05)
   (pulsar-iterations 8)
   :config
-  (add-hook 'next-error-hook         #'pulsar-pulse-line)
-  (add-hook 'minibuffer-setup-hook   #'pulsar-pulse-line)
+  (add-hook 'next-error-hook         #'pulsar-pulse-line-red)
   (add-hook 'imenu-after-jump-hook   #'pulsar-recenter-center)
   (add-hook 'imenu-after-jump-hook   #'pulsar-reveal-entry)
   (add-hook 'consult-after-jump-hook #'pulsar-recenter-center)
@@ -1972,6 +1981,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
           ("https://manateelazycat.github.io/feed.xml" emacs)
           ("https://matt.might.net/articles/feed.rss" emacs)
           ("https://andreyor.st/categories/emacs/feed.xml" emacs)
+          ("https://emacstalk.codeberg.page/podcast/index.xml" emacs)
           ("https://sachachua.com/blog/category/emacs/feed/" emacs)))
   (setq elfeed-search-filter "@6-months-ago +unread")
   :hook (elfeed-show . olivetti-mode)
@@ -2047,7 +2057,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (org-list-allow-alphabetical t)
   (org-return-follows-link t)
   (org-mouse-1-follows-link nil)
-  (org-crypt-key yx/gpg-encrypt-key)
   (org-hide-leading-stars t)
   (org-hide-emphasis-markers t)
   (org-cycle-separator-lines 0)
@@ -2639,24 +2648,27 @@ set to \\='(template title keywords subdirectory)."
 ;; %% snippet
 (use-package tempel
   :defer 2
-  :hook ((prog-mode text-mode) . yx/tempel-setup-capf)
-  :custom
-  (tempel-trigger-prefix "<")
-  (tempel-path (no-littering-expand-etc-file-name "templates/tempel.eld"))
   :bind (("M-+" . tempel-insert)
          ("M-=" . tempel-complete)
          :map tempel-map
          ([tab] . tempel-next)
          ([backtab] . tempel-previous))
-  :preface
+  :custom
+  (tempel-trigger-prefix "<")
+  (tempel-path (no-littering-expand-etc-file-name "templates/tempel.eld"))
+  :config
   (defun yx/tempel-setup-capf ()
     (setq-local completion-at-point-functions
-                (cons 'tempel-expand
-                      completion-at-point-functions))))
+                (cons 'tempel-expand completion-at-point-functions)))
+  (add-hook 'conf-mode-hook #'yx/tempel-setup-capf)
+  (add-hook 'prog-mode-hook #'yx/tempel-setup-capf)
+  (add-hook 'text-mode-hook #'yx/tempel-setup-capf)
+  (add-hook 'eglot-managed-mode-hook #'yx/tempel-setup-capf))
 
 ;; %% version control
 (use-package magit
   :custom
+  (magit-clone-default-directory "~/workspace/")
   (magit-diff-refine-hunk 'all)
   (magit-show-long-lines-warning nil)
   (magit-log-arguments '("--color" "--graph" "--decorate"))
@@ -2919,8 +2931,12 @@ set to \\='(template title keywords subdirectory)."
     "\\.\\([Cc]\\|cc\\|cpp\\|cxx\\|c\\+\\+\\)\\'"
     'yx/auto-insert-c-header)
   (add-to-list 'c-default-style '(c-mode . "linux"))
-  (add-hook 'c-mode-common-hook
-            (lambda () (c-toggle-auto-hungry-state 1))))
+  (defun yx/cc-mode-common-h ()
+    (setq tab-width 8
+          indent-tabs-mode t
+          c-electric-pound-behavior 'alignleft)
+    (c-toggle-auto-hungry-state 1))
+  (add-hook 'c-mode-common-hook #'yx/cc-mode-common-h))
 
 (use-package c-ts-mode
   :ensure nil
