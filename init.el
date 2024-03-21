@@ -1008,7 +1008,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            (display-buffer-in-side-window)
            (window-height . 0.45))
           (,(rx (| "*Messages*"
-                   "*Warnings*"
                    "Output*$"
                    "*Backtrace*"
                    "*Async Shell Command*"))
@@ -1038,12 +1037,11 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            (dedicated . t)
            (window . root) (window-height . 0.45))
           (,(rx (| "*vc-git"
+                   "*Warnings*"
                    "*Compile-Log*"))
            (display-buffer-no-window)
            (allow-no-window . t))
           (,(rx (| "*Ibuffer*"
-                   "*Man*"
-                   "*WoMan*"
                    "*Org Agenda*"
                    "*Proced*"
                    "*info*"))
@@ -2682,6 +2680,8 @@ set to \\='(template title keywords subdirectory)."
   :defer 2
   :config (apheleia-global-mode +1))
 
+(use-package reformatter)
+
 (use-package ws-butler
   :hook ((prog-mode conf-mode) . ws-butler-mode))
 
@@ -3027,6 +3027,10 @@ set to \\='(template title keywords subdirectory)."
     (eglot-ensure)
     (flymake-mode 1))
   (add-hook 'python-base-mode-hook 'yx/python-mode-setup)
+
+  (reformatter-define black-format :program "black" :args '("-q" "-"))
+  (reformatter-define ruff-format :program "ruff" :args '("--fix-only" "-"))
+
   (define-auto-insert "\\.py$" 'yx/auto-insert-common-header))
 
 (use-package jupyter
