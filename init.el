@@ -47,10 +47,6 @@
 (unless (bound-and-true-p package--initialized)
   (package-initialize))
 
-(use-package on
-  :demand t
-  :vc (:url "https://github.com/ajgrf/on.el" :rev :newest))
-
 ;; %% benchmark
 (use-package benchmark-init)
 ;; (benchmark-init/activate)
@@ -265,8 +261,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (show-paren-when-point-inside-paren t))
 
 (use-package elec-pair
-  :ensure nil
-  :hook (on-first-buffer . electric-pair-mode)
+  :defer 5
   :custom
   (electric-pair-preserve-balance t)
   (electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
@@ -331,6 +326,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package help
   :ensure nil
   :custom
+  (help-enable-symbol-autoload t)
   (help-window-select t)
   (help-window-keep-selected t)
   (help-enable-variable-value-editing t)
@@ -364,7 +360,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :hook (after-init . recentf-mode)
   :custom
   (recentf-auto-cleanup 300)
-  (recentf-max-saved-items 100)
+  (recentf-max-saved-items 50)
   (recentf-exclude '("\\.?cache.*" "^/.*" "^/ssh:" "\\.git/.+$"
                      "COMMIT_MSG" "COMMIT_EDITMSG" "/Downloads/" "/elpa/"
                      "\\.\\(?:gif\\|svg\\|png\\|jpe?g\\|bmp\\|xpm\\)$"
@@ -384,6 +380,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (use-package grep
   :ensure nil
+  :custom
+  (grep-use-headings t)
   :config
   (when-let ((rg (executable-find "rg")))
     (setq grep-program rg))
@@ -439,7 +437,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package isearch
   :ensure nil
   :bind (:map isearch-mode-map
-              ([remap isearch-delete-char] . isearch-del-char))
+              ([remap isearch-delete-char] . isearch-del-char)
+              ([remap isearch-abort] . isearch-cancel))
   :custom
   (isearch-lazy-count t)
   (isearch-lazy-highlight t)
@@ -485,10 +484,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (mouse-wheel-progressive-speed nil)
   (mouse-wheel-scroll-amount-horizontal 2)
   (mouse-wheel-scroll-amount '(2 ((shift) . hscroll))))
-
-(use-package pixel-scroll
-  :ensure nil
-  :hook (on-first-buffer . pixel-scroll-precision-mode))
 
 (use-package transient
   :ensure nil
@@ -575,7 +570,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (use-package so-long
   :ensure nil
-  :hook (on-first-file . global-so-long-mode)
+  :defer 5
   :config
   (add-to-list 'so-long-variable-overrides '(save-place-alist . nil))
   (add-to-list 'so-long-variable-overrides '(font-lock-maximum-decoration . 1))
@@ -594,11 +589,11 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (use-package saveplace
   :ensure nil
-  :hook (on-first-buffer . save-place-mode))
+  :hook (after-init . save-place-mode))
 
 (use-package savehist
   :ensure nil
-  :hook (on-first-input . savehist-mode)
+  :demand t
   :custom
   (history-delete-duplicates t)
   (savehist-autosave-interval nil)
@@ -607,7 +602,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                                    mark-ring
                                    global-mark-ring
                                    register-alist
-                                   command-history)))
+                                   command-history))
+  :config
+  (savehist-mode +1))
 
 (use-package server
   :ensure nil
@@ -619,7 +616,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (use-package midnight-mode
   :ensure nil
-  :defer 5
+  :defer 10
   :config
   (setq midnight-period 7200)
   (midnight-mode +1))
@@ -663,7 +660,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (use-package appt
   :ensure nil
-  :defer 5
+  :defer 10
   :custom
   (appt-audible t)
   (appt-display-interval 10)
@@ -675,7 +672,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (use-package calendar
   :ensure nil
-  :defer 5
+  :defer 10
   :hook (calendar-today-visible . calendar-mark-today)
   :custom
   (calendar-latitude +30.67)
@@ -694,6 +691,11 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (variable-pitch-mode     1)
   (toggle-truncate-lines  -1))
 
+(add-hook 'text-mode #'yx/text-mode-setup)
+
+(add-to-list 'auto-mode-alist
+             '("\\(README\\|CHANGELOG\\|COPYING\\|LICENSE\\)\\'" . text-mode))
+
 (defun yx/global-mirror-mode-toggle ()
   (repeat-mode            1)
   (blink-cursor-mode     -1)
@@ -704,10 +706,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (mouse-avoidance-mode 'cat-and-mouse)
   (unless (display-graphic-p)
     (xterm-mouse-mode 1))
+  (pixel-scroll-precision-mode +1)
   (windmove-default-keybindings 'control))
 
-(add-hook 'text-mode #'yx/text-mode-setup)
-(run-with-idle-timer 3 nil #'yx/global-mirror-mode-toggle)
+(run-with-idle-timer 5 nil #'yx/global-mirror-mode-toggle)
 
 (with-current-buffer "*scratch*"
   (emacs-lock-mode 'kill))
@@ -821,6 +823,24 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (keymap-global-set "C-c t" yx/ctrl-c-t-prefix-map)
 
+(defvar-keymap yx/ctrl-c-p-prefix-map
+  :doc "Prefix map for completion"
+  "p" #'completion-at-point
+  "t" #'complete-tag
+  "a" #'cape-abbrev
+  "d" #' cape-dabbrev
+  "k" #' cape-keyword
+  "h" #' cape-history
+  "l" #' cape-line
+  "w" #' cape-dict
+  "f" #' cape-file
+  "/" #' cape-tex
+  ":" #' cape-emoji
+  "&" #' cape-sgm
+  "r" #' cape-rfc1345)
+
+(keymap-global-set "C-c p" yx/ctrl-c-p-prefix-map)
+
 ;; the most commonly used shortcut
 (bind-keys :map global-map
            :prefix-map yx/ctrl-z-prefix-map
@@ -833,22 +853,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("z"   . zoom)
            ("C-c" . gptel-send)
            ("/ /" . webjump)
-           ("/ o" . browse-url-at-point)
-           :prefix-map yx/ctrl-c-p-prefix-map
-           :prefix "C-c p"
-           ("p" . completion-at-point)
-           ("t" . complete-tag)
-           ("a" . cape-abbrev)
-           ("d" . cape-dabbrev)
-           ("k" . cape-keyword)
-           ("h" . cape-history)
-           ("l" . cape-line)
-           ("w" . cape-dict)
-           ("f" . cape-file)
-           ("/" . cape-tex)
-           (":" . cape-emoji)
-           ("&" . cape-sgml)
-           ("r" . cape-rfc1345))
+           ("/ o" . browse-url-at-point))
 
 (bind-keys ([remap move-beginning-of-line]        . crux-move-beginning-of-line) ; C-a
            ([remap goto-line]                     . consult-goto-line)           ;M-g g
@@ -1003,9 +1008,11 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
         ef-themes-variable-pitch-ui t))
 
 (use-package lin
-  :hook (on-first-buffer . lin-global-mode)
+  :defer 5
   :custom
-  (lin-face 'lin-magenta))
+  (lin-face 'lin-magenta)
+  :config
+  (lin-global-mode +1))
 
 (use-package minions
   :hook (after-init . minions-mode))
@@ -1023,7 +1030,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (use-package breadcrumb
   :demand t
-  :hook (on-first-buffer . breadcrumb-mode))
+  :hook (after-init . breadcrumb-mode))
 
 ;;; Layout
 (use-package window
@@ -1044,8 +1051,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
         `((,(rx (| "*Org Select"
                    "*Org Note"
                    "*Agenda Commands"
-                   "*Capture"
-                   "^CAPTURE-.*\\.org*"
                    "*tldr*"
                    "*quickrun*"
                    "*diff-hl"
@@ -1053,6 +1058,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                    "*wclock*"))
            (display-buffer-in-side-window)
            (window-height . 0.45))
+          ("\\(\\*Capture\\*\\|CAPTURE-.*\\)"
+           (display-buffer-reuse-mode-window display-buffer-below-selected))
           (,(rx (| "*Messages*"
                    "Output*$"
                    "*Backtrace*"
@@ -1070,15 +1077,17 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            (display-buffer-reuse-mode-window display-buffer-below-selected)
            (mode . (help-mode helpful-mode apropos-mode))
            (window-height . 0.45))
-          ((or (major-mode . occur-mode)
-               (major-mode . grep-mode)
-               (major-mode . color-rg-mode))
+          ((or (derived-mode . occur-mode)
+               (derived-mode . grep-mode)
+               (derived-mode . color-rg-mode)
+               (derived-mode . log-view-mode)
+               (derived-mode . Buffer-menu-mode))
            (display-buffer-reuse-mode-window display-buffer-below-selected)
            (mode . (occur-mode grep-mode color-rg-mode))
            (window-height . 0.45))
-          ((or (derived-mode . comint-mode)
-               (major-mode . shell-mode)
-               (major-mode . eshell-mode))
+          ((or (major-mode . shell-mode)
+               (major-mode . eshell-mode)
+               (derived-mode . comint-mode))
            (display-buffer-reuse-mode-window display-buffer-at-bottom)
            (dedicated . t)
            (window . root) (window-height . 0.45))
@@ -1203,7 +1212,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 ;;; Completion
 (use-package vertico
-  :hook (on-first-input . vertico-mode)
+  :hook (after-init . vertico-mode)
   :bind (:map vertico-map
               ("M-q" . vertico-quick-insert)
               ("M-r" . vertico-repeat-select)
@@ -1223,27 +1232,22 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (add-hook 'rfn-eshadow-update-overlay #'vertico-directory-tidy))
 
 (use-package orderless
+  :defer 2
   :custom
   (orderless-component-separator  #'orderless-escapable-split-on-space)
   (orderless-matching-styles '(orderless-literal orderless-regexp orderless-flex))
   :config
   (orderless-define-completion-style yx/orderless-with-initialism
-                                     (orderless-matching-styles '(orderless-initialism orderless-literal orderless-regexp)))
-  (setq completion-styles '(basic initials orderless)
+    (orderless-matching-styles '(orderless-initialism orderless-literal orderless-regexp)))
+  (setq completion-styles '(basic yx/orderless-with-initialism)
         completion-category-defaults nil
         completion-category-overrides '((file (styles basic partial-completion))
-                                        (buffer (styles basic partial-completion))
-                                        (command (styles yx/orderless-with-initialism))
-                                        (symbol (styles yx/orderless-with-initialism))
-                                        (variable (styles yx/orderless-with-initialism))
-                                        (eglot (styles yx/orderless-with-initialism))
-                                        (eglot-capf (styles yx/orderless-with-initialism)))))
+                                        (eglot (styles basic yx/orderless-with-initialism))
+                                        (eglot-capf (styles basic yx/orderless-with-initialism)))))
 
 ;; %% embark
 (use-package embark
   :bind (("C-." . embark-act)
-         :map dired-mode-map
-         ("M-RET" . yx/dired-open-externally)
          :map minibuffer-local-map
          ("C-c C-e" . embark-export)
          ("C-c C-c" . embark-collect)
@@ -1261,10 +1265,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                        embark-isearch-highlight-indicator))
   :commands embark-open-externally
   :config
-  (defun yx/dired-open-externally (&optional arg)
-    "Open marked or current file in operating system's default application."
-    (interactive "P")
-    (dired-map-over-marks (embark-open-externally (dired-get-filename)) arg))
   (defun yx/consult-outline-insert-heading (target)
     (let* ((marker (plist-get
                     (text-properties-at 0 target)
@@ -1336,7 +1336,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (cape-wrap-prefix-length #'cape-line 4))
 
 (use-package marginalia
-  :hook (on-first-input . marginalia-mode)
+  :defer 3
   :bind (:map minibuffer-local-map
               ("M-A" . marginalia-cycle)))
 
@@ -1387,12 +1387,13 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (crux-reopen-as-root-mode 1))
 
 (use-package which-key
-  :hook (on-first-input . which-key-mode)
+  :defer 5
   :custom
   (which-key-idle-delay 0.8)
   (which-key-show-early-on-C-h t)
   :config
-  (which-key-setup-side-window-bottom))
+  (which-key-setup-side-window-bottom)
+  (which-key-mode +1))
 
 (use-package ace-link
   :defer 5
@@ -1440,7 +1441,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :vc (:url "https://github.com/jdtsmith/speedrect" :rev :newest))
 
 (use-package hungry-delete
-  :hook (on-first-input . global-hungry-delete-mode)
+  :hook (after-init . global-hungry-delete-mode)
   :custom
   (hungry-delete-join-reluctantly t))
 
@@ -1457,7 +1458,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
               ("M-L" . drag-stuff-right)))
 
 (use-package pulsar
-  :defer 2
+  :defer 3
   :custom
   (pulsar-delay 0.05)
   (pulsar-iterations 8)
@@ -1591,7 +1592,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (add-hook 'elfeed-show-hook 'bing-dict-eldoc-mode))
 
 (use-package cal-china-x
-  :defer 5
+  :defer 10
   :config
   (setq mark-holidays-in-calendar t)
   (setq cal-china-x-important-holidays cal-china-x-chinese-holidays)
@@ -1636,6 +1637,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 ;;; Dired
 (use-package dired
   :ensure nil
+  :bind (:map dired-mode-map
+              ("C-<return>" . dired-do-open)
+              ("C-+" . dired-create-empty-file))
   :custom
   (dired-dwim-target t)
   (dired-mouse-drag-files t)
@@ -1653,8 +1657,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
    `(("\\.\\(?:docx\\|pdf\\|djvu\\)\\'" ,yx/default-open)
      ("\\.\\(?:html?\\|csv\\|md\\)\\'" ,yx/default-open)
      ("\\.\\(?:jpe?g\\|png\\|gif\\|xpm\\)\\'" ,yx/default-open)
-     ("\\.\\(?:mp3\\|flac\\|wav\\|ogg\\)\\'" ,yx/default-open)
-     ("\\.\\(?:mp4\\|mkv\\|avi\\|mov\\|wmv\\|flv\\|mpg\\)\\'" ,yx/default-open)))
+     ("\\.\\(?:mp3\\|flac\\|wav\\|ogg\\)\\'" "mpv" ,yx/default-open)
+     ("\\.\\(?:mp4\\|mkv\\|avi\\|mov\\|wmv\\|flv\\|mpg\\)\\'" "mpv" ,yx/default-open)))
   :config
   (defun yx/dired-setup ()
     (setq dired-omit-files
@@ -2218,7 +2222,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                                    (:wrap    . "results")
                                    (:tangle  . "no")))
 
-  (org-modules '(ol-info ol-eww ol-docview org-habit org-tempo))
+  (org-modules '(ol-info ol-eww))
 
   ;; tag
   (org-tags-column 0)
@@ -2254,7 +2258,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                         ("NEXT")
                         nil ""))
 
-  (org-scheduled-past-days 36500)
+  (org-scheduled-past-days 365)
   (org-deadline-warning-days 365)
 
   (org-habit-show-all-today nil)
@@ -2333,6 +2337,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (org-special-keyword ((t (:height 0.85))))
 
   :config
+  (require 'org-habit)
+  (require 'org-tempo)
+
   (add-hook 'org-trigger-hook #'save-buffer)
   (plist-put org-format-latex-options :scale 1.5)
   (plist-put org-format-latex-options :background "Transparent")
@@ -2649,11 +2656,13 @@ set to \\='(template title keywords subdirectory)."
   :hook (diff-mode . outline-minor-mode)
   :custom
   (diff-default-read-only t)
-  (diff-update-on-the-fly t))
+  (diff-update-on-the-fly t)
+  (diff-advance-after-apply-hunk t))
 
 (use-package ediff
   :ensure nil
   :custom
+  (ediff-keep-variants nil)
   (ediff-show-clashes-only t)
   (ediff-floating-control-frame t)
   (ediff-window-setup-function #'ediff-setup-windows-plain)
@@ -2757,13 +2766,14 @@ set to \\='(template title keywords subdirectory)."
     (mapc #'kill-buffer (magit-mode-get-buffers))))
 
 (use-package diff-hl
-  :hook ((on-first-file . global-diff-hl-mode)
-         (dired-mode . diff-hl-dired-mode)
+  :defer 5
+  :hook ((dired-mode . diff-hl-dired-mode)
          (magit-post-refresh . diff-hl-magit-post-refresh))
   :custom
   (diff-hl-disable-on-remote t)
   (diff-hl-show-staged-changes nil)
   :config
+  (global-diff-hl-mode +1)
   (diff-hl-flydiff-mode +1)
   (global-diff-hl-show-hunk-mouse-mode -1))
 
@@ -2849,7 +2859,7 @@ set to \\='(template title keywords subdirectory)."
                (no-littering-expand-var-file-name "tree-sitter")))
 
 (use-package treesit-auto
-  :hook (on-first-file . global-treesit-auto-mode)
+  :defer 5
   :custom
   (treesit-auto-install 'prompt)
   (treesit-auto-langs '(c
@@ -2862,7 +2872,8 @@ set to \\='(template title keywords subdirectory)."
                         yaml
                         toml))
   :config
-  (treesit-auto-add-to-auto-mode-alist 'all))
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode +1))
 
 ;; %% refoctor
 (use-package color-rg
