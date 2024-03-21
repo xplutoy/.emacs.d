@@ -1232,7 +1232,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (add-hook 'rfn-eshadow-update-overlay #'vertico-directory-tidy))
 
 (use-package orderless
-  :defer 2
+  :demand t
   :custom
   (orderless-component-separator  #'orderless-escapable-split-on-space)
   (orderless-matching-styles '(orderless-literal orderless-regexp orderless-flex))
@@ -1380,8 +1380,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 ;; %% auxiliary tool
 (use-package crux
   :ensure nil
-  :defer 5
-  :autoload (yx/def-org-maybe-surround)
   :config
   (crux-with-region-or-buffer indent-region)
   (crux-reopen-as-root-mode 1))
