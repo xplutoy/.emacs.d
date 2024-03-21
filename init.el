@@ -61,7 +61,11 @@
   :config
   (no-littering-theme-backups))
 
-;; %% os specific settings stay here
+;;; %% Os-Specific
+(defconst IS-MAC     (eq system-type 'darwin))
+(defconst IS-WIN     (memq system-type '(windows-nt ms-dos cygwin)))
+(defconst IS-LINUX   (eq system-type 'gnu/linux))
+
 (cond
  (IS-MAC
   (setq ns-command-modifier   'super
@@ -84,10 +88,6 @@
 ;;; Utils
 (defvar yx/org-root         "~/yxdocs/org-notes/")
 (defvar yx/zotero-root      "~/Zotero/")
-
-(defconst IS-MAC     (eq system-type 'darwin))
-(defconst IS-WIN     (memq system-type '(windows-nt ms-dos cygwin)))
-(defconst IS-LINUX   (eq system-type 'gnu/linux))
 
 (defvar yx/default-open (cond
                          (IS-WIN   "start")
@@ -183,6 +183,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package simple
   :ensure nil
   :custom
+  (save-interprogram-paste-before-kill t)
   (completion-show-help nil)
   (idle-update-delay 1.0)
   (shell-command-prompt-show-cwd t)
@@ -381,11 +382,11 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :ensure nil
   :custom
   (hippie-expand-max-buffers 5)
-  (hippie-expand-try-functions-list '(try-expand-line
-                                      try-complete-file-name-partially
+  (hippie-expand-try-functions-list '(try-complete-file-name-partially
                                       try-expand-dabbrev
                                       try-expand-dabbrev-from-kill
-                                      try-expand-dabbrev-all-buffers)))
+                                      try-expand-dabbrev-all-buffers
+                                      try-expand-line)))
 
 (use-package isearch
   :ensure nil
@@ -533,10 +534,13 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                                   ws-butler-mode
                                   indent-guide-mode)))
 
-(setq dictionary-server "dict.org"
-      dictionary-default-popup-strategy "lev"
-      dictionary-create-buttons nil
-      dictionary-display-definition-function #'dictionary-display-definition-in-help-buffer)
+(use-package dictionary
+  :ensure nil
+  :custom
+  (dictionary-server "dict.org")
+  (dictionary-default-popup-strategy "lev")
+  (dictionary-create-buttons nil)
+  (dictionary-display-definition-function #'dictionary-display-definition-in-help-buffer))
 
 (use-package saveplace
   :ensure nil
@@ -761,7 +765,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (defvar-keymap yx/ctrl-c-t-prefix-map
   :doc "Prefix map for toggle mirror mode or others"
-  "f" #'flyspell-mode
+  "f" #'follow-mode
+  "s" #'flyspell-mode
   "l" #'clm/toggle-command-log-buffer
   "F" #'toggle-frame-maximized)
 
@@ -772,6 +777,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            :prefix-map yx/ctrl-z-prefix-map
            :prefix "C-z"
            ("."   . repeat)
+           ("f"   . follow-delete-other-windows-and-split)
            ("a"   . org-agenda-list)
            ("c"   . org-capture)
            ("l"   . org-store-link)
@@ -981,7 +987,62 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (switch-to-buffer-in-dedicated-window nil)
   (switch-to-buffer-preserve-window-point t)
   (switch-to-prev-buffer-skip 'visible)
-  (switch-to-prev-buffer-skip-regexp "^\\*\\|^magit.*"))
+  (switch-to-prev-buffer-skip-regexp "^\\*\\|^magit.*")
+  :config
+  (setq display-buffer-alist
+        `((,(rx (| "*Org Select"
+                   "*Org Note"
+                   "*Agenda Commands"
+                   "*Capture"
+                   "^CAPTURE-.*\\.org*"
+                   "*tldr*"
+                   "*quickrun*"
+                   "*diff-hl"
+                   "*Dictionary*"
+                   "*wclock*"))
+           (display-buffer-in-side-window)
+           (window-height . 0.45))
+          (,(rx (| "*Messages*"
+                   "*Warnings*"
+                   "Output*$"
+                   "*Backtrace*"
+                   "*Async Shell Command*"))
+           (display-buffer-reuse-window display-buffer-at-bottom)
+           (dedicated . t)
+           (window . root) (window-height . 0.45))
+          ("\\`\\(\\*Calendar\\|\\*Bookmark\\)"
+           (display-buffer-below-selected)
+           (dedicated . t)
+           (window-height . fit-window-to-buffer))
+          ((or (major-mode . help-mode)
+               (major-mode . helpful-mode)
+               (major-mode . apropos-mode))
+           (display-buffer-reuse-mode-window display-buffer-below-selected)
+           (mode . (help-mode helpful-mode apropos-mode))
+           (window-height . 0.45))
+          ((or (major-mode . occur-mode)
+               (major-mode . grep-mode)
+               (major-mode . color-rg-mode))
+           (display-buffer-reuse-mode-window display-buffer-below-selected)
+           (mode . (occur-mode grep-mode color-rg-mode))
+           (window-height . 0.45))
+          ((or (derived-mode . comint-mode)
+               (major-mode . shell-mode)
+               (major-mode . eshell-mode))
+           (display-buffer-at-bottom)
+           (dedicated . t)
+           (window . root) (window-height . 0.45))
+          (,(rx (| "*vc-git"
+                   "*Compile-Log*"))
+           (display-buffer-no-window)
+           (allow-no-window . t))
+          (,(rx (| "*Ibuffer*"
+                   "*Man*"
+                   "*WoMan*"
+                   "*Org Agenda*"
+                   "*Proced*"
+                   "*info*"))
+           (display-buffer-full-frame)))))
 
 (use-package winner
   :ensure nil
@@ -999,50 +1060,25 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
          ("C-M-`" . popper-toggle-type))
   :custom
   (popper-echo-lines 1)
-  (popper-display-control t)
+  (popper-display-control nil)
   (popper-window-height 0.4)
   (popper-group-function #'popper-group-by-project)
-  (popper-reference-buffers '("\\*Messages\\*$"
-                              "Output\\*$" "\\*Pp Eval Output\\*$"
-                              "^\\*eldoc.*\\*$"
-                              "\\*Compile-Log\\*$"
-                              "\\*Completions\\*$"
-                              "\\*Warnings\\*$"
-                              "\\*Async Shell Command\\*$"
-                              "\\*Apropos\\*$"
-                              "^\\*wclock\\*$"
-                              "\\*Backtrace\\*$"
-                              "^\\*.*eshell.*\\*.*$"
-                              "^\\*.*shell.*\\*.*$"
-                              "^\\*.*terminal.*\\*.*$"
-                              "\\*gud-debug\\*$"
-                              "\\*quickrun\\*$"
-                              "\\*tldr\\*$" "\\*vc-.*\\**"
-                              "\\*diff-hl\\**"
-                              "\\*Agenda Commands\\*"
-                              "\\*Org Select\\*"
-                              "\\*Capture\\*" "^CAPTURE-.*\\.org*"
+  (popper-reference-buffers '("\\*quickrun\\*$"
+                              "\\*Embark Collect.*\\*"
+                              "\\*Embark Export.*\\*"
+                              "\\*Flymake diagnostics.*\\*"
+                              "^\\*shell.*\\*$"  shell-mode
+                              "^\\*term.*\\*$"   term-mode
+                              "^\\*vterm.*\\*$"  vterm-mode
+                              grep-mode
+                              occur-mode
                               color-rg-mode
                               bookmark-bmenu-mode
-                              help-mode helpful-mode
-                              tabulated-list-mode
-                              Buffer-menu-mode
-                              list-environment-mode
-                              inferior-python-mode
-                              comint-mode compilation-mode
-                              flymake-diagnostics-buffer-mode
-                              devdocs-mode grep-mode occur-mode
-                              "^\\*Process List\\*$" process-menu-mode))
+                              comint-mode
+                              compilation-mode
+                              devdocs-mode))
   :config
-  (popper-echo-mode +1)
-  (add-to-list 'display-buffer-alist
-	       `(,(regexp-opt '("*Proced"
-                                "*Ibuffer"
-                                "*Man"
-                                "*WoMan"
-                                "*info"
-                                "*Org Agenda"))
-                 (display-buffer-full-frame))))
+  (popper-echo-mode +1))
 
 (use-package zoom
   :custom

@@ -13,10 +13,10 @@
 ;;; Code:
 (setq package-enable-at-startup nil)
 
-(push '(menu-bar-lines . 0)    default-frame-alist)
-(push '(tool-bar-lines . 0)    default-frame-alist)
-(push '(vertical-scroll-bars)  default-frame-alist)
-(push '(undecorated-round . t) default-frame-alist)
+(push '(menu-bar-lines . 0)     default-frame-alist)
+(push '(tool-bar-lines . 0)     default-frame-alist)
+(push '(vertical-scroll-bars)   default-frame-alist)
+(push '(undecorated-round . t)  default-frame-alist)
 (push '(fullscreen . maximized) initial-frame-alist)
 (when (featurep 'ns) (push '(ns-transparent-titlebar . t) default-frame-alist))
 
@@ -24,16 +24,17 @@
 (fringe-mode '(8 . 12))
 
 (setq byte-compile-warnings nil
-      native-comp-async-report-warnings-errors nil
       ffap-machine-p-known 'reject
       read-process-output-max (* 4 1024 1024)
       gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 1.0)
+      gc-cons-percentage 1.0
+      native-compile-prune-cache t
+      native-comp-async-report-warnings-errors 'silent)
 
 (let ((old-file-name-handler-alist file-name-handler-alist))
   (setq-default file-name-handler-alist nil)
   (defun yx/emacs-startup-post-h ()
-    (setq gc-cons-threshold 1600000
+    (setq gc-cons-threshold (* 16 1024 1024)
           gc-cons-percentage 0.1
           file-name-handler-alist (delete-dups (append file-name-handler-alist old-file-name-handler-alist)))
     (run-with-idle-timer 5 t #'garbage-collect)
