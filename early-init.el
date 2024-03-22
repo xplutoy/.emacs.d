@@ -23,7 +23,8 @@
 (tooltip-mode    -1)
 (fringe-mode '(8 . 12))
 
-(setq byte-compile-warnings nil
+(setq mode-line-format nil
+      byte-compile-warnings nil
       ffap-machine-p-known 'reject
       read-process-output-max (* 4 1024 1024)
       gc-cons-threshold most-positive-fixnum

@@ -993,6 +993,35 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (add-hook 'after-init-hook #'yx/font-and-theme-setup -100)
 (add-hook 'server-after-make-frame-hook #'yx/font-and-theme-setup -100)
 
+(use-package prot-modeline
+  :ensure nil
+  :demand t
+  :config
+  (setq mode-line-right-align-edge 'right-margin)
+  (setq-default mode-line-format
+                '("%e"
+                  mode-line-front-space
+                  prot-modeline-kbd-macro
+                  prot-modeline-narrow
+                  prot-modeline-buffer-status
+                  prot-modeline-window-dedicated-status
+                  prot-modeline-input-method
+                  "  "
+                  prot-modeline-buffer-identification
+                  "  "
+                  prot-modeline-major-mode
+                  prot-modeline-process
+                  "  "
+                  prot-modeline-vc-branch
+                  "  "
+                  prot-modeline-eglot
+                  "  "
+                  prot-modeline-flymake
+                  "  "
+                  mode-line-format-right-align
+                  "  "
+                  prot-modeline-misc-info)))
+
 (use-package modus
   :ensure nil
   :custom
@@ -1380,6 +1409,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 ;; %% auxiliary tool
 (use-package crux
   :ensure nil
+  :defer 2
   :config
   (crux-with-region-or-buffer indent-region)
   (crux-reopen-as-root-mode 1))
