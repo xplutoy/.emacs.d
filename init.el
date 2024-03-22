@@ -2914,6 +2914,9 @@ set to \\='(template title keywords subdirectory)."
 ;; %% structured edit
 (use-package iedit)
 
+(use-package surround
+  :bind-keymap ("C-'" . surround-keymap))
+
 (use-package puni
   :hook ((prog-mode sgml-mode nxml-mode) . puni-mode)
   :custom
@@ -2938,7 +2941,6 @@ set to \\='(template title keywords subdirectory)."
               ("=" . puni-expand-region)
               ("-" . puni-contract-region)))
 
-;; %% lsp
 (use-package eglot
   :ensure nil
   :custom
