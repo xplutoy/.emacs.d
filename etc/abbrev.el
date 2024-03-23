@@ -13,14 +13,11 @@
     ("8yx"  "yangxue")
     ("8em"  "yangxue.cs@foxmail.com")
     ;; emoji
-    ";up"    "🙃"
-    ";uni"   "🦄"
-    ";laugh" "🤣"
-    ";smile" "😀"
-    ))
+    (";up"    "🙃")
+    (";uni"   "🦄")
+    (";laugh" "🤣")
+    (";smile" "😀")))
 
 (define-abbrev-table 'latex-mode-abbrev-table
-  '(
-    ("7gh" "" yx/latex-graphics-skl)
-    ("7bn" "" yx/tex-note-tmpl)
-    ))
+  '(("7bn" "" yx/tex-note-tmpl)
+    ("7gh" "" yx/latex-graphics-skl)))

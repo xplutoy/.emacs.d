@@ -1021,20 +1021,20 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                   prot-modeline-buffer-status
                   prot-modeline-window-dedicated-status
                   prot-modeline-input-method
-                  " "
+                  "  "
                   prot-modeline-buffer-identification
-                  "   "
+                  "  "
                   prot-modeline-major-mode
                   prot-modeline-process
-                  "   "
+                  "  "
                   prot-modeline-vc-branch
-                  "   "
+                  "  "
                   prot-modeline-eglot
-                  "   "
+                  "  "
                   prot-modeline-flymake
-                  "   "
+                  "  "
                   mode-line-format-right-align
-                  "   "
+                  "  "
                   prot-modeline-misc-info)))
 
 (use-package modus
@@ -1060,6 +1060,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (lin-global-mode +1))
 
 (use-package minions
+  :disabled
   :hook (after-init . minions-mode))
 
 (use-package spacious-padding
