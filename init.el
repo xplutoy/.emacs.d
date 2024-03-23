@@ -264,7 +264,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :defer 5
   :custom
   (electric-pair-preserve-balance t)
-  (electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
+  (electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
+  :config
+  (electric-pair-mode +1))
 
 (use-package jit-lock
   :ensure nil
@@ -424,6 +426,16 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (save-abbrevs 'silently)
   (abbrev-suggest-hint-threshold 2))
 
+(use-package dabbrev
+  :ensure nil
+  :custom
+  (dabbrev-abbrev-skip-leading-regexp "[$*/=~']")
+  (dabbrev-upcase-means-case-search t)
+  (dabbrev-ignored-buffer-modes '(archive-mode
+                                  image-mode
+                                  docview-mode
+                                  pdf-view-mode)))
+
 (use-package hippie-exp
   :ensure nil
   :custom
@@ -432,7 +444,11 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                                       try-expand-dabbrev
                                       try-expand-dabbrev-from-kill
                                       try-expand-dabbrev-all-buffers
-                                      try-expand-line)))
+                                      try-expand-all-abbrevs
+                                      try-expand-list
+                                      try-expand-line
+                                      try-complete-lisp-symbol-partially
+                                      try-complete-lisp-symbol)))
 
 (use-package isearch
   :ensure nil
@@ -467,8 +483,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :custom
   (auth-source-debug t)
   (auth-source-cache-expiry 300)
-  (auth-sources `(,(no-littering-expand-etc-file-name "authinfo.gpg")))
   :config
+  (add-to-list 'auth-sources
+               (no-littering-expand-etc-file-name "authinfo.gpg"))
   (auth-source-pass-enable))
 
 (use-package mouse
@@ -872,7 +889,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ([remap describe-variable]             . helpful-variable)           ; C-h v
            ([remap list-directory]                . zoxide-travel)              ; C-x C-d
            ([remap dired-at-point]                . consult-dir)                ; C-x d
-           ([remap dabbrev-expand]                . hippie-expand)              ; M-/
            ([remap comment-dwim]                  . yx/comment-dwim)            ; M-;
            ([remap keyboard-quit]                 . yx/keyboard-quit-dwim)      ; C-g
            ([remap kill-buffer]                   . yx/kill-buffer-dwim)        ; C-x k
@@ -890,8 +906,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (bind-keys ("C-<f5>"    . dape)
            ("<f5>"      . quickrun)
+           ("s-/"       . hippie-expand)
            ("s-d"       . dirvish-side)
-           ("s-/"       . transform-previous-char)
            ("s-r"       . consult-recent-file)
            ("s-t"       . tab-bar-new-tab)
            ("s-j"       . avy-goto-char-timer)
@@ -1000,29 +1016,29 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (setq mode-line-right-align-edge 'right-margin)
   (setq-default mode-line-format
                 '("%e"
-                  mode-line-front-space
                   prot-modeline-kbd-macro
                   prot-modeline-narrow
                   prot-modeline-buffer-status
                   prot-modeline-window-dedicated-status
                   prot-modeline-input-method
-                  "  "
+                  " "
                   prot-modeline-buffer-identification
-                  "  "
+                  "   "
                   prot-modeline-major-mode
                   prot-modeline-process
-                  "  "
+                  "   "
                   prot-modeline-vc-branch
-                  "  "
+                  "   "
                   prot-modeline-eglot
-                  "  "
+                  "   "
                   prot-modeline-flymake
-                  "  "
+                  "   "
                   mode-line-format-right-align
-                  "  "
+                  "   "
                   prot-modeline-misc-info)))
 
 (use-package modus
+  :disabled
   :ensure nil
   :custom
   (modus-themes-mixed-fonts t)
@@ -1051,7 +1067,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :custom
   (spacious-padding-subtle-mode-line nil)
   (spacious-padding-widths '( :internal-border-width 4
-                              :header-line-width 2
+                              :header-line-width 1
                               :mode-line-width 2
                               :tab-width 4
                               :right-divider-width 12
@@ -2079,6 +2095,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
           ("https://matt.might.net/articles/feed.rss" lang)
           ("http://www.ruanyifeng.com/blog/atom.xml" tech)
           ("https://vimtricks.com/feed/" vim)
+          ("https://elilif.github.io/rss.xml" emacs)
           ("https://egh0bww1.com/rss.xml" emacs)
           ("https://karthinks.com/index.xml" emacs)
           ("https://manateelazycat.github.io/feed.xml" emacs)
@@ -2122,6 +2139,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :ensure nil
   :defer 5
   :bind (:map org-mode-map
+              ("s-/" . transform-previous-char)
               ("M-g h"   . consult-org-heading)
               :prefix-map yx/org-locle-leader-map
               :prefix "C-c l"
@@ -2617,6 +2635,8 @@ set to \\='(template title keywords subdirectory)."
          (LaTeX-mode . (lambda ()
                          (eglot-ensure)
                          (push #'cape-tex completion-at-point-functions))))
+  :bind (:map LaTeX-mode-map
+              ("s-/" . transform-previous-char))
   :config
   (setq-default Tex-master nil)
   (setq-default TeX-engine 'xetex)

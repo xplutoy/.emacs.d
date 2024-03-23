@@ -1,21 +1,26 @@
 ;;-*-coding: utf-8;-*-
 (define-abbrev-table 'global-abbrev-table
   '(;; Misc
-    ("1td" "" yx/insert-date :count 0)
+    ("1td" "" yx/insert-date)
     ;; regexp
-    ("2bl" "^\s-*$" nil :count 1)
+    ("2bl" "^\s-*$")
     ;; math/unicode symbols
-    ("8in"  "∈" nil :count 1)
-    ("8nin" "∉" nil :count 1)
-    ("8inf" "∞" nil :count 1)
-    ("8lov" "♥" nil :count 1)
-    ("8sml" "☺" nil :count 1)
-    ("8yx"  "yangxue" nil :count 1)
-    ("8em"  "yangxue.cs@foxmail.com" nil :count 1)
+    ("8in"  "∈")
+    ("8nin" "∉")
+    ("8inf" "∞")
+    ("8lov" "♥")
+    ("8sml" "☺")
+    ("8yx"  "yangxue")
+    ("8em"  "yangxue.cs@foxmail.com")
+    ;; emoji
+    ";up"    "🙃"
+    ";uni"   "🦄"
+    ";laugh" "🤣"
+    ";smile" "😀"
     ))
 
 (define-abbrev-table 'latex-mode-abbrev-table
   '(
-    ("7gh" "" yx/latex-graphics-skl :count 0)
-    ("7bn" "" yx/tex-note-tmpl :count 0)
+    ("7gh" "" yx/latex-graphics-skl)
+    ("7bn" "" yx/tex-note-tmpl)
     ))
