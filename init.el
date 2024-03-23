@@ -49,8 +49,8 @@
 
 ;; %% benchmark
 (use-package benchmark-init)
-;; (benchmark-init/activate)
-;; (add-hook 'after-init-hook 'benchmark-init/deactivate)
+(benchmark-init/activate)
+(add-hook 'after-init-hook 'benchmark-init/deactivate)
 
 ;; %% no-littering
 (use-package no-littering
@@ -509,7 +509,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (transient-detect-key-conflicts t)
   (transient-highlight-mismatched-keys nil)
   :config
-  (transient-bind-q-to-quit))
+  (transient-bind-q-to-quit)
+  (keymap-unset transient-map "C-M-p")
+  (keymap-unset transient-map "C-M-n"))
 
 (use-package bookmark
   :ensure nil
@@ -864,7 +866,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            :prefix "C-z"
            ("."   . repeat)
            ("f"   . follow-delete-other-windows-and-split)
-           ("a"   . org-agenda-list)
+           ("a"   . org-agenda)
            ("c"   . org-capture)
            ("l"   . org-store-link)
            ("z"   . zoom)
@@ -1210,6 +1212,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :hook (after-init . tab-bar-mode)
   :custom
   (tab-bar-show t)
+  (tab-bar-auto-width nil)
   (tab-bar-format '(tab-bar-format-menu-bar
                     tab-bar-format-tabs-groups
                     tab-bar-format-align-right
@@ -2690,7 +2693,8 @@ set to \\='(template title keywords subdirectory)."
   :config
   (defun yx/prog-mode-setup ()
     (hs-minor-mode 1)
-    (setq-local line-spacing 0.15))
+    (setq line-spacing 0.15
+          show-trailing-whitespace t))
   (add-hook 'prog-mode-hook #'yx/prog-mode-setup))
 
 (use-package project
@@ -2908,7 +2912,7 @@ set to \\='(template title keywords subdirectory)."
                (no-littering-expand-var-file-name "tree-sitter")))
 
 (use-package treesit-auto
-  :defer 5
+  :defer 2
   :custom
   (treesit-auto-install 'prompt)
   (treesit-auto-langs '(c
@@ -2961,6 +2965,15 @@ set to \\='(template title keywords subdirectory)."
               :repeat-map puni-e/c-repeat-map
               ("=" . puni-expand-region)
               ("-" . puni-contract-region)))
+
+(use-package combobulate
+  :vc (:url "https://github.com/mickeynp/combobulate" :rev :newest)
+  :hook ((python-ts-mode . combobulate-mode)
+         (js-ts-mode . combobulate-mode)
+         (yaml-ts-mode . combobulate-mode)
+         (json-ts-mode . combobulate-mode))
+  :custom
+  (combobulate-key-prefix "C-c l o"))
 
 (use-package eglot
   :ensure nil
@@ -3057,7 +3070,6 @@ set to \\='(template title keywords subdirectory)."
 (use-package cc-mode
   :ensure nil
   :hook (c-mode . eglot-ensure)
-  :init (setq-default c-basic-offset 8)
   :config
   (define-auto-insert
     "\\.\\([Hh]\\|hh\\|hpp\\|hxx\\|h\\+\\+\\)\\'"
@@ -3069,6 +3081,9 @@ set to \\='(template title keywords subdirectory)."
   (defun yx/cc-mode-common-h ()
     (setq tab-width 8
           indent-tabs-mode t
+          comment-start "// "
+          comment-end ""
+          c-basic-offset 8
           c-electric-pound-behavior 'alignleft)
     (c-toggle-auto-hungry-state 1))
   (add-hook 'c-mode-common-hook #'yx/cc-mode-common-h))
