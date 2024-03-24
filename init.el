@@ -478,8 +478,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :config
   (epa-file-enable))
 
-(use-package auth-sources
+(use-package auth-source
   :ensure nil
+  :autoload (auth-source-search)
   :custom
   (auth-source-debug t)
   (auth-source-cache-expiry 300)
@@ -1122,7 +1123,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
           ((or (major-mode . help-mode)
                (major-mode . helpful-mode)
                (major-mode . apropos-mode))
-           (display-buffer-reuse-mode-window display-buffer-below-selected)
+           (display-buffer-reuse-mode-window display-buffer-at-bottom)
            (mode . (help-mode helpful-mode apropos-mode))
            (window-height . 0.45))
           ((or (derived-mode . occur-mode)
@@ -1130,12 +1131,12 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                (derived-mode . color-rg-mode)
                (derived-mode . log-view-mode)
                (derived-mode . Buffer-menu-mode))
-           (display-buffer-reuse-mode-window display-buffer-below-selected)
+           (display-buffer-reuse-mode-window display-buffer-at-bottom)
            (mode . (occur-mode grep-mode color-rg-mode))
            (window-height . 0.45))
           ((or (major-mode . shell-mode)
                (major-mode . eshell-mode)
-               (derived-mode . comint-mode))
+               (major-mode . term-mode))
            (display-buffer-reuse-mode-window display-buffer-at-bottom)
            (dedicated . t)
            (window . root) (window-height . 0.45))
@@ -3101,8 +3102,6 @@ set to \\='(template title keywords subdirectory)."
         '((python-ts-mode . python-shell-send-region)
           (emacs-lisp-mode . eval-region)))
   (let ((map code-cells-mode-map))
-    (keymap-set map "C-c C-n" 'code-cells-forward-cell)
-    (keymap-set map "C-c C-p" 'code-cells-backward-cell)
     (keymap-set map "n" (code-cells-speed-key 'code-cells-forward-cell))
     (keymap-set map "p" (code-cells-speed-key 'code-cells-backward-cell))
     (keymap-set map "e" (code-cells-speed-key 'code-cells-eval))
