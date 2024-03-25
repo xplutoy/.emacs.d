@@ -507,12 +507,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :ensure nil
   :commands (transient-define-prefix)
   :custom
-  (transient-detect-key-conflicts t)
+  (transient-detect-key-conflicts nil)
   (transient-highlight-mismatched-keys nil)
   :config
-  (transient-bind-q-to-quit)
-  (keymap-unset transient-map "C-M-p")
-  (keymap-unset transient-map "C-M-n"))
+  (transient-bind-q-to-quit))
 
 (use-package bookmark
   :ensure nil
@@ -1685,6 +1683,12 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                                             "moonshot-v1-128k"))))
   (add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
   (add-hook 'gptel-post-response-functions 'gptel-end-of-response))
+
+(use-package casual
+  :after calc
+  :demand t
+  :config
+  (keymap-set calc-mode-map "C-c l" #'casual-main-menu))
 
 
 ;;; Dired

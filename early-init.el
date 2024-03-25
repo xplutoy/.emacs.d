@@ -13,9 +13,9 @@
 ;;; Code:
 (setq package-enable-at-startup nil)
 
-(push '(menu-bar-lines . 0)     default-frame-alist)
-(push '(tool-bar-lines . 0)     default-frame-alist)
-(push '(vertical-scroll-bars)   default-frame-alist)
+(push '(menu-bar-lines . 0) default-frame-alist)
+(push '(tool-bar-lines . 0) default-frame-alist)
+(push '(vertical-scroll-bars . 0) default-frame-alist)
 (push '(undecorated-round . t)  default-frame-alist)
 (push '(fullscreen . maximized) initial-frame-alist)
 (when (featurep 'ns) (push '(ns-transparent-titlebar . t) default-frame-alist))
