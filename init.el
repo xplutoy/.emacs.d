@@ -819,18 +819,19 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (defvar-keymap yx/ctrl-c-o-prefix-map
   :doc "Prefix map for `C-c o'"
-  "o" #'crux-open-with
-  "a" #'org-agenda-list
-  "c" #'calendar
-  "f" #'make-frame
-  "d" #'dirvish-side
-  "r" #'elfeed
-  "g" #'gptel
-  "v" #'vterm-other-window
-  "s" #'symbols-outline-show
-  "p" #'package-list-packages
-  "P" #'proced
-  "E" #'emms-browser)
+  "o"   #'crux-open-with
+  "a"   #'org-agenda-list
+  "c"   #'calendar
+  "f"   #'make-frame
+  "d"   #'dirvish-side
+  "e"   #'elfeed
+  "C-e" #'emms-browser
+  "g"   #'gptel
+  "v"   #'vterm-other-window
+  "s"   #'symbols-outline-show
+  "C-s" #'sr-speedbar-toggle
+  "p"   #'package-list-packages
+  "C-p" #'proced)
 
 (keymap-global-set "C-c o" yx/ctrl-c-o-prefix-map)
 
@@ -910,15 +911,13 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (bind-keys ("C-<f5>"    . dape)
            ("<f5>"      . quickrun)
            ("s-/"       . hippie-expand)
-           ("s-d"       . dirvish-side)
            ("s-r"       . consult-recent-file)
            ("s-t"       . tab-bar-new-tab)
-           ("s-j"       . avy-goto-char-timer)
-           ("s-i"       . symbols-outline-show)
            ("s-o"       . ace-window)
            ("s-w"       . tabspaces-close-workspace)
-           ("s-<right>" . ns-next-frame)
-           ("s-<left>"  . ns-prev-frame)
+           ("s-q"       . delete-frame)
+           ("s-}"       . ns-next-frame)
+           ("s-{"       . ns-prev-frame)
            ("s-]"       . tab-next)
            ("s-["       . tab-previous)
            ("C-;"       . iedit-mode)
@@ -970,6 +969,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("C-c C-v"   . magit-dispatch)
            ("C-c C-d"   . helpful-at-point)
            ("C-c d"     . bing-dict-brief)
+           ("C-c j"     . avy-goto-char-timer)
            ("C-c r"     . query-replace-regexp)
            ("C-c z"     . hs-toggle-hiding)
            ("C-c C-z"   . hs-show-all)
@@ -1237,18 +1237,17 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (use-package sr-speedbar
   :ensure nil
-  :defer 5
-  :init
-  (setq speedbar-use-images nil
-        sr-speedbar-width 30
-        sr-speedbar-skip-other-window-p t))
+  :custom
+  (speedbar-use-images nil)
+  (sr-speedbar-width 30)
+  (sr-speedbar-skip-other-window-p t))
 
 (use-package ace-window
-  :init
-  (setq aw-scope 'frame
-        aw-background nil
-        aw-dispatch-always t
-        aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+  :custom
+  (aw-scope 'frame)
+  (aw-background nil)
+  (aw-dispatch-always t)
+  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
 ;; %% tabspaces
 (use-package tabspaces
@@ -1388,7 +1387,12 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package marginalia
   :defer 3
   :bind (:map minibuffer-local-map
-              ("M-A" . marginalia-cycle)))
+              ("M-A" . marginalia-cycle))
+  :custom
+  (marginalia-align 'right)
+  (marginalia-align-offset 10)
+  :config
+  (marginalia-mode +1))
 
 ;;; Misc
 (use-package gcmh
@@ -1926,8 +1930,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
     (visual-line-mode +1)
     (add-to-list 'completion-at-point-functions 'cape-elisp-symbol)
     (add-to-list 'completion-at-point-functions 'cape-file)
-    (setq-local corfu-auto nil)
-    (corfu-mode 1))
+    (setq-local corfu-auto nil
+                corfu-quit-at-boundary t
+                corfu-quit-no-match t)
+    (corfu-mode +1))
 
   (add-hook 'eshell-mode-hook #'yx/eshell-setup)
 
@@ -3102,10 +3108,13 @@ set to \\='(template title keywords subdirectory)."
         '((python-ts-mode . python-shell-send-region)
           (emacs-lisp-mode . eval-region)))
   (let ((map code-cells-mode-map))
-    (keymap-set map "n" (code-cells-speed-key 'code-cells-forward-cell))
-    (keymap-set map "p" (code-cells-speed-key 'code-cells-backward-cell))
-    (keymap-set map "e" (code-cells-speed-key 'code-cells-eval))
-    (keymap-set map "TAB" (code-cells-speed-key 'outline-cycle)))
+    (keymap-set map "C-c % w" #'code-cells-write-ipynb)
+    (keymap-set map "C-c % C-e" #'code-cells-eval-above)
+    (keymap-set map "n" (code-cells-speed-key #'code-cells-forward-cell))
+    (keymap-set map "p" (code-cells-speed-key #'code-cells-backward-cell))
+    (keymap-set map "e" (code-cells-speed-key #'code-cells-eval))
+    (keymap-set map "C-e" (code-cells-speed-key #'code-cells-eval-above))
+    (keymap-set map "TAB" (code-cells-speed-key #'outline-cycle)))
   (with-eval-after-load 'jupyter
     (defalias 'adopt-jupyter-eval-region (apply-partially 'jupyter-eval-region nil))
     (add-to-list 'code-cells-eval-region-commands
