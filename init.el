@@ -2077,11 +2077,13 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (pdf-loader-install))
 
 (use-package olivetti
-  :hook ((org-mode org-agenda-mode) . olivetti-mode)
+  :hook ((org-mode . olivetti-mode)
+         (org-agenda-mode . olivetti-mode)
+         (olivetti-mode . (lambda () (diff-hl-mode -1))))
   :bind (("<left-margin> <mouse-1>" . ignore)
          ("<right-margin> <mouse-1>" . ignore))
   :custom
-  (olivetti-style nil)
+  (olivetti-style 'fancy)
   (olivetti-mode-map nil)
   (olivetti-body-width 0.68)
   (olivetti-minimum-body-width (+ fill-column 2)))
