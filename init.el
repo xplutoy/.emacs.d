@@ -560,6 +560,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :ensure nil
   :custom
   (webjump-sites '(("Org"        . "https://orgmode.org")
+                   ("Dicalab"    . "https://center.dicalab.cn")
                    ("Google"     . [simple-query "www.google.com" "www.google.com/search?q=" ""])
                    ("DuckDuckGo" . [simple-query "duckduckgo.com" "duckduckgo.com/?q=" ""])
                    ("Wikipedia"  . [simple-query "wikipedia.org" "wikipedia.org/wiki/" ""]))))
@@ -2078,8 +2079,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (use-package olivetti
   :hook ((org-mode . olivetti-mode)
-         (org-agenda-mode . olivetti-mode)
-         (olivetti-mode . (lambda () (diff-hl-mode -1))))
+         (org-agenda-mode . olivetti-mode))
   :bind (("<left-margin> <mouse-1>" . ignore)
          ("<right-margin> <mouse-1>" . ignore))
   :custom
@@ -2212,7 +2212,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (org-yank-adjusted-subtrees t)
   (org-insert-heading-respect-content t)
   (org-fold-catch-invisible-edits 'show-and-error)
-  (org-image-actual-width '(300))
+  (org-image-actual-width '(600))
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
   (org-lowest-priority ?D)
@@ -2579,13 +2579,15 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (use-package org-download
   :after org
+  :demand t
   :hook (dired-mode . org-download-enable)
-  :commands (org-download-screenshot org-download-clipboard)
   :custom
   (org-download-heading-lvl nil)
-  (org-download-screenshot-method "screencapture -i %s")
-  (org-download-image-dir
-   (expand-file-name (concat org-attach-directory "images/") yx/org-root)))
+  (org-download-image-dir (expand-file-name "images/" org-attach-directory))
+  (org-download-screenshot-method (cond
+                                   (IS-MAC "screencapture -i %s")
+                                   (IS-LINUX "scrot -s %s")
+                                   (t nil))))
 
 (use-package org-web-tools)
 
@@ -2833,13 +2835,13 @@ set to \\='(template title keywords subdirectory)."
 
 (use-package diff-hl
   :defer 5
-  :hook ((dired-mode . diff-hl-dired-mode)
+  :hook ((prog-mode . diff-hl-mode)
+         (dired-mode . diff-hl-dired-mode)
          (magit-post-refresh . diff-hl-magit-post-refresh))
   :custom
   (diff-hl-disable-on-remote t)
   (diff-hl-show-staged-changes nil)
   :config
-  (global-diff-hl-mode +1)
   (diff-hl-flydiff-mode +1)
   (global-diff-hl-show-hunk-mouse-mode -1))
 
