@@ -571,6 +571,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (ispell-dictionary "en_US")
   (ispell-program-name "aspell")
   (ispell-following-word t)
+  (ispell-alternate-dictionary
+   (no-littering-expand-etc-file-name "google-10000-english-no-swears.txt"))
   (ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))
   (flyspell-issue-message-flag nil)
   :config
@@ -870,6 +872,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("a"   . org-agenda)
            ("c"   . org-capture)
            ("l"   . org-store-link)
+           ("n"   . denote-menu-list-notes)
            ("z"   . zoom)
            ("C-c" . gptel-send)
            ("/ /" . webjump)
@@ -2603,7 +2606,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (denote-prompts '(subdirectory title keywords))
   (denote-templates nil)
   :config
-  (require 'denote-org-dblock)
+  (require 'denote-org-extras)
   (denote-rename-buffer-mode 1)
   :preface
   (defun yx/denote-template ()
@@ -2616,6 +2619,14 @@ set to \\='(template title keywords subdirectory)."
       (call-interactively #'denote))))
 
 (use-package denote-refs)
+
+(use-package denote-menu
+  :bind ( :map denote-menu-mode-map
+          ("c"   . denote-menu-clear-filters)
+          ("e"   . denote-menu-export-to-dired)
+          ("/ r" . denote-menu-filter)
+          ("/ k" . denote-menu-filter-by-keyword)
+          ("/ o" . denote-menu-filter-out-keyword)))
 
 (use-package citar-denote
   :after (citar denote)
