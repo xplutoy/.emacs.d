@@ -61,7 +61,7 @@
   :config
   (no-littering-theme-backups))
 
-;;; Os Specific
+;;; OS Specific
 (defconst IS-MAC     (eq system-type 'darwin))
 (defconst IS-WIN     (memq system-type '(windows-nt ms-dos cygwin)))
 (defconst IS-LINUX   (eq system-type 'gnu/linux))
@@ -374,6 +374,11 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   ;; Text properties inflate the size of recentf's files
   (add-to-list 'recentf-filename-handlers #'substring-no-properties))
 
+(use-package subword
+  :ensure nil
+  :hook ((prog-mode . subword-mode)
+         (minibuffer-setup . subword-mode)))
+
 (use-package whitespace
   :ensure nil
   :hook ((prog-mode conf-mode) . whitespace-mode)
@@ -403,18 +408,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (setq minibuffer-prompt-properties
         '(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-
-  (defun crm-indicator (args)
-    (cons (format "[`completing-read-multiple': %s]  %s"
-                  (propertize
-                   (replace-regexp-in-string
-                    "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                    crm-separator)
-                   'face 'error)
-                  (car args))
-          (cdr args)))
-  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
-
   (file-name-shadow-mode +1)
   (minibuffer-depth-indicate-mode +1)
   (minibuffer-electric-default-mode +1))
@@ -529,10 +522,12 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (proced-enable-color-flag t)
   (proced-auto-update-flag nil))
 
-;; %% browser-url
-(setq browse-url-browser-function #'eww-browse-url
-      browse-url-secondary-browser-function 'browse-url-default-browser
-      browse-url-generic-program yx/default-open)
+(use-package browse-url
+  :ensure nil
+  :custom
+  (browse-url-browser-function #'eww-browse-url)
+  (browse-url-secondary-browser-function 'browse-url-default-browser)
+  (browse-url-generic-program yx/default-open))
 
 (use-package goto-addr
   :ensure nil
@@ -832,7 +827,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   "s"   #'symbols-outline-show
   "C-s" #'sr-speedbar-toggle
   "p"   #'package-list-packages
-  "C-p" #'proced)
+  "C-p" #'proced
+  "n"   #'denote-menu-list-notes)
 
 (keymap-global-set "C-c o" yx/ctrl-c-o-prefix-map)
 
@@ -872,7 +868,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("a"   . org-agenda)
            ("c"   . org-capture)
            ("l"   . org-store-link)
-           ("n"   . denote-menu-list-notes)
            ("z"   . zoom)
            ("C-c" . gptel-send)
            ("/ /" . webjump)
@@ -1235,7 +1230,12 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :custom
   (tab-line-close-button-show 'selected)
   (tab-line-tab-name-function #'tab-line-tab-name-truncated-buffer)
-  (tab-line-tab-name-truncated-max 25))
+  (tab-line-tab-name-truncated-max 25)
+  :config
+  (appendq! tab-line-exclude-modes '(doc-view-mode
+                                     imenu-list-major-mode
+                                     ediff-mode
+                                     ediff-meta-mode)))
 
 (use-package sr-speedbar
   :ensure nil
@@ -1388,10 +1388,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (use-package marginalia
   :defer 3
-  :bind (:map minibuffer-local-map
-              ("M-A" . marginalia-cycle))
   :custom
-  (marginalia-align 'right)
+  (marginalia-align 'left)
   (marginalia-align-offset 10)
   :config
   (marginalia-mode +1))
@@ -1647,11 +1645,17 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (add-hook 'elfeed-show-hook 'bing-dict-eldoc-mode))
 
 (use-package cal-china-x
-  :defer 10
+  :defer 5
   :config
   (setq mark-holidays-in-calendar t)
   (setq cal-china-x-important-holidays cal-china-x-chinese-holidays)
-  (setq cal-china-x-general-holidays '((holiday-lunar 1 15 "元宵节")))
+  (setq cal-china-x-general-holidays '((holiday-lunar 1 15 "元宵节")
+                                       (holiday-lunar 7 7  "七夕节")
+                                       (holiday-fixed 3 8  "妇女节")
+                                       (holiday-fixed 3 12 "植树节")
+                                       (holiday-fixed 5 4  "青年节")
+                                       (holiday-fixed 6 1  "儿童节")
+                                       (holiday-fixed 9 10 "教师节")))
   (setq calendar-holidays
         (append cal-china-x-important-holidays
                 cal-china-x-general-holidays)))
@@ -3262,6 +3266,8 @@ set to \\='(template title keywords subdirectory)."
   :custom
   (nxml-slash-auto-complete-flag t)
   (nxml-auto-insert-xml-declaration-flag t))
+
+(use-package csv-mode)
 
 (use-package vimrc-mode
   :mode "\\.?vim\\(rc\\)?\\'")
