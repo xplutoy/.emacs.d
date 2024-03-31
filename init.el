@@ -1522,7 +1522,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package erc
   :ensure nil
   :custom
-  (erc-nick "xplutoyz")
+  (erc-nick "yxzz")
   (erc-join-buffer 'bury)
   (erc-interpret-mirc-color t)
   (erc-kill-queries-on-quit t)
@@ -1532,11 +1532,15 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (erc-prompt-for-password nil)
   (erc-prompt-for-nickserv-password nil)
   (erc-use-auth-source-for-nickserv-password t)
+  (erc-sasl-user "xplutoy")
+  (erc-sasl-auth-source-function #'erc-auth-source-search)
   (erc-hide-list '("JOIN" "NICK" "PART" "QUIT"))
+  (erc-autojoin-channels-alist '(("#emacs" "#org-mode")))
   :config
-  (add-to-list 'erc-modules 'services)
+  (appendq! erc-modules '(sasl services))
   (erc-update-modules)
-  (erc-services-mode 1))
+  (erc-services-mode 1)
+  (defalias 'erc 'erc-tls))
 
 ;; %% emms
 (use-package emms
