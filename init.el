@@ -39,6 +39,7 @@
       use-package-always-defer t
       use-package-always-ensure t
       use-package-expand-minimally t
+      use-package-vc-prefer-newest t
       use-package-enable-imenu-support t)
 
 (when (daemonp)
@@ -102,10 +103,6 @@
   "Append LISTS to SYM in place."
   `(setq ,sym (append ,sym ,@lists)))
 
-(defmacro prependq! (sym &rest lists)
-  "Prepend LISTS to SYM in place."
-  `(setq ,sym (append ,@lists ,sym)))
-
 (defmacro delq! (elt list &optional fetcher)
   "`delq' ELT from LIST in-place.
 
@@ -124,12 +121,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
          (equal home (substring pwd 0 home-len)))
         (concat "~" (substring pwd home-len))
       pwd)))
-
-(defun yx/file-contents-2-str (file)
-  "File contents to string."
-  (with-temp-buffer
-    (insert-file-contents file)
-    (buffer-string)))
 
 ;;; Defaults
 (use-package emacs
@@ -1490,8 +1481,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package avy-zap)
 
 (use-package speedrect
-  :defer 3
-  :vc (:url "https://github.com/jdtsmith/speedrect" :rev :newest))
+  :vc (:url "https://github.com/jdtsmith/speedrect")
+  :defer 3)
 
 (use-package hungry-delete
   :hook (after-init . global-hungry-delete-mode)
@@ -1608,7 +1599,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (require 'pyim-dregcache)
   (pyim-default-scheme 'xiaohe-shuangpin)
   (use-package pyim-tsinghua-dict
-    :vc (:url "https://github.com/redguardtoo/pyim-tsinghua-dict" :rev :newest)
+    :vc (:url "https://github.com/redguardtoo/pyim-tsinghua-dict")
     :demand t)
   (pyim-tsinghua-dict-enable))
 
@@ -1671,7 +1662,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
          ([remap dired-smart-shell-command] . dwim-shell-command)))
 
 (use-package outli
-  :vc (:url "https://github.com/jdtsmith/outli" :rev :newest)
+  :vc (:url "https://github.com/jdtsmith/outli")
   :hook ((prog-mode text-mode) . outli-mode)
   :bind (:map outli-mode-map
               ("C-c C-u" . (lambda () (interactive) (outline-back-to-heading)))))
@@ -1991,7 +1982,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 ;; %% eat
 (use-package eat
-  :vc (:url "https://codeberg.org/akib/emacs-eat" :rev :newest)
+  :vc (:url "https://codeberg.org/akib/emacs-eat")
   :custom
   (eat-kill-buffer-on-exit t)
   (eat-enable-yank-to-terminal t)
@@ -2007,7 +1998,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 ;;; Templates
 (tempo-define-template
  "yx/tex-note-tmpl"
- `(,(yx/file-contents-2-str (expand-file-name "math-note.tmpl.tex" yx/templates-dir))))
+ `(,(with-temp-buffer
+      (insert-file-contents
+       (expand-file-name "math-note.tmpl.tex" yx/templates-dir))
+      (buffer-string))))
 
 (define-skeleton yx/latex-graphics-skl
   "Insert centered picture."
@@ -2881,7 +2875,7 @@ set to \\='(template title keywords subdirectory)."
   (snap-indent-format '(delete-trailing-whitespace)))
 
 (use-package isayt
-  :vc (:url https://gitlab.com/andreyorst/isayt.el :rev :newest)
+  :vc (:url "https://gitlab.com/andreyorst/isayt.el")
   :hook ((emacs-lisp-mode scheme-mode-hook) . isayt-mode))
 
 ;; %% doc
@@ -2960,7 +2954,7 @@ set to \\='(template title keywords subdirectory)."
 
 ;; %% refoctor
 (use-package color-rg
-  :vc (:url https://github.com/manateelazycat/color-rg :rev :newest)
+  :vc (:url "https://github.com/manateelazycat/color-rg")
   :defer 2
   :custom
   (color-rg-search-no-ignore-file nil)
@@ -2997,7 +2991,7 @@ set to \\='(template title keywords subdirectory)."
               ("-" . puni-contract-region)))
 
 (use-package combobulate
-  :vc (:url "https://github.com/mickeynp/combobulate" :rev :newest)
+  :vc (:url "https://github.com/mickeynp/combobulate")
   :hook ((python-ts-mode . combobulate-mode)
          (js-ts-mode . combobulate-mode)
          (yaml-ts-mode . combobulate-mode)
