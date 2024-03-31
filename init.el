@@ -2672,6 +2672,7 @@ set to \\='(template title keywords subdirectory)."
   :config
   (setq-default Tex-master nil)
   (setq-default TeX-engine 'xetex)
+  (setq-default LaTeX-electric-left-right-brace t)
 
   (setq TeX-auto-save t
         TeX-save-query nil
