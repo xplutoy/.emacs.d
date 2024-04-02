@@ -470,8 +470,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (auth-source-cache-expiry 300)
   :config
   (add-to-list 'auth-sources
-               (no-littering-expand-etc-file-name "authinfo.gpg"))
-  (auth-source-pass-enable))
+               (no-littering-expand-etc-file-name "authinfo.gpg")))
 
 (use-package mouse
   :ensure nil
@@ -807,7 +806,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (defvar-keymap yx/ctrl-c-o-prefix-map
   :doc "Prefix map for `C-c o'"
   "o"   #'crux-open-with
-  "a"   #'org-agenda-list
+  "a"   #'org-agenda
   "c"   #'calendar
   "f"   #'make-frame
   "d"   #'dirvish-side
@@ -856,7 +855,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            :prefix "C-z"
            ("."   . repeat)
            ("f"   . follow-delete-other-windows-and-split)
-           ("a"   . org-agenda)
+           ("a"   . org-agenda-list)
            ("c"   . org-capture)
            ("l"   . org-store-link)
            ("z"   . zoom)
