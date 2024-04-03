@@ -66,15 +66,17 @@
 (defconst IS-MAC     (eq system-type 'darwin))
 (defconst IS-WIN     (memq system-type '(windows-nt ms-dos cygwin)))
 (defconst IS-LINUX   (eq system-type 'gnu/linux))
+(defconst IS-WSL     (and IS-LINUX (getenv "WSL_DISTRO_NAME")))
+
 
 (cond
  (IS-MAC
-  (setq ns-command-modifier   'super
-        ns-alternate-modifier 'meta
-        ns-function-modifier  'hyper
-        ns-pop-up-frames nil
+  (setq ns-pop-up-frames nil
         ns-use-thin-smoothing t
         ns-use-native-fullscreen nil)
+  (setq ns-command-modifier 'super
+        ns-alternate-modifier 'meta
+        ns-function-modifier  'hyper)
   (push '(fullscreen . maximized) initial-frame-alist)
   (push '(undecorated-round . t) default-frame-alist)
   (push '(ns-transparent-titlebar . t) default-frame-alist))
@@ -86,10 +88,12 @@
                 exec-path))
   (setq w32-apps-modifier    'hyper
         w32-lwindow-modifier 'super
+        w32-pass-apps-to-system nil
         w32-pass-lwindow-to-system nil
         w32-get-true-file-attributes nil
         w32-pipe-read-delay 0
-        w32-pipe-buffer-size  (* 64 1024))))
+        w32-pipe-buffer-size  (* 64 1024))
+  (w32-register-hot-key [s-])))
 
 (unless IS-WIN
   (setq selection-coding-system 'utf-8))
@@ -694,7 +698,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (calendar-date-style 'iso)
   (calendar-week-start-day 1)
   (calendar-mark-holidays-flag t)
-  (calendar-mark-diary-entries-flag t))
+  (calendar-mark-diary-entries-flag nil))
 
 ;; %% hook
 (defun yx/text-mode-setup ()
@@ -1583,6 +1587,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
               ("M-$" . flyspell-correct-wrapper)))
 
 (use-package sis
+  :unless IS-WIN
   :defer 2
   :config
   (appendq! sis-prefix-override-keys '("M-s" "M-g"))
@@ -1591,8 +1596,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (sis-global-context-mode 1))
 
 (use-package pyim
-  :commands
-  (pyim-create-word-from-selection)
+  :commands (pyim-create-word-from-selection)
   :custom
   (default-input-method "pyim")
   (pyim-outcome-trigger  nil)
@@ -1612,7 +1616,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (use-package pyim-tsinghua-dict
     :vc (:url "https://github.com/redguardtoo/pyim-tsinghua-dict")
     :demand t)
-  (pyim-tsinghua-dict-enable))
+  (pyim-tsinghua-dict-enable)))
 
 (use-package stardict
   :ensure nil
@@ -2230,7 +2234,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (org-lowest-priority ?D)
   (org-priority-default ?C)
 
-  (org-element-use-cache nil)
+  (org-element-use-cache t)
   (org-element-cache-persistent nil)
 
   (org-blank-before-new-entry '((heading . nil)
@@ -2242,7 +2246,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (org-startup-folded t)
   (org-hide-block-startup t)
   (org-hide-drawer-startup t)
-  (org-startup-align-all-tables nil)
+  (org-startup-align-all-tables t)
   (org-startup-with-inline-images nil)
 
   (org-log-done 'time)
@@ -3285,7 +3289,7 @@ set to \\='(template title keywords subdirectory)."
 (use-package graphviz-dot-mode)
 
 ;; %% maxima
-(unless IS-WIN 
+(unless IS-WIN
   (autoload 'maxima-mode "maxima" "Maxima mode" t)
   (autoload 'imaxima "imaxima" "Frontend for maxima with Image support" t)
   (autoload 'maxima "maxima" "Maxima interaction" t)
