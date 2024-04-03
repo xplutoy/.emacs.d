@@ -700,7 +700,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (calendar-mark-holidays-flag t)
   (calendar-mark-diary-entries-flag nil))
 
-;; %% hook
+(autoload 'vaper-ex "vaper")
+
 (defun yx/text-mode-setup ()
   (setq-local word-wrap t
               line-spacing 0.15)
@@ -866,6 +867,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            :prefix-map yx/ctrl-z-prefix-map
            :prefix "C-z"
            ("."   . repeat)
+           (":"   . vaper-ex)
            ("f"   . follow-delete-other-windows-and-split)
            ("a"   . org-agenda-list)
            ("c"   . org-capture)
@@ -878,6 +880,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (bind-keys ([remap move-beginning-of-line]        . crux-move-beginning-of-line) ; C-a
            ([remap goto-line]                     . consult-goto-line)           ;M-g g
            ([remap switch-to-buffer]              . consult-buffer)              ; C-x b
+           ([remap delete-window]                 . yx/delete-window-dwim)       ; C-x 0
            ([remap list-buffers]                  . ibuffer)                 ; C-x C-b
            ([remap repeat-complex-command]        . consult-complex-command) ; C-x M-:
            ([remap switch-to-buffer-other-window] . consult-buffer-other-window) ; C-x 4 b
@@ -963,7 +966,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("M-s M-s"   . color-rg-search-symbol)
            ("M-s p"     . color-rg-search-input-in-project)
            ("M-s M-p"   . color-rg-search-symbol-in-project)
-           ("C-c k"     . kill-buffer-and-window)
            ("C-c v"     . magit-file-dispatch)
            ("C-c C-v"   . magit-dispatch)
            ("C-c C-d"   . helpful-at-point)
@@ -1438,6 +1440,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :ensure nil
   :defer 2
   :config
+  (crux-with-region-or-buffer tabify)
+  (crux-with-region-or-buffer untabify)
   (crux-with-region-or-buffer indent-region)
   (crux-reopen-as-root-mode 1))
 
@@ -2106,18 +2110,11 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (olivetti-minimum-body-width (+ fill-column 2)))
 
 (use-package elfeed
-  :bind (:map elfeed-show-mode-map
-              ("w" . elfeed-show-yank)
-              ("%" . elfeed-webkit-toggle)
-              ("q" . yx/elfeed-kill-entry)
-              :map elfeed-search-mode-map
-              ("R" . yx/elfeed-mark-all-as-read))
   :init
   (setq elfeed-feeds
         '(("http://www.zhihu.com/rss" new)
           ("https://www.inference.vc/rss" ai)
           ("https://spaces.ac.cn/feed" ai webkit)
-          ("https://ruder.io/rss/index.rss" ai)
           ("https://lilianweng.github.io/index.xml" ai)
           ("https://www.juliabloggers.com/feed/" julia)
           ("https://planet.lisp.org/rss20.xml" lisp)
@@ -2159,6 +2156,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
     (elfeed-search-untag-all-unread))
 
   (run-at-time nil (* 4 60 60) 'elfeed-update)
+  (keymap-set elfeed-show-mode-map "w" #'elfeed-show-yank)
+  (keymap-set elfeed-show-mode-map "%" #'elfeed-webkit-toggle)
+  (keymap-set elfeed-show-mode-map "q" #'yx/elfeed-kill-entry)
+  (keymap-set elfeed-search-mode-map "R" #'yx/elfeed-mark-all-as-read) 
   (keymap-set elfeed-search-mode-map "m" (yx/elfeed-tag-selection-as 'star))
   (keymap-set elfeed-search-mode-map "l" (yx/elfeed-tag-selection-as 'readlater)))
 

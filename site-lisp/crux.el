@@ -89,6 +89,15 @@ Warning: new buffer is not prompted for save when killed, see `kill-buffer'."
     (kill-current-buffer)))
 
 ;;;###autoload
+(defun yx/delete-window-dwim ()
+  "Delete the current window or bury its buffer.
+If the current window is alone in its frame, bury the buffer
+instead."
+  (interactive)
+  (unless (ignore-errors (delete-window) t)
+    (bury-buffer)))
+
+;;;###autoload
 (defun crux-top-join-line ()
   "Join the current line with the line beneath it."
   (interactive)
