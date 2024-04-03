@@ -81,7 +81,7 @@
   (push '(undecorated-round . t) default-frame-alist)
   (push '(ns-transparent-titlebar . t) default-frame-alist))
  (IS-WIN
-  (setq default-directory "~")
+  (setq default-directory "~/")
   (setq exec-path
         (append '("C:/Program Files/Git/bin"
                   "C:/Program Files/Git/usr/bin")
@@ -1747,7 +1747,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :config
   (set-face-attribute 'diredfl-dir-name nil :bold t))
 
-(use-package zoxide)
+(use-package zoxide
+  :unless IS-WIN)
 
 (use-package dirvish
   :hook (after-init . dirvish-override-dired-mode)
@@ -2240,10 +2241,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (org-blank-before-new-entry '((heading . nil)
                                 (plain-list-item . nil)))
 
-  (org-startup-indented nil)
-  (org-adapt-indentation nil)
 
   (org-startup-folded t)
+  (org-startup-indented nil)
+  (org-adapt-indentation nil)
   (org-hide-block-startup t)
   (org-hide-drawer-startup t)
   (org-startup-align-all-tables t)
