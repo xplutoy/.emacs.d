@@ -1616,7 +1616,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (use-package pyim-tsinghua-dict
     :vc (:url "https://github.com/redguardtoo/pyim-tsinghua-dict")
     :demand t)
-  (pyim-tsinghua-dict-enable)))
+  (pyim-tsinghua-dict-enable))
 
 (use-package stardict
   :ensure nil
