@@ -74,8 +74,16 @@
         ns-function-modifier  'hyper
         ns-pop-up-frames nil
         ns-use-thin-smoothing t
-        ns-use-native-fullscreen nil))
+        ns-use-native-fullscreen nil)
+  (push '(fullscreen . maximized) initial-frame-alist)
+  (push '(undecorated-round . t) default-frame-alist)
+  (push '(ns-transparent-titlebar . t) default-frame-alist))
  (IS-WIN
+  (setq default-directory "~")
+  (setq exec-path
+        (append '("C:/Program Files/Git/bin"
+                  "C:/Program Files/Git/usr/bin")
+                exec-path))
   (setq w32-apps-modifier    'hyper
         w32-lwindow-modifier 'super
         w32-pass-lwindow-to-system nil
@@ -994,8 +1002,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
         (cl-loop for font in '("Noto Color Emoji" "Apple Color Emoji" "Segoe UI Emoji")
                  when (x-list-fonts font)
                  return (set-fontset-font t 'emoji  (font-spec :family font) nil 'prepend))
-        (load-theme 'modus-operandi-tritanopia t))
-    (load-theme 'modus-vivendi-deuteranopia t)))
+        (load-theme 'modus-operandi t))
+    (load-theme 'modus-vivendi t)))
 
 (add-hook 'after-init-hook #'yx/font-and-theme-setup -100)
 (add-hook 'server-after-make-frame-hook #'yx/font-and-theme-setup -100)
@@ -2891,7 +2899,7 @@ set to \\='(template title keywords subdirectory)."
 (add-hook 'julia-ts-mode-hook
           (lambda () (setq-local devdocs-current-docs '("julia~1.9"))))
 (add-hook 'python-base-mode-hook
-          (lambda () (setq-local devdocs-current-docs '("python~3.12" "pytorch" "numpy~1.23"))))
+          (lambda () (setq-local devdocs-current-docs '("python~3.12" "pytorch~2" "numpy~1.23"))))
 
 ;; %% symbol highlight
 (use-package rainbow-mode
@@ -3059,6 +3067,7 @@ set to \\='(template title keywords subdirectory)."
         dape-buffer-window-arrangment 'right))
 
 (use-package quickrun
+  :unless IS-WIN
   :custom
   (quickrun-focus-p nil))
 
@@ -3277,12 +3286,13 @@ set to \\='(template title keywords subdirectory)."
 (use-package graphviz-dot-mode)
 
 ;; %% maxima
-(autoload 'maxima-mode "maxima" "Maxima mode" t)
-(autoload 'imaxima "imaxima" "Frontend for maxima with Image support" t)
-(autoload 'maxima "maxima" "Maxima interaction" t)
-(autoload 'imath-mode "imath" "Imath mode for math formula input" t)
-(setq imaxima-use-maxima-mode-flag t)
-(add-to-list 'auto-mode-alist '("\\.ma[cx]\\'" . maxima-mode))
+(unless IS-WIN 
+  (autoload 'maxima-mode "maxima" "Maxima mode" t)
+  (autoload 'imaxima "imaxima" "Frontend for maxima with Image support" t)
+  (autoload 'maxima "maxima" "Maxima interaction" t)
+  (autoload 'imath-mode "imath" "Imath mode for math formula input" t)
+  (setq imaxima-use-maxima-mode-flag t)
+  (add-to-list 'auto-mode-alist '("\\.ma[cx]\\'" . maxima-mode)))
 
 (load custom-file t)
 ;;; init.el ends here
