@@ -2328,13 +2328,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
   (org-capture-bookmark nil)
   (org-capture-templates
-   '(("t" "Task"  entry (file+headline org-default-notes-file "Task")
-      "* TODO [#B] %?\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+7d\"))\n" :prepend t)
-     ("s" "Someday"  entry (file+headline org-default-notes-file "Someday/Maybe")
-      "* SOMEDAY [#C] %?\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"12/30\"))" :prepend t)
-     ("h" "Habit" entry (file+headline org-default-notes-file "Habit")
-      "* NEXT [#B] %?\nSCHEDULED: \<%(format-time-string (string ?% ?F ?  ?% ?a) (current-time)) .+1d/7d\>\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n" :prepend t))
-   )
+   '(("t" "个人事务" entry (file+headline org-default-notes-file "个人事务") "* TODO [#B] %?" :prepend t)
+     ("w" "工作任务" entry (file+headline org-default-notes-file "工作任务") "* TODO [#B] %?" :prepend t)
+     ("s" "未来想做" entry (file+headline org-default-notes-file "未来想做") "* SOMEDAY %?"   :prepend t)
+     ("h" "习惯养成" entry (file+headline org-default-notes-file "习惯养成") "* NEXT %?"      :prepend t)))
 
   (org-stuck-projects '("+project/-DONE-CANCELED"
                         ("NEXT")
@@ -2485,7 +2482,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
   (defun yx/org-agenda-format-date-aligned (date)
     "Format a DATE string for display in the daily/weekly agenda, or timeline.
-  This function makes sure that dates are aligned for easy reading."
+This function makes sure that dates are aligned for easy reading."
     (require 'cal-china-x)
     (let* ((dayname (aref cal-china-x-days
                           (calendar-day-of-week date)))
@@ -2559,22 +2556,19 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :hook (org-agenda-mode . org-super-agenda-mode)
   :init
   (setq org-super-agenda-groups
-        '((:name "Today"
+        '((:name "今天要做"
                  :time-grid t
                  :deadline today
                  :scheduled today)
-          (:name "Important"
+          (:name "重要紧急"
                  :tag "urgent"
                  :priority>= "A")
-          (:name "Overdue"
+          (:name "过期事务"
                  :deadline past)
-          (:name "Next"
-                 :todo "NEXT")
-          (:name "Someday/Hold"
+          (:name "阻塞事务"
                  :todo "HOLD"
-                 :todo "WAITING"
-                 :todo "SOMEDAY")
-          (:name "Other"
+                 :todo "WAITING")
+          (:name "其他待办"
                  :anything))))
 
 (use-package org-modern
@@ -2628,8 +2622,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :preface
   (defun yx/denote-template ()
     "Create note while prompting for a template.
-This is equivalent to calling `denote' when `denote-prompts' is
-set to \\='(template title keywords subdirectory)."
+This is equivalent to calling `denote' when `denote-prompts' is set to \\='(template title keywords subdirectory)."
     (declare (interactive-only t))
     (interactive)
     (let ((denote-prompts '(template subdirectory title keywords)))
