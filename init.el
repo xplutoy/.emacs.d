@@ -64,10 +64,13 @@
 
 ;;; OS Specific
 (defconst IS-MAC     (eq system-type 'darwin))
-(defconst IS-WIN     (memq system-type '(windows-nt ms-dos cygwin)))
+(defconst IS-WIN     (memq system-type '(windows-nt cygwin)))
 (defconst IS-LINUX   (eq system-type 'gnu/linux))
 (defconst IS-WSL     (and IS-LINUX (getenv "WSL_DISTRO_NAME")))
 
+(set-selection-coding-system (cond
+			      (IS-WIN 'utf-16-le)
+			      (t 'utf-8)))
 
 (cond
  (IS-MAC
@@ -93,10 +96,8 @@
         w32-get-true-file-attributes nil
         w32-pipe-read-delay 0
         w32-pipe-buffer-size  (* 64 1024))
-  (w32-register-hot-key [s-])))
-
-(unless IS-WIN
-  (setq selection-coding-system 'utf-8))
+  (w32-register-hot-key [s-])
+  (modify-coding-system-alist 'process "[cC][mM][dD][pP][rR][oO][xX][yY]" '(chinese-gbk-dos . chinese-gbk-dos))))
 
 ;;; Utils
 (defvar yx/org-root         "~/yxdocs/org-notes/")
@@ -2602,10 +2603,11 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :custom
   (org-download-heading-lvl nil)
   (org-download-image-dir (expand-file-name "images/" org-attach-directory))
+  (org-download-annotate-function (lambda (link) ""))
   (org-download-screenshot-method (cond
                                    (IS-MAC "screencapture -i %s")
-                                   (IS-LINUX "scrot -s %s")
-                                   (t nil))))
+                                   (IS-WIN "powershell -command (Get-Clipboard -Format Image).Save('%s')")
+                                   (t "scrot -s %s"))))
 
 (use-package org-web-tools)
 
