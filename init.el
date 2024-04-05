@@ -97,7 +97,9 @@
         w32-pipe-read-delay 0
         w32-pipe-buffer-size  (* 64 1024))
   (w32-register-hot-key [s-])
-  (modify-coding-system-alist 'process "[cC][mM][dD][pP][rR][oO][xX][yY]" '(chinese-gbk-dos . chinese-gbk-dos))))
+  (modify-coding-system-alist 'process "[cC][mM][dD][pP][rR][oO][xX][yY]" '(chinese-gbk-dos . chinese-gbk-dos)))
+ (IS-WSL
+  (set-clipboard-coding-system 'gbk-dos)))
 
 ;;; Utils
 (defvar yx/org-root         "~/yxdocs/org-notes/")
@@ -530,7 +532,11 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :custom
   (browse-url-browser-function #'eww-browse-url)
   (browse-url-secondary-browser-function 'browse-url-default-browser)
-  (browse-url-generic-program yx/default-open))
+  (browse-url-generic-program yx/default-open)
+  :config
+  (when IS-WSL
+    (setq browse-url-generic-program "/mnt/c/Windows/System32/cmd.exe"
+          browse-url-generic-args '("/c" "start"))))
 
 (use-package goto-addr
   :ensure nil
@@ -1214,7 +1220,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :ensure nil
   :hook (after-init . tab-bar-mode)
   :custom
-  (tab-bar-show t)
+  (tab-bar-show 1)
   (tab-bar-auto-width nil)
   (tab-bar-format '(tab-bar-format-menu-bar
                     tab-bar-format-tabs-groups
@@ -1762,8 +1768,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
    '(("h" "~/"           "Home")
      ("d" "~/yxdocs/"    "yxdocs")
      ("m" "/mnt/"        "Drives")
-     ("D" "~/Downloads/" "Downloads")
-     ("w" "~/workspace/" "workspace>")))
+     ("w" "~/workspace/" "workspace")
+     ("c" "~/Codes")
+     ("D" "~/Downloads/" "Downloads")))
   :config
   (setq dirvish-side-width 30
         dirvish-use-mode-line t
@@ -2290,7 +2297,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (org-src-tab-acts-natively t)
   (org-src-fontify-natively t)
   (org-confirm-babel-evaluate nil)
-  (org-src-preserve-indentation t)
   (org-src-window-setup 'split-window-right)
   (org-src-ask-before-returning-to-edit-buffer nil)
 
@@ -2601,6 +2607,7 @@ This function makes sure that dates are aligned for easy reading."
   (org-download-screenshot-method (cond
                                    (IS-MAC "screencapture -i %s")
                                    (IS-WIN "powershell -command (Get-Clipboard -Format Image).Save('%s')")
+                                   (IS-WSL "powershell -Command (Get-Clipboard -Format image).Save('$(wslpath -w %s)')")
                                    (t "scrot -s %s"))))
 
 (use-package org-web-tools)
@@ -3067,9 +3074,7 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
         dape-buffer-window-arrangment 'right))
 
 (use-package quickrun
-  :unless IS-WIN
-  :custom
-  (quickrun-focus-p nil))
+  :custom (quickrun-focus-p nil))
 
 (use-package inheritenv
   :demand t
