@@ -12,6 +12,7 @@
 
 (prefer-coding-system 'utf-8)
 (set-language-environment 'UTF-8)
+(set-buffer-file-coding-system 'utf-8)
 
 (setenv "http_proxy"  "http://127.0.0.1:7890")
 (setenv "https_proxy" "http://127.0.0.1:7890")
