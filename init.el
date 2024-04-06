@@ -1601,15 +1601,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :bind (:map flyspell-mode-map
               ("M-$" . flyspell-correct-wrapper)))
 
-(use-package sis
-  :unless IS-WIN
-  :defer 2
-  :config
-  (appendq! sis-prefix-override-keys '("M-s" "M-g"))
-  (sis-global-inline-mode  1)
-  (sis-global-respect-mode 1)
-  (sis-global-context-mode 1))
-
 (use-package pyim
   :commands (pyim-create-word-from-selection)
   :custom
