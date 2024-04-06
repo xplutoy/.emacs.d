@@ -1685,6 +1685,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package gptel
   :custom
   (gptel-default-mode 'org-mode)
+  (gptel-org-branching-context t)
   :config
   (let* ((auth-info (car (auth-source-search :user "moonshot-apikey")))
          (host (plist-get auth-info :host))
