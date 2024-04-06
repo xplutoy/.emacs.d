@@ -1405,8 +1405,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (use-package proxy-mode
   :defer 3
+  :custom
+  (proxy-mode-env-http-service "127.0.0.1:7890")
   :config
-  (let ((proxy-mode-proxy-type 'emacs-url-proxy))
+  (let ((proxy-mode-proxy-type 'env-http-proxy))
     (proxy-mode +1)))
 
 (use-package engine-mode
