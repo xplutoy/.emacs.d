@@ -2109,13 +2109,12 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package olivetti
   :hook ((org-mode . olivetti-mode)
          (org-agenda-mode . olivetti-mode))
-  :bind (("<left-margin> <mouse-1>" . ignore)
-         ("<right-margin> <mouse-1>" . ignore))
-  :custom
-  (olivetti-style 'fancy)
-  (olivetti-mode-map nil)
-  (olivetti-body-width 0.68)
-  (olivetti-minimum-body-width (+ fill-column 2)))
+  :init
+  (setq olivetti-style 'fancy
+        olivetti-mode-map nil)
+  :config
+  (keymap-local-unset "<left-margin> <mouse-1>")
+  (keymap-local-unset "<right-margin> <mouse-1>"))
 
 (use-package elfeed
   :init
@@ -2426,7 +2425,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (require 'org-tempo)
 
   (add-hook 'org-trigger-hook #'save-buffer)
-  (plist-put org-format-latex-options :scale 1.5)
+  (plist-put org-format-latex-options :scale 1.2)
   (plist-put org-format-latex-options :background "Transparent")
 
   (org-babel-do-load-languages 'org-babel-load-languages
@@ -2603,12 +2602,13 @@ This function makes sure that dates are aligned for easy reading."
   :custom
   (org-download-heading-lvl nil)
   (org-download-image-dir (expand-file-name "images/" org-attach-directory))
-  (org-download-annotate-function (lambda (link) ""))
   (org-download-screenshot-method (cond
                                    (IS-MAC "screencapture -i %s")
                                    (IS-WIN "powershell -command (Get-Clipboard -Format Image).Save('%s')")
                                    (IS-WSL "powershell -Command (Get-Clipboard -Format image).Save('$(wslpath -w %s)')")
-                                   (t "scrot -s %s"))))
+                                   (t "scrot -s %s")))
+  :config
+  (setq org-download-annotate-function (lambda (link) "")))
 
 (use-package org-web-tools)
 
