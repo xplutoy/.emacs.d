@@ -14,9 +14,6 @@
 (set-language-environment 'UTF-8)
 (set-buffer-file-coding-system 'utf-8)
 
-(setenv "http_proxy"  "http://127.0.0.1:7890")
-(setenv "https_proxy" "http://127.0.0.1:7890")
-
 (add-to-list 'load-path "~/.emacs.d/site-lisp/")
 
 (setq custom-file
@@ -1413,6 +1410,12 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (gcmh-idle-delay 'auto)
   (gcmh-auto-idle-delay-factor 10)
   (gcmh-high-cons-threshold #x1000000)) ; 16MB
+
+(use-package proxy-mode
+  :defer 3
+  :config
+  (let ((proxy-mode-proxy-type 'emacs-url-proxy))
+    (proxy-mode +1)))
 
 (use-package engine-mode
   :defer 3
