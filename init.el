@@ -733,7 +733,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (pixel-scroll-precision-mode +1)
   (windmove-default-keybindings 'control))
 
-(run-with-idle-timer 5 nil #'yx/global-mirror-mode-toggle)
+(run-with-idle-timer 3 nil #'yx/global-mirror-mode-toggle)
 
 (with-current-buffer "*scratch*"
   (emacs-lock-mode 'kill))
@@ -1514,12 +1514,35 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
          ([remap mark-sexp] . easy-mark)))
 
 (use-package drag-stuff
-  :hook ((text-mode prog-mode) . drag-stuff-mode)
-  :bind (:map drag-stuff-mode-map
-              ("M-J" . drag-stuff-down)
-              ("M-K" . drag-stuff-up)
-              ("M-H" . drag-stuff-left)
-              ("M-L" . drag-stuff-right)))
+  :autoload drag-stuff-define-keys
+  :hook ((prog-mode conf-mode) . turn-on-drag-stuff-mode)
+  :custom
+  (drag-stuff-except-modes '(org-mode))
+  :config
+  (drag-stuff-define-keys))
+
+(use-package selected
+  :ensure t
+  :commands selected-minor-mode
+  :hook ((prog-mode text-mode) . selected-minor-mode)
+  :bind (:map selected-keymap
+              ("q" . selected-off)
+              (";" . comment-dwim)
+              ("\\" . indent-region)
+              ("<" . surround-insert)
+	      (">" . surround-delete)
+              ("=" . puni-expand-region)
+              ("-" . puni-contract-region)
+              ("|" . shell-command-on-region)
+              ("@" . apply-macro-to-region-lines)
+              ("U" . upcase-region)
+              ("D" . downcase-region)
+              ("S" . sort-lines)
+              ("N" . narrow-to-region)
+              :map selected-org-mode-map
+              ("t" . org-table-convert-region))
+  :init
+  (setq selected-org-mode-map (make-sparse-keymap)))
 
 (use-package pulsar
   :defer 3
