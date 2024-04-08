@@ -95,6 +95,7 @@
         w32-pipe-read-delay 0
         w32-pipe-buffer-size  (* 64 1024))
   (w32-register-hot-key [s-])
+  (w32-register-hot-key [H-])
   (modify-coding-system-alist 'process "[cC][mM][dD][pP][rR][oO][xX][yY]" '(chinese-gbk-dos . chinese-gbk-dos)))
  (IS-WSL
   (set-clipboard-coding-system 'gbk-dos)))
@@ -1533,8 +1534,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 	      (">" . surround-delete)
               ("=" . puni-expand-region)
               ("-" . puni-contract-region)
-              ("|" . shell-command-on-region)
+              ("!" . shell-command-on-region)
               ("@" . apply-macro-to-region-lines)
+              ("*" . pyim-create-word-from-selection)
               ("U" . upcase-region)
               ("D" . downcase-region)
               ("S" . sort-lines)
@@ -1624,7 +1626,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (default-input-method "pyim")
   (pyim-outcome-trigger  nil)
   (pyim-enable-shortcode nil)
-  (pyim-punctuation-dict nil)
   (pyim-page-tooltip 'posframe)
   (pyim-dcache-backend 'pyim-dregcach)
   (pyim-indicator-list '(pyim-indicator-with-modeline))
