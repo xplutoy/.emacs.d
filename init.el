@@ -1627,6 +1627,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (pyim-outcome-trigger  nil)
   (pyim-enable-shortcode nil)
   (pyim-page-tooltip 'posframe)
+  (pyim-candidates-search-buffer-p nil)
   (pyim-dcache-backend 'pyim-dregcach)
   (pyim-indicator-list '(pyim-indicator-with-modeline))
   (pyim-english-input-switch-functions '(pyim-probe-auto-english
@@ -2439,7 +2440,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (require 'org-tempo)
 
   (add-hook 'org-trigger-hook #'save-buffer)
-  (plist-put org-format-latex-options :scale 1.2)
+
+  (cond
+   (IS-LINUX (plist-put org-format-latex-options :scale 0.8))
+   (t (plist-put org-format-latex-options :scale 1.2)))
   (plist-put org-format-latex-options :background "Transparent")
 
   (org-babel-do-load-languages 'org-babel-load-languages
@@ -2618,8 +2622,8 @@ This function makes sure that dates are aligned for easy reading."
   (org-download-image-dir (expand-file-name "images/" org-attach-directory))
   (org-download-screenshot-method (cond
                                    (IS-MAC "screencapture -i %s")
-                                   (IS-WIN "powershell -command (Get-Clipboard -Format Image).Save('%s')")
-                                   (IS-WSL "powershell -Command (Get-Clipboard -Format image).Save('$(wslpath -w %s)')")
+                                   (IS-WIN "powershell.exe -command \"(Get-Clipboard -Format Image).Save('%s')\"")
+                                   (IS-WSL "powershell.exe -command \"(Get-Clipboard -Format image).Save('$(wslpath -w %s)')\"")
                                    (t "scrot -s %s")))
   :config
   (setq org-download-annotate-function (lambda (link) "")))
