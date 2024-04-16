@@ -172,7 +172,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (redisplay-skip-fontification-on-input t)
   (kill-buffer-delete-auto-save-files t)
   (bidi-inhibit-bpa t)
-  (bidi-display-reordering nil)
+  (bidi-display-reordering 'left-to-right)
   (bidi-paragraph-direction 'left-to-right)
   (hscroll-margin 2)
   (hscroll-step 1)
@@ -198,7 +198,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (line-move-visual nil)
   (indent-tabs-mode nil)
   (blink-matching-paren nil)
-  (truncate-partial-width-windows nil)
+  (truncate-partial-width-windows 78)
   (set-mark-command-repeat-pop t)
   (remote-file-name-inhibit-auto-save t)
   (read-extended-command-predicate 'command-completion-default-include-p)
@@ -706,6 +706,12 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (calendar-mark-holidays-flag t)
   (calendar-mark-diary-entries-flag nil))
 
+(use-package outline
+  :ensure nil
+  :custom
+  (outline-minor-mode-cycle t)
+  (outline-minor-mode-highlight t))
+
 (autoload 'vaper-ex "vaper")
 
 (defun yx/text-mode-setup ()
@@ -723,6 +729,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 (defun yx/global-mirror-mode-toggle ()
   (repeat-mode            1)
+  (context-menu-mode     +1)
   (blink-cursor-mode     -1)
   (global-reveal-mode     1)
   (auto-compression-mode  1)
@@ -753,8 +760,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (key-chord-define-global "jk"     'avy-goto-word-1)
   (key-chord-define-global "jl"     'avy-goto-line)
   (with-eval-after-load 'org
-    (key-chord-define org-mode-map
-                      "jh" 'avy-org-goto-heading-timer)))
+    (key-chord-define org-mode-map "jh" 'avy-org-goto-heading-timer)))
 
 (defvar-keymap yx/file-prefix-map
   :doc "Prefix map for file."
@@ -1087,6 +1093,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (even-window-sizes t)
   (window-sides-vertical nil)
   (split-width-threshold 80)
+  (split-height-threshold nil)
   (switch-to-buffer-obey-display-actions t)
   (switch-to-buffer-in-dedicated-window nil)
   (switch-to-buffer-preserve-window-point t)
