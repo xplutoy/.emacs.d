@@ -526,6 +526,18 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (proced-enable-color-flag t)
   (proced-auto-update-flag nil))
 
+(use-package windmove
+  :ensure nil
+  :defer 2
+  :custom
+  (windmove-wrap-around t)
+  (windmove-create-window t)
+  :config
+  (windmove-delete-default-keybindings) ; C-x S-left
+  (windmove-default-keybindings 'control)
+  (windmove-display-default-keybindings '(shift control))
+  (windmove-swap-states-default-keybindings '(shift meta)))
+
 (use-package browse-url
   :ensure nil
   :custom
@@ -728,18 +740,17 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
              '("\\(README\\|CHANGELOG\\|COPYING\\|LICENSE\\)\\'" . text-mode))
 
 (defun yx/global-mirror-mode-toggle ()
-  (repeat-mode            1)
-  (context-menu-mode     +1)
-  (blink-cursor-mode     -1)
-  (global-reveal-mode     1)
-  (auto-compression-mode  1)
-  (delete-selection-mode  1)
-  (auto-save-visited-mode 1)
-  (mouse-avoidance-mode 'cat-and-mouse)
+  (repeat-mode            +1)
+  (context-menu-mode      +1)
+  (blink-cursor-mode      -1)
+  (global-reveal-mode     +1)
+  (auto-compression-mode  +1)
+  (delete-selection-mode  +1)
+  (auto-save-visited-mode +1)
   (unless (display-graphic-p)
-    (xterm-mouse-mode 1))
+    (xterm-mouse-mode +1))
   (pixel-scroll-precision-mode +1)
-  (windmove-default-keybindings 'control))
+  (mouse-avoidance-mode 'cat-and-mouse))
 
 (run-with-idle-timer 3 nil #'yx/global-mirror-mode-toggle)
 
@@ -792,7 +803,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :doc "Prefix map for window and workspace"
   "u"   #'winner-undo
   "r"   #'winner-redo
-  "o"   #'ace-window
   "C-b" #'burly-open-bookmark
   "C-t" #'burly-reset-tab
   "M-w" #'burly-bookmark-windows
@@ -850,6 +860,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (defvar-keymap yx/ctrl-c-t-prefix-map
   :doc "Prefix map for toggle mirror mode or others"
   "f" #'follow-mode
+  "d" #'drag-stuff-mode
   "s" #'flyspell-mode
   "l" #'clm/toggle-command-log-buffer
   "F" #'toggle-frame-maximized)
@@ -861,16 +872,16 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   "p" #'completion-at-point
   "t" #'complete-tag
   "a" #'cape-abbrev
-  "d" #' cape-dabbrev
-  "k" #' cape-keyword
-  "h" #' cape-history
-  "l" #' cape-line
-  "w" #' cape-dict
-  "f" #' cape-file
-  "/" #' cape-tex
-  ":" #' cape-emoji
-  "&" #' cape-sgm
-  "r" #' cape-rfc1345)
+  "d" #'cape-dabbrev
+  "k" #'cape-keyword
+  "h" #'cape-history
+  "l" #'cape-line
+  "w" #'cape-dict
+  "f" #'cape-file
+  "/" #'cape-tex
+  ":" #'cape-emoji
+  "&" #'cape-sgm
+  "r" #'cape-rfc1345)
 
 (keymap-global-set "C-c p" yx/ctrl-c-p-prefix-map)
 
@@ -884,6 +895,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("a"   . org-agenda-list)
            ("c"   . org-capture)
            ("l"   . org-store-link)
+           ("d"   . duplicate-dwim)
            ("z"   . zoom)
            ("C-c" . gptel-send)
            ("/ /" . webjump)
@@ -932,12 +944,13 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("C-^"       . crux-top-join-line)
            ("C-M-/"     . vundo)
            ("C-O"       . crux-smart-open-line-above)
+           ("M-o"       . ace-window)
+           ("M-O"       . yx/other-window-mru)
            ("M-r"       . consult-recent-file)
            ("C-#"       . consult-register-load)
            ("M-#"       . consult-register-store)
            ("C-M-#"     . consult-register)
            ("C-c #"     . consult-register)
-           ("M-o"       . duplicate-dwim)
            ("M-z"       . avy-zap-up-to-char-dwim)
            ("M-Z"       . avy-zap-to-char-dwim)
            ("M-g ;"     . goto-last-change)
@@ -980,6 +993,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("C-c C-z"   . hs-show-all)
            ("C-x a a"   . align)
            ("C-x a r"   . align-regexp)
+           ("C-x w t"   . tab-window-detach)
+           ("C-x w f"   . tear-off-window)
            ("C-x t R"   . burly-reset-tab)
            ("C-h b"     . embark-bindings)
            ("C-h C-m"   . which-key-show-full-major-mode)
@@ -1266,8 +1281,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :custom
   (tabspaces-initialize-project-with-todo nil)
   (tabspaces-use-filtered-buffers-as-default nil)
+  (tabspaces-default-tab "Main")
   (tabspaces-session t)
-  (tabspaces-session-auto-restore nil)
+  (tabspaces-session-auto-restore t)
   (tabspaces-session-file (no-littering-expand-var-file-name "tabsession.el")))
 
 ;;; Completion
@@ -1767,6 +1783,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (defun yx/dired-setup ()
     (setq dired-omit-files
           (concat dired-omit-files "\\|^\\..*$"))
+    (setq-local mouse-1-click-follows-link 'double)
     (dired-omit-mode 1)
     (dired-hide-details-mode 1))
   (add-hook 'dired-mode-hook 'yx/dired-setup)
@@ -1774,6 +1791,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (put 'dired-find-alternate-file 'disabled nil))
 
 ;; %% dired+
+(use-package casual-dired
+  :bind (:map dired-mode-map ("C-o" . casual-dired-tmenu)))
+
 (use-package diredfl
   :hook ((dired-mode . diredfl-mode)
          (dirvish-directory-view-mode . diredfl-mode))
@@ -1941,9 +1961,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (shell-highlight-undef-enable t))
 
 (use-package eshell
-  :bind (:map eshell-mode-map
-              ("C-l" . yx/eshell-clear)
-              ("M-h" . consult-history))
   :custom
   (eshell-kill-on-exit t)
   (eshell-history-append t)
@@ -1978,6 +1995,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
     (appendq! eshell-visual-subcommands '(("git" "log" "diff" "show"))))
 
   (defun yx/eshell-setup ()
+    (keymap-set eshell-mode-map "C-l" #'yx/eshell-clear)
+    (keymap-set eshell-mode-map "M-h" #'consult-history)
     (set-window-fringes nil 0 0)
     (set-window-margins nil 1 nil)
     (visual-line-mode +1)
@@ -2449,8 +2468,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (add-hook 'org-trigger-hook #'save-buffer)
 
   (cond
+   (IS-MAC (plist-put org-format-latex-options :scale 1.2))
    (IS-LINUX (plist-put org-format-latex-options :scale 0.8))
-   (t (plist-put org-format-latex-options :scale 1.2)))
+   (t (plist-put org-format-latex-options :scale 1.0)))
   (plist-put org-format-latex-options :background "Transparent")
 
   (org-babel-do-load-languages 'org-babel-load-languages
