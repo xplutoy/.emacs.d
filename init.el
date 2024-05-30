@@ -183,7 +183,12 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (scroll-conservatively 10)
   (fast-but-imprecise-scrolling t)
   (scroll-preserve-screen-position t)
-  (inhibit-compacting-font-caches t))
+  (inhibit-compacting-font-caches t)
+  (other-window-scroll-default
+   (lambda ()
+     (or (get-mru-window nil nil 'not-this-one-dummy)
+         (next-window)
+         (next-window nil nil 'visible)))))
 
 (use-package simple
   :ensure nil
@@ -778,7 +783,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   "f"   #'find-file
   "M-f" #'ffap
   "d"   #'consult-dir
-  "o"   #'find-file-other-window
+  "o"   #'owe-ff-other-window
   "p"   #'find-file-at-point
   "t"   #'find-file-other-tab
   "r"   #'consult-recent-file
@@ -931,6 +936,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ([remap goto-char]                     . avy-goto-char-timer)        ; M-g c
            ([remap text-scale-adjust]             . global-text-scale-adjust)   ; C-x C-+
            ([remap global-text-scale-adjust]      . text-scale-adjust) ; C-x C-M-+
+           ([remap isearch-forward-regexp]        . owe-isearch-other-window-forward) ; C-M-s
+           ([remap isearch-backward-regexp]       . owe-isearch-other-window-backward) ; C-M-s
            ([set-selective-display]               . yx/smarter-selective-display) ; C-x $
            )
 
@@ -945,7 +952,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("C-M-/"     . vundo)
            ("C-O"       . crux-smart-open-line-above)
            ("M-o"       . ace-window)
-           ("M-O"       . yx/other-window-mru)
+           ("M-O"       . owe-other-window-mru)
            ("M-r"       . consult-recent-file)
            ("C-#"       . consult-register-load)
            ("M-#"       . consult-register-store)
@@ -1473,6 +1480,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (crux-with-region-or-buffer untabify)
   (crux-with-region-or-buffer indent-region)
   (crux-reopen-as-root-mode 1))
+
+(use-package other-window-ext
+  :ensure nil)
 
 (use-package which-key
   :defer 5

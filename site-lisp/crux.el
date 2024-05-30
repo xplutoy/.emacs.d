@@ -98,15 +98,6 @@ instead."
     (bury-buffer)))
 
 ;;;###autoload
-(defun yx/other-window-mru ()
-  "Select the most recently used window on this frame."
-  (interactive)
-  (when-let ((mru-window
-              (get-mru-window
-               nil nil 'not-this-one-dummy)))
-    (select-window mru-window)))
-
-;;;###autoload
 (defun crux-top-join-line ()
   "Join the current line with the line beneath it."
   (interactive)
