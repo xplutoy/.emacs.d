@@ -21,6 +21,7 @@
 
 (require 'package)
 (require 'use-package-ensure)
+;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (setq package-archives
       '(("gnu"          . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
         ("nongnu"       . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
@@ -1065,7 +1066,13 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                   "  "
                   mode-line-format-right-align
                   "  "
-                  prot-modeline-misc-info)))
+                  prot-modeline-misc-info
+                  "  "
+                  mode-line-end-spaces)))
+
+(use-package mlscroll
+  :hook ((after-init . mlscroll-mode)
+         (server-after-make-frame . mlscroll-mode)))
 
 (use-package modus
   :disabled
@@ -1622,6 +1629,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 ;; %% emms
 (use-package emms
+  :defer 5
   :hook ((emms-browser-mode . hl-line-mode)
          (emms-browser-mode . turn-on-follow-mode))
   :custom
@@ -1639,7 +1647,30 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (require 'emms-setup)
   (emms-all)
   (emms-history-load)
-  (emms-playing-time-display-mode -1))
+  (emms-playing-time-display-mode -1)
+
+  (transient-define-prefix yx/transient-emms ()
+    "EMMS music"
+    :transient-non-suffix 'transient--do-quit-one
+    ["EMMS"
+     ["Controls"
+      ("p" "Play/Pause" emms-pause)
+      ("s" "Stop" emms-stop)
+      ("S" "Seek to time" emms-seek-to)
+      ("n" "Next" emms-next)
+      ("B" "Back (Previous)" emms-previous)
+      ("b" "Back rewind" emms-seek-backward :transient transient--do-stay)
+      ("f" "Fast-Forward" emms-seek-forward :transient transient--do-stay)]
+     ["Playlist"
+      ("N" "Cue Next" emms-cue-previous)
+      ("P" "Cue Previous" emms-cue-previous)
+      ("r" "Play Random" emms-random)
+      ("R" "Toggle shuffle" emms-toggle-random-playlist)]
+     ["Global/External"
+      ("d" "Emms Dired" emms-play-dired)
+      ("m" "Modeline" emms-mode-line-mode)
+      ("M" "Current info" emms-show)
+      ("e" "Emms" emms)]]))
 
 ;; %% spell
 (use-package jinx
@@ -1772,6 +1803,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
               ("C-+" . dired-create-empty-file))
   :custom
   (dired-dwim-target t)
+  (dired-vc-rename-file t)
   (dired-mouse-drag-files t)
   (dired-movement-style 'cycle)
   (dired-ls-F-marks-symlinks t)
@@ -2343,6 +2375,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                                               :image-converter ("dvisvgm %o/%b.xdv --no-fonts --exact-bbox --scale=%S --output=%O"))))
 
   (org-footnote-auto-adjust t)
+  (org-footnote-define-inline nil)
 
   (org-src-tab-acts-natively t)
   (org-src-fontify-natively t)
@@ -2689,6 +2722,11 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
     (interactive)
     (let ((denote-prompts '(template subdirectory title keywords)))
       (call-interactively #'denote))))
+
+(use-package consult-denote
+  :after denote
+  :demand t
+  :config (consult-denote-mode +1))
 
 (use-package denote-refs)
 
