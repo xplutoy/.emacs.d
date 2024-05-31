@@ -1488,6 +1488,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
      ("d" "https://search.douban.com/book/subject_search?search_text=%s")))
   (engine-mode +1))
 
+;; (use-package consult-web
+;; :vc (:url "https://github.com/armindarvish/consult-web")
+;; :after consult)
+
 (use-package posframe)
 
 ;; %% auxiliary tool
@@ -2203,25 +2207,21 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
           ("https://www.inference.vc/rss" ai)
           ("https://spaces.ac.cn/feed" ai webkit)
           ("https://lilianweng.github.io/index.xml" ai)
-          ("https://www.juliabloggers.com/feed/" julia)
-          ("https://planet.lisp.org/rss20.xml" lisp)
           ("https://planet.scheme.org/atom.xml" scheme)
           ("https://planet.haskell.org/rss20.xml" haskell)
           ("https://planet.emacslife.com/atom.xml" emacs)
           ("http://wingolog.org/feed/atom" lang)
-          ("http://lambda-the-ultimate.org/rss.xml" lang)
-          ("https://matt.might.net/articles/feed.rss" lang)
+          ("https://tech.youzan.com/rss/" tech)
+          ("https://tech.meituan.com/feed/" tech)
           ("http://www.ruanyifeng.com/blog/atom.xml" tech)
-          ("https://vimtricks.com/feed/" vim)
           ("https://elilif.github.io/rss.xml" emacs)
           ("https://egh0bww1.com/rss.xml" emacs)
           ("https://karthinks.com/index.xml" emacs)
           ("https://manateelazycat.github.io/feed.xml" emacs)
           ("https://matt.might.net/articles/feed.rss" emacs)
           ("https://andreyor.st/categories/emacs/feed.xml" emacs)
-          ("https://emacstalk.codeberg.page/podcast/index.xml" emacs)
-          ("https://sachachua.com/blog/category/emacs/feed/" emacs)))
-  (setq elfeed-search-filter "@6-months-ago +unread")
+          ("https://emacstalk.codeberg.page/podcast/index.xml" emacs)))
+  (setq elfeed-search-filter "@6-months-ago +unread +tech +ai")
   :hook (elfeed-show . olivetti-mode)
   :config
   (defun yx/elfeed-kill-entry ()
@@ -2686,6 +2686,7 @@ This function makes sure that dates are aligned for easy reading."
   :hook (dired-mode . org-download-enable)
   :custom
   (org-download-heading-lvl nil)
+  (org-download-image-org-width 900)
   (org-download-image-dir (expand-file-name "images/" org-attach-directory))
   (org-download-screenshot-method (cond
                                    (IS-MAC "screencapture -i %s")
@@ -2693,7 +2694,7 @@ This function makes sure that dates are aligned for easy reading."
                                    (IS-WSL "powershell.exe -command \"(Get-Clipboard -Format image).Save('$(wslpath -w %s)')\"")
                                    (t "scrot -s %s")))
   :config
-  (setq org-download-annotate-function (lambda (link) "")))
+  (setq org-download-annotate-function #'ignore))
 
 (use-package org-web-tools)
 
