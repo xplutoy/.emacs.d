@@ -1808,7 +1808,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :config
   (keymap-set calc-mode-map "M-m" #'casual-main-menu))
 
-
 ;;; Dired
 (use-package dired
   :ensure nil
@@ -3294,6 +3293,9 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
   (reformatter-define ruff-format :program "ruff" :args '("--fix-only" "-"))
 
   (define-auto-insert "\\.py$" 'yx/auto-insert-common-header))
+
+(use-package python-mls
+  :hook (inferior-python-mode . python-mls-mode))
 
 (use-package jupyter
   :after org
