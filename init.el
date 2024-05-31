@@ -1806,7 +1806,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :after calc
   :demand t
   :config
-  (keymap-set calc-mode-map "C-c l" #'casual-main-menu))
+  (keymap-set calc-mode-map "M-m" #'casual-main-menu))
 
 
 ;;; Dired
@@ -1848,7 +1848,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 ;; %% dired+
 (use-package casual-dired
-  :bind (:map dired-mode-map ("C-o" . casual-dired-tmenu)))
+  :after dired
+  :bind (:map dired-mode-map ("M-m" . casual-dired-tmenu)))
 
 (use-package diredfl
   :hook ((dired-mode . diredfl-mode)
