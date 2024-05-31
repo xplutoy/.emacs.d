@@ -730,6 +730,12 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (outline-minor-mode-cycle t)
   (outline-minor-mode-highlight t))
 
+(use-package reveal-mode
+  :ensure nil
+  :hook (after-init . global-reveal-mode)
+  :init
+  (setq reveal-mode-map nil))
+
 (autoload 'vaper-ex "vaper")
 
 (defun yx/text-mode-setup ()
@@ -749,7 +755,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (repeat-mode            +1)
   (context-menu-mode      +1)
   (blink-cursor-mode      -1)
-  (global-reveal-mode     +1)
   (auto-compression-mode  +1)
   (delete-selection-mode  +1)
   (auto-save-visited-mode +1)
@@ -906,6 +911,13 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
            ("C-c" . gptel-send)
            ("/ /" . webjump)
            ("/ o" . browse-url-at-point))
+
+;; 全局菜单
+(bind-keys :map global-map
+           :prefix-map yx/ctrl-m-prefix-map
+           :prefix "<f9>"
+           ("a"   . casual-avy-tmenu)
+           ("e"   . yx/transient-emms))
 
 (bind-keys ([remap move-beginning-of-line]        . crux-move-beginning-of-line) ; C-a
            ([remap goto-line]                     . consult-goto-line)           ;M-g g
@@ -1540,6 +1552,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark))
 
 (use-package avy-zap)
+
+(use-package casual-avy)
 
 (use-package speedrect
   :vc (:url "https://github.com/jdtsmith/speedrect")
