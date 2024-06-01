@@ -735,8 +735,7 @@
   (auto-save-visited-mode +1)
   (unless (display-graphic-p)
     (xterm-mouse-mode +1))
-  (pixel-scroll-precision-mode +1)
-  (mouse-avoidance-mode 'cat-and-mouse))
+  (pixel-scroll-precision-mode +1))
 
 (run-with-idle-timer 3 nil #'yx/global-mirror-mode-toggle)
 
