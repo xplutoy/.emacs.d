@@ -1575,9 +1575,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package drag-stuff
   :autoload drag-stuff-define-keys
   :hook ((prog-mode conf-mode) . turn-on-drag-stuff-mode)
-  :custom
-  (drag-stuff-except-modes '(org-mode))
   :config
+  (setq drag-stuff-modifier '(meta shift)
+        drag-stuff-except-modes '(org-mode))
   (drag-stuff-define-keys))
 
 (use-package selected
