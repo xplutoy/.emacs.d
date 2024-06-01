@@ -541,8 +541,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :config
   (windmove-delete-default-keybindings) ; C-x S-left
   (windmove-default-keybindings 'control)
-  (windmove-display-default-keybindings '(shift control))
-  (windmove-swap-states-default-keybindings '(shift meta)))
+  ;; (windmove-display-default-keybindings '(shift control)) # dont work
+  (windmove-swap-states-default-keybindings '(shift control)))
 
 (use-package browse-url
   :ensure nil
@@ -1703,9 +1703,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
               ("M-$" . flyspell-correct-wrapper)))
 
 (use-package pyim
+  :defer 5
   :commands (pyim-create-word-from-selection)
   :custom
-  (default-input-method "pyim")
   (pyim-outcome-trigger  nil)
   (pyim-enable-shortcode nil)
   (pyim-page-tooltip 'posframe)
@@ -1719,11 +1719,22 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                                          pyim-probe-org-structure-template))
   :config
   (require 'pyim-dregcache)
+  (require 'pyim-cstring-utils)
+  (setq default-input-method "pyim")
   (pyim-default-scheme 'xiaohe-shuangpin)
-  (use-package pyim-tsinghua-dict
-    :vc (:url "https://github.com/redguardtoo/pyim-tsinghua-dict")
-    :demand t)
-  (pyim-tsinghua-dict-enable))
+  (keymap-set org-mode-map "M-f" #'pyim-forward-word)
+  (keymap-set org-mode-map "M-b" #'pyim-backward-word)
+  (let ((yx-dict (no-littering-expand-etc-file-name "yx-dict.pyim")))
+    (add-hook #'kill-emacs-hook
+              (lambda ()
+                (pyim-export-words-and-counts yx-dict)))
+    (setq pyim-dicts `(,(list :name "yx-dict" :file yx-dict)))))
+
+(use-package pyim-tsinghua-dict
+  :vc (:url "https://github.com/redguardtoo/pyim-tsinghua-dict")
+  :after pyim
+  :demand t
+  :config (pyim-tsinghua-dict-enable))
 
 (use-package stardict
   :ensure nil
@@ -2246,7 +2257,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (keymap-set elfeed-show-mode-map "w" #'elfeed-show-yank)
   (keymap-set elfeed-show-mode-map "%" #'elfeed-webkit-toggle)
   (keymap-set elfeed-show-mode-map "q" #'yx/elfeed-kill-entry)
-  (keymap-set elfeed-search-mode-map "R" #'yx/elfeed-mark-all-as-read) 
+  (keymap-set elfeed-search-mode-map "R" #'yx/elfeed-mark-all-as-read)
   (keymap-set elfeed-search-mode-map "m" (yx/elfeed-tag-selection-as 'star))
   (keymap-set elfeed-search-mode-map "l" (yx/elfeed-tag-selection-as 'readlater)))
 
@@ -2694,7 +2705,7 @@ This function makes sure that dates are aligned for easy reading."
                                    (IS-WSL "powershell.exe -command \"(Get-Clipboard -Format image).Save('$(wslpath -w %s)')\"")
                                    (t "scrot -s %s")))
   :config
-  (setq org-download-annotate-function #'ignore))
+  (setq org-download-annotate-function (lambda (_link) "")))
 
 (use-package org-web-tools)
 
