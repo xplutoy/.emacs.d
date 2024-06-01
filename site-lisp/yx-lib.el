@@ -28,6 +28,11 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                         elt)
                      ,list)))
 
+(defmacro with-silent (&rest body)
+  "Execute BODY with message output inhibited."
+  `(let ((inhibit-message t))
+     ,@body))
+
 (defun yx/pwd-replace-home (pwd)
   "Replace home in PWD with tilde (~) character."
   (let* ((home (expand-file-name (getenv "HOME")))

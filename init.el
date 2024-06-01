@@ -58,10 +58,9 @@
   (setq no-littering-var-directory yx/var-dir
         no-littering-etc-directory yx/etc-dir)
   :config
+  (defalias 'nol-expand-etc #'no-littering-expand-etc-file-name)
+  (defalias 'nol-expand-var #'no-littering-expand-var-file-name)
   (no-littering-theme-backups))
-
-(defconst yx/templates-dir
-  (no-littering-expand-etc-file-name "templates"))
 
 (defconst IS-MAC     (eq system-type 'darwin))
 (defconst IS-WIN     (memq system-type '(windows-nt cygwin)))
@@ -153,11 +152,13 @@
   (fast-but-imprecise-scrolling t)
   (scroll-preserve-screen-position t)
   (inhibit-compacting-font-caches t)
+  (debug-on-error init-file-debug) ;; --debug-init
   (other-window-scroll-default
    (lambda ()
      (or (get-mru-window nil nil 'not-this-one-dummy)
          (next-window)
-         (next-window nil nil 'visible)))))
+         (next-window nil nil 'visible))))
+  )
 
 (use-package simple
   :ensure nil
@@ -260,7 +261,7 @@
   :custom
   (auto-insert-query nil)
   (auto-insert-alist nil)
-  (auto-insert-directory (no-littering-expand-etc-file-name "templates/")))
+  (auto-insert-directory (nol-expand-etc "templates/")))
 
 (use-package time
   :ensure nil
@@ -458,7 +459,7 @@
   (auth-source-cache-expiry 300)
   :config
   (add-to-list 'auth-sources
-               (no-littering-expand-etc-file-name "authinfo.gpg")))
+               (nol-expand-etc "authinfo.gpg")))
 
 (use-package mouse
   :ensure nil
@@ -565,7 +566,7 @@
   (ispell-program-name "aspell")
   (ispell-following-word t)
   (ispell-alternate-dictionary
-   (no-littering-expand-etc-file-name "google-10000-english-no-swears.txt"))
+   (nol-expand-etc "google-10000-english-no-swears.txt"))
   (ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))
   (flyspell-issue-message-flag nil)
   :config
@@ -682,7 +683,8 @@
   (appt-display-format 'window)
   (appt-message-warning-time 2)
   :config
-  (appt-activate))
+  (with-silent
+   (appt-activate)))
 
 (use-package calendar
   :ensure nil
@@ -724,11 +726,12 @@
              '("\\(README\\|CHANGELOG\\|COPYING\\|LICENSE\\)\\'" . text-mode))
 
 (defun yx/global-mirror-mode-toggle ()
-  (repeat-mode            +1)
-  (context-menu-mode      +1)
-  (blink-cursor-mode      -1)
-  (auto-compression-mode  +1)
-  (delete-selection-mode  +1)
+  (with-silent
+   (repeat-mode +1))
+  (context-menu-mode +1)
+  (blink-cursor-mode -1)
+  (auto-compression-mode +1)
+  (delete-selection-mode +1)
   (auto-save-visited-mode +1)
   (unless (display-graphic-p)
     (xterm-mouse-mode +1))
@@ -799,6 +802,7 @@
   "t"   #'denote-template
   "n"   #'denote-open-or-create
   "i"   #'denote-link-or-create
+  "m"   #'denote-menu-list-notes
   "C-l" #'denote-backlinks
   "C-f" #'denote-find-link
   "C-b" #'denote-find-backlink
@@ -821,52 +825,16 @@
 
 (keymap-global-set "C-c q" yx/ctrl-c-q-prefix-map)
 
-(defvar-keymap yx/ctrl-c-o-prefix-map
-  :doc "Prefix map for `C-c o'"
-  "o"   #'crux-open-with
-  "a"   #'org-agenda
-  "c"   #'calendar
-  "f"   #'make-frame
-  "d"   #'dirvish-side
-  "e"   #'elfeed
-  "C-e" #'emms-browser
-  "g"   #'gptel
-  "v"   #'vterm-other-window
-  "s"   #'symbols-outline-show
-  "C-s" #'sr-speedbar-toggle
-  "p"   #'package-list-packages
-  "C-p" #'proced
-  "n"   #'denote-menu-list-notes)
-
-(keymap-global-set "C-c o" yx/ctrl-c-o-prefix-map)
-
 (defvar-keymap yx/ctrl-c-t-prefix-map
   :doc "Prefix map for toggle mirror mode or others"
   "f" #'follow-mode
   "d" #'drag-stuff-mode
+  "l" #'flymake-mode
   "s" #'flyspell-mode
-  "l" #'clm/toggle-command-log-buffer
+  "L" #'clm/toggle-command-log-buffer
   "F" #'toggle-frame-maximized)
 
 (keymap-global-set "C-c t" yx/ctrl-c-t-prefix-map)
-
-(defvar-keymap yx/ctrl-c-p-prefix-map
-  :doc "Prefix map for completion"
-  "p" #'completion-at-point
-  "t" #'complete-tag
-  "a" #'cape-abbrev
-  "d" #'cape-dabbrev
-  "k" #'cape-keyword
-  "h" #'cape-history
-  "l" #'cape-line
-  "w" #'cape-dict
-  "f" #'cape-file
-  "/" #'cape-tex
-  ":" #'cape-emoji
-  "&" #'cape-sgm
-  "r" #'cape-rfc1345)
-
-(keymap-global-set "C-c p" yx/ctrl-c-p-prefix-map)
 
 ;; the most commonly used shortcut
 (bind-keys :map global-map
@@ -876,10 +844,12 @@
            (":"   . vaper-ex)
            ("f"   . follow-delete-other-windows-and-split)
            ("a"   . org-agenda-list)
+           ("C-a" . org-agenda)
            ("c"   . org-capture)
            ("l"   . org-store-link)
-           ("d"   . duplicate-dwim)
+           ("d"   . dirvish-side)
            ("z"   . zoom)
+           ("g"   . gptel)
            ("C-c" . gptel-send)
            ("/ /" . webjump)
            ("/ o" . browse-url-at-point))
@@ -926,9 +896,7 @@
            ([set-selective-display]               . yx/smarter-selective-display) ; C-x $
            )
 
-(bind-keys ("C-<f5>"    . dape)
-           ("<f5>"      . quickrun)
-           ("s-/"       . hippie-expand)
+(bind-keys ("s-/"       . hippie-expand)
            ("C-;"       . iedit-mode)
            ("C-."       . embark-act)
            ("C-,"       . embark-dwim)
@@ -951,7 +919,6 @@
            ("M-g M"     . consult-man)
            ("M-g I"     . consult-info)
            ("M-g M-i"   . consult-imenu-multi)
-           ("M-g M-f"   . consult-flymake)
            ("M-g M-e"   . consult-compile-error)
            ("M-g o"     . consult-outline)
            ("M-g k"     . consult-kmacro)
@@ -963,7 +930,6 @@
            ("M-s M-t"   . hl-todo-occur)
            ("M-s f"     . consult-fd)
            ("M-s M-f"   . dirvish-fd)
-           ("M-s M-h"   . symbol-overlay-put)
            ("M-s l"     . consult-line)
            ("M-s M l"   . consult-line-multi)
            ("M-s k"     . consult-focus-lines)
@@ -975,10 +941,12 @@
            ("M-s M-s"   . color-rg-search-symbol)
            ("M-s p"     . color-rg-search-input-in-project)
            ("M-s M-p"   . color-rg-search-symbol-in-project)
+           ("M-s d"     . bing-dict-brief)
+           ("M-s M-d"   . stardict-define-at-point)
            ("C-c v"     . magit-file-dispatch)
            ("C-c C-v"   . magit-dispatch)
            ("C-c C-d"   . helpful-at-point)
-           ("C-c d"     . bing-dict-brief)
+           ("C-c d"     . duplicate-dwim)
            ("C-c j"     . avy-goto-char-timer)
            ("C-c r"     . query-replace-regexp)
            ("C-c z"     . hs-toggle-hiding)
@@ -990,7 +958,19 @@
            ("C-x t R"   . burly-reset-tab)
            ("C-h b"     . embark-bindings)
            ("C-h C-m"   . which-key-show-full-major-mode)
-           ("C-h B"     . embark-bindings-at-point))
+           ("C-h B"     . embark-bindings-at-point)
+           :map prog-mode-map
+           ("M-c c"   . quickrun)
+           ("M-c M-c" . dape)
+           ("M-c f"   . consult-flymake)
+           ("M-c M-e" . consult-compile-error)
+           ("M-c d"   . devdocs-lookup)
+           ("M-c h"   . symbol-overlay-put)
+           ("M-c o"   . symbols-outline-show)
+           ("M-c ."   . citre-jump)
+           ("M-c ,"   . citre-jump-back)
+           ("M-c p"   . citre-peek)
+           ("M-c u"   . citre-update-this-tags-file))
 
 ;;; Ui
 ;; %% font
@@ -1261,10 +1241,12 @@
 
 (use-package sr-speedbar
   :ensure nil
+  :defer 5
   :custom
   (speedbar-use-images nil)
-  (sr-speedbar-width 30)
-  (sr-speedbar-skip-other-window-p t))
+  (sr-speedbar-width 28)
+  (sr-speedbar-skip-other-window-p t)
+  (keymap-set speedbar-mode-map "q" #'sr-speedbar-close))
 
 (use-package ace-window
   :custom
@@ -1281,8 +1263,8 @@
   (tabspaces-use-filtered-buffers-as-default nil)
   (tabspaces-default-tab "Main")
   (tabspaces-session t)
-  (tabspaces-session-auto-restore t)
-  (tabspaces-session-file (no-littering-expand-var-file-name "tabsession.el")))
+  (tabspaces-session-auto-restore nil)
+  (tabspaces-session-file (nol-expand-var "tabsession.el")))
 
 ;;; Completion
 (use-package vertico
@@ -1431,7 +1413,7 @@
   (proxy-mode-env-http-service "127.0.0.1:7890")
   :config
   (let ((proxy-mode-proxy-type 'env-http-proxy))
-    (proxy-mode +1)))
+    (with-silent (proxy-mode +1))))
 
 (use-package engine-mode
   :defer 3
@@ -1693,10 +1675,11 @@
   (require 'pyim-dregcache)
   (require 'pyim-cstring-utils)
   (setq default-input-method "pyim")
-  (pyim-default-scheme 'xiaohe-shuangpin)
+  (with-silent
+   (pyim-default-scheme 'xiaohe-shuangpin))
   (keymap-set org-mode-map "M-f" #'pyim-forward-word)
   (keymap-set org-mode-map "M-b" #'pyim-backward-word)
-  (let ((yx-dict (no-littering-expand-etc-file-name "yx-dict.pyim")))
+  (let ((yx-dict (nol-expand-etc "yx-dict.pyim")))
     (add-hook #'kill-emacs-hook
               (lambda ()
                 (pyim-export-words-and-counts yx-dict)))
@@ -1710,18 +1693,16 @@
 
 (use-package stardict
   :ensure nil
-  :bind (("M-s d" . stardict-define-at-point)
-         ("M-s M-d" . stardict-define))
   :init
   (setq stardict-name "langdao-ec-gb"
-        stardict-dir (no-littering-expand-etc-file-name "stardict-langdao-ec-gb-2.4.2")))
+        stardict-dir (nol-expand-etc "stardict-langdao-ec-gb-2.4.2")))
 
 (use-package bing-dict
   :init
   (setq bing-dict-vocabulary-save t
         bing-dict-cache-auto-save nil
         bing-dict-show-thesaurus 'synonym
-        bing-dict-vocabulary-file (no-littering-expand-var-file-name "bing-dict-vocabulary.org")))
+        bing-dict-vocabulary-file (nol-expand-var "bing-dict-vocabulary.org")))
 
 (use-package cal-china-x
   :defer 5
@@ -1878,7 +1859,7 @@
 
 (setq gnus-home-directory no-littering-var-directory
       gnus-default-directory gnus-home-directory
-      gnus-startup-file (no-littering-expand-var-file-name "newsrc"))
+      gnus-startup-file (nol-expand-var "newsrc"))
 
 (use-package gnus
   :ensure nil
@@ -2089,7 +2070,10 @@
  "yx/tex-note-tmpl"
  `(,(with-temp-buffer
       (insert-file-contents
-       (expand-file-name "math-note.tmpl.tex" yx/templates-dir))
+       (nol-expand-etc
+        (concat
+         (file-name-as-directory "templates")
+         "math-note.tex")))
       (buffer-string))))
 
 (define-skeleton yx/latex-graphics-skl
@@ -2577,7 +2561,7 @@ This function makes sure that dates are aligned for easy reading."
 
   (org-startup-with-latex-preview nil)
   (org-highlight-latex-and-related '(native entities))
-  (org-preview-latex-image-directory (no-littering-expand-var-file-name "ltximg/"))
+  (org-preview-latex-image-directory (nol-expand-var "ltximg/"))
   (org-preview-latex-default-process 'dvisvgm)
   (org-preview-latex-process-alist'((dvisvgm :programs
                                              ("xelatex" "dvisvgm")
@@ -2746,16 +2730,13 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
   (setq-default Tex-master nil)
   (setq-default TeX-engine 'xetex)
   (setq-default LaTeX-electric-left-right-brace t)
-
   (setq TeX-auto-save t
         TeX-save-query nil
         TeX-parse-self t
         TeX-source-correlate-start-server t
         TeX-view-program-selection '((output-pdf "PDF Tools")))
-
   (setq reftex-plug-into-AUCTeX t)
-
-  (add-hook 'TeX-after-comilation-finished-functions 'TeX-revert-document-buffer))
+  (add-hook 'TeX-after-comilation-finished-functions #'TeX-revert-document-buffer))
 
 (use-package cdlatex
   :hook ((LaTeX-mode . turn-on-cdlatex)
@@ -2853,25 +2834,10 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
 
 (use-package flymake
   :ensure nil
-  :bind (("C-x c l" . flymake-start)
-         :map flymake-mode-map
-         ("M-g d"   . flymake-show-buffer-diagnostics)
-         ("M-g M-d" . flymake-show-project-diagnostics)
-         ("M-g M-n" . flymake-goto-next-error)
-         ("M-g M-p" . flymake-goto-prev-error)
-         :repeat-map flymake-repeatmap
-         ("p" . flymake-goto-prev-error)
-         ("n" . flymake-goto-next-error))
   :custom
   (flymake-no-changes-timeout nil)
   (flymake-show-diagnostics-at-end-of-line t)
-  (flymake-fringe-indicator-position 'right-fring)
-  :config
-  (advice-add #'elisp-flymake-byte-compile :around
-              (defun yx/elisp-flymake-byte-compile-around (oldfun &rest args)
-                (let ((elisp-flymake-byte-compile-load-path
-                       (cons "./" load-path)))
-                  (apply oldfun args)))))
+  (flymake-fringe-indicator-position 'right-fring))
 
 (use-package apheleia
   :defer 5
@@ -2892,7 +2858,7 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
          ([backtab] . tempel-previous))
   :custom
   (tempel-trigger-prefix "<")
-  (tempel-path (no-littering-expand-etc-file-name "templates/tempel.eld"))
+  (tempel-path (nol-expand-etc "templates/tempel.eld"))
   :config
   (defun yx/tempel-setup-capf ()
     (setq-local completion-at-point-functions
@@ -2911,14 +2877,13 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
   (magit-log-arguments '("--color" "--graph" "--decorate"))
   (magit-bury-buffer-function #'magit-restore-window-configuration)
   (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
-  :bind (:map magit-status-mode-map
-              ("q" . #'yx/magit-kill-buffers))
-  :preface
+  :config
   (defun yx/magit-kill-buffers ()
     "Restore window configuration and kill all Magit buffers."
     (interactive)
     (magit-restore-window-configuration)
-    (mapc #'kill-buffer (magit-mode-get-buffers))))
+    (mapc #'kill-buffer (magit-mode-get-buffers)))
+  (keymap-set magit-stash-mode-map "q" #'yx/magit-kill-buffers))
 
 (use-package diff-hl
   :defer 5
@@ -2957,14 +2922,7 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
   :hook ((emacs-lisp-mode scheme-mode-hook) . isayt-mode))
 
 ;; %% doc
-(use-package devdocs
-  :bind (:map prog-mode-map
-              ("C-x c d" . devdocs-lookup)))
-
-(add-hook 'julia-ts-mode-hook
-          (lambda () (setq-local devdocs-current-docs '("julia~1.9"))))
-(add-hook 'python-base-mode-hook
-          (lambda () (setq-local devdocs-current-docs '("python~3.12" "pytorch~2" "numpy~1.23"))))
+(use-package devdocs)
 
 ;; %% symbol highlight
 (use-package rainbow-mode
@@ -3011,7 +2969,7 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
   (treesit-font-lock-level 4)
   :config
   (add-to-list 'treesit-extra-load-path
-               (no-littering-expand-var-file-name "tree-sitter")))
+               (nol-expand-var "tree-sitter")))
 
 (use-package treesit-auto
   :defer 2
@@ -3087,11 +3045,6 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
   (eglot-events-buffer-size 0)
   (eglot-send-changes-idle-time 0.5)
   (eglot-auto-display-help-buffer nil)
-  :bind (:map eglot-mode-map
-              ("C-x c r" . eglot-rename)
-              ("C-x c f" . eglot-format)
-              ("C-x c a" . eglot-code-actions)
-              ("C-x c g" . consult-eglot-symbols))
   :config
   (add-to-list 'eglot-stay-out-of 'yasnippet)
   (fset #'jsonrpc--log-event #'ignore)
@@ -3102,33 +3055,30 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
                        #'eglot-completion-at-point
                        #'tempel-expand
                        #'cape-file))))
-  (add-hook 'eglot-managed-mode-hook #'yx/eglot-capf))
-
-(use-package consult-eglot
-  :after consult eglot
+  (add-hook 'eglot-managed-mode-hook #'yx/eglot-capf)
+  (use-package consult-eglot :demand t)
   :bind (:map eglot-mode-map
-              ([remap xref-find-apropos] . consult-eglot-symbols))) ; C-M .
+              ("M-c r"   . eglot-rename)
+              ("M-c f"   . eglot-format)
+              ("M-c a"   . eglot-code-actions)
+              ("M-c s"   . consult-eglot-symbols)))
 
 (use-package citre
-  :bind (:map prog-mode-map
-              ("M-]"       . citre-jump)
-              ("M-]"       . citre-jump-back)
-              ("C-x c ."   . citre-jump)
-              ("C-x c ,"   . citre-jump-back)
-              ("C-x c p"   . citre-peek)
-              ("C-x c u"   . citre-update-this-tags-file))
   :custom
   (citre-prompt-language-for-ctags-command t)
   (citre-use-project-root-when-creating-tags t)
   (citre-default-create-tags-file-location 'global-cache)
-  (citre-auto-enable-citre-mode-modes '(c-ts-mode python-ts-mode))
+  (citre-auto-enable-citre-mode-modes '(c-ts-mode
+                                        python-ts-mode))
   :config
-  (with-eval-after-load 'cc-mode (require 'citre-lang-c))
-  (with-eval-after-load 'dired (require 'citre-lang-fileref)))
+  (with-eval-after-load 'cc-mode
+    (require 'citre-lang-c))
+  (with-eval-after-load 'dired
+    (require 'citre-lang-fileref)))
 
 (use-package dape
   :init
-  (setq dape-adapter-dir (no-littering-expand-var-file-name "dape-debug-adapters")
+  (setq dape-adapter-dir (nol-expand-var "dape-debug-adapters")
         dape-buffer-window-arrangment 'right))
 
 (use-package quickrun
@@ -3150,6 +3100,7 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
   (add-to-list 'buffer-env-command-alist '("/\\.envrc\\'" . "direnv exec . env -0")))
 
 (use-package symbols-outline
+  :unless IS-WIN
   :custom
   (symbols-outline-window-width 35)
   :config
@@ -3230,20 +3181,20 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
         python-shell-interpreter "jupyter"
         python-shell-interpreter-args "console --simple-prompt"
         python-shell-completion-native-disabled-interpreters '("ipython" "jupyter"))
-
   (defun yx/python-mode-setup ()
     (setq-local tab-width 4
                 python-indent-offset 4
                 electric-indent-inhibit t
-                imenu-create-index-function 'python-imenu-create-flat-index)
+                devdocs-current-docs '("python~3.12"
+                                       "pytorch~2"
+                                       "numpy~1.23"))
+    (setq-local imenu-create-index-function #'python-imenu-create-flat-index)
     (eglot-ensure)
     (flymake-mode 1))
   (add-hook 'python-base-mode-hook 'yx/python-mode-setup)
-
+  (define-auto-insert "\\.py$" 'yx/auto-insert-common-header)
   (reformatter-define black-format :program "black" :args '("-q" "-"))
-  (reformatter-define ruff-format :program "ruff" :args '("--fix-only" "-"))
-
-  (define-auto-insert "\\.py$" 'yx/auto-insert-common-header))
+  (reformatter-define ruff-format :program "ruff" :args '("--fix-only" "-")))
 
 (use-package python-mls
   :hook (inferior-python-mode . python-mls-mode))
@@ -3269,7 +3220,11 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
 
 (use-package julia-mode)
 (use-package julia-ts-mode
-  :hook (julia-ts-mode . eglot-ensure))
+  :config
+  (defun yx/julia-ts-setup ()
+    (eglot-ensure)
+    (setq-local devdocs-current-docs '("julia~1.9")))
+  (add-hook 'julia-ts-mode-hook #'yx/julia-ts-setup))
 
 (use-package eglot-jl
   :init
