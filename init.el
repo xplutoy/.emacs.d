@@ -7,14 +7,13 @@
 ;; Licence: GPLv3
 
 ;;; Init
+(add-to-list 'load-path "~/.emacs.d/site-lisp/")
+(require 'yx-lib)
+
 (defvar yx/etc-dir "~/.emacs.d/etc/")
 (defvar yx/var-dir "~/.emacs.d/.local/")
-
-(prefer-coding-system 'utf-8)
-(set-language-environment 'UTF-8)
-(set-buffer-file-coding-system 'utf-8)
-
-(add-to-list 'load-path "~/.emacs.d/site-lisp/")
+(defvar yx/zotero-root "~/Zotero/")
+(defvar yx/org-root "~/yxdocs/org-notes/")
 
 (setq custom-file
       (expand-file-name "custom.el" yx/etc-dir))
@@ -61,15 +60,22 @@
   :config
   (no-littering-theme-backups))
 
-;;; OS Specific
+(defconst yx/templates-dir
+  (no-littering-expand-etc-file-name "templates"))
+
 (defconst IS-MAC     (eq system-type 'darwin))
 (defconst IS-WIN     (memq system-type '(windows-nt cygwin)))
 (defconst IS-LINUX   (eq system-type 'gnu/linux))
 (defconst IS-WSL     (and IS-LINUX (getenv "WSL_DISTRO_NAME")))
 
+;;; Defaults
+(prefer-coding-system 'utf-8)
+(set-language-environment 'UTF-8)
+(set-buffer-file-coding-system 'utf-8)
+
 (set-selection-coding-system (cond
-			      (IS-WIN 'utf-16-le)
-			      (t 'utf-8)))
+                              (IS-WIN 'utf-16-le)
+                              (t 'utf-8)))
 
 (cond
  (IS-MAC
@@ -84,10 +90,8 @@
   (push '(ns-transparent-titlebar . t) default-frame-alist))
  (IS-WIN
   (setq default-directory "~/")
-  (setq exec-path
-        (append '("C:/Program Files/Git/bin"
-                  "C:/Program Files/Git/usr/bin")
-                exec-path))
+  (prependq! exec-path '("C:/Program Files/Git/bin"
+                         "C:/Program Files/Git/usr/bin"))
   (setq w32-apps-modifier    'hyper
         w32-lwindow-modifier 'super
         w32-pass-apps-to-system nil
@@ -99,45 +103,9 @@
   (w32-register-hot-key [H-])
   (modify-coding-system-alist 'process "[cC][mM][dD][pP][rR][oO][xX][yY]" '(chinese-gbk-dos . chinese-gbk-dos)))
  (IS-WSL
-  (set-clipboard-coding-system 'gbk-dos)))
+  (set-clipboard-coding-system 'gbk-dos)
+  (appendq! exec-path '("/mnt/c/Windows/System32"))))
 
-;;; Utils
-(defvar yx/org-root         "~/yxdocs/org-notes/")
-(defvar yx/zotero-root      "~/Zotero/")
-
-(defvar yx/default-open (cond
-                         (IS-WIN   "start")
-                         (IS-MAC   "open")
-                         (IS-LINUX "xdg-open")
-                         (t "")))
-
-(defconst yx/templates-dir
-  (no-littering-expand-etc-file-name "templates"))
-
-(defmacro appendq! (sym &rest lists)
-  "Append LISTS to SYM in place."
-  `(setq ,sym (append ,sym ,@lists)))
-
-(defmacro delq! (elt list &optional fetcher)
-  "`delq' ELT from LIST in-place.
-
-If FETCHER is a function, ELT is used as the key in LIST (an alist)."
-  `(setq ,list (delq ,(if fetcher
-                          `(funcall ,fetcher ,elt ,list)
-                        elt)
-                     ,list)))
-
-(defun yx/pwd-replace-home (pwd)
-  "Replace home in PWD with tilde (~) character."
-  (let* ((home (expand-file-name (getenv "HOME")))
-         (home-len (length home)))
-    (if (and
-         (>= (length pwd) home-len)
-         (equal home (substring pwd 0 home-len)))
-        (concat "~" (substring pwd home-len))
-      pwd)))
-
-;;; Defaults
 (use-package emacs
   :ensure nil
   :custom
@@ -549,11 +517,15 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   :custom
   (browse-url-browser-function #'eww-browse-url)
   (browse-url-secondary-browser-function 'browse-url-default-browser)
-  (browse-url-generic-program yx/default-open)
   :config
-  (when IS-WSL
-    (setq browse-url-generic-program "/mnt/c/Windows/System32/cmd.exe"
-          browse-url-generic-args '("/c" "start"))))
+  (setq browse-url-generic-program
+        (cond (IS-MAC "open")
+              (IS-LINUX "xdg-open")
+              (t "powershell.exe")))
+  (setq browse-url-generic-args
+        (cond (IS-WIN '("start"))
+              (IS-WSL '("start"))
+              (t ""))))
 
 (use-package goto-addr
   :ensure nil
@@ -1022,7 +994,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 
 ;;; Ui
 ;; %% font
-(defvar yx/font-height 140)
+(defvar yx/font-height 150)
 (defvar yx/font "JetBrains Mono")
 (defvar yx/fixed-font "IBM Plex Mono")
 (defvar yx/serif-font "IBM Plex Serif")
@@ -1035,9 +1007,9 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
         (set-face-attribute 'fixed-pitch nil :family yx/fixed-font)
         (set-face-attribute 'fixed-pitch-serif nil :family yx/serif-font)
         (set-face-attribute 'variable-pitch nil :family yx/variable-font)
-        (setq face-font-rescale-alist '(("LXGW WenKai"  . 1.0)
+        (setq face-font-rescale-alist '(("LXGW WenKai Mono"  . 1.0)
                                         ("Apple Color Emoji" . 0.8)))
-        (cl-loop for font in '("LXGW WenKai" "Microsoft Yahei" "PingFang SC")
+        (cl-loop for font in '("LXGW WenKai Mono" "Microsoft Yahei" "PingFang SC")
                  when (x-list-fonts font)
                  return (set-fontset-font t '(#x4e00 . #x9fff) font))
         (cl-loop for font in '("Segoe UI Symbol" "Symbola" "Symbol")
@@ -1826,12 +1798,6 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   (dired-listing-switches "-laFGgh")
   (wdired-create-parent-directories t)
   (wdired-allow-to-change-permissions t)
-  (dired-guess-shell-alist-user
-   `(("\\.\\(?:docx\\|pdf\\|djvu\\)\\'" ,yx/default-open)
-     ("\\.\\(?:html?\\|csv\\|md\\)\\'" ,yx/default-open)
-     ("\\.\\(?:jpe?g\\|png\\|gif\\|xpm\\)\\'" ,yx/default-open)
-     ("\\.\\(?:mp3\\|flac\\|wav\\|ogg\\)\\'" "mpv" ,yx/default-open)
-     ("\\.\\(?:mp4\\|mkv\\|avi\\|mov\\|wmv\\|flv\\|mpg\\)\\'" "mpv" ,yx/default-open)))
   :config
   (defun yx/dired-setup ()
     (setq dired-omit-files
@@ -2214,25 +2180,20 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 (use-package elfeed
   :init
   (setq elfeed-feeds
-        '(("http://www.zhihu.com/rss" new)
+        '(("https://spaces.ac.cn/feed" ai)
           ("https://www.inference.vc/rss" ai)
-          ("https://spaces.ac.cn/feed" ai webkit)
           ("https://lilianweng.github.io/index.xml" ai)
-          ("https://planet.scheme.org/atom.xml" scheme)
-          ("https://planet.haskell.org/rss20.xml" haskell)
-          ("https://planet.emacslife.com/atom.xml" emacs)
-          ("http://wingolog.org/feed/atom" lang)
           ("https://tech.youzan.com/rss/" tech)
           ("https://tech.meituan.com/feed/" tech)
-          ("http://www.ruanyifeng.com/blog/atom.xml" tech)
-          ("https://elilif.github.io/rss.xml" emacs)
-          ("https://egh0bww1.com/rss.xml" emacs)
+          ("https://www.ruanyifeng.com/blog/atom.xml" tech)
+          ("https://wingolog.org/feed/atom" lang)
+          ("https://www.juliabloggers.com/feed/" julia)
+          ;; ("https://planet.scheme.org/atom.xml" scheme)
+          ;; ("https://planet.haskell.org/rss20.xml" haskell)
           ("https://karthinks.com/index.xml" emacs)
-          ("https://manateelazycat.github.io/feed.xml" emacs)
-          ("https://matt.might.net/articles/feed.rss" emacs)
-          ("https://andreyor.st/categories/emacs/feed.xml" emacs)
-          ("https://emacstalk.codeberg.page/podcast/index.xml" emacs)))
-  (setq elfeed-search-filter "@6-months-ago +unread +tech +ai")
+          ("https://planet.emacslife.com/atom.xml" emacs)
+          ("https://manateelazycat.github.io/feed.xml" emacs)))
+  (setq elfeed-search-filter "@3-months-ago +unread")
   :hook (elfeed-show . olivetti-mode)
   :config
   (defun yx/elfeed-kill-entry ()
@@ -2247,25 +2208,20 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
       (interactive)
       (elfeed-search-toggle-all mytag)))
 
-  (defun yx/elfeed-mark-all-as-read ()
-    "Mark all feeds in buffer as read."
-    (interactive)
-    (mark-whole-buffer)
-    (elfeed-search-untag-all-unread))
+  (defun yx/elfeed-show-to-xwidget (&optional generic)
+    (interactive "P")
+    (let ((link (elfeed-entry-link elfeed-show-entry)))
+      (when link
+        (if generic
+            (browse-url-generic link)
+          (xwidget-webkit-browse-url link)))))
 
   (run-at-time nil (* 4 60 60) 'elfeed-update)
   (keymap-set elfeed-show-mode-map "w" #'elfeed-show-yank)
-  (keymap-set elfeed-show-mode-map "%" #'elfeed-webkit-toggle)
+  (keymap-set elfeed-show-mode-map "%" #'yx/elfeed-show-to-xwidget)
   (keymap-set elfeed-show-mode-map "q" #'yx/elfeed-kill-entry)
-  (keymap-set elfeed-search-mode-map "R" #'yx/elfeed-mark-all-as-read)
   (keymap-set elfeed-search-mode-map "m" (yx/elfeed-tag-selection-as 'star))
   (keymap-set elfeed-search-mode-map "l" (yx/elfeed-tag-selection-as 'readlater)))
-
-(use-package elfeed-webkit
-  :after elfeed
-  :bind (:map elfeed-webkit-map
-              ("q" . yx/elfeed-kill-entry))
-  :init (elfeed-webkit-auto-toggle-by-tag))
 
 ;;; Writing
 (use-package org
