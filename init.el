@@ -1497,9 +1497,9 @@
       (select-window
        (cdr (ring-ref avy-ring 0))))
     t)
-  (setf (alist-get ?  avy-dispatch-alist) 'avy-action-mark-to-char)
-  (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark)
-  (keymap-set isearch-mode-map "M-j" #' avy-isearch))
+  (setf (alist-get ?  avy-dispatch-alist) #'avy-action-mark-to-char)
+  (setf (alist-get ?. avy-dispatch-alist) #'avy-action-embark)
+  (keymap-set isearch-mode-map "M-j" #'avy-isearch))
 
 (use-package avy-zap)
 
