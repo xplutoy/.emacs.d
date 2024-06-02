@@ -100,7 +100,7 @@
         w32-pipe-buffer-size  (* 64 1024))
   (w32-register-hot-key [s-])
   (w32-register-hot-key [H-])
-  (modify-coding-system-alist 'process "[cC][mM][dD][pP][rR][oO][xX][yY]" '(chinese-gbk-dos . chinese-gbk-dos)))
+  (modify-coding-system-alist 'process "cmdproxy" '(utf-8 . gbk)))
  (IS-WSL
   (set-clipboard-coding-system 'gbk-dos)
   (appendq! exec-path '("/mnt/c/Windows/System32"))))
@@ -2161,6 +2161,7 @@
           ("https://lilianweng.github.io/index.xml" ai)
           ("https://tech.youzan.com/rss/" tech)
           ("https://tech.meituan.com/feed/" tech)
+          ("https://ameow.xyz/feed/categories/weekly.xml" tech)
           ("https://www.ruanyifeng.com/blog/atom.xml" tech)
           ("https://wingolog.org/feed/atom" lang)
           ("https://www.juliabloggers.com/feed/" julia)
