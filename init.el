@@ -748,16 +748,6 @@
 (keymap-global-unset "C-<wheel-up>")
 (keymap-global-unset "C-<wheel-down>")
 
-(use-package key-chord
-  :init
-  (key-chord-mode 1)
-  (key-chord-define-global "zz"     'zoom)
-  (key-chord-define-global "jj"     'avy-goto-char-timer)
-  (key-chord-define-global "jk"     'avy-goto-word-1)
-  (key-chord-define-global "jl"     'avy-goto-line)
-  (with-eval-after-load 'org
-    (key-chord-define org-mode-map "jh" 'avy-org-goto-heading-timer)))
-
 (defvar-keymap yx/file-prefix-map
   :doc "Prefix map for file."
   "f"   #'find-file
@@ -888,6 +878,7 @@
            ([remap upcase-word]                   . upcase-dwim)                ; M-u
            ([remap downcase-word]                 . downcase-dwim)              ; M-l
            ([remap capitalize-word]               . capitalize-dwim)            ; M-c
+           ([remap default-indent-new-line]       . avy-goto-word-1)            ; M-j
            ([remap goto-char]                     . avy-goto-char-timer)        ; M-g c
            ([remap text-scale-adjust]             . global-text-scale-adjust)   ; C-x C-+
            ([remap global-text-scale-adjust]      . text-scale-adjust) ; C-x C-M-+
@@ -925,7 +916,6 @@
            ("M-g m"     . consult-mark)
            ("M-g M-m"   . consult-global-mark)
            ("M-g l"     . avy-goto-line)
-           ("M-g w"     . avy-goto-word-0)
            ("M-s t"     . yx/hl-todo-rg-project)
            ("M-s M-t"   . hl-todo-occur)
            ("M-s f"     . consult-fd)
@@ -947,7 +937,6 @@
            ("C-c C-v"   . magit-dispatch)
            ("C-c C-d"   . helpful-at-point)
            ("C-c d"     . duplicate-dwim)
-           ("C-c j"     . avy-goto-char-timer)
            ("C-c r"     . query-replace-regexp)
            ("C-c z"     . hs-toggle-hiding)
            ("C-c C-z"   . hs-show-all)
@@ -1492,11 +1481,10 @@
 (use-package goto-chg)
 
 (use-package avy
-  :init
-  (setq avy-style 'at
-        avy-timeout-seconds 0.8)
-  :bind (:map isearch-mode-map
-              ("M-j" . avy-isearch))
+  :custom
+  (avy-style 'at)
+  (avy-highlight-first t)
+  (avy-timeout-seconds 0.8)
   :config
   (defun avy-action-mark-to-char (pt)
     (activate-mark)
@@ -1510,7 +1498,8 @@
        (cdr (ring-ref avy-ring 0))))
     t)
   (setf (alist-get ?  avy-dispatch-alist) 'avy-action-mark-to-char)
-  (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark))
+  (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark)
+  (keymap-set isearch-mode-map "M-j" #' avy-isearch))
 
 (use-package avy-zap)
 
