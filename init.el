@@ -847,6 +847,7 @@
            ("c"   . org-capture)
            ("l"   . org-store-link)
            ("d"   . dirvish-side)
+           ("C-d" . sr-speedbar-toggle)
            ("z"   . zoom)
            ("g"   . gptel)
            ("C-c" . gptel-send)
@@ -1244,7 +1245,10 @@
   :custom
   (speedbar-use-images nil)
   (sr-speedbar-width 28)
+  (sr-speedbar-max-width 40)
   (sr-speedbar-skip-other-window-p t)
+  (sr-speedbar-use-frame-root-window t)
+  :config
   (keymap-set speedbar-mode-map "q" #'sr-speedbar-close))
 
 (use-package ace-window
