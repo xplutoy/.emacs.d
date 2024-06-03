@@ -100,7 +100,7 @@
         w32-pipe-buffer-size  (* 64 1024))
   (w32-register-hot-key [s-])
   (w32-register-hot-key [H-])
-  (modify-coding-system-alist 'process "cmdproxy" '(utf-8 . gbk)))
+  (modify-coding-system-alist 'process "cmdproxy" '(gbk-dos . gbk-dos)))
  (IS-WSL
   (set-clipboard-coding-system 'gbk-dos)
   (appendq! exec-path '("/mnt/c/Windows/System32"))))
@@ -743,8 +743,7 @@
   (emacs-lock-mode 'kill))
 
 ;;; Keymaps
-;; %% 全局按键
-;; This avoids the ugly accidentally action of scaling text with using the trackpad
+(keymap-global-unset "M-l")   ; as major mode local-leader-key
 (keymap-global-unset "C-<wheel-up>")
 (keymap-global-unset "C-<wheel-down>")
 
@@ -949,17 +948,17 @@
            ("C-h C-m"   . which-key-show-full-major-mode)
            ("C-h B"     . embark-bindings-at-point)
            :map prog-mode-map
-           ("M-c c"   . quickrun)
-           ("M-c M-c" . dape)
-           ("M-c f"   . consult-flymake)
-           ("M-c M-e" . consult-compile-error)
-           ("M-c d"   . devdocs-lookup)
-           ("M-c h"   . symbol-overlay-put)
-           ("M-c o"   . symbols-outline-show)
-           ("M-c ."   . citre-jump)
-           ("M-c ,"   . citre-jump-back)
-           ("M-c p"   . citre-peek)
-           ("M-c u"   . citre-update-this-tags-file))
+           ("M-l r"   . quickrun)
+           ("M-l M-r" . dape)
+           ("M-l f"   . consult-flymake)
+           ("M-l M-e" . consult-compile-error)
+           ("M-l d"   . devdocs-lookup)
+           ("M-l h"   . symbol-overlay-put)
+           ("M-l o"   . symbols-outline-show)
+           ("M-l ."   . citre-jump)
+           ("M-l ,"   . citre-jump-back)
+           ("M-l p"   . citre-peek)
+           ("M-l u"   . citre-update-this-tags-file))
 
 ;;; Ui
 ;; %% font
@@ -2207,24 +2206,23 @@
   :bind (:map org-mode-map
               ("s-/" . transform-previous-char)
               ("M-g h"   . consult-org-heading)
-              :prefix-map yx/org-locle-leader-map
-              :prefix "C-c l"
-              ("i"   . org-clock-in)
-              ("o"   . org-clock-out)
-              ("y"   . yx/org-link-copy)
-              ("p"   . org-download-clipboard)
-              ("C-p" . org-download-screenshot)
-              ("i"   . org-web-tools-insert-link-for-url)
-              ("h"   . org-toggle-heading)
-              ("t"   . org-transclusion-add)
-              ("z"   . denote-refs-mode)
-              ("q f" . org-ql-find)
-              ("q r" . org-ql-refile)
-              ("C-t" . org-transclusion-add-all)
-              ("M-t" . org-transclusion-remove)
-              ("TAB" . yx/org-show-current-heading-tidily)
-              ("C-l" . org-latex-preview)
-              ("C-v" . yx/org-toggle-inline-images-in-subtree)
+              ("M-l i"   . org-clock-in)
+              ("M-l o"   . org-clock-out)
+              ("M-l h"   . org-toggle-heading)
+              ("M-l r"   . denote-refs-mode)
+              ("M-l y"   . yx/org-link-copy)
+              ("M-l p"   . org-download-clipboard)
+              ("M-l C-p" . org-download-screenshot)
+              ("M-l C-i" . org-web-tools-insert-link-for-url)
+              ("M-l q f" . org-ql-find)
+              ("M-l q r" . org-ql-refile)
+              ("M-l t"   . org-transclusion-add)
+              ("M-l C-t" . org-transclusion-add-all)
+              ("M-l M-t" . org-transclusion-remove)
+              ("M-l TAB" . yx/org-show-current-heading-tidily)
+              ("M-l l"   . yx/insert-fixed-org-link)
+              ("M-l C-l" . org-latex-preview)
+              ("M-l C-v" . yx/org-toggle-inline-images-in-subtree)
               :repeat-map org-heading-navigate-repeat-map
               ("u" . outline-up-heading)
               ("p" . org-previous-visible-heading)
@@ -2513,6 +2511,14 @@
   (defun yx/org-babel-display-image ()
     (when org-inline-image-overlays
       (org-redisplay-inline-images)))
+
+  (defun yx/insert-fixed-org-link ()
+    "从 minibuffer 读取链接地址，在当前光标位置插入固定的 Org 链接。"
+    (interactive)
+    (let* ((link-address (read-string "Input Link: "))
+           (link-text "🔗")
+           (org-link-format (format "[[%s][%s]]" link-address link-text)))
+      (insert org-link-format)))
 
   (defun yx/org-agenda-format-date-aligned (date)
     "Format a DATE string for display in the daily/weekly agenda, or timeline.
@@ -3051,10 +3057,10 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
   (add-hook 'eglot-managed-mode-hook #'yx/eglot-capf)
   (use-package consult-eglot :demand t)
   :bind (:map eglot-mode-map
-              ("M-c r"   . eglot-rename)
-              ("M-c f"   . eglot-format)
-              ("M-c a"   . eglot-code-actions)
-              ("M-c s"   . consult-eglot-symbols)))
+              ("C-c l r"   . eglot-rename)
+              ("C-c l f"   . eglot-format)
+              ("C-c l a"   . eglot-code-actions)
+              ("C-c l s"   . consult-eglot-symbols)))
 
 (use-package citre
   :custom
