@@ -743,7 +743,8 @@
   (emacs-lock-mode 'kill))
 
 ;;; Keymaps
-(keymap-global-unset "M-l")   ; as major mode local-leader-key
+(keymap-global-unset "M-c")   ; as programing leader-key
+(keymap-global-unset "M-l")   ; as major mode leader-key
 (keymap-global-unset "C-<wheel-up>")
 (keymap-global-unset "C-<wheel-down>")
 
@@ -948,17 +949,16 @@
            ("C-h C-m"   . which-key-show-full-major-mode)
            ("C-h B"     . embark-bindings-at-point)
            :map prog-mode-map
-           ("M-l r"   . quickrun)
-           ("M-l M-r" . dape)
-           ("M-l f"   . consult-flymake)
-           ("M-l M-e" . consult-compile-error)
-           ("M-l d"   . devdocs-lookup)
-           ("M-l h"   . symbol-overlay-put)
-           ("M-l o"   . symbols-outline-show)
-           ("M-l ."   . citre-jump)
-           ("M-l ,"   . citre-jump-back)
-           ("M-l p"   . citre-peek)
-           ("M-l u"   . citre-update-this-tags-file))
+           ("<f5> "   . quickrun)
+           ("M-<f5>"  . dape)
+           ("M-c f"   . consult-flymake)
+           ("M-c d"   . devdocs-lookup)
+           ("M-c h"   . symbol-overlay-put)
+           ("M-c ."   . citre-jump)
+           ("M-c ,"   . citre-jump-back)
+           ("M-c p"   . citre-peek)
+           ("M-c M-s" . symbols-outline-show)
+           ("M-c M-e" . consult-compile-error))
 
 ;;; Ui
 ;; %% font
@@ -2339,7 +2339,7 @@
   (org-auto-align-tags t)
   (org-tags-exclude-from-inheritance '(project crypt))
   (org-tag-persistent-alist '((:startgroup . nil)
-                              ("#math" . ?m) ("#ai" . ?a) ("#tech" . ?t) ("#life")
+                              ("@me" . ?m) ("@work" . ?t) ("@life" . ?l)
                               (:endgroup . nil)
                               ("crypt" . ?c) ("project" . ?p)))
   (org-fast-tag-selection-single-key t)
@@ -2372,6 +2372,7 @@
 
   (org-agenda-span 'day)
   (org-agenda-files `(,org-default-notes-file))
+  (org-agenda-inhibit-startup t)
   (org-agenda-sticky nil)
   (org-agenda-compact-blocks t)
   (org-agenda-remove-tags t)
@@ -3057,10 +3058,10 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
   (add-hook 'eglot-managed-mode-hook #'yx/eglot-capf)
   (use-package consult-eglot :demand t)
   :bind (:map eglot-mode-map
-              ("C-c l r"   . eglot-rename)
-              ("C-c l f"   . eglot-format)
-              ("C-c l a"   . eglot-code-actions)
-              ("C-c l s"   . consult-eglot-symbols)))
+              ("M-c r"   . eglot-rename)
+              ("M-c M-f" . eglot-format)
+              ("M-c M-a" . eglot-code-actions)
+              ("M-c s"   . consult-eglot-symbols)))
 
 (use-package citre
   :custom
