@@ -48,5 +48,13 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
         (concat "~" (substring pwd home-len))
       pwd)))
 
-(provide 'yx-lib)
+(defun yx/latest-file (path)
+  "Get latest file (including directory) in PATH."
+  (file-name-nondirectory (car (seq-find
+                                (lambda (x) (not (nth 1 x))) ; non-directory
+                                (sort
+                                 (directory-files-and-attributes path 'full nil t)
+                                 (lambda (x y) (time-less-p (nth 5 y) (nth 5 x))))))))
+
+(provide 'yxlib)
 ;;; utils.el ends here

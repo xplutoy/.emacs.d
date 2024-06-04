@@ -9,6 +9,7 @@
 ;;; Init
 (defvar yx/etc-dir "~/.emacs.d/etc/")
 (defvar yx/var-dir "~/.emacs.d/var/")
+(defvar yx/lib-dir "~/.emacs.d/lisp/")
 (defvar yx/org-dir "~/yxdocs/org-notes/")
 (defvar yx/zotero-root "~/Zotero/")
 
@@ -40,11 +41,19 @@
 (unless (bound-and-true-p package--initialized)
   (package-initialize))
 
-(add-to-list
- 'load-path
- (expand-file-name "lisp" user-emacs-directory))
+(add-to-list 'load-path yx/lib-dir)
 
-(require 'yx-lib)
+(require 'yxlib)
+
+(defun yx/collect-lib-autoloads ()
+  (unless (string= (yx/latest-file yx/lib-dir) "lisp-autoloads.el")
+    (require 'loaddefs-gen nil t)
+    (loaddefs-generate yx/lib-dir
+                       (expand-file-name "lisp-autoloads.el" yx/lib-dir)
+                       nil nil nil t))
+  (load (expand-file-name "lisp-autoloads.el" yx/lib-dir) nil t))
+
+(yx/collect-lib-autoloads)
 
 ;; %% benchmark
 (use-package benchmark-init
@@ -62,8 +71,6 @@
   (defalias 'nol-expand-etc #'no-littering-expand-etc-file-name)
   (defalias 'nol-expand-var #'no-littering-expand-var-file-name)
   (no-littering-theme-backups))
-
-(setq custom-file (nol-expand-etc "custom.el"))
 
 ;;; Defaults
 (prefer-coding-system 'utf-8)
@@ -153,7 +160,12 @@
      (or (get-mru-window nil nil 'not-this-one-dummy)
          (next-window)
          (next-window nil nil 'visible))))
-  )
+  :init
+  (setq disabled-command-function nil)
+  (setq sentence-end-double-space nil
+        sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
+  (setq custom-file (nol-expand-etc "custom.el"))
+  (setq-default tab-always-indent 'complete))
 
 (use-package simple
   :ensure nil
@@ -200,11 +212,6 @@
   (remote-file-name-inhibit-cache nil)
   (remote-file-name-access-timeout 2)
   (user-mail-address "yangxue.cs@foxmail.com"))
-
-(setq disabled-command-function nil)
-(setq sentence-end-double-space nil
-      sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
-(setq-default tab-always-indent 'complete)
 
 (use-package startup
   :ensure nil
@@ -2739,9 +2746,7 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
          (org-mode   . turn-on-org-cdlatex)))
 
 (use-package transform
-  :ensure nil
-  :commands (transform-greek-help
-             transform-previous-char))
+  :ensure nil)
 
 ;; %% citar
 (use-package citar
