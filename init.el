@@ -2206,7 +2206,6 @@
   :ensure nil
   :defer 5
   :bind (:map org-mode-map
-              ("s-/" . transform-previous-char)
               ("M-g h"   . consult-org-heading)
               ("M-l i"   . org-clock-in)
               ("M-l o"   . org-clock-out)
@@ -2225,6 +2224,7 @@
               ("M-l l"   . yx/insert-fixed-org-link)
               ("M-l C-l" . org-latex-preview)
               ("M-l C-v" . yx/org-toggle-inline-images-in-subtree)
+              ("M-l /"   . transform-previous-char)
               :repeat-map org-heading-navigate-repeat-map
               ("u" . outline-up-heading)
               ("p" . org-previous-visible-heading)
