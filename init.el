@@ -7,16 +7,10 @@
 ;; Licence: GPLv3
 
 ;;; Init
-(add-to-list 'load-path "~/.emacs.d/site-lisp/")
-(require 'yx-lib)
-
 (defvar yx/etc-dir "~/.emacs.d/etc/")
-(defvar yx/var-dir "~/.emacs.d/.local/")
+(defvar yx/var-dir "~/.emacs.d/var/")
+(defvar yx/org-dir "~/yxdocs/org-notes/")
 (defvar yx/zotero-root "~/Zotero/")
-(defvar yx/org-root "~/yxdocs/org-notes/")
-
-(setq custom-file
-      (expand-file-name "custom.el" yx/etc-dir))
 
 (require 'package)
 (require 'use-package-ensure)
@@ -46,10 +40,17 @@
 (unless (bound-and-true-p package--initialized)
   (package-initialize))
 
+(add-to-list
+ 'load-path
+ (expand-file-name "lisp" user-emacs-directory))
+
+(require 'yx-lib)
+
 ;; %% benchmark
-(use-package benchmark-init)
-(benchmark-init/activate)
-(add-hook 'after-init-hook 'benchmark-init/deactivate)
+(use-package benchmark-init
+  :init
+  (benchmark-init/activate)
+  (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
 ;; %% no-littering
 (use-package no-littering
@@ -62,19 +63,13 @@
   (defalias 'nol-expand-var #'no-littering-expand-var-file-name)
   (no-littering-theme-backups))
 
-(defconst IS-MAC     (eq system-type 'darwin))
-(defconst IS-WIN     (memq system-type '(windows-nt cygwin)))
-(defconst IS-LINUX   (eq system-type 'gnu/linux))
-(defconst IS-WSL     (and IS-LINUX (getenv "WSL_DISTRO_NAME")))
+(setq custom-file (nol-expand-etc "custom.el"))
 
 ;;; Defaults
 (prefer-coding-system 'utf-8)
 (set-language-environment 'UTF-8)
+(set-selection-coding-system 'utf-8)
 (set-buffer-file-coding-system 'utf-8)
-
-(set-selection-coding-system (cond
-                              (IS-WIN 'utf-16-le)
-                              (t 'utf-8)))
 
 (cond
  (IS-MAC
@@ -88,7 +83,7 @@
   (push '(undecorated-round . t) default-frame-alist)
   (push '(ns-transparent-titlebar . t) default-frame-alist))
  (IS-WIN
-  (setq default-directory "~/")
+  (set-selection-coding-system 'utf-16-le)
   (prependq! exec-path '("C:/Program Files/Git/bin"
                          "C:/Program Files/Git/usr/bin"))
   (setq w32-apps-modifier    'hyper
@@ -372,7 +367,7 @@
   :config
   (when-let ((rg (executable-find "rg")))
     (setq grep-program rg))
-  (appendq! grep-find-ignored-directories '(".local" "node_modules"))
+  (appendq! grep-find-ignored-directories '("var" "node_modules"))
   (appendq! grep-find-ignored-files '("*.mp3" "*.mp4" "*.jpg" "*.gz")))
 
 (use-package minibuffer
@@ -743,8 +738,11 @@
   (emacs-lock-mode 'kill))
 
 ;;; Keymaps
+(keymap-global-unset "M-m")   ; as major mode transient
 (keymap-global-unset "M-c")   ; as programing leader-key
 (keymap-global-unset "M-l")   ; as major mode leader-key
+
+;; unset boring keybindings
 (keymap-global-unset "C-<wheel-up>")
 (keymap-global-unset "C-<wheel-down>")
 
@@ -1829,8 +1827,6 @@
               ("TAB" . dirvish-subtree-toggle)
               ("M-f" . dirvish-history-go-forward)
               ("M-b" . dirvish-history-go-backward)
-              ("M-l" . dirvish-ls-switches-menu)
-              ("M-m" . dirvish-mark-menu)
               ("M-t" . dirvish-layout-toggle)
               ("M-s" . dirvish-setup-menu)
               ("M-e" . dirvish-emerge-menu)
@@ -2235,7 +2231,7 @@
   (org-agenda-finalize . yx/org-agenda-finalize-setup)
   (org-babel-after-execute . yx/org-babel-display-image)
   :custom
-  (org-directory yx/org-root)
+  (org-directory yx/org-dir)
   (org-ellipsis nil)
   (org-num-max-level 2)
   (org-reverse-note-order t)
@@ -2399,7 +2395,7 @@
                                 "---------------------------------")))
   (org-agenda-current-time-string "Now - - - - - - - - - - - - - - - - - - - - -")
   (org-agenda-diary-file
-   (expand-file-name "diary.org" yx/org-root))
+   (expand-file-name "diary.org" yx/org-dir))
   (org-agenda-include-diary t)
   (org-agenda-show-future-repeats 'next)
   (org-agenda-format-date 'yx/org-agenda-format-date-aligned)
@@ -2423,11 +2419,11 @@
   (org-columns-default-format "%50ITEM(Task) %2PRIORITY %10Effort(Effort){:} %10CLOCKSUM")
 
   (org-cite-csl-styles-dir (expand-file-name "styles/" yx/zotero-root))
-  (org-cite-global-bibliography (list (expand-file-name "bibliography.bib" yx/org-root)))
+  (org-cite-global-bibliography (list (expand-file-name "bibliography.bib" yx/org-dir)))
   (org-cite-export-processors '((latex biblatex)
                                 (t . (csl "ieee.csl"))))
 
-  (org-attach-id-dir (expand-file-name "data/" yx/org-root))
+  (org-attach-id-dir (expand-file-name "data/" yx/org-dir))
   (org-attach-dir-relative t)
   (org-attach-store-link-p 'attach)
   (org-attach-sync-delete-empty-dir t)
@@ -2653,7 +2649,7 @@ This function makes sure that dates are aligned for easy reading."
   :after org
   :demand t
   :custom
-  (denote-directory yx/org-root)
+  (denote-directory yx/org-dir)
   (denote-infer-keywords t)
   (denote-known-keywords nil)
   (denote-date-prompt-use-org-read-date t)
@@ -2755,7 +2751,7 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
-  (citar-notes-paths `(,yx/org-root))
+  (citar-notes-paths `(,yx/org-dir))
   (citar-library-paths `(,yx/zotero-root))
   (citar-at-point-function 'embark-act)
   (citar-bibliography org-cite-global-bibliography)

@@ -11,6 +11,11 @@
 ;; 公共函数
 
 ;;; Code:
+(defconst IS-MAC     (eq system-type 'darwin))
+(defconst IS-WIN     (memq system-type '(windows-nt cygwin)))
+(defconst IS-LINUX   (eq system-type 'gnu/linux))
+(defconst IS-WSL     (and IS-LINUX (getenv "WSL_DISTRO_NAME")))
+
 (defmacro appendq! (sym &rest lists)
   "Append LISTS to SYM in place."
   `(setq ,sym (append ,sym ,@lists)))

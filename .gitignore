@@ -1,4 +1,3 @@
-/.cache/
-/.local/
 /etc/custom.el
 server
+var
