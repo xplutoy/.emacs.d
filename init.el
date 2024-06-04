@@ -861,6 +861,7 @@
            ([remap switch-to-buffer]              . consult-buffer)              ; C-x b
            ([remap delete-window]                 . yx/delete-window-dwim)       ; C-x 0
            ([remap list-buffers]                  . ibuffer)                 ; C-x C-b
+           ([dabbrev-expand]                      . hippie-expand)           ; M-/
            ([remap repeat-complex-command]        . consult-complex-command) ; C-x M-:
            ([remap switch-to-buffer-other-window] . consult-buffer-other-window) ; C-x 4 b
            ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame) ; C-x 5 b
@@ -889,11 +890,9 @@
            ([remap global-text-scale-adjust]      . text-scale-adjust) ; C-x C-M-+
            ([remap isearch-forward-regexp]        . owe-isearch-other-window-forward) ; C-M-s
            ([remap isearch-backward-regexp]       . owe-isearch-other-window-backward) ; C-M-s
-           ([set-selective-display]               . yx/smarter-selective-display) ; C-x $
-           )
+           ([set-selective-display]               . yx/smarter-selective-display)) ; C-x $
 
-(bind-keys ("s-/"       . hippie-expand)
-           ("C-;"       . iedit-mode)
+(bind-keys ("C-;"       . iedit-mode)
            ("C-."       . embark-act)
            ("C-,"       . embark-dwim)
            ("C-/"       . undo-only)
