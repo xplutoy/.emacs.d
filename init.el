@@ -2146,7 +2146,7 @@
   :hook ((org-mode . olivetti-mode)
          (org-agenda-mode . olivetti-mode))
   :init
-  (setq olivetti-style 'fancy
+  (setq olivetti-style nil
         olivetti-mode-map nil)
   :config
   (keymap-local-unset "<left-margin> <mouse-1>")
