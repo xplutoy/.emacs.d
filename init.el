@@ -543,6 +543,7 @@
         shr-use-xwidgets-for-media t)
   (setq eww-restore-desktop t
         eww-header-line-format nil
+        eww-browse-url-new-window-is-tab nil
         eww-search-prefix "http://www.google.com/search?q="
         eww-auto-rename-buffer
         (lambda () (format "*eww: %s*" (or (plist-get eww-data :title) "..."))))
@@ -550,7 +551,21 @@
   (defun yx/eww-tab-line-setup ()
     (setq-local tab-line-tabs-function #'tab-line-tabs-mode-buffers)
     (tab-line-mode +1))
-  (add-hook 'eww-mode-hook #'yx/eww-tab-line-setup))
+  (add-hook 'eww-mode-hook #'yx/eww-tab-line-setup)
+
+  (defun yx/eww-quit-all()
+    "Kill all EWW buffers, then quit window."
+    (interactive)
+    (let ((list-buffers (buffer-list)))
+      (dolist (buffer list-buffers)
+        (when (with-current-buffer buffer
+                (eq major-mode 'eww-mode))
+          (kill-buffer buffer))))
+    (quit-window))
+
+  (bind-keys :map eww-mode-map
+             ("Q" . yx/eww-quit-all))
+  )
 
 (use-package webjump
   :ensure nil
@@ -990,7 +1005,8 @@
         (cl-loop for font in '("Noto Color Emoji" "Apple Color Emoji" "Segoe UI Emoji")
                  when (x-list-fonts font)
                  return (set-fontset-font t 'emoji  (font-spec :family font) nil 'prepend))
-        (load-theme 'modus-operandi t))
+        ;; (load-theme 'modus-operandi t)
+        (load-theme 'ef-melissa-light t))
     (load-theme 'modus-vivendi t)))
 
 (add-hook 'after-init-hook #'yx/font-and-theme-setup -100)
@@ -2179,13 +2195,13 @@
     (elfeed-kill-buffer)
     (switch-to-buffer "*elfeed-search*"))
 
-  (defun yx/elfeed-tag-selection-as (mytag)
+  (defun yx/elfeed-tag-as (tag)
     (lambda ()
       "Toggle a tag on an Elfeed search selection"
       (interactive)
-      (elfeed-search-toggle-all mytag)))
+      (elfeed-search-toggle-all tag)))
 
-  (defun yx/elfeed-show-to-xwidget (&optional generic)
+  (defun yx/elfeed-show-in-xwidget (&optional generic)
     (interactive "P")
     (let ((link (elfeed-entry-link elfeed-show-entry)))
       (when link
@@ -2195,10 +2211,10 @@
 
   (run-at-time nil (* 4 60 60) 'elfeed-update)
   (keymap-set elfeed-show-mode-map "w" #'elfeed-show-yank)
-  (keymap-set elfeed-show-mode-map "%" #'yx/elfeed-show-to-xwidget)
+  (keymap-set elfeed-show-mode-map "%" #'yx/elfeed-show-in-xwidget)
   (keymap-set elfeed-show-mode-map "q" #'yx/elfeed-kill-entry)
-  (keymap-set elfeed-search-mode-map "m" (yx/elfeed-tag-selection-as 'star))
-  (keymap-set elfeed-search-mode-map "l" (yx/elfeed-tag-selection-as 'readlater)))
+  (keymap-set elfeed-search-mode-map "m" (yx/elfeed-tag-as 'star))
+  (keymap-set elfeed-search-mode-map "l" (yx/elfeed-tag-as 'readlater)))
 
 ;;; Writing
 (use-package org
