@@ -13,7 +13,7 @@
 ;;; Code:
 (require 's)
 
-;;; Common
+;; common
 (defconst IS-MAC     (eq system-type 'darwin))
 (defconst IS-WIN     (memq system-type '(windows-nt cygwin)))
 (defconst IS-LINUX   (eq system-type 'gnu/linux))
@@ -59,8 +59,7 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                                  (directory-files-and-attributes path 'full nil t)
                                  (lambda (x y) (time-less-p (nth 5 y) (nth 5 x))))))))
 
-;;; buildin-ext
-;; tab-line
+;; tab-line+
 (defun yx/tab-line-buffer-group (buffer)
   "Use the project.el name for the buffer group"
   (with-current-buffer buffer

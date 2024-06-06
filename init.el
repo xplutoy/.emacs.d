@@ -2191,28 +2191,10 @@
           ("https://planet.emacslife.com/atom.xml" emacs)
           ("https://manateelazycat.github.io/feed.xml" emacs)))
   (setq elfeed-search-filter "@3-months-ago +unread")
+  (setq elfeed-search-print-entry-function #'yx/elfeed-search-print-entry)
   :hook (elfeed-show . olivetti-mode)
   :config
-  (defun yx/elfeed-kill-entry ()
-    "Like `elfeed-kill-entry' but pop elfeed search"
-    (interactive)
-    (elfeed-kill-buffer)
-    (switch-to-buffer "*elfeed-search*"))
-
-  (defun yx/elfeed-tag-as (tag)
-    (lambda ()
-      "Toggle a tag on an Elfeed search selection"
-      (interactive)
-      (elfeed-search-toggle-all tag)))
-
-  (defun yx/elfeed-show-in-xwidget (&optional generic)
-    (interactive "P")
-    (let ((link (elfeed-entry-link elfeed-show-entry)))
-      (when link
-        (if generic
-            (browse-url-generic link)
-          (xwidget-webkit-browse-url link)))))
-
+  (require 'elfeed-ext)
   (run-at-time nil (* 4 60 60) 'elfeed-update)
   (keymap-set elfeed-show-mode-map "w" #'elfeed-show-yank)
   (keymap-set elfeed-show-mode-map "%" #'yx/elfeed-show-in-xwidget)
