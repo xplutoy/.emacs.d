@@ -13,11 +13,6 @@
 (defvar yx/org-dir "~/yxdocs/org-notes/")
 (defvar yx/zotero-root "~/Zotero/")
 
-(defconst IS-MAC     (eq system-type 'darwin))
-(defconst IS-WIN     (memq system-type '(windows-nt cygwin)))
-(defconst IS-LINUX   (eq system-type 'gnu/linux))
-(defconst IS-WSL     (and IS-LINUX (getenv "WSL_DISTRO_NAME")))
-
 (require 'package)
 (require 'use-package-ensure)
 ;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -47,13 +42,7 @@
   (package-initialize))
 
 (add-to-list 'load-path yx/lib-dir)
-
-(defun yx/latest-file (path)
-  "Get latest file (including directory) in PATH."
-  (car (seq-find
-        (lambda (x) (not (nth 1 x))) ; non-directory
-        (sort (directory-files-and-attributes path 'full nil t)
-              (lambda (x y) (time-less-p (nth 5 y) (nth 5 x)))))))
+(require 'yx-core)
 
 (defun yx/collect-lib-autoloads ()
   (unless (string= (file-name-nondirectory (yx/latest-file yx/lib-dir))
@@ -274,7 +263,9 @@
   :custom
   (auto-insert-query nil)
   (auto-insert-alist nil)
-  (auto-insert-directory (nol-expand-etc "templates/")))
+  (auto-insert-directory (nol-expand-etc "templates/"))
+  :config
+  (yx/auto-header-minor-mode +1))
 
 (use-package time
   :ensure nil
@@ -548,7 +539,6 @@
 
 (use-package eww
   :ensure nil
-  :hook (eww-after-render . 'eww-readable)
   :init
   (setq shr-max-image-proportion 0.6
         shr-use-xwidgets-for-media t)
@@ -559,11 +549,6 @@
         eww-auto-rename-buffer
         (lambda () (format "*eww: %s*" (or (plist-get eww-data :title) "..."))))
   :config
-  (defun yx/eww-tab-line-setup ()
-    (setq-local tab-line-tabs-function #'tab-line-tabs-mode-buffers)
-    (tab-line-mode +1))
-  (add-hook 'eww-mode-hook #'yx/eww-tab-line-setup)
-
   (defun yx/eww-quit-all()
     "Kill all EWW buffers, then quit window."
     (interactive)
@@ -573,7 +558,8 @@
                 (eq major-mode 'eww-mode))
           (kill-buffer buffer))))
     (quit-window))
-
+  (add-hook 'eww-mode-hook #'tab-line-mode)
+  (add-hook 'eww-after-render-hook #'eww-readable)
   (bind-keys :map eww-mode-map
              ("Q" . yx/eww-quit-all))
   )
@@ -789,8 +775,7 @@
   "t"   #'find-file-other-tab
   "r"   #'consult-recent-file
   "R"   #'rename-visited-file
-  "D"   #'crux-delete-file-and-buffer
-  "E"   #'crux-sudo-edit)
+  "D"   #'yx/delete-file-and-buffer)
 
 (keymap-global-set "C-c f" yx/file-prefix-map)
 
@@ -800,8 +785,7 @@
   "s" #'scratch-buffer
   "n" #'yx/new-empty-buffer
   "k" #'kill-buffer-and-window
-  "C" #'desktop-clear
-  "K" #'crux-kill-other-buffers)
+  "C" #'desktop-clear)
 
 (keymap-global-set "C-c b" yx/buffer-prefix-map)
 
@@ -882,8 +866,7 @@
            ("a"   . casual-avy-tmenu)
            ("e"   . yx/transient-emms))
 
-(bind-keys ([remap move-beginning-of-line]        . crux-move-beginning-of-line) ; C-a
-           ([remap goto-line]                     . consult-goto-line)           ;M-g g
+(bind-keys ([remap goto-line]                     . consult-goto-line)           ;M-g g
            ([remap switch-to-buffer]              . consult-buffer)              ; C-x b
            ([remap delete-window]                 . yx/delete-window-dwim)       ; C-x 0
            ([remap list-buffers]                  . ibuffer)                 ; C-x C-b
@@ -905,7 +888,7 @@
            ([remap keyboard-quit]                 . yx/keyboard-quit-dwim)      ; C-g
            ([remap kill-buffer]                   . yx/kill-buffer-dwim)        ; C-x k
            ([remap save-buffers-kill-emacs]       . delete-frame)               ; s-q
-           ([remap open-line]                     . crux-smart-open-line)       ; C-o
+           ([remap open-line]                     . yx/open-line)               ; C-o
            ([remap fill-paragraph]                . yx/fill-unfill)             ; M-q
            ([remap upcase-word]                   . upcase-dwim)                ; M-u
            ([remap downcase-word]                 . downcase-dwim)              ; M-l
@@ -922,9 +905,7 @@
            ("C-."       . embark-act)
            ("C-,"       . embark-dwim)
            ("C-/"       . undo-only)
-           ("C-^"       . crux-top-join-line)
            ("C-M-/"     . vundo)
-           ("C-O"       . crux-smart-open-line-above)
            ("M-o"       . ace-window)
            ("M-O"       . owe-other-window-mru)
            ("M-r"       . consult-recent-file)
@@ -1473,15 +1454,6 @@
 
 (use-package posframe)
 
-;; %% auxiliary tool
-(use-package crux
-  :ensure nil
-  :config
-  (crux-with-region-or-buffer tabify)
-  (crux-with-region-or-buffer untabify)
-  (crux-with-region-or-buffer indent-region)
-  (crux-reopen-as-root-mode 1))
-
 (use-package other-window-ext
   :ensure nil)
 
@@ -1994,10 +1966,8 @@
   (eshell-scroll-to-bottom-on-input  'all)
   (eshell-scroll-to-bottom-on-output 'all)
   (eshell-prompt-function 'yx/eshell-prompt)
-
   :config
   (setenv "PAGER" "cat")
-
   (add-to-list 'eshell-modules-list #'eshell-tramp)
   (add-to-list 'eshell-modules-list #'eshell-rebind)
   (add-to-list 'eshell-modules-list #'eshell-elecslash)
@@ -2032,6 +2002,13 @@
 
   (add-hook 'eshell-mode-hook #'yx/eshell-setup)
 
+  (defun yx/eshell-clear ()
+    "Clear the current Eshell buffer."
+    (interactive)
+    (let ((inhibit-read-only t))
+      (erase-buffer)
+      (eshell-send-input)))
+
   (defun yx/eshell-prompt()
     (setq eshell-prompt-regexp "^[^#$\n]*[#$] ")
     (concat (yx/pwd-replace-home (eshell/pwd))
@@ -2040,27 +2017,7 @@
                     (format " [git:%s]" branch)
                   "")
               "")
-            (if (= (user-uid) 0) "\n# " "\n$ ")))
-
-  (defun yx/eshell-clear ()
-    "Clear the current Eshell buffer."
-    (interactive)
-    (let ((inhibit-read-only t))
-      (erase-buffer)
-      (eshell-send-input)))
-
-  (defun eshell/z ()
-    (let ((dir (completing-read "Directory: " (ring-elements eshell-last-dir-ring) nil t)))
-      (eshell/cd dir)))
-
-  (defun eshell/F (filename)
-    "Open a file as root from Eshell"
-    (let ((qual-filename (if (string-match "^/" filename)
-                             filename
-                           (concat (expand-file-name (eshell/pwd)) "/" filename))))
-      (switch-to-buffer
-       (find-file-noselect
-        (concat "/sudo::" qual-filename))))))
+            (if (= (user-uid) 0) "\n# " "\n$ "))))
 
 (use-package pcmpl-args
   :after eshell
@@ -2086,77 +2043,6 @@
 (use-package vterm
   :unless IS-WIN
   :custom (vterm-always-compile-module t))
-
-;;; Templates
-(tempo-define-template
- "yx/tex-note-tmpl"
- `(,(with-temp-buffer
-      (insert-file-contents
-       (nol-expand-etc
-        (concat
-         (file-name-as-directory "templates")
-         "math-note.tex")))
-      (buffer-string))))
-
-(define-skeleton yx/latex-graphics-skl
-  "Insert centered picture."
-  nil
-  > "\\begin{center}" \n
-  > "\\includegraphics[width=" @ (skeleton-read "Width: ") "]{" @ _ "}" \n
-  > "\\begin{center}" > \n @)
-
-(define-skeleton yx/auto-insert-h-header
-  ""
-  (replace-regexp-in-string
-   "[^A-Z0-9]" "_"
-   (string-replace "+" "P"
-                   (upcase
-                    (file-name-nondirectory buffer-file-name))))
-  "/**\n***************************************************"
-  "\n* @author: " (user-full-name)
-  "\n* @date: " (format-time-string "%F %T")
-  "\n* @brief: " (skeleton-read "brief: ")
-  "\n* @modified: <>"
-  "\n**************************************************\n*/"
-  "\n\n#ifndef " str \n "#define " str
-  "\n\n" @ _
-  "\n\n#endif")
-
-(define-skeleton yx/auto-insert-c-header
-  ""
-  nil
-  "/**\n***************************************************"
-  "\n* @author: " (user-full-name)
-  "\n* @date: " (format-time-string "%F %T")
-  "\n* @modified: <>"
-  "\n**************************************************\n*/"
-  "\n\n" @ _ "\n")
-
-(define-skeleton yx/auto-insert-common-header
-  ""
-  nil
-  "# --------------------------------------------------"
-  "\n# Author: " (user-full-name)
-  "\n# Date: " (format-time-string "%F %T")
-  "\n# Modified: <>\n#"
-  "\n# Description: " (skeleton-read "Description: ")
-  "\n#\n#\n"
-  "# --------------------------------------------------"
-  "\n\n" @ _ "\n")
-
-(define-skeleton yx/auto-insert-el-header
-  ""
-  nil
-  ";;; -*- lexical-binding: t -*-"
-  "\n\n;; Author: " (user-full-name) " <" (progn user-mail-address) ">"
-  "\n;; Copyright (C) " (format-time-string "%Y") ", " (user-full-name) ", all right reserved."
-  "\n;; Created: " (format-time-string "%F %T")
-  "\n;; Modified: <>"
-  "\n;; Licence: GPLv3"
-  "\n\n;;; Commentary:\n\n;; " @ _
-  "\n\n;;; Code:"
-  "\n\n(provide '" (file-name-base (buffer-file-name)) ")"
-  "\n;;; " (file-name-nondirectory (buffer-file-name)) " ends here\n")
 
 ;;; Reading
 (use-package doc-view
@@ -2729,7 +2615,7 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
   (prettify-symbols-unprettify-at-point 'right-edge)
   :config
   (defun yx/prog-mode-setup ()
-    (hs-minor-mode 1)
+    (hs-minor-mode +1)
     (setq line-spacing 0.15
           show-trailing-whitespace t))
   (add-hook 'prog-mode-hook #'yx/prog-mode-setup))
@@ -3070,19 +2956,11 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
   :bind (:map emacs-lisp-mode-map
               ("C-c e" . macrostep-expand)))
 
-(define-auto-insert "\\.el$" 'yx/auto-insert-el-header)
-
 ;; c / c++
 (use-package cc-mode
   :ensure nil
   :hook (c-mode . eglot-ensure)
   :config
-  (define-auto-insert
-    "\\.\\([Hh]\\|hh\\|hpp\\|hxx\\|h\\+\\+\\)\\'"
-    'yx/auto-insert-h-header)
-  (define-auto-insert
-    "\\.\\([Cc]\\|cc\\|cpp\\|cxx\\|c\\+\\+\\)\\'"
-    'yx/auto-insert-c-header)
   (add-to-list 'c-default-style '(c-mode . "linux"))
   (defun yx/cc-mode-common-h ()
     (setq tab-width 8
@@ -3146,7 +3024,6 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
     (eglot-ensure)
     (flymake-mode 1))
   (add-hook 'python-base-mode-hook 'yx/python-mode-setup)
-  (define-auto-insert "\\.py$" 'yx/auto-insert-common-header)
   (reformatter-define black-format :program "black" :args '("-q" "-"))
   (reformatter-define ruff-format :program "ruff" :args '("--fix-only" "-")))
 
@@ -3192,9 +3069,6 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
   :hook
   (julia-mode . julia-snail-mode)
   (julia-ts-mode . julia-snail-mode))
-
-(define-auto-insert "\\.R$" 'yx/auto-insert-common-header)
-(define-auto-insert "\\.jl$" 'yx/auto-insert-common-header)
 
 ;; scheme && lisp
 (setq scheme-program-name "chez"

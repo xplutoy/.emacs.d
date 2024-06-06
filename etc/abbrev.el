@@ -17,7 +17,3 @@
     (";uni"   "🦄")
     (";laugh" "🤣")
     (";smile" "😀")))
-
-(define-abbrev-table 'latex-mode-abbrev-table
-  '(("7bn" "" yx/tex-note-tmpl)
-    ("7gh" "" yx/latex-graphics-skl)))
