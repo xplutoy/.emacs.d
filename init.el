@@ -1238,14 +1238,18 @@
 (use-package tab-line
   :ensure nil
   :custom
+  (tab-line-switch-cycling t)
   (tab-line-close-button-show 'selected)
+  (tab-line-close-tab-function 'kill-buffer)
   (tab-line-tab-name-function #'tab-line-tab-name-truncated-buffer)
   (tab-line-tab-name-truncated-max 25)
-  :config
-  (appendq! tab-line-exclude-modes '(doc-view-mode
-                                     imenu-list-major-mode
-                                     ediff-mode
-                                     ediff-meta-mode)))
+  (tab-line-tabs-function #'tab-line-tabs-buffer-groups)
+  (tab-line-tabs-buffer-group-function #'yx/tab-line-buffer-group)
+  (tab-line-tabs-buffer-list-function #'yx/tab-line-tabs-buffer-list)
+  (tab-line-exclude-modes '(completion-list-mode
+                            special-mode
+                            lisp-interaction-mode
+                            messages-buffer-mode)))
 
 (use-package sr-speedbar
   :ensure nil

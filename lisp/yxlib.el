@@ -11,6 +11,9 @@
 ;; 公共函数
 
 ;;; Code:
+(require 's)
+
+;;; Common
 (defconst IS-MAC     (eq system-type 'darwin))
 (defconst IS-WIN     (memq system-type '(windows-nt cygwin)))
 (defconst IS-LINUX   (eq system-type 'gnu/linux))
@@ -55,6 +58,29 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
                                 (sort
                                  (directory-files-and-attributes path 'full nil t)
                                  (lambda (x y) (time-less-p (nth 5 y) (nth 5 x))))))))
+
+;;; buildin-ext
+;; tab-line
+(defun yx/tab-line-buffer-group (buffer)
+  "Use the project.el name for the buffer group"
+  (with-current-buffer buffer
+    (if (project-current)
+        (s-chop-suffix "/" (car (project-roots (project-current))))
+      "+++")))
+
+(defun yx/tab-line-tabs-buffer-list ()
+  (seq-filter (lambda (b) (and (buffer-live-p b)
+                               (/= (aref (buffer-name b) 0) ?\s)
+                               (with-current-buffer b
+                                 (not (or (minibufferp)
+                                          (string-match-p "\\` " (buffer-name))
+                                          (string-match-p "\\*" (buffer-name))
+                                          (memq major-mode tab-line-exclude-modes)
+                                          (get major-mode 'tab-line-exclude)
+                                          (buffer-local-value 'tab-line-exclude (current-buffer)))))))
+              (seq-uniq (append (list (current-buffer))
+                                (mapcar #'car (window-prev-buffers))
+                                (buffer-list)))))
 
 (provide 'yxlib)
 ;;; utils.el ends here
