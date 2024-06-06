@@ -866,7 +866,8 @@
            ("a"   . casual-avy-tmenu)
            ("e"   . yx/transient-emms))
 
-(bind-keys ([remap goto-line]                     . consult-goto-line)           ;M-g g
+(bind-keys ([remap move-beginning-of-line]        . yx/begin-of-line-dwim)   ; C-a
+           ([remap goto-line]                     . consult-goto-line)           ;M-g g
            ([remap switch-to-buffer]              . consult-buffer)              ; C-x b
            ([remap delete-window]                 . yx/delete-window-dwim)       ; C-x 0
            ([remap list-buffers]                  . ibuffer)                 ; C-x C-b

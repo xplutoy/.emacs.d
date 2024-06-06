@@ -66,6 +66,14 @@ When the region is active, comment its lines instead."
     (newline-and-indent)))
 
 ;;;###autoload
+(defun yx/begin-of-line-dwim ()
+  "move to beginning of line, or indentation"
+  (interactive)
+  (if (bolp)
+      (back-to-indentation)
+    (beginning-of-line)))
+
+;;;###autoload
 (defun yx/scratch-buffer ()
   "Switch to '*scratch*' buffer and maximize it"
   (interactive)
