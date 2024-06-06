@@ -1233,7 +1233,6 @@
 
 (use-package sr-speedbar
   :ensure nil
-  :defer 5
   :custom
   (speedbar-use-images nil)
   (sr-speedbar-width 28)
@@ -1446,7 +1445,6 @@
 ;; %% auxiliary tool
 (use-package crux
   :ensure nil
-  :defer 2
   :config
   (crux-with-region-or-buffer tabify)
   (crux-with-region-or-buffer untabify)
@@ -2159,6 +2157,7 @@
   (setq elfeed-feeds
         '(("https://spaces.ac.cn/feed" ai)
           ("https://www.inference.vc/rss" ai)
+          ("https://liduos.com/atom.xml" ai)
           ("https://lilianweng.github.io/index.xml" ai)
           ("https://tech.youzan.com/rss/" tech)
           ("https://tech.meituan.com/feed/" tech)
@@ -2484,6 +2483,15 @@
       (2 font-lock-constant-face))))
 
   (add-hook 'org-ctrl-c-ctrl-c-hook 'yx/check-latex-fragment)
+  (add-hook 'org-cycle-hook (lambda (state)
+                              (yx/org-toggle-inline-images-in-subtree)))
+
+  (defun yx/org-mode-setup ()
+    (auto-fill-mode -1)
+    (variable-pitch-mode 1)
+    (push 'cape-tex completion-at-point-functions)
+    (modify-syntax-entry ?< "." org-mode-syntax-table)
+    (modify-syntax-entry ?> "." org-mode-syntax-table))
 
   (defun yx/org-reformat-buffer ()
     (interactive)
@@ -2492,14 +2500,6 @@
         (erase-buffer)
         (insert document)
         (goto-char (point-min)))))
-
-  :config
-  (defun yx/org-mode-setup ()
-    (auto-fill-mode -1)
-    (variable-pitch-mode 1)
-    (push 'cape-tex completion-at-point-functions)
-    (modify-syntax-entry ?< "." org-mode-syntax-table)
-    (modify-syntax-entry ?> "." org-mode-syntax-table))
 
   (defun yx/check-latex-fragment ()
     (let ((datum (org-element-context)))
