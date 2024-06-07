@@ -883,7 +883,7 @@
            ([remap describe-key]                  . helpful-key)                ; C-h k
            ([remap describe-command]              . helpful-command)            ; C-h x
            ([remap describe-variable]             . helpful-variable)           ; C-h v
-           ([remap list-directory]                . zoxide-travel)              ; C-x C-d
+           ([remap list-directory]                . dirvish)                    ; C-x C-d
            ([remap dired-at-point]                . consult-dir)                ; C-x d
            ([remap comment-dwim]                  . yx/comment-dwim)            ; M-;
            ([remap keyboard-quit]                 . yx/keyboard-quit-dwim)      ; C-g
@@ -1794,9 +1794,6 @@
          (dirvish-directory-view-mode . diredfl-mode))
   :config
   (set-face-attribute 'diredfl-dir-name nil :bold t))
-
-(use-package zoxide
-  :unless IS-WIN)
 
 (use-package dirvish
   :hook (after-init . dirvish-override-dired-mode)
