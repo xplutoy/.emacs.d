@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 04:02:44
-;; Modified: <>
+;; Modified: <2024-06-07 15:17:27 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -45,5 +45,5 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
         (sort (directory-files-and-attributes path 'full nil t)
               (lambda (x y) (time-less-p (nth 5 y) (nth 5 x)))))))
 
-(provide 'yx-core)
-;;; yx-core.el ends here
+(provide 'common-x)
+;;; common-x.el ends here

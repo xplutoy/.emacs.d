@@ -408,5 +408,5 @@ If called from Lisp, enable the mode if ARG is omitted or nil."
           "\\.\\([Cc]\\|cc\\|cpp\\|cxx\\|c\\+\\+\\)\\'"
           #'yx/auto-insert-c-header))))
 
-(provide 'yx-extra)
-;;; yx-extra.el ends here
+(provide 'simple-x)
+;;; simple-x.el ends here

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2024-03-11 18:02:58 yx>
+;; Modified: <2024-06-07 15:15:23 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -46,7 +46,7 @@
 (when (fboundp 'startup-redirect-eln-cache)
   (startup-redirect-eln-cache
    (convert-standard-filename
-    (expand-file-name ".local/eln-cache" user-emacs-directory))))
+    (expand-file-name "var/eln-cache" user-emacs-directory))))
 
 (advice-add #'display-startup-screen :override #'ignore)
 (advice-add #'display-startup-echo-area-message :override #'ignore)
