@@ -770,7 +770,7 @@
   "f"   #'find-file
   "M-f" #'ffap
   "d"   #'consult-dir
-  "o"   #'owe-ff-other-window
+  "o"   #'yx/ff-other-window
   "p"   #'find-file-at-point
   "t"   #'find-file-other-tab
   "r"   #'consult-recent-file
@@ -898,8 +898,8 @@
            ([remap goto-char]                     . avy-goto-char-timer)        ; M-g c
            ([remap text-scale-adjust]             . global-text-scale-adjust)   ; C-x C-+
            ([remap global-text-scale-adjust]      . text-scale-adjust) ; C-x C-M-+
-           ([remap isearch-forward-regexp]        . owe-isearch-other-window-forward) ; C-M-s
-           ([remap isearch-backward-regexp]       . owe-isearch-other-window-backward) ; C-M-s
+           ([remap isearch-forward-regexp]        . yx/isearch-other-window-forward) ; C-M-s
+           ([remap isearch-backward-regexp]       . yx/isearch-other-window-backward) ; C-M-s
            ([set-selective-display]               . yx/smarter-selective-display)) ; C-x $
 
 (bind-keys ("C-;"       . iedit-mode)
@@ -908,7 +908,7 @@
            ("C-/"       . undo-only)
            ("C-M-/"     . vundo)
            ("M-o"       . ace-window)
-           ("M-O"       . owe-other-window-mru)
+           ("M-O"       . yx/other-window-mru)
            ("M-r"       . consult-recent-file)
            ("C-#"       . consult-register-load)
            ("M-#"       . consult-register-store)
@@ -1454,9 +1454,6 @@
 ;; :after consult)
 
 (use-package posframe)
-
-(use-package other-window-ext
-  :ensure nil)
 
 (use-package which-key
   :defer 5
@@ -2132,8 +2129,8 @@
               ("b" . org-backward-heading-same-level))
   :autoload (org-calendar-holiday)
   :hook
-  (org-mode . yx/org-mode-setup)
-  (org-agenda-finalize . yx/org-agenda-finalize-setup)
+  (org-trigger . save-buffer)
+  (org-agenda-finalize . yx/org-agenda-to-appt)
   (org-babel-after-execute . yx/org-babel-display-image)
   :custom
   (org-directory yx/org-dir)
@@ -2349,7 +2346,13 @@
   (require 'org-habit)
   (require 'org-tempo)
 
-  (add-hook 'org-trigger-hook #'save-buffer)
+  (defun yx/org-mode-setup ()
+    (auto-fill-mode -1)
+    (variable-pitch-mode 1)
+    (push 'cape-tex completion-at-point-functions)
+    (modify-syntax-entry ?< "." org-mode-syntax-table)
+    (modify-syntax-entry ?> "." org-mode-syntax-table))
+  (add-hook 'org-mode-hook #'yx/org-mode-setup)
 
   (cond
    (IS-MAC (plist-put org-format-latex-options :scale 1.2))

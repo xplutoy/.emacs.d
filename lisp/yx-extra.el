@@ -157,7 +157,6 @@ number nor move point to the desired column.
       (set-selective-display 0)
     (set-selective-display (or level (1+ (current-column))))))
 
-;; tab-line+
 ;;;###autoload
 (defun yx/tab-line-buffer-group (buffer)
   "Use the project.el name for the buffer group"
@@ -182,15 +181,6 @@ number nor move point to the desired column.
                                 (mapcar #'car (window-prev-buffers))
                                 (buffer-list)))))
 
-;; org+
-;;;###autoload
-(defun yx/org-mode-setup ()
-  (auto-fill-mode -1)
-  (variable-pitch-mode 1)
-  (push 'cape-tex completion-at-point-functions)
-  (modify-syntax-entry ?< "." org-mode-syntax-table)
-  (modify-syntax-entry ?> "." org-mode-syntax-table))
-
 ;;;###autoload
 (defun yx/org-check-latex-fragment ()
   (let ((datum (org-element-context)))
@@ -199,7 +189,7 @@ number nor move point to the desired column.
       t)))
 
 ;;;###autoload
-(defun yx/org-agenda-finalize-setup ()
+(defun yx/org-agenda-to-appt ()
   (setq appt-time-msg-list nil)
   (org-agenda-to-appt))
 
@@ -300,6 +290,43 @@ This function makes sure that dates are aligned for easy reading."
     (when (or refresh (not overlays))
       (org-display-inline-images t t beg end)
       t)))
+
+;;; other-window+
+;;;###autoload
+(defmacro yx/with-other-window (&rest body)
+  "Execute forms in BODY in the other-window."
+  `(unless (one-window-p)
+     (with-selected-window (other-window-for-scrolling)
+       ,@body)))
+
+;;;###autoload
+(defun yx/isearch-other-window-forward (regexp-p)
+  (interactive "P")
+  (yx/with-other-window (isearch-forward regexp-p)))
+
+;;;###autoload
+(defun yx/isearch-other-window-backward (regexp-p)
+  (interactive "P")
+  (yx/with-other-window (isearch-backward regexp-p)))
+
+;;;###autoload
+(defun yx/ff-other-window ()
+  "Find file in other window."
+  (interactive)
+  (cond
+   ((one-window-p t)
+    (call-interactively #'find-file-other-window))
+   (t
+    (yx/with-other-window (call-interactively #'find-file)))))
+
+;;;###autoload
+(defun yx/other-window-mru ()
+  "Select the most recently used window on this frame."
+  (interactive)
+  (when-let ((mru-window
+              (get-mru-window
+               nil nil 'not-this-one-dummy)))
+    (select-window mru-window)))
 
 ;;; skeleton+
 (define-skeleton yx/auto-insert-h-header
