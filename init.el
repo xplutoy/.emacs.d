@@ -998,8 +998,8 @@
         (cl-loop for font in '("Noto Color Emoji" "Apple Color Emoji" "Segoe UI Emoji")
                  when (x-list-fonts font)
                  return (set-fontset-font t 'emoji  (font-spec :family font) nil 'prepend))
-        ;; (load-theme 'modus-operandi t)
-        (load-theme 'ef-melissa-light t))
+        ;; (load-theme 'ef-melissa-light t))
+        (load-theme 'modus-operandi t))
     (load-theme 'modus-vivendi t)))
 
 (add-hook 'after-init-hook #'yx/font-and-theme-setup -100)
