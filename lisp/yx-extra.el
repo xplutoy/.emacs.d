@@ -110,13 +110,12 @@ Warning: new buffer is not prompted for save when killed, see `kill-buffer'."
   "Kill the current buffer and deletes the file it is visiting."
   (interactive)
   (let ((filename (buffer-file-name)))
-    (when filename
-      (if (vc-backend filename)
-          (vc-delete-file filename)
-        (when (y-or-n-p (format "Are you sure you want to delete %s? " filename))
-          (delete-file filename delete-by-moving-to-trash)
-          (message "Deleted file %s" filename)
-          (kill-buffer))))))
+    (if filename
+        (if (y-or-n-p (concat "Do you really want to delete file " filename " ?"))
+            (progn
+              (delete-file filename delete-by-moving-to-trash)
+              (kill-buffer)))
+      (message "Not a file visiting buffer!"))))
 
 ;;;###autoload
 (defun yx/keyboard-quit-dwim ()
