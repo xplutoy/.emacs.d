@@ -1,7 +1,7 @@
 ;;-*-coding: utf-8;-*-
 (define-abbrev-table 'global-abbrev-table
   '(;; Misc
-    ("1td" "" yx/insert-date)
+    ("1td" "" yx/simple-insert-date)
     ;; regexp
     ("2bl" "^\s-*$")
     ;; math/unicode symbols

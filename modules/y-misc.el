@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:57:14
-;; Modified: <>
+;; Modified: <2024-06-09 02:42:03 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -156,9 +156,13 @@
     (setq pyim-dicts `(,(list :name "yx-dict" :file yx-dict)))))
 
 (use-package pyim-tsinghua-dict
-  :vc (:url "https://github.com/redguardtoo/pyim-tsinghua-dict")
+  ;; :vc (:url "https://github.com/redguardtoo/pyim-tsinghua-dict")
+  :ensure nil
   :after pyim
   :demand t
+  :init
+  (unless (package-installed-p 'pyim-tsinghua-dict)
+    (package-vc-install "https://github.com/redguardtoo/pyim-tsinghua-dict"))
   :config (pyim-tsinghua-dict-enable))
 
 (use-package erc

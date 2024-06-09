@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:04:53
-;; Modified: <>
+;; Modified: <2024-06-09 02:39:09 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -63,7 +63,7 @@
   (setq elfeed-search-print-entry-function #'yx/elfeed-search-print-entry)
   :hook (elfeed-show . olivetti-mode)
   :config
-  (require 'elfeed-ext)
+  (require 'elfeed-x)
   (run-at-time nil (* 4 60 60) 'elfeed-update)
   (keymap-set elfeed-show-mode-map "w" #'elfeed-show-yank)
   (keymap-set elfeed-show-mode-map "%" #'yx/elfeed-show-in-xwidget)
@@ -72,8 +72,14 @@
   (keymap-set elfeed-search-mode-map "l" (yx/elfeed-tag-as 'readlater)))
 
 (use-package outli
-  :vc (:url "https://github.com/jdtsmith/outli")
+  ;; :vc (:url "https://github.com/jdtsmith/outli")
+  :ensure nil
   :hook ((prog-mode text-mode) . outli-mode)
+  :init
+  (unless (package-installed-p 'outli)
+    (package-vc-install "https://github.com/jdtsmith/outli"))
+  :config
+  (setf (alist-get 'emacs-lisp-mode outli-heading-config ) '(";;;" ?\; t))
   :bind (:map outli-mode-map
               ("C-c C-u" . (lambda () (interactive) (outline-back-to-heading)))))
 

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:59:41
-;; Modified: <>
+;; Modified: <2024-06-08 19:01:46 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -107,8 +107,12 @@
   (snap-indent-format '(delete-trailing-whitespace)))
 
 (use-package isayt
-  :vc (:url "https://gitlab.com/andreyorst/isayt.el")
-  :hook ((emacs-lisp-mode scheme-mode-hook) . isayt-mode))
+  ;; :vc (:url "https://gitlab.com/andreyorst/isayt.el")
+  :ensure nil
+  :hook ((emacs-lisp-mode scheme-mode-hook) . isayt-mode)
+  :init
+  (unless (package-installed-p 'isayt)
+    (package-vc-install "https://gitlab.com/andreyorst/isayt.el")))
 
 (use-package editorconfig
   :defer 5
@@ -279,6 +283,7 @@
               ("-" . puni-contract-region)))
 
 (use-package combobulate
+  :disabled
   :vc (:url "https://github.com/mickeynp/combobulate")
   :hook ((python-ts-mode . combobulate-mode)
          (js-ts-mode . combobulate-mode)
@@ -288,11 +293,17 @@
   (combobulate-key-prefix "C-c l o"))
 
 (use-package color-rg
-  :vc (:url "https://github.com/manateelazycat/color-rg")
+  ;; :vc (:url "https://github.com/manateelazycat/color-rg")
+  :ensure nil
   :defer 2
   :custom
   (color-rg-search-no-ignore-file nil)
-  (color-rg-mac-load-path-from-shell nil))
+  (color-rg-mac-load-path-from-shell nil)
+  :init
+  (unless (package-installed-p 'color-rg)
+    (package-vc-install "https://github.com/manateelazycat/color-rg"))
+  (when IS-WIN
+    (setq color-rg-command-prefix "powershell")))
 
 (use-package eglot
   :ensure nil

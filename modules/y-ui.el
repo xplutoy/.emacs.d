@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:17:53
-;; Modified: <>
+;; Modified: <2024-06-09 12:41:04 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -12,19 +12,19 @@
 
 ;;; Code:
 
-(defvar yx/font-height 150)
-(defvar yx/font "JetBrains Mono")
-(defvar yx/fixed-font "IBM Plex Mono")
-(defvar yx/serif-font "IBM Plex Serif")
-(defvar yx/variable-font "IBM Plex Sans")
+(defvar yx/font-h 150)
+(defvar yx/d-font "JetBrains Mono")
+(defvar yx/f-font "IBM Plex Mono")
+(defvar yx/s-font "IBM Plex Serif")
+(defvar yx/v-font "IBM Plex Sans")
 
 (defun yx/font-and-theme-setup ()
   (if (display-graphic-p)
       (progn
-        (set-face-attribute 'default nil :family yx/font :height yx/font-height)
-        (set-face-attribute 'fixed-pitch nil :family yx/fixed-font)
-        (set-face-attribute 'fixed-pitch-serif nil :family yx/serif-font)
-        (set-face-attribute 'variable-pitch nil :family yx/variable-font)
+        (set-face-attribute 'default nil :family yx/d-font :height yx/font-h)
+        (set-face-attribute 'fixed-pitch nil :family yx/f-font)
+        (set-face-attribute 'fixed-pitch-serif nil :family yx/s-font)
+        (set-face-attribute 'variable-pitch nil :family yx/v-font)
         (setq face-font-rescale-alist '(("LXGW WenKai Mono"  . 1.0)
                                         ("Apple Color Emoji" . 0.8)))
         (cl-loop for font in '("LXGW WenKai Mono" "Microsoft Yahei" "PingFang SC")
@@ -57,33 +57,33 @@
   (setq ef-themes-mixed-fonts t
         ef-themes-variable-pitch-ui t))
 
-(use-package prot-modeline
+(use-package modeline-x
   :ensure nil
   :demand t
   :config
   (setq mode-line-right-align-edge 'right-margin)
   (setq-default mode-line-format
                 '("%e"
-                  prot-modeline-kbd-macro
-                  prot-modeline-narrow
-                  prot-modeline-buffer-status
-                  prot-modeline-window-dedicated-status
-                  prot-modeline-input-method
+                  yx-modeline-kbd-macro
+                  yx-modeline-narrow
+                  yx-modeline-buffer-status
+                  yx-modeline-window-dedicated-status
+                  yx-modeline-input-method
                   "  "
-                  prot-modeline-buffer-identification
+                  yx-modeline-buffer-identification
                   "  "
-                  prot-modeline-major-mode
-                  prot-modeline-process
+                  yx-modeline-major-mode
+                  yx-modeline-process
                   "  "
-                  prot-modeline-vc-branch
+                  yx-modeline-vc-branch
                   "  "
-                  prot-modeline-eglot
+                  yx-modeline-eglot
                   "  "
-                  prot-modeline-flymake
+                  yx-modeline-flymake
                   "  "
                   mode-line-format-right-align
                   "  "
-                  prot-modeline-misc-info
+                  yx-modeline-misc-info
                   "  "
                   mode-line-end-spaces)))
 

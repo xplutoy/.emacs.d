@@ -66,7 +66,7 @@
   (setq dirvish-side-width 30
         dirvish-use-mode-line t
         dirvish-default-layout '(0 0.4 0.6))
-  (let ((height (/ yx/font-height 10.0)))
+  (let ((height (/ yx/font-h 10.0)))
     (setq dirvish-mode-line-height height
           dirvish-header-line-height height))
   (setq dirvish-attributes

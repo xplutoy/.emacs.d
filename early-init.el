@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2023, yangxue, all right reserved.
 ;; Created: 2023-08-24 23:15:44
-;; Modified: <2024-06-07 15:15:23 yangx>
+;; Modified: <2024-06-09 10:55:57 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,8 +11,6 @@
 ;;
 
 ;;; Code:
-(setq package-enable-at-startup nil)
-
 (push '(menu-bar-lines . 0) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars) default-frame-alist)
@@ -28,6 +26,9 @@
       gc-cons-percentage 1.0
       native-compile-prune-cache t
       native-comp-async-report-warnings-errors 'silent)
+
+(setq package-enable-at-startup nil)
+(setq package-user-dir  (expand-file-name "~/.emacs.d/var/elpa/"))
 
 (let ((old-file-name-handler-alist file-name-handler-alist))
   (setq-default file-name-handler-alist nil)

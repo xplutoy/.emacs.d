@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:56:55
-;; Modified: <>
+;; Modified: <2024-06-08 18:50:18 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -40,8 +40,12 @@
 (use-package casual-avy)
 
 (use-package speedrect
-  :vc (:url "https://github.com/jdtsmith/speedrect")
-  :defer 3)
+  :ensure nil
+  ;; :vc (:url "https://github.com/jdtsmith/speedrect")
+  :defer 3
+  :init
+  (unless (package-installed-p 'speedrect)
+    (package-vc-install "https://github.com/jdtsmith/speedrect")))
 
 (use-package easy-kill
   :bind (([remap kill-ring-save] . easy-kill)

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 13:03:19
-;; Modified: <>
+;; Modified: <2024-06-08 23:11:18 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -85,7 +85,7 @@
 
   (defun yx/eshell-prompt()
     (setq eshell-prompt-regexp "^[^#$\n]*[#$] ")
-    (concat (yx/pwd-replace-home (eshell/pwd))
+    (concat (yx/common-pwd-replace-home (eshell/pwd))
             (if (fboundp 'magit-get-current-branch)
                 (if-let ((branch (magit-get-current-branch)))
                     (format " [git:%s]" branch)
@@ -104,10 +104,14 @@
   (eshell-syntax-highlighting-global-mode +1))
 
 (use-package eat
-  :vc (:url "https://codeberg.org/akib/emacs-eat")
+  :ensure nil
+  ;; :vc (:url "https://codeberg.org/akib/emacs-eat")
   :custom
   (eat-kill-buffer-on-exit t)
   (eat-enable-yank-to-terminal t)
+  :init
+  (unless (package-installed-p 'emacs-eat)
+    (package-vc-install "https://codeberg.org/akib/emacs-eat"))
   :hook ((eshell-load . eat-eshell-mode)
          (eshell-load . eat-eshell-visual-command-mode)))
 

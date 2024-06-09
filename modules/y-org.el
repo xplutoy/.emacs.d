@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 13:24:59
-;; Modified: <>
+;; Modified: <2024-06-08 23:52:10 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -31,7 +31,7 @@
               ("M-l C-t" . org-transclusion-add-all)
               ("M-l M-t" . org-transclusion-remove)
               ("M-l TAB" . yx/org-show-current-heading-tidily)
-              ("M-l l"   . yx/insert-fixed-org-link)
+              ("M-l l"   . yx/org-insert-fixed-link)
               ("M-l C-l" . org-latex-preview)
               ("M-l C-v" . yx/org-toggle-inline-images-in-subtree)
               :repeat-map org-heading-navigate-repeat-map
