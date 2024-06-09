@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:59:41
-;; Modified: <2024-06-08 19:01:46 yangx>
+;; Modified: <2024-06-09 21:13:41 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -253,7 +253,9 @@
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode +1))
 
-(use-package iedit)
+(use-package iedit
+  :config
+  (advice-add 'iedit-mode :around #'yx/iedit-scoped))
 
 (use-package surround
   :bind-keymap ("C-'" . surround-keymap))

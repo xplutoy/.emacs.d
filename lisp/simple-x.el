@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-01 19:19:56
-;; Modified: <2024-06-09 01:35:37 yangx>
+;; Modified: <2024-06-09 20:33:26 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -117,9 +117,9 @@ satisfies `yx/common-window-small-p' or it has no previous
 buffers in its history."
   (interactive "P")
   (let ((kill-buffer-query-functions nil))
-    (if (or (yx/common-window-small-p)
-            (null (window-prev-buffers))
-            (and arg (not (one-window-p))))
+    (if (or (and (not (one-window-p))
+                 (yx/common-window-small-p))
+            arg)
         (kill-buffer-and-window)
       (kill-buffer))))
 

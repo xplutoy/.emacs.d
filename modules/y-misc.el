@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:57:14
-;; Modified: <2024-06-09 02:42:03 yangx>
+;; Modified: <2024-06-09 20:42:54 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -149,11 +149,8 @@
    (pyim-default-scheme 'xiaohe-shuangpin))
   (keymap-set org-mode-map "M-f" #'pyim-forward-word)
   (keymap-set org-mode-map "M-b" #'pyim-backward-word)
-  (let ((yx-dict (nol-expand-etc "yx-dict.pyim")))
-    (add-hook #'kill-emacs-hook
-              (lambda ()
-                (pyim-export-words-and-counts yx-dict)))
-    (setq pyim-dicts `(,(list :name "yx-dict" :file yx-dict)))))
+  (setq pyim-dicts (list (list :name "dict-x"
+                               :file (nol-expand-etc "dict-x.pyim")))))
 
 (use-package pyim-tsinghua-dict
   ;; :vc (:url "https://github.com/redguardtoo/pyim-tsinghua-dict")
@@ -163,7 +160,8 @@
   :init
   (unless (package-installed-p 'pyim-tsinghua-dict)
     (package-vc-install "https://github.com/redguardtoo/pyim-tsinghua-dict"))
-  :config (pyim-tsinghua-dict-enable))
+  :config
+  (with-silent (pyim-tsinghua-dict-enable)))
 
 (use-package erc
   :ensure nil

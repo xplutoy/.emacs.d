@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:00:36
-;; Modified: <2024-06-09 17:10:42 yangx>
+;; Modified: <2024-06-09 21:15:54 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -17,7 +17,7 @@
   (even-window-sizes t)
   (window-sides-vertical nil)
   (split-width-threshold 120)
-  (split-height-threshold 80)
+  (split-height-threshold nil)
   (switch-to-buffer-obey-display-actions t)
   (switch-to-buffer-in-dedicated-window nil)
   (switch-to-buffer-preserve-window-point t)

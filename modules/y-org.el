@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 13:24:59
-;; Modified: <2024-06-08 23:52:10 yangx>
+;; Modified: <2024-06-09 21:09:41 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -274,19 +274,19 @@
   (plist-put org-format-latex-options :background "Transparent")
 
   (org-babel-do-load-languages 'org-babel-load-languages
-                               '((emacs-lisp . t)
-                                 (python . t)
-                                 (C . t)
-                                 (R . t)
-                                 (julia . t)
-                                 (org . t)
+                               '((python . t)
+                                 ;; (C . t)
+                                 ;; (R . t)
+                                 ;; (julia . t)
+                                 ;; (org . t)
                                  (shell . t)
-                                 (latex . t)
-                                 (dot . t)
-                                 (gnuplot . t)
-                                 (lisp . t)
-                                 (scheme . t)
-                                 (jupyter . t)))
+                                 ;; (latex . t)
+                                 ;; (dot . t)
+                                 ;; (gnuplot . t)
+                                 ;; (lisp . t)
+                                 ;; (scheme . t)
+                                 ;; (jupyter . t)
+                                 (emacs-lisp . t)))
   (org-crypt-use-before-save-magic)
   (org-clock-persistence-insinuate)
   (org-clock-auto-clockout-insinuate)
