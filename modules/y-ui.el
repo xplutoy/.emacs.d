@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:17:53
-;; Modified: <2024-06-09 12:41:04 yangx>
+;; Modified: <2024-06-09 15:38:26 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -96,10 +96,10 @@
   :custom
   (spacious-padding-subtle-mode-line nil)
   (spacious-padding-widths '( :internal-border-width 4
-                              :header-line-width 1
+                              :header-line-width 2
                               :mode-line-width 2
                               :tab-width 4
-                              :right-divider-width 12
+                              :right-divider-width 16
                               :fringe-width 8)))
 
 (use-package lin

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-09 03:37:21
-;; Modified: <2024-06-09 11:36:21 yangx>
+;; Modified: <2024-06-09 17:20:09 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -13,6 +13,8 @@
 ;;; Code:
 (require 'package)
 (require 'use-package)
+
+(setq debug-on-error t)
 
 (setq package-quickstart nil
       package-native-compile t

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:00:36
-;; Modified: <2024-06-08 22:40:53 yangx>
+;; Modified: <2024-06-09 17:10:42 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -27,58 +27,64 @@
                                   (inhibit-same-window . nil)))
   :config
   (setq display-buffer-alist
-        `((,(rx (| "*Org Select"
-                   "*Org Note"
-                   "*Agenda Commands"
-                   "*tldr*"
-                   "*quickrun*"
-                   "*diff-hl"
-                   "*Dictionary*"
-                   "*wclock*"))
+        `(;; no window
+          ("\\`\\*Async Shell Command\\*\\'"
+           (display-buffer-no-window))
+          ("\\`\\*\\(Warnings\\|Compile-Log\\|Org Links\\)\\*\\'"
+           (display-buffer-no-window)
+           (allow-no-window . t))
+          ;; bottom side window
+          ("\\*Org \\(Select\\|Note\\)\\*"
            (display-buffer-in-side-window)
-           (window-height . 0.45))
+           (dedicated . t)
+           (side . bottom)
+           (slot . 0)
+           (window-parameters . ((mode-line-format . none))))
+          ;; bottom buffer (NOT side window)
+          ((or . ((derived-mode . flymake-diagnostics-buffer-mode)
+                  (derived-mode . flymake-project-diagnostics-mode)
+                  (derived-mode . messages-buffer-mode)
+                  (derived-mode . backtrace-mode)
+                  "\\*\\(Agenda Commands\\|tldr\\|quickrun\\|diff-hl\\|Dictionary\\|wclock\\)"))
+           (display-buffer-reuse-mode-window display-buffer-at-bottom)
+           (window-height . 0.45)
+           (dedicated . t)
+           (preserve-size . (t . t)))
+          ("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+           (display-buffer-reuse-mode-window display-buffer-below-selected)
+           (window-parameters . ((no-other-window . t)
+                                 (mode-line-format . none))))
           ("\\(\\*Capture\\*\\|CAPTURE-.*\\)"
            (display-buffer-reuse-mode-window display-buffer-below-selected))
-          (,(rx (| "*Messages*"
-                   "Output*$"
-                   "*Backtrace*"
-                   "*Async Shell Command*"))
-           (display-buffer-reuse-window display-buffer-at-bottom)
+          ("\\*\\vc-\\(incoming\\|outgoing\\|git : \\).*"
+           (display-buffer-reuse-mode-window display-buffer-below-selected)
+           (window-height . 0.1)
            (dedicated . t)
-           (window . root) (window-height . 0.45))
+           (preserve-size . (t . t)))
+          ("\\*\\(Output\\|Register Preview\\).*"
+           (display-buffer-reuse-mode-window display-buffer-at-bottom))
           ("\\`\\(\\*Calendar\\|\\*Bookmark\\|\\*stardict\\*\\)"
            (display-buffer-below-selected)
            (dedicated . t)
            (window-height . fit-window-to-buffer))
-          ((or (major-mode . help-mode)
-               (major-mode . helpful-mode)
-               (major-mode . apropos-mode))
-           (display-buffer-reuse-mode-window display-buffer-at-bottom)
+          ((or . ((major-mode . help-mode)
+                  (major-mode . helpful-mode)
+                  (major-mode . apropos-mode)))
+           (yx/window-display-buffer-below-or-pop)
            (mode . (help-mode helpful-mode apropos-mode))
            (window-height . 0.45))
-          ((or (derived-mode . occur-mode)
-               (derived-mode . grep-mode)
-               (derived-mode . color-rg-mode)
-               (derived-mode . log-view-mode)
-               (derived-mode . Buffer-menu-mode))
-           (display-buffer-reuse-mode-window display-buffer-at-bottom)
+          ((or . ((derived-mode . occur-mode)
+                  (derived-mode . grep-mode)
+                  (derived-mode . color-rg-mode)
+                  (derived-mode . Buffer-menu-mode)
+                  (derived-mode . log-view-mode)
+                  "\\*\\(|Buffer List\\|Occur\\|vc-change-log\\|eldoc.*\\).*"
+                  yx/window-shell-or-term-p))
+           (yx/window-display-buffer-below-or-pop)
            (mode . (occur-mode grep-mode color-rg-mode))
            (window-height . 0.45))
-          ((or (major-mode . shell-mode)
-               (major-mode . eshell-mode)
-               (major-mode . term-mode))
-           (display-buffer-reuse-mode-window display-buffer-at-bottom)
-           (dedicated . t)
-           (window . root) (window-height . 0.45))
-          (,(rx (| "*vc-git"
-                   "*Warnings*"
-                   "*Compile-Log*"))
-           (display-buffer-no-window)
-           (allow-no-window . t))
-          (,(rx (| "*Ibuffer*"
-                   "*Org Agenda*"
-                   "*Proced*"
-                   "*info*"))
+          ;; full-frame
+          ("\\*\\(Ibuffer\\|Org Agenda\\|Proced\\|info\\)\\*"
            (display-buffer-full-frame)))))
 
 (use-package ibuffer

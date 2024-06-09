@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:53:38
-;; Modified: <>
+;; Modified: <2024-06-09 17:37:41 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -13,8 +13,8 @@
 ;;; Code:
 (prefer-coding-system 'utf-8)
 (set-language-environment 'UTF-8)
+(set-default-coding-systems 'utf-8)
 (set-selection-coding-system 'utf-8)
-(set-buffer-file-coding-system 'utf-8)
 
 (cond
  (IS-MAC
@@ -28,9 +28,9 @@
   (push '(undecorated-round . t) default-frame-alist)
   (push '(ns-transparent-titlebar . t) default-frame-alist))
  (IS-WIN
-  (set-selection-coding-system 'utf-16-le)
-  (prependq! exec-path '("C:/Program Files/Git/bin"
-                         "C:/Program Files/Git/usr/bin"))
+  (setq file-name-coding-system 'gbk)
+  (set-selection-coding-system  'utf-16-le)
+  (w32-set-system-coding-system 'utf-8)
   (setq w32-apps-modifier    'hyper
         w32-lwindow-modifier 'super
         w32-pass-apps-to-system nil

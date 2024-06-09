@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:51:58
-;; Modified: <>
+;; Modified: <2024-06-09 17:13:18 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -70,11 +70,7 @@
                     (text-properties-at 0 target)
                     'consult--candidate))
            (headline-name (org-entry-get nil "ITEM")))
-      (org-insert-link nil headline-name)))
-  (add-to-list 'display-buffer-alist
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none)))))
+      (org-insert-link nil headline-name))))
 
 (use-package consult
   :bind (:map minibuffer-local-map
