@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 01:23:27
-;; Modified: <>
+;; Modified: <2024-06-09 00:23:07 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,6 +11,13 @@
 ;;
 
 ;;; Code:
+(require 'common-x)
+(require 'elfeed nil t)
+
+(defgroup elfeed-x ()
+  "Personal extensions for Elfeed."
+  :group 'elfeed)
+
 ;;;###autoload
 (defun yx/elfeed-search-print-entry (entry)
   "Print ENTRY to the buffer."
@@ -68,5 +75,5 @@
           (browse-url-generic link)
         (xwidget-webkit-browse-url link)))))
 
-(provide 'elfeed-ext)
-;;; elfeed-ext.el ends here
+(provide 'elfeed-x)
+;;; elfeed-x.el ends here
