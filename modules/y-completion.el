@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:51:58
-;; Modified: <2024-06-09 17:13:18 yangx>
+;; Modified: <2024-06-10 11:01:18 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -47,6 +47,7 @@
                                         (eglot-capf (styles basic yx/orderless-with-initialism)))))
 
 (use-package embark
+  :commands embark-open-externally
   :bind (("C-." . embark-act)
          :map minibuffer-local-map
          ("C-c C-e" . embark-export)
@@ -62,15 +63,7 @@
   (prefix-help-command 'embark-prefix-help-command)
   (embark-indicators '(embark-minimal-indicator
                        embark-highlight-indicator
-                       embark-isearch-highlight-indicator))
-  :commands embark-open-externally
-  :config
-  (defun yx/consult-outline-insert-heading (target)
-    (let* ((marker (plist-get
-                    (text-properties-at 0 target)
-                    'consult--candidate))
-           (headline-name (org-entry-get nil "ITEM")))
-      (org-insert-link nil headline-name))))
+                       embark-isearch-highlight-indicator)))
 
 (use-package consult
   :bind (:map minibuffer-local-map

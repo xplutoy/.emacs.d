@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:08:47
-;; Modified: <2024-06-09 11:25:15 yangx>
+;; Modified: <2024-06-10 12:48:48 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -22,6 +22,7 @@
 
 (defvar-keymap yx/file-prefix-map
   :doc "Prefix map for file."
+  :name "File"
   "f"   #'find-file
   "M-f" #'ffap
   "d"   #'consult-dir
@@ -30,12 +31,13 @@
   "t"   #'find-file-other-tab
   "r"   #'consult-recent-file
   "R"   #'rename-visited-file
-  "D"   #'yx/delete-file-and-buffer)
+  "D"   #'yx/simple-delete-file-and-buffer)
 
 (keymap-global-set "C-c f" yx/file-prefix-map)
 
 (defvar-keymap yx/buffer-prefix-map
   :doc "Prefix map for buffer"
+  :name "Buffer"
   "b" #'tabspaces-switch-to-buffer
   "s" #'scratch-buffer
   "k" #'kill-buffer-and-window
@@ -45,6 +47,7 @@
 
 (defvar-keymap yx/window-prefix-map
   :doc "Prefix map for window and workspace"
+  :name "Workspace"
   "u"   #'winner-undo
   "r"   #'winner-redo
   "C-b" #'burly-open-bookmark
@@ -56,6 +59,7 @@
 
 (defvar-keymap yx/note-prefix-map
   :doc "Prefix map for note taking"
+  :name "Note"
   "c"   #'denote
   "t"   #'denote-template
   "n"   #'denote-open-or-create
@@ -73,6 +77,7 @@
 
 (defvar-keymap yx/ctrl-c-q-prefix-map
   :doc "Prefix map for `C-c q'"
+  :name "Query"
   "a"   #'org-ql-find-in-agenda
   "d"   #'org-ql-find-in-org-directory
   "s"   #'org-ql-search
@@ -85,6 +90,7 @@
 
 (defvar-keymap yx/ctrl-c-t-prefix-map
   :doc "Prefix map for toggle mirror mode or others"
+  :name "Toggle"
   "f" #'follow-mode
   "d" #'drag-stuff-mode
   "l" #'flymake-mode
@@ -106,6 +112,8 @@
            ("l"   . org-store-link)
            ("d"   . dirvish-side)
            ("C-d" . sr-speedbar-toggle)
+           ("s"   . scratch-buffer)
+           ("C-s" . yx/scratch-buffer)
            ("z"   . zoom)
            ("g"   . gptel)
            ("C-c" . gptel-send)
@@ -205,6 +213,7 @@
            ("C-c r"     . query-replace-regexp)
            ("C-c z"     . hs-toggle-hiding)
            ("C-c C-z"   . hs-show-all)
+           ("C-x !"     . delete-other-windows-vertically)
            ("C-x a a"   . align)
            ("C-x a r"   . align-regexp)
            ("C-x w t"   . tab-window-detach)

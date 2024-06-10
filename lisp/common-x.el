@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 04:02:44
-;; Modified: <2024-06-09 04:03:35 yangx>
+;; Modified: <2024-06-10 12:20:33 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -23,6 +23,8 @@
 (defconst IS-WIN     (memq system-type '(windows-nt cygwin)))
 (defconst IS-LINUX   (eq system-type 'gnu/linux))
 (defconst IS-WSL     (and IS-LINUX (getenv "WSL_DISTRO_NAME")))
+
+;;;; Utils
 
 (defmacro appendq! (sym &rest lists)
   "Append LISTS to SYM in place."
@@ -45,6 +47,8 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
   "Execute BODY with message output inhibited."
   `(let ((inhibit-message t))
      ,@body))
+
+;;;; Common Functions
 
 (defun yx/common-latest-file (path)
   "Get latest file (including directory) in PATH."
@@ -84,10 +88,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 Check if the `window-width' or `window-height' is less than
 `split-width-threshold' and `split-height-threshold',
 respectively."
-  (or (and (numberp split-width-threshold)
-           (< (window-total-width) split-width-threshold))
-      (and (numberp split-height-threshold)
-           (< (window-total-height) split-height-threshold))))
+  (and (and (numberp split-width-threshold)
+            (< (window-total-width) split-width-threshold))
+       (and (numberp split-height-threshold)
+            (< (window-total-height) split-height-threshold))))
 
 (defun yx/common-window-narrow-p ()
   "Return non-nil if window is narrow.

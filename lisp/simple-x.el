@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-01 19:19:56
-;; Modified: <2024-06-09 20:33:26 yangx>
+;; Modified: <2024-06-10 10:44:36 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -152,7 +152,7 @@ When the region is active, comment its lines instead."
     (beginning-of-line)))
 
 ;;;###autoload
-(defun yx/delete-file-and-buffer ()
+(defun yx/simple-delete-file-and-buffer ()
   "Kill the current buffer and deletes the file it is visiting."
   (interactive)
   (let ((filename (buffer-file-name)))
