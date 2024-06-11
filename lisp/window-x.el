@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-08 23:21:39
-;; Modified: <2024-06-11 02:16:37 yangx>
+;; Modified: <2024-06-11 21:26:42 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -54,7 +54,7 @@
   "Check if BUFFER is a shell or terminal.
 This is a predicate function for `buffer-match-p', intended for
 use in `display-buffer-alist'."
-  (when (string-match-p "\\*.*\\(e?shell\\|v?term\\).*" (buffer-name (get-buffer buffer)))
+  (when (string-match-p "\\*\\(e?shell\\|v?term\\).*" (buffer-name (get-buffer buffer)))
     (with-current-buffer buffer
       (and (not (derived-mode-p 'message-mode 'text-mode))
            (derived-mode-p 'eshell-mode 'shell-mode 'comint-mode 'fundamental-mode)))))

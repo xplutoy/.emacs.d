@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:53:38
-;; Modified: <2024-06-09 17:37:41 yangx>
+;; Modified: <2024-06-12 01:27:40 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -28,9 +28,10 @@
   (push '(undecorated-round . t) default-frame-alist)
   (push '(ns-transparent-titlebar . t) default-frame-alist))
  (IS-WIN
-  (setq file-name-coding-system 'gbk)
-  (set-selection-coding-system  'utf-16-le)
+  (set-clipboard-coding-system 'utf-16-le)
+  (set-selection-coding-system 'utf-16-le)
   (w32-set-system-coding-system 'utf-8)
+  (setq file-name-coding-system 'gbk-dos)
   (setq w32-apps-modifier    'hyper
         w32-lwindow-modifier 'super
         w32-pass-apps-to-system nil

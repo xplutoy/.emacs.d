@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:00:36
-;; Modified: <2024-06-11 16:49:13 yangx>
+;; Modified: <2024-06-11 21:13:02 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -64,7 +64,7 @@
            (preserve-size . (t . t)))
           ("\\*\\(Output\\|Register Preview\\).*"
            (display-buffer-reuse-mode-window display-buffer-at-bottom))
-          ("\\`\\(\\*Calendar\\|\\*Bookmark\\|\\*stardict\\*\\)"
+          ("\\*\\(Calendar\\|Bookmark\\|stardict\\)\\*"
            (display-buffer-reuse-mode-window display-buffer-below-selected)
            (dedicated . t)
            (window-height . fit-window-to-buffer))
@@ -80,7 +80,7 @@
                   (derived-mode . Buffer-menu-mode)
                   (derived-mode . log-view-mode)
                   "\\*\\(Occur\\|color-rg\\)\\*"
-                  "\\*\\(|Buffer List\\|vc-change-log\\|eldoc.*\\).*"
+                  "\\*\\(Buffer List\\|vc-change-log\\|eldoc\\).*"
                   yx/window-shell-or-term-p))
            (yx/window-display-buffer-below-or-pop)
            (mode . (occur-mode grep-mode color-rg-mode))
