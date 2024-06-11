@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:00:36
-;; Modified: <2024-06-10 12:57:53 yangx>
+;; Modified: <2024-06-11 16:49:13 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -14,10 +14,10 @@
 (use-package window
   :ensure nil
   :custom
-  (even-window-sizes t)
+  (even-window-sizes 'height-only)
   (window-sides-vertical nil)
   (split-width-threshold 120)
-  (split-height-threshold 50)
+  (split-height-threshold 80)
   (switch-to-buffer-obey-display-actions t)
   (switch-to-buffer-in-dedicated-window nil)
   (switch-to-buffer-preserve-window-point t)
@@ -58,7 +58,7 @@
           ("\\(\\*Capture\\*\\|CAPTURE-.*\\)"
            (display-buffer-reuse-mode-window display-buffer-below-selected))
           ("\\*\\vc-\\(incoming\\|outgoing\\|git : \\).*"
-           (display-buffer-reuse-mode-window display-buffer-below-selected)
+           (display-buffer-reuse-mode-window display-buffer-at-bottom)
            (window-height . 0.1)
            (dedicated . t)
            (preserve-size . (t . t)))
@@ -150,6 +150,7 @@
 
 (use-package sr-speedbar
   :ensure nil
+  :defer 5
   :custom
   (speedbar-use-images nil)
   (sr-speedbar-width 28)

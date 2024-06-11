@@ -1,4 +1,5 @@
 /etc/custom.el
 server
 var
+/site-lisp/*
 /lisp/lisp-autoloads.el

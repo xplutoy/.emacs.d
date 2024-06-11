@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:06:24
-;; Modified: <>
+;; Modified: <2024-06-11 16:43:46 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -58,10 +58,8 @@
   (dirvish-quick-access-entries
    '(("h" "~/"           "Home")
      ("d" "~/yxdocs/"    "yxdocs")
-     ("m" "/mnt/"        "Drives")
-     ("w" "~/workspace/" "workspace")
-     ("c" "~/Codes")
-     ("D" "~/Downloads/" "Downloads")))
+     ("c" "d:/Codes/"    "codes")
+     ("w" "~/workspace/" "workspace")))
   :config
   (setq dirvish-side-width 30
         dirvish-use-mode-line t

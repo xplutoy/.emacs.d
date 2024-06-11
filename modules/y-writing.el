@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:02:01
-;; Modified: <>
+;; Modified: <2024-06-11 16:51:29 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -112,6 +112,7 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
          (org-mode   . turn-on-org-cdlatex)))
 
 (use-package transform
+  :defer 5
   :ensure nil)
 
 (use-package edit-indirect)

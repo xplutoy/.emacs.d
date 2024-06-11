@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-08 23:21:39
-;; Modified: <2024-06-09 16:40:49 yangx>
+;; Modified: <2024-06-11 02:16:37 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -12,15 +12,6 @@
 
 ;;; Code:
 (require 'common-x)
-
-;;;###autoload
-(defun yx/window-delete-dwim ()
-  "Delete the current window or bury its buffer.
-If the current window is alone in its frame, bury the buffer
-instead."
-  (interactive)
-  (unless (ignore-errors (delete-window) t)
-    (bury-buffer)))
 
 ;;;###autoload
 (defmacro yx/window-with-other (&rest body)

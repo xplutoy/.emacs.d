@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 04:02:44
-;; Modified: <2024-06-10 12:20:33 yangx>
+;; Modified: <2024-06-11 00:56:03 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -88,10 +88,10 @@ If FETCHER is a function, ELT is used as the key in LIST (an alist)."
 Check if the `window-width' or `window-height' is less than
 `split-width-threshold' and `split-height-threshold',
 respectively."
-  (and (and (numberp split-width-threshold)
-            (< (window-total-width) split-width-threshold))
-       (and (numberp split-height-threshold)
-            (< (window-total-height) split-height-threshold))))
+  (or (and (numberp split-width-threshold)
+           (< (window-total-width) split-width-threshold))
+      (and (numberp split-height-threshold)
+           (< (window-total-height) split-height-threshold))))
 
 (defun yx/common-window-narrow-p ()
   "Return non-nil if window is narrow.

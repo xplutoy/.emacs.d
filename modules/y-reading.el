@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:04:53
-;; Modified: <2024-06-09 02:39:09 yangx>
+;; Modified: <2024-06-11 01:10:05 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -54,8 +54,6 @@
           ("https://www.ruanyifeng.com/blog/atom.xml" tech)
           ("https://wingolog.org/feed/atom" lang)
           ("https://www.juliabloggers.com/feed/" julia)
-          ;; ("https://planet.scheme.org/atom.xml" scheme)
-          ;; ("https://planet.haskell.org/rss20.xml" haskell)
           ("https://karthinks.com/index.xml" emacs)
           ("https://planet.emacslife.com/atom.xml" emacs)
           ("https://manateelazycat.github.io/feed.xml" emacs)))

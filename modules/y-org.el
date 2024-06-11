@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 13:24:59
-;; Modified: <2024-06-09 21:09:41 yangx>
+;; Modified: <2024-06-11 02:29:10 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -287,7 +287,10 @@
                                  ;; (scheme . t)
                                  ;; (jupyter . t)
                                  (emacs-lisp . t)))
+
+  (setopt org-crypt-key nil)            ; use symmetric encryption unconditionally
   (org-crypt-use-before-save-magic)
+
   (org-clock-persistence-insinuate)
   (org-clock-auto-clockout-insinuate)
   (run-at-time t 7200 'org-agenda-to-appt)

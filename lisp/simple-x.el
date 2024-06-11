@@ -3,12 +3,12 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-01 19:19:56
-;; Modified: <2024-06-10 10:44:36 yangx>
+;; Modified: <2024-06-11 00:00:14 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
 
-;; 公共函数，大部分借自 Protesilaos Stavrou.
+;; 大部分借自 Protesilaos Stavrou.
 
 ;;; Code:
 
@@ -117,9 +117,9 @@ satisfies `yx/common-window-small-p' or it has no previous
 buffers in its history."
   (interactive "P")
   (let ((kill-buffer-query-functions nil))
-    (if (or (and (not (one-window-p))
-                 (yx/common-window-small-p))
-            arg)
+    (if (or (and (yx/common-window-small-p)
+                 (null (window-prev-buffers)))
+            (and (not (one-window-p)) arg))
         (kill-buffer-and-window)
       (kill-buffer))))
 

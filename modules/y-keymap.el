@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:08:47
-;; Modified: <2024-06-10 12:48:48 yangx>
+;; Modified: <2024-06-11 16:46:24 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -95,8 +95,8 @@
   "d" #'drag-stuff-mode
   "l" #'flymake-mode
   "s" #'flyspell-mode
-  "L" #'clm/toggle-command-log-buffer
-  "F" #'toggle-frame-maximized)
+  "C-l" #'clm/toggle-command-log-buffer
+  "C-f" #'toggle-frame-maximized)
 
 (keymap-global-set "C-c t" yx/ctrl-c-t-prefix-map)
 
@@ -111,7 +111,7 @@
            ("c"   . org-capture)
            ("l"   . org-store-link)
            ("d"   . dirvish-side)
-           ("C-d" . sr-speedbar-toggle)
+           ("C-d" . dirvish-quick-access)
            ("s"   . scratch-buffer)
            ("C-s" . yx/scratch-buffer)
            ("z"   . zoom)
@@ -129,7 +129,6 @@
 (bind-keys ([remap move-beginning-of-line]        . yx/simple-begin-of-line-dwim) ; C-a
            ([remap goto-line]                     . consult-goto-line)           ;M-g g
            ([remap switch-to-buffer]              . consult-buffer)              ; C-x b
-           ([remap delete-window]                 . yx/window-delete-dwim)       ; C-x 0
            ([remap other-window]                  . yx/window-other-mru)         ; C-x o
            ([remap list-buffers]                  . ibuffer)                 ; C-x C-b
            ([dabbrev-expand]                      . hippie-expand)           ; M-/
@@ -146,7 +145,6 @@
            ([remap describe-variable]             . helpful-variable)           ; C-h v
            ([remap list-directory]                . dirvish)                    ; C-x C-d
            ([remap dired-at-point]                . consult-dir)                ; C-x d
-           ([remap comment-dwim]                  . yx/simple-comment-dwim)     ; M-;
            ([remap keyboard-quit]                 . yx/keyboard-quit-dwim)      ; C-g
            ([remap kill-buffer]                   . yx/simple-kill-buffer-current) ; C-x k
            ([remap save-buffers-kill-emacs]       . delete-frame)               ; s-q
@@ -213,6 +211,7 @@
            ("C-c r"     . query-replace-regexp)
            ("C-c z"     . hs-toggle-hiding)
            ("C-c C-z"   . hs-show-all)
+           ("C-c /"     . yx/simple-comment-dwim)
            ("C-x !"     . delete-other-windows-vertically)
            ("C-x a a"   . align)
            ("C-x a r"   . align-regexp)

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:59:41
-;; Modified: <2024-06-09 21:13:41 yangx>
+;; Modified: <2024-06-10 22:54:26 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,24 +11,11 @@
 ;;
 
 ;;; Code:
-(use-package diff-mode
-  :ensure nil
-  :hook (diff-mode . outline-minor-mode)
-  :custom
-  (diff-default-read-only t)
-  (diff-update-on-the-fly t)
-  (diff-advance-after-apply-hunk t))
-
-(use-package ediff
+(use-package gdb-mi
   :ensure nil
   :custom
-  (ediff-keep-variants nil)
-  (ediff-show-clashes-only t)
-  (ediff-floating-control-frame t)
-  (ediff-window-setup-function #'ediff-setup-windows-plain)
-  (ediff-split-window-function #'split-window-horizontally)
-  :config
-  (add-hook 'ediff-after-quit-hook-internal 'winner-undo))
+  (gdb-show-main t)
+  (gdb-many-windows t))
 
 (use-package gud
   :ensure nil
@@ -72,6 +59,25 @@
   (unless (executable-find "ctags")
     (setq symbols-outline-fetch-fn #'symbols-outline-lsp-fetch))
   (symbols-outline-follow-mode 1))
+
+(use-package diff-mode
+  :ensure nil
+  :hook (diff-mode . outline-minor-mode)
+  :custom
+  (diff-default-read-only t)
+  (diff-update-on-the-fly t)
+  (diff-advance-after-apply-hunk t))
+
+(use-package ediff
+  :ensure nil
+  :custom
+  (ediff-keep-variants nil)
+  (ediff-show-clashes-only t)
+  (ediff-floating-control-frame t)
+  (ediff-window-setup-function #'ediff-setup-windows-plain)
+  (ediff-split-window-function #'split-window-horizontally)
+  :config
+  (add-hook 'ediff-after-quit-hook-internal 'winner-undo))
 
 (use-package flymake
   :ensure nil

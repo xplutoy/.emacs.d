@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:32:39
-;; Modified: <2024-06-09 11:23:46 yangx>
+;; Modified: <2024-06-11 08:55:30 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -218,8 +218,9 @@
   (help-window-keep-selected t)
   (help-enable-variable-value-editing t)
   :config
-  (add-hook 'help-fns-describe-function-functions
-            #'shortdoc-help-fns-examples-function))
+  ;; (add-hook 'help-fns-describe-function-functions
+  ;; #'shortdoc-help-fns-examples-function))
+  )
 
 (use-package flyspell
   :ensure nil

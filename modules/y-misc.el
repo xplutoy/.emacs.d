@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:57:14
-;; Modified: <2024-06-09 20:42:54 yangx>
+;; Modified: <2024-06-11 16:51:04 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -115,6 +115,7 @@
 
 (use-package stardict
   :ensure nil
+  :defer 5
   :init
   (setq stardict-name "langdao-ec-gb"
         stardict-dir (nol-expand-etc "stardict-langdao-ec-gb-2.4.2")))
