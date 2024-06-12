@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-08 23:50:10
-;; Modified: <2024-06-09 21:08:33 yangx>
+;; Modified: <2024-06-12 12:16:55 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -97,7 +97,7 @@ This function makes sure that dates are aligned for easy reading."
     (insert org-link-format)))
 
 ;;;###autoload
-(defun yx/org-toggle-inline-images-in-subtree (&optional beg end refresh)
+(defun yx/org-toggle-inline-images-in-subtree (&optional refresh beg end)
   "Refresh inline image previews in the current heading/tree."
   (interactive)
   (let* ((beg (or beg
@@ -110,12 +110,12 @@ This function makes sure that dates are aligned for easy reading."
                     (save-excursion (org-end-of-subtree) (point)))))
          (overlays (cl-remove-if-not (lambda (ov) (overlay-get ov 'org-image-overlay))
                                      (ignore-errors (overlays-in beg end)))))
-    (dolist (ov overlays nil)
-      (delete-overlay ov)
-      (setq org-inline-image-overlays (delete ov org-inline-image-overlays)))
-    (when (or refresh (not overlays))
-      (org-display-inline-images t t beg end)
-      t)))
+    (if (or refresh (not overlays))
+        (org-display-inline-images t t beg end)
+      (dolist (ov overlays nil)
+        (delete-overlay ov)
+        (setq org-inline-image-overlays (delete ov org-inline-image-overlays)))
+      )))
 
 ;;;###autoload
 (defun yx/org-fix-blank-lines (&optional prefix)

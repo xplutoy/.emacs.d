@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-09 03:37:21
-;; Modified: <2024-06-11 02:44:54 yangx>
+;; Modified: <2024-06-12 09:15:42 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -14,7 +14,7 @@
 (require 'package)
 (require 'use-package)
 
-;; (setq debug-on-error t)
+(setq debug-on-error t)
 
 (setq package-quickstart nil
       package-native-compile t
@@ -71,6 +71,8 @@
 (require 'y-shell)
 (require 'y-web)
 (require 'y-mail)
+
+(setq debug-on-error nil)
 
 (load custom-file t)
 ;;; init.el ends here

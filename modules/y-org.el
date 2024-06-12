@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 13:24:59
-;; Modified: <2024-06-11 02:29:10 yangx>
+;; Modified: <2024-06-12 12:41:01 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -21,19 +21,19 @@
               ("M-l i"   . org-clock-in)
               ("M-l o"   . org-clock-out)
               ("M-l h"   . org-toggle-heading)
-              ("M-l r"   . denote-refs-mode)
+              ("M-l M-r" . denote-refs-mode)
               ("M-l y"   . yx/org-link-copy)
               ("M-l p"   . org-download-clipboard)
               ("M-l C-p" . org-download-screenshot)
-              ("M-l q f" . org-ql-find)
-              ("M-l q r" . org-ql-refile)
+              ("M-l f"   . org-ql-find)
+              ("M-l r"   . org-ql-refile)
               ("M-l t"   . org-transclusion-add)
               ("M-l C-t" . org-transclusion-add-all)
               ("M-l M-t" . org-transclusion-remove)
               ("M-l TAB" . yx/org-show-current-heading-tidily)
               ("M-l l"   . yx/org-insert-fixed-link)
-              ("M-l C-l" . org-latex-preview)
-              ("M-l C-v" . yx/org-toggle-inline-images-in-subtree)
+              ("M-l M-l" . org-latex-preview)
+              ("M-l M-v" . yx/org-toggle-inline-images-in-subtree)
               :repeat-map org-heading-navigate-repeat-map
               ("u" . outline-up-heading)
               ("p" . org-previous-visible-heading)
@@ -303,7 +303,8 @@
 
   (add-hook 'org-ctrl-c-ctrl-c-hook 'yx/org-check-latex-fragment)
   (add-hook 'org-cycle-hook (lambda (state)
-                              (yx/org-toggle-inline-images-in-subtree))))
+                              (when (eq state 'subtree)
+                                (yx/org-toggle-inline-images-in-subtree t)))))
 
 (use-package ox-latex
   :ensure nil
