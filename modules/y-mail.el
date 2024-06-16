@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:50:36
-;; Modified: <2024-06-07 15:13:06 yangx>
+;; Modified: <2024-06-16 18:51:41 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -59,13 +59,7 @@
         nnmail-resplit-incoming t
         nnmail-split-fancy-match-partial-words t
         nnmail-split-methods 'nnmail-split-fancy
-        nnmail-split-fancy '(| (: nnmail-split-fancy-with-parent)
-                               (to  "yangxue.cs@foxmail.com" "INBOX.foxmail.cs")
-                               (to  "yangxue.cs@outlook.com" "INBOX.outlook.cs")
-                               (any "emacs-devel@gnu.org"    "INBOX.emacs-devel")
-                               (any "emacs-orgmode@gnu.org"  "INBOX.emacs-orgmode")
-                               (any "help-gnu-emacs@gnu.org" "INBOX.emacs-help")
-                               "INBOX.Misc"))
+        nnmail-split-fancy '(| (: nnmail-split-fancy-with-parent)))
 
   (setq nnrss-ignore-article-fields '(description guid pubData dc:creator link))
 

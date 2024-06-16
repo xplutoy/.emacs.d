@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:04:53
-;; Modified: <2024-06-11 01:10:05 yangx>
+;; Modified: <2024-06-13 23:12:52 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -48,6 +48,7 @@
           ("https://www.inference.vc/rss" ai)
           ("https://liduos.com/atom.xml" ai)
           ("https://lilianweng.github.io/index.xml" ai)
+          ("https://www.luxiangdong.com/rss2.xml" ai)
           ("https://tech.youzan.com/rss/" tech)
           ("https://tech.meituan.com/feed/" tech)
           ("https://ameow.xyz/feed/categories/weekly.xml" tech)

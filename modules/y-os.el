@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:53:38
-;; Modified: <2024-06-12 10:38:56 yangx>
+;; Modified: <2024-06-12 22:55:36 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,13 +11,12 @@
 ;;
 
 ;;; Code:
-(prefer-coding-system 'utf-8)
 (set-charset-priority 'unicode)
-(setq locale-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-selection-coding-system 'utf-8)
 
-(unless IS-WIN
-  (set-default-coding-systems 'utf-8)
-  (set-selection-coding-system 'utf-8))
+(setq locale-coding-system 'utf-8)
 
 (cond
  (IS-MAC
@@ -31,8 +30,9 @@
   (push '(undecorated-round . t) default-frame-alist)
   (push '(ns-transparent-titlebar . t) default-frame-alist))
  (IS-WIN
-  (set-clipboard-coding-system 'utf-16-le)
-  (set-selection-coding-system 'utf-16-le)
+  (set-clipboard-coding-system  'utf-16-le)
+  (set-selection-coding-system  'utf-16-le)
+  (w32-set-system-coding-system 'utf-8)
   (add-to-list 'process-coding-system-alist '("rg" utf-8 . gbk))
   (add-to-list 'process-coding-system-alist '("cmdproxy" utf-8 . gbk))
   (setq file-name-coding-system 'gbk-dos)

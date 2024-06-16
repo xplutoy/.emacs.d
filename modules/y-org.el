@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 13:24:59
-;; Modified: <2024-06-12 12:41:01 yangx>
+;; Modified: <2024-06-12 16:04:30 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,6 +16,7 @@
   :ensure nil
   :defer 5
   :bind (:map org-mode-map
+              ([remap org-return] . yx/org-return-dwim)
               ("s-/"     . transform-previous-char)
               ("M-g h"   . consult-org-heading)
               ("M-l i"   . org-clock-in)
@@ -24,7 +25,7 @@
               ("M-l M-r" . denote-refs-mode)
               ("M-l y"   . yx/org-link-copy)
               ("M-l p"   . org-download-clipboard)
-              ("M-l C-p" . org-download-screenshot)
+              ("M-l M-p" . org-download-screenshot)
               ("M-l f"   . org-ql-find)
               ("M-l r"   . org-ql-refile)
               ("M-l t"   . org-transclusion-add)

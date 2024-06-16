@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:32:39
-;; Modified: <2024-06-11 08:55:30 yangx>
+;; Modified: <2024-06-15 13:16:18 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -443,7 +443,7 @@
   :autoload (auth-source-search)
   :custom
   (auth-source-debug t)
-  (auth-source-cache-expiry 300)
+  (auth-source-cache-expiry 7200)
   :config
   (add-to-list 'auth-sources
                (nol-expand-etc "authinfo.gpg")))
