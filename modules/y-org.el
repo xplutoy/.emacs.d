@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 13:24:59
-;; Modified: <2024-06-12 16:04:30 yangx>
+;; Modified: <2024-06-18 17:07:58 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -271,7 +271,7 @@
   (cond
    (IS-MAC (plist-put org-format-latex-options :scale 1.2))
    (IS-LINUX (plist-put org-format-latex-options :scale 0.8))
-   (t (plist-put org-format-latex-options :scale 1.0)))
+   (t (plist-put org-format-latex-options :scale 1.5)))
   (plist-put org-format-latex-options :background "Transparent")
 
   (org-babel-do-load-languages 'org-babel-load-languages

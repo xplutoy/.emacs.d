@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:57:14
-;; Modified: <2024-06-11 16:51:04 yangx>
+;; Modified: <2024-06-19 14:56:03 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -80,11 +80,15 @@
   :custom
   (command-log-mode-key-binding-open-log nil))
 
-(use-package casual
+(use-package casual-calc
   :after calc
-  :demand t
-  :config
-  (keymap-set calc-mode-map "M-m" #'casual-main-menu))
+  :bind (:map calc-mode-map
+              ("C-o" . casual-calc-tmenu)))
+
+(use-package casual-isearch
+  :after isearch
+  :bind (:map isearch-mode-map
+              ("C-o" . casual-isearch-tmenu)))
 
 (use-package jinx
   :bind (("M-$" . jinx-correct)

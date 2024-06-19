@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:17:53
-;; Modified: <2024-06-09 15:38:26 yangx>
+;; Modified: <2024-06-19 23:52:59 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -25,8 +25,7 @@
         (set-face-attribute 'fixed-pitch nil :family yx/f-font)
         (set-face-attribute 'fixed-pitch-serif nil :family yx/s-font)
         (set-face-attribute 'variable-pitch nil :family yx/v-font)
-        (setq face-font-rescale-alist '(("LXGW WenKai Mono"  . 1.0)
-                                        ("Apple Color Emoji" . 0.8)))
+        (setq face-font-rescale-alist '(("LXGW WenKai Mono"  . 1.0)))
         (cl-loop for font in '("LXGW WenKai Mono" "Microsoft Yahei" "PingFang SC")
                  when (x-list-fonts font)
                  return (set-fontset-font t '(#x4e00 . #x9fff) font))
@@ -94,7 +93,7 @@
 (use-package spacious-padding
   :hook (after-init . spacious-padding-mode)
   :custom
-  (spacious-padding-subtle-mode-line nil)
+  (spacious-padding-subtle-mode-line t)
   (spacious-padding-widths '( :internal-border-width 4
                               :header-line-width 2
                               :mode-line-width 2

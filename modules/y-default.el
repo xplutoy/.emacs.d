@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:32:39
-;; Modified: <2024-06-15 13:16:18 yangx>
+;; Modified: <2024-06-20 00:12:36 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -378,6 +378,16 @@
   (file-name-shadow-mode +1)
   (minibuffer-depth-indicate-mode +1)
   (minibuffer-electric-default-mode +1))
+
+(use-package completion-preview
+  :when (>= emacs-major-version 30)
+  :ensure nil
+  :hook ((prog-mode text-mode comint-mode) . completion-preview-mode)
+  :config
+  (setopt completion-preview-minimum-symbol-length 2)
+  (keymap-set completion-preview-active-mode-map "M-n" #'completion-preview-next-candidate)
+  (keymap-set completion-preview-active-mode-map "M-p" #'completion-preview-prev-candidate)
+  (keymap-set completion-preview-active-mode-map "M-i" #'completion-preview-insert))
 
 (use-package abbrev
   :ensure nil

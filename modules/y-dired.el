@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:06:24
-;; Modified: <2024-06-11 16:43:46 yangx>
+;; Modified: <2024-06-19 14:56:53 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -50,8 +50,7 @@
 
 (use-package casual-dired
   :after dired
-  :bind (:map dired-mode-map ("M-m" . casual-dired-tmenu)))
-
+  :bind (:map dired-mode-map ("C-o" . casual-dired-tmenu)))
 (use-package dirvish
   :hook (after-init . dirvish-override-dired-mode)
   :custom

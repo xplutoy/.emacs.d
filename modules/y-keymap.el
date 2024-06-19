@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:08:47
-;; Modified: <2024-06-11 16:46:24 yangx>
+;; Modified: <2024-06-19 14:48:57 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -122,7 +122,7 @@
 
 (bind-keys :map global-map
            :prefix-map yx/ctrl-m-prefix-map
-           :prefix "<f9>"
+           :prefix "<f1>"
            ("a"   . casual-avy-tmenu)
            ("e"   . yx/transient-emms))
 
