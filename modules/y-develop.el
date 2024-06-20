@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:59:41
-;; Modified: <2024-06-20 00:24:44 yangx>
+;; Modified: <2024-06-20 19:04:15 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -358,6 +358,16 @@
   (with-eval-after-load 'dired
     (require 'citre-lang-fileref)))
 
+(use-package pyvenv
+  :config
+  (with-eval-after-load 'python
+    (pyvenv-mode +1))
+  (add-to-list 'pyvenv-post-activate-hooks
+               (lambda () (setq python-shell-interpreter
+                                (executable-find "python"))))
+  (add-to-list 'pyvenv-post-deactivate-hooks
+               (lambda () (setq python-shell-interpreter "python"))))
+
 (use-package inheritenv
   :demand t
   :config
@@ -367,6 +377,7 @@
   (inheritenv-add-advice #'shell-command-to-string))
 
 (use-package buffer-env
+  :unless IS-WIN
   :init
   (add-hook 'comint-mode-hook #'buffer-env-update)
   (add-hook 'hack-local-variables-hook #'buffer-env-update)
@@ -418,8 +429,6 @@
         python-indent-block-paren-deeper t
         python-indent-guess-indent-offset t
         python-indent-guess-indent-offset-verbose nil
-        python-shell-interpreter "jupyter"
-        python-shell-interpreter-args "console --simple-prompt"
         python-shell-completion-native-disabled-interpreters '("ipython" "jupyter"))
   (defun yx/python-mode-setup ()
     (setq-local tab-width 4

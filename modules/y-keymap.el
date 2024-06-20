@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:08:47
-;; Modified: <2024-06-20 11:16:01 yangx>
+;; Modified: <2024-06-20 15:58:28 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -65,6 +65,8 @@
   "n"   #'denote-open-or-create
   "i"   #'denote-link-or-create
   "m"   #'denote-menu-list-notes
+  "g"   #'consult-denote-grep
+  "f"   #'consult-denote-find
   "C-l" #'denote-backlinks
   "C-f" #'denote-find-link
   "C-b" #'denote-find-backlink
@@ -151,6 +153,7 @@
            ([remap save-buffers-kill-emacs]       . delete-frame)               ; s-q
            ([remap open-line]                     . yx/simple-new-line-below)   ; C-o
            ([remap fill-paragraph]                . yx/simple-fill-dwim)        ; M-q
+           ([remap comment-dwim]                  . yx/simple-comment-dwim)     ; M-;
            ([remap upcase-word]                   . upcase-dwim)                ; M-u
            ([remap downcase-word]                 . downcase-dwim)              ; M-l
            ([remap capitalize-word]               . capitalize-dwim)            ; M-c
@@ -212,7 +215,6 @@
            ("C-c r"     . query-replace-regexp)
            ("C-c z"     . hs-toggle-hiding)
            ("C-c C-z"   . hs-show-all)
-           ("C-c /"     . yx/simple-comment-dwim)
            ("C-x !"     . delete-other-windows-vertically)
            ("C-x a a"   . align)
            ("C-x a r"   . align-regexp)
@@ -233,6 +235,9 @@
            ("M-c p"   . citre-peek)
            ("M-c M-s" . symbols-outline-show)
            ("M-c M-e" . consult-compile-error))
+
+(set-register ?S '(buffer . "*scratch*"))
+(set-register ?I `(file . ,(expand-file-name "init.el" user-emacs-directory)))
 
 (provide 'y-keymap)
 ;;; y-keymap.el ends here

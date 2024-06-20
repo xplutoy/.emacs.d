@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:17:53
-;; Modified: <2024-06-19 23:52:59 yangx>
+;; Modified: <2024-06-20 14:02:51 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -46,9 +46,11 @@
   :ensure nil
   :custom
   (modus-themes-mixed-fonts t)
+  (modus-themes-fringes 'subtle)
+  (modus-themes-subtle-line-numbers t)
   (modus-themes-org-blocks 'tinted-background)
-  (modus-themes-italic-constructs t)
   (modus-themes-bold-constructs t)
+  (modus-themes-italic-constructs t)
   (modus-themes-variable-pitch-ui t))
 
 (use-package ef-themes

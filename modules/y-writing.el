@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:02:01
-;; Modified: <2024-06-11 16:51:29 yangx>
+;; Modified: <2024-06-20 14:25:10 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -120,9 +120,12 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
   :ensure t
   :mode (("README\\.md\\'" . gfm-mode))
   :init
-  (setq markdown-command "pandoc"
+  (setq markdown-command (cond
+                          (IS-WIN "markdown-py")
+                          (t "pandoc"))
         markdown-enable-math t
-        markdown-header-scaling t))
+        markdown-header-scaling t
+        markdown-fontify-code-blocks-natively t))
 
 (provide 'y-writing)
 ;;; y-writing.el ends here
