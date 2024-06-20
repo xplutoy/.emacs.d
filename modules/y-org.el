@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 13:24:59
-;; Modified: <2024-06-18 17:07:58 yangx>
+;; Modified: <2024-06-20 11:20:07 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -168,8 +168,9 @@
 
   (org-capture-bookmark nil)
   (org-capture-templates
-   '(("t" "个人事务" entry (file+headline org-default-notes-file "个人事务") "* TODO [#B] %?" :prepend t)
-     ("w" "工作任务" entry (file+headline org-default-notes-file "工作任务") "* TODO [#B] %?" :prepend t)
+   '(("d" "工作完成" entry (file+olp+datetree "work.org" "工作完成") "* %?")
+     ("w" "工作待办" entry (file+headline "work.org" "工作待办") "* TODO %?" :prepend t)
+     ("t" "个人事务" entry (file+headline org-default-notes-file "个人事务") "* TODO [#B] %?" :prepend t)
      ("s" "未来想做" entry (file+headline org-default-notes-file "未来想做") "* SOMEDAY %?"   :prepend t)
      ("h" "习惯养成" entry (file+headline org-default-notes-file "习惯养成") "* NEXT %?"      :prepend t)))
 
@@ -183,7 +184,7 @@
   (org-habit-show-all-today nil)
 
   (org-agenda-span 'day)
-  (org-agenda-files `(,org-default-notes-file))
+  (org-agenda-files (nol-expand-etc "agenda.txt"))
   (org-agenda-inhibit-startup t)
   (org-agenda-sticky nil)
   (org-agenda-compact-blocks t)
@@ -245,6 +246,7 @@
   (org-attach-sync-delete-empty-dir t)
 
   (org-export-with-broken-links t)
+  (org-export-with-smart-quotes t)
   (org-export-with-section-numbers nil)
   (org-export-with-sub-superscripts '{})
 

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:59:41
-;; Modified: <2024-06-10 22:54:26 yangx>
+;; Modified: <2024-06-20 00:24:44 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -334,6 +334,10 @@
                        #'tempel-expand
                        #'cape-file))))
   (add-hook 'eglot-managed-mode-hook #'yx/eglot-capf)
+  (defun yx/eglot-maybe-format-buffer ()
+    (when (bound-and-true-p eglot-managed-p)
+      (eglot-format-buffer)))
+  (add-hook 'after-save-hook #'yx/eglot-maybe-format-buffer)
   (use-package consult-eglot :demand t)
   :bind (:map eglot-mode-map
               ("M-c r"   . eglot-rename)

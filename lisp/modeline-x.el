@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-09 11:46:38
-;; Modified: <2024-06-09 17:19:25 yangx>
+;; Modified: <2024-06-20 11:11:56 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -81,6 +81,16 @@ package).")
      :background "#a0a0a0" :foreground "black")
     (t :inverse-video t))
   "Face for modeline indicatovrs with a background."
+  :group 'modeline-x-faces)
+
+(defface yx-modeline-indicator-cyan-bg
+  '((default :inherit (bold prot-modeline-indicator-button))
+    (((class color) (min-colors 88) (background light))
+     :background "#006080" :foreground "white")
+    (((class color) (min-colors 88) (background dark))
+     :background "#40c0e0" :foreground "black")
+    (t :background "cyan" :foreground "black"))
+  "Face for modeline indicators with a background."
   :group 'modeline-x-faces)
 
 ;;;; Buffer status
@@ -162,7 +172,7 @@ Specific to the current window's mode line.")
       (when (and (mode-line-window-selected-p)
                  (buffer-narrowed-p)
                  (not (derived-mode-p 'Info-mode 'help-mode 'special-mode 'message-mode)))
-        (propertize " Narrow " 'face 'prot-modeline-indicator-cyan-bg)))
+        (propertize " Narrow " 'face 'yx-modeline-indicator-cyan-bg)))
   "Mode line construct to report the multilingual environment.")
 
 ;;;; Input method

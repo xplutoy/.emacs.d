@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:08:47
-;; Modified: <2024-06-19 14:48:57 yangx>
+;; Modified: <2024-06-20 11:16:01 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -91,10 +91,11 @@
 (defvar-keymap yx/ctrl-c-t-prefix-map
   :doc "Prefix map for toggle mirror mode or others"
   :name "Toggle"
-  "f" #'follow-mode
-  "d" #'drag-stuff-mode
-  "l" #'flymake-mode
-  "s" #'flyspell-mode
+  "f"   #'follow-mode
+  "d"   #'drag-stuff-mode
+  "l"   #'flymake-mode
+  "s"   #'flyspell-mode
+  "e"   #'toggle-debug-on-error
   "C-l" #'clm/toggle-command-log-buffer
   "C-f" #'toggle-frame-maximized)
 
