@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:59:41
-;; Modified: <2024-06-21 09:11:53 yangx>
+;; Modified: <2024-06-21 14:06:10 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -304,6 +304,7 @@
   :ensure nil
   :defer 2
   :custom
+  (color-rg-recenter-match-line t)
   (color-rg-search-no-ignore-file nil)
   (color-rg-mac-load-path-from-shell nil)
   :init

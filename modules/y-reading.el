@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:04:53
-;; Modified: <2024-06-21 09:42:13 yangx>
+;; Modified: <2024-06-21 11:46:57 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -62,7 +62,7 @@
   (setq elfeed-search-print-entry-function #'x-elfeed-search-print-entry)
   :hook (elfeed-show . olivetti-mode)
   :config
-  (require 'elfeed-x)
+  (require 'x-elfeed)
   (run-at-time nil (* 4 60 60) 'elfeed-update)
   (keymap-set elfeed-show-mode-map "w" #'elfeed-show-yank)
   (keymap-set elfeed-show-mode-map "%" #'x-elfeed-show-in-xwidget)

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:32:39
-;; Modified: <2024-06-21 10:46:00 yangx>
+;; Modified: <2024-06-21 14:06:34 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -82,7 +82,7 @@
   (idle-update-delay 1.0)
   (shell-command-prompt-show-cwd t)
   (async-shell-command-display-buffer nil)
-  (kill-whole-line nil)
+  (kill-whole-line t)
   (track-eol t)
   (line-move-visual nil)
   (indent-tabs-mode nil)
@@ -97,7 +97,7 @@
   :ensure nil
   :custom
   (enable-local-variables :all)
-  (view-read-only t)
+  (view-read-only nil)
   (backup-by-copying t)
   (version-control t)
   (delete-old-versions t)
