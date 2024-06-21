@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:04:53
-;; Modified: <2024-06-13 23:12:52 yangx>
+;; Modified: <2024-06-21 09:42:13 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -59,17 +59,16 @@
           ("https://planet.emacslife.com/atom.xml" emacs)
           ("https://manateelazycat.github.io/feed.xml" emacs)))
   (setq elfeed-search-filter "@3-months-ago +unread")
-  (setq elfeed-search-print-entry-function #'yx/elfeed-search-print-entry)
+  (setq elfeed-search-print-entry-function #'x-elfeed-search-print-entry)
   :hook (elfeed-show . olivetti-mode)
   :config
   (require 'elfeed-x)
   (run-at-time nil (* 4 60 60) 'elfeed-update)
   (keymap-set elfeed-show-mode-map "w" #'elfeed-show-yank)
-  (keymap-set elfeed-show-mode-map "%" #'yx/elfeed-show-in-xwidget)
-  (keymap-set elfeed-show-mode-map "q" #'yx/elfeed-kill-entry)
-  (keymap-set elfeed-search-mode-map "m" (yx/elfeed-tag-as 'star))
-  (keymap-set elfeed-search-mode-map "l" (yx/elfeed-tag-as 'readlater)))
-
+  (keymap-set elfeed-show-mode-map "%" #'x-elfeed-show-in-xwidget)
+  (keymap-set elfeed-show-mode-map "q" #'x-elfeed-kill-entry)
+  (keymap-set elfeed-search-mode-map "m" (x-elfeed-tag-as 'star))
+  (keymap-set elfeed-search-mode-map "l" (x-elfeed-tag-as 'readlater)))
 (use-package outli
   ;; :vc (:url "https://github.com/jdtsmith/outli")
   :ensure nil

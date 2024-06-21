@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:00:36
-;; Modified: <2024-06-11 21:13:02 yangx>
+;; Modified: <2024-06-21 10:29:15 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -81,8 +81,8 @@
                   (derived-mode . log-view-mode)
                   "\\*\\(Occur\\|color-rg\\)\\*"
                   "\\*\\(Buffer List\\|vc-change-log\\|eldoc\\).*"
-                  yx/window-shell-or-term-p))
-           (yx/window-display-buffer-below-or-pop)
+                  x-window-shell-or-term-p))
+           (x-window-display-buffer-below-or-pop)
            (mode . (occur-mode grep-mode color-rg-mode))
            (window-height . 0.45))
           ;; full-frame
@@ -121,8 +121,8 @@
   (tab-line-tab-name-function #'tab-line-tab-name-truncated-buffer)
   (tab-line-tab-name-truncated-max 25)
   (tab-line-tabs-function #'tab-line-tabs-buffer-groups)
-  (tab-line-tabs-buffer-group-function #'yx/tab-line-buffer-group)
-  (tab-line-tabs-buffer-list-function #'yx/tab-line-tabs-buffer-list)
+  (tab-line-tabs-buffer-group-function #'x-tab-line-buffer-group)
+  (tab-line-tabs-buffer-list-function #'x-tab-line-tabs-buffer-list)
   (tab-line-exclude-modes '(completion-list-mode
                             special-mode
                             lisp-interaction-mode

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:51:58
-;; Modified: <2024-06-10 11:01:18 yangx>
+;; Modified: <2024-06-21 09:09:24 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -54,7 +54,7 @@
          ("C-c C-c" . embark-collect)
          ("C-SPC" . (lambda () (interactive) (embark-select) (vertico-next)))
          :map  embark-general-map
-         ("h" . yx/consult-outline-insert-heading))
+         ("h" . x-consult-outline-insert-heading))
   :custom
   (embark-help-key "?")
   (embark-cycle-key ".")

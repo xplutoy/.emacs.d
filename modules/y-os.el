@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:53:38
-;; Modified: <2024-06-20 16:55:45 yangx>
+;; Modified: <2024-06-21 11:30:28 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -12,8 +12,7 @@
 
 ;;; Code:
 
-(unless IS-WIN
-  (set-language-environment "UTF-8"))
+(set-language-environment "UTF-8")
 
 (cond (IS-MAC
        (setq ns-pop-up-frames nil

@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-01 19:19:56
-;; Modified: <2024-06-11 00:00:14 yangx>
+;; Modified: <2024-06-21 10:52:20 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -14,25 +14,25 @@
 
 (eval-when-compile
   (require 'cl-lib))
-(require 'common-x)
+(require 'x-common)
 (require 'skeleton)
 
-(defgroup simple-x ()
+(defgroup x-simple ()
   "Generic utilities."
   :group 'editing)
 
-(defcustom yx-simple-date-specifier "%F"
+(defcustom x-simple-date-specifier "%F"
   "Date specifier for `format-time-string'."
   :type 'string
-  :group 'simple-x)
+  :group 'x-simple)
 
-(defcustom yx-simple-time-specifier "%R"
+(defcustom x-simple-time-specifier "%R"
   "Time specifier for `format-time-string'."
   :type 'string
-  :group 'simple-x)
+  :group 'x-simple)
 
 ;;;###autoload
-(defun yx/simple-new-line-below (n)
+(defun x-simple-new-line-below (n)
   "Create N empty lines below the current one.
 When called interactively without a prefix numeric argument, N is
 1."
@@ -41,7 +41,7 @@ When called interactively without a prefix numeric argument, N is
   (dotimes (_ n) (insert "\n")))
 
 ;;;###autoload
-(defun yx/simple-new-line-above (n)
+(defun x-simple-new-line-above (n)
   "Create N empty lines above the current one.
 When called interactively without a prefix numeric argument, N is
 1."
@@ -55,16 +55,16 @@ When called interactively without a prefix numeric argument, N is
           (dotimes (_ n) (insert "\n"))
           (forward-line (- n)))
       (forward-line (- n))
-      (yx/simple-new-line-below n))))
+      (x-simple-new-line-below n))))
 
 ;;;###autoload
-(defun yx/simple-copy-line ()
+(defun x-simple-copy-line ()
   "Copy the current line to the `kill-ring'."
   (interactive)
   (copy-region-as-kill (line-beginning-position) (line-end-position)))
 
 ;;;###autoload
-(defun yx/simple-replace-line-or-region ()
+(defun x-simple-replace-line-or-region ()
   "Replace line or region with latest kill.
 This command can then be followed by the standard
 `yank-pop' (default is bound to \\[yank-pop])."
@@ -75,31 +75,31 @@ This command can then be followed by the standard
   (yank))
 
 ;;;###autoload
-(defun yx/simple-insert-date (&optional arg)
-  "Insert the current date as `yx-simple-date-specifier'.
+(defun x-simple-insert-date (&optional arg)
+  "Insert the current date as `x-simple-date-specifier'.
 
 With optional prefix ARG (\\[universal-argument]) also append the
-current time understood as `yx-simple-time-specifier'.
+current time understood as `x-simple-time-specifier'.
 
 When region is active, delete the highlighted text and replace it
 with the specified date."
   (interactive "P")
-  (let* ((date yx-simple-date-specifier)
-         (time yx-simple-time-specifier)
+  (let* ((date x-simple-date-specifier)
+         (time x-simple-time-specifier)
          (format (if arg (format "%s %s" date time) date)))
     (when (use-region-p)
       (delete-region (region-beginning) (region-end)))
     (insert (format-time-string format))))
 
 ;;;###autoload
-(defun yx/simple-copy-current-buffer-name ()
+(defun x-simple-copy-current-buffer-name ()
   "Add the current buffer's name to the `kill-ring'."
   (declare (interactive-only t))
   (interactive)
   (kill-new (buffer-name (current-buffer))))
 
 ;;;###autoload
-(defun yx/simple-copy-current-buffer-file ()
+(defun x-simple-copy-current-buffer-file ()
   "Add the current buffer's file path to the `kill-ring'."
   (declare (interactive-only t))
   (interactive)
@@ -109,22 +109,22 @@ with the specified date."
                 (buffer-name (current-buffer)))))
 
 ;;;###autoload
-(defun yx/simple-kill-buffer-current (&optional arg)
+(defun x-simple-kill-buffer-current (&optional arg)
   "Kill current buffer.
 With optional prefix ARG (\\[universal-argument]) delete the
 buffer's window as well.  Kill the window regardless of ARG if it
-satisfies `yx/common-window-small-p' or it has no previous
+satisfies `x-common-window-small-p' or it has no previous
 buffers in its history."
   (interactive "P")
   (let ((kill-buffer-query-functions nil))
-    (if (or (and (yx/common-window-small-p)
+    (if (or (and (x-common-window-small-p)
                  (null (window-prev-buffers)))
             (and (not (one-window-p)) arg))
         (kill-buffer-and-window)
       (kill-buffer))))
 
 ;;;###autoload
-(defun yx/simple-comment-dwim (n)
+(defun x-simple-comment-dwim (n)
   "Comment N lines, defaulting to the current one.
 When the region is active, comment its lines instead."
   (interactive "p")
@@ -133,18 +133,18 @@ When the region is active, comment its lines instead."
     (comment-line n)))
 
 ;;;###autoload
-(defun yx/simple-fill-dwim ()
+(defun x-simple-fill-dwim ()
   "Like `fill-paragraph', but unfill if used twice."
   (interactive)
   (let ((fill-column
-         (if (eq last-command #'yx/simple-fill-dwim)
+         (if (eq last-command #'x-simple-fill-dwim)
              (progn (setq this-command nil)
                     (point-max))
            fill-column)))
     (call-interactively #'fill-paragraph)))
 
 ;;;###autoload
-(defun yx/simple-begin-of-line-dwim ()
+(defun x-simple-begin-of-line-dwim ()
   "move to beginning of line, or indentation"
   (interactive)
   (if (bolp)
@@ -152,7 +152,7 @@ When the region is active, comment its lines instead."
     (beginning-of-line)))
 
 ;;;###autoload
-(defun yx/simple-delete-file-and-buffer ()
+(defun x-simple-delete-file-and-buffer ()
   "Kill the current buffer and deletes the file it is visiting."
   (interactive)
   (let ((filename (buffer-file-name)))
@@ -190,7 +190,7 @@ The DWIM behaviour of this command is as follows:
          (keyboard-quit))))
 
 ;;;###autoload
-(defun yx/simple-selective-display (&optional level)
+(defun x-simple-selective-display (&optional level)
   "Fold text indented same of more than the cursor.
 
 This function toggles folding according to the level of
@@ -202,5 +202,5 @@ number nor move point to the desired column.
       (set-selective-display 0)
     (set-selective-display (or level (1+ (current-column))))))
 
-(provide 'simple-x)
-;;; simple-x.el ends here
+(provide 'x-simple)
+;;; x-simple.el ends here

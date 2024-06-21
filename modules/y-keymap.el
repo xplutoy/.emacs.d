@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:08:47
-;; Modified: <2024-06-20 15:58:28 yangx>
+;; Modified: <2024-06-21 10:29:49 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -26,13 +26,12 @@
   "f"   #'find-file
   "M-f" #'ffap
   "d"   #'consult-dir
-  "o"   #'yx/window-other-find-file
+  "o"   #'x-window-other-find-file
   "p"   #'find-file-at-point
   "t"   #'find-file-other-tab
   "r"   #'consult-recent-file
   "R"   #'rename-visited-file
-  "D"   #'yx/simple-delete-file-and-buffer)
-
+  "D"   #'x-simple-delete-file-and-buffer)
 (keymap-global-set "C-c f" yx/file-prefix-map)
 
 (defvar-keymap yx/buffer-prefix-map
@@ -45,7 +44,7 @@
 
 (keymap-global-set "C-c b" yx/buffer-prefix-map)
 
-(defvar-keymap yx/window-prefix-map
+(defvar-keymap x-window-prefix-map
   :doc "Prefix map for window and workspace"
   :name "Workspace"
   "u"   #'winner-undo
@@ -55,8 +54,7 @@
   "M-w" #'burly-bookmark-windows
   "M-f" #'burly-bookmark-frames)
 
-(keymap-global-set "C-c w" yx/window-prefix-map)
-
+(keymap-global-set "C-c w" x-window-prefix-map)
 (defvar-keymap yx/note-prefix-map
   :doc "Prefix map for note taking"
   :name "Note"
@@ -116,7 +114,7 @@
            ("d"   . dirvish-side)
            ("C-d" . dirvish-quick-access)
            ("s"   . scratch-buffer)
-           ("C-s" . yx/scratch-buffer)
+           ("C-s" . x-scratch-buffer)
            ("z"   . zoom)
            ("g"   . gptel)
            ("C-c" . gptel-send)
@@ -129,10 +127,10 @@
            ("a"   . casual-avy-tmenu)
            ("e"   . yx/transient-emms))
 
-(bind-keys ([remap move-beginning-of-line]        . yx/simple-begin-of-line-dwim) ; C-a
+(bind-keys ([remap move-beginning-of-line]        . x-simple-begin-of-line-dwim) ; C-a
            ([remap goto-line]                     . consult-goto-line)           ;M-g g
            ([remap switch-to-buffer]              . consult-buffer)              ; C-x b
-           ([remap other-window]                  . yx/window-other-mru)         ; C-x o
+           ([remap other-window]                  . x-window-other-mru)         ; C-x o
            ([remap list-buffers]                  . ibuffer)                 ; C-x C-b
            ([dabbrev-expand]                      . hippie-expand)           ; M-/
            ([remap repeat-complex-command]        . consult-complex-command) ; C-x M-:
@@ -149,11 +147,11 @@
            ([remap list-directory]                . dirvish)                    ; C-x C-d
            ([remap dired-at-point]                . consult-dir)                ; C-x d
            ([remap keyboard-quit]                 . yx/keyboard-quit-dwim)      ; C-g
-           ([remap kill-buffer]                   . yx/simple-kill-buffer-current) ; C-x k
+           ([remap kill-buffer]                   . x-simple-kill-buffer-current) ; C-x k
            ([remap save-buffers-kill-emacs]       . delete-frame)               ; s-q
-           ([remap open-line]                     . yx/simple-new-line-below)   ; C-o
-           ([remap fill-paragraph]                . yx/simple-fill-dwim)        ; M-q
-           ([remap comment-dwim]                  . yx/simple-comment-dwim)     ; M-;
+           ([remap open-line]                     . x-simple-new-line-below)   ; C-o
+           ([remap fill-paragraph]                . x-simple-fill-dwim)        ; M-q
+           ([remap comment-dwim]                  . x-simple-comment-dwim)     ; M-;
            ([remap upcase-word]                   . upcase-dwim)                ; M-u
            ([remap downcase-word]                 . downcase-dwim)              ; M-l
            ([remap capitalize-word]               . capitalize-dwim)            ; M-c
@@ -161,10 +159,9 @@
            ([remap goto-char]                     . avy-goto-char-timer)        ; M-g c
            ([remap text-scale-adjust]             . global-text-scale-adjust)   ; C-x C-+
            ([remap global-text-scale-adjust]      . text-scale-adjust) ; C-x C-M-+
-           ([remap isearch-forward-regexp]        . yx/window-other-isearch-forward) ; C-M-s
-           ([remap isearch-backward-regexp]       . yx/window-other-isearch--backward) ; C-M-s
-           ([set-selective-display]               . yx/simple-selective-display))    ; C-x $
-
+           ([remap isearch-forward-regexp]        . x-window-other-isearch-forward) ; C-M-s
+           ([remap isearch-backward-regexp]       . x-window-other-isearch--backward) ; C-M-s
+           ([set-selective-display]               . x-simple-selective-display))    ; C-x $
 (bind-keys ("C-;"       . iedit-mode)
            ("C-."       . embark-act)
            ("C-,"       . embark-dwim)
@@ -211,7 +208,7 @@
            ("C-c C-v"   . magit-dispatch)
            ("C-c C-d"   . helpful-at-point)
            ("C-c d"     . duplicate-dwim)
-           ("C-c s"     . yx/scratch-buffer)
+           ("C-c s"     . x-scratch-buffer)
            ("C-c r"     . query-replace-regexp)
            ("C-c z"     . hs-toggle-hiding)
            ("C-c C-z"   . hs-show-all)

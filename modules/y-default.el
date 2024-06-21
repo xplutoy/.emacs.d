@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:32:39
-;; Modified: <2024-06-20 00:12:36 yangx>
+;; Modified: <2024-06-21 10:46:00 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -82,7 +82,7 @@
   (idle-update-delay 1.0)
   (shell-command-prompt-show-cwd t)
   (async-shell-command-display-buffer nil)
-  (kill-whole-line t)
+  (kill-whole-line nil)
   (track-eol t)
   (line-move-visual nil)
   (indent-tabs-mode nil)
@@ -166,8 +166,7 @@
   (auto-insert-alist nil)
   (auto-insert-directory (nol-expand-etc "templates/"))
   :config
-  (yx/auto-header-minor-mode +1))
-
+  (x-auto-header-minor-mode +1))
 (use-package time
   :ensure nil
   :defer 3

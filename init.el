@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-09 03:37:21
-;; Modified: <2024-06-12 23:06:15 yangx>
+;; Modified: <2024-06-21 10:36:31 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -41,16 +41,18 @@
   (defalias 'nol-expand-var #'no-littering-expand-var-file-name)
   (no-littering-theme-backups))
 
-(defvar yx/org-dir "~/yxdocs/org-notes/")
+(defvar yx/org-dir "~/org-notes/")
 (defvar yx/zotero-root "~/Zotero/")
 
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/modules"))
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/site-lisp"))
+(add-to-list 'load-path "~/.emacs.d/lisp")
+(add-to-list 'load-path "~/.emacs.d/modules")
+(add-to-list 'load-path "~/.emacs.d/site-lisp")
 
-(require 'common-x)
-(yx/common-collect-autoloads (expand-file-name "~/.emacs.d/lisp")
-                             (nol-expand-var "lisp-autoload.el"))
+(require 'x-common)
+
+(x-common-collect-autoloads (expand-file-name "~/.emacs.d/lisp")
+                            (nol-expand-var "lisp-autoload.el"))
+
 
 (require 'y-ui)
 (require 'y-os)

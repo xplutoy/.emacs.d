@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 13:03:19
-;; Modified: <2024-06-08 23:11:18 yangx>
+;; Modified: <2024-06-21 09:35:33 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -85,7 +85,7 @@
 
   (defun yx/eshell-prompt()
     (setq eshell-prompt-regexp "^[^#$\n]*[#$] ")
-    (concat (yx/common-pwd-replace-home (eshell/pwd))
+    (concat (x-common-pwd-replace-home (eshell/pwd))
             (if (fboundp 'magit-get-current-branch)
                 (if-let ((branch (magit-get-current-branch)))
                     (format " [git:%s]" branch)

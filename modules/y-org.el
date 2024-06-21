@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 13:24:59
-;; Modified: <2024-06-20 11:20:07 yangx>
+;; Modified: <2024-06-21 09:48:06 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,14 +16,14 @@
   :ensure nil
   :defer 5
   :bind (:map org-mode-map
-              ([remap org-return] . yx/org-return-dwim)
+              ([remap org-return] . x-org-return-dwim)
               ("s-/"     . transform-previous-char)
               ("M-g h"   . consult-org-heading)
               ("M-l i"   . org-clock-in)
               ("M-l o"   . org-clock-out)
               ("M-l h"   . org-toggle-heading)
               ("M-l M-r" . denote-refs-mode)
-              ("M-l y"   . yx/org-link-copy)
+              ("M-l y"   . x-org-link-copy)
               ("M-l p"   . org-download-clipboard)
               ("M-l M-p" . org-download-screenshot)
               ("M-l f"   . org-ql-find)
@@ -31,10 +31,10 @@
               ("M-l t"   . org-transclusion-add)
               ("M-l C-t" . org-transclusion-add-all)
               ("M-l M-t" . org-transclusion-remove)
-              ("M-l TAB" . yx/org-show-current-heading-tidily)
-              ("M-l l"   . yx/org-insert-fixed-link)
+              ("M-l TAB" . x-org-show-current-heading-tidily)
+              ("M-l l"   . x-org-insert-fixed-link)
               ("M-l M-l" . org-latex-preview)
-              ("M-l M-v" . yx/org-toggle-inline-images-in-subtree)
+              ("M-l M-v" . x-org-toggle-inline-images-in-subtree)
               :repeat-map org-heading-navigate-repeat-map
               ("u" . outline-up-heading)
               ("p" . org-previous-visible-heading)
@@ -44,8 +44,8 @@
   :autoload (org-calendar-holiday)
   :hook
   (org-trigger . save-buffer)
-  (org-agenda-finalize . yx/org-agenda-to-appt)
-  (org-babel-after-execute . yx/org-babel-display-image)
+  (org-agenda-finalize . x-org-agenda-to-appt)
+  (org-babel-after-execute . x-org-babel-display-image)
   :custom
   (org-directory yx/org-dir)
   (org-ellipsis nil)
@@ -215,7 +215,7 @@
    (expand-file-name "diary.org" yx/org-dir))
   (org-agenda-include-diary t)
   (org-agenda-show-future-repeats 'next)
-  (org-agenda-format-date 'yx/org-agenda-format-date-aligned)
+  (org-agenda-format-date 'x-org-agenda-format-date-aligned)
   (org-agenda-scheduled-leaders '("计划@  " "拖%03d  "))
   (org-agenda-deadline-leaders  '("截止@  " "剩%03d  " "逾%03d  "))
 
@@ -271,9 +271,9 @@
   (add-hook 'org-mode-hook #'yx/org-mode-setup)
 
   (cond
-   (IS-MAC (plist-put org-format-latex-options :scale 1.2))
+   (IS-MAC (plist-put org-format-latex-options :scale 1.3))
    (IS-LINUX (plist-put org-format-latex-options :scale 0.8))
-   (t (plist-put org-format-latex-options :scale 1.5)))
+   (t (plist-put org-format-latex-options :scale 1.15)))
   (plist-put org-format-latex-options :background "Transparent")
 
   (org-babel-do-load-languages 'org-babel-load-languages
@@ -304,10 +304,10 @@
       (1 font-lock-keyword-face)
       (2 font-lock-constant-face))))
 
-  (add-hook 'org-ctrl-c-ctrl-c-hook 'yx/org-check-latex-fragment)
+  (add-hook 'org-ctrl-c-ctrl-c-hook 'x-org-check-latex-fragment)
   (add-hook 'org-cycle-hook (lambda (state)
                               (when (eq state 'subtree)
-                                (yx/org-toggle-inline-images-in-subtree t)))))
+                                (x-org-toggle-inline-images-in-subtree t)))))
 
 (use-package ox-latex
   :ensure nil

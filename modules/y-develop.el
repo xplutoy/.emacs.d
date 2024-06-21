@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:59:41
-;; Modified: <2024-06-20 19:04:15 yangx>
+;; Modified: <2024-06-21 09:11:53 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -261,8 +261,7 @@
 
 (use-package iedit
   :config
-  (advice-add 'iedit-mode :around #'yx/iedit-scoped))
-
+  (advice-add 'iedit-mode :around #'x-iedit-scoped))
 (use-package surround
   :bind-keymap ("C-'" . surround-keymap))
 

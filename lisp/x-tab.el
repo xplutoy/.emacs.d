@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-09 00:00:34
-;; Modified: <2024-06-09 00:02:15 yangx>
+;; Modified: <2024-06-21 10:26:10 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,10 +11,10 @@
 ;; Functions for tabbar and tab-line.
 
 ;;; Code:
-(require 'common-x)
+(require 'x-common)
 
 ;;;###autoload
-(defun yx/tab-line-buffer-group (buffer)
+(defun x-tab-line-buffer-group (buffer)
   "Use the project.el name for the buffer group"
   (require 's)
   (with-current-buffer buffer
@@ -23,7 +23,7 @@
       "+++")))
 
 ;;;###autoload
-(defun yx/tab-line-tabs-buffer-list ()
+(defun x-tab-line-tabs-buffer-list ()
   (seq-filter (lambda (b) (and (buffer-live-p b)
                                (/= (aref (buffer-name b) 0) ?\s)
                                (with-current-buffer b
@@ -37,5 +37,5 @@
                                 (mapcar #'car (window-prev-buffers))
                                 (buffer-list)))))
 
-(provide 'tab-x)
-;;; tab-x.el ends here
+(provide 'x-tab)
+;;; x-tab.el ends here

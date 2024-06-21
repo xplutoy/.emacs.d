@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-08 23:50:10
-;; Modified: <2024-06-12 13:19:52 yangx>
+;; Modified: <2024-06-21 09:45:54 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -12,29 +12,29 @@
 
 ;;; Code:
 
-(defgroup org-x ()
+(defgroup x-org ()
   "Extensions for org.el."
   :group 'org)
 
 ;;;###autoload
-(defun yx/org-check-latex-fragment ()
+(defun x-org-check-latex-fragment ()
   (let ((datum (org-element-context)))
     (when (memq (org-element-type datum) '(latex-environment latex-fragment))
       (org-latex-preview)
       t)))
 
 ;;;###autoload
-(defun yx/org-agenda-to-appt ()
+(defun x-org-agenda-to-appt ()
   (setq appt-time-msg-list nil)
   (org-agenda-to-appt))
 
 ;;;###autoload
-(defun yx/org-babel-display-image ()
+(defun x-org-babel-display-image ()
   (when org-inline-image-overlays
     (org-redisplay-inline-images)))
 
 ;;;###autoload
-(defun yx/org-agenda-format-date-aligned (date)
+(defun x-org-agenda-format-date-aligned (date)
   "Format a DATE string for display in the daily/weekly agenda, or timeline.
 This function makes sure that dates are aligned for easy reading."
   (require 'cal-china-x)
@@ -57,7 +57,7 @@ This function makes sure that dates are aligned for easy reading."
             day dayname cn-month-string cn-day-string)))
 
 ;;;###autoload
-(defun yx/org-link-copy (&optional arg)
+(defun x-org-link-copy (&optional arg)
   "Extract URL from org-mode link and add it to kill ring."
   (interactive "P")
   (let* ((link (org-element-lineage (org-element-context) '(link) t))
@@ -68,7 +68,7 @@ This function makes sure that dates are aligned for easy reading."
     (message (concat "Copied URL: " url))))
 
 ;;;###autoload
-(defun yx/org-show-current-heading-tidily ()
+(defun x-org-show-current-heading-tidily ()
   "Show next entry, keeping other entries closed."
   (interactive)
   (if (save-excursion
@@ -88,16 +88,16 @@ This function makes sure that dates are aligned for easy reading."
     (outline-show-children)))
 
 ;;;###autoload
-(defun yx/org-insert-fixed-link ()
+(defun x-org-insert-fixed-link ()
   "从 minibuffer 读取链接地址，在当前光标位置插入固定的 Org 链接。"
   (interactive)
   (let* ((link-address (read-string "Input Link: "))
-         (link-text "🔗")
+         (link-text " ")
          (org-link-format (format "[[%s][%s]]" link-address link-text)))
     (insert org-link-format)))
 
 ;;;###autoload
-(defun yx/org-toggle-inline-images-in-subtree (&optional refresh beg end)
+(defun x-org-toggle-inline-images-in-subtree (&optional refresh beg end)
   "Refresh inline image previews in the current heading/tree."
   (interactive)
   (let* ((beg (or beg
@@ -118,7 +118,7 @@ This function makes sure that dates are aligned for easy reading."
       )))
 
 ;;;###autoload
-(defun yx/org-fix-blank-lines (&optional prefix)
+(defun x-org-fix-blank-lines (&optional prefix)
   "Ensure that blank lines exist between headings and between headings and their contents.
 With prefix, operate on whole buffer. Ensures that blank lines
 exist after each headings's drawers."
@@ -152,7 +152,7 @@ exist after each headings's drawers."
                        'tree)))
 
 ;;;###autoload
-(defun yx/org-reformat-buffer ()
+(defun x-org-reformat-buffer ()
   (interactive)
   (let ((document (org-element-interpret-data (org-element-parse-buffer))))
     (erase-buffer)
@@ -160,24 +160,24 @@ exist after each headings's drawers."
     (goto-char (point-min))))
 
 ;;;###autoload
-(defun yx/org-format-buffer-dwim ()
+(defun x-org-format-buffer-dwim ()
   (interactive)
   (when (and (eq major-mode 'org-mode))
-    (call-interactively #'yx/org-reformat-buffer)
+    (call-interactively #'x-org-reformat-buffer)
     (let ((current-prefix-arg 4))
-      (call-interactively #'yx/org-fix-blank-lines))))
+      (call-interactively #'x-org-fix-blank-lines))))
 
-(defun yx/org--element-descendant-of (type element)
+(defun x-org--element-descendant-of (type element)
   "Return non-nil if ELEMENT is a descendant of TYPE.
 TYPE should be an element type, like `item' or `paragraph'.
 ELEMENT should be a list like that returned by `org-element-context'."
   ;; MAYBE: Use `org-element-lineage'.
   (when-let* ((parent (org-element-property :parent element)))
     (or (eq type (car parent))
-        (yx/org--element-descendant-of type parent))))
+        (x-org--element-descendant-of type parent))))
 
 ;;;###autoload
-(defun yx/org-return-dwim (&optional default)
+(defun x-org-return-dwim (&optional default)
   "A helpful replacement for `org-return'.  With prefix, call `org-return'.
 
 On headings, move point to position after entry content.  In
@@ -223,7 +223,7 @@ appropriate.  In tables, insert a new row or end the table."
                 (and (eq 'item (car context))
                      (not (eq (org-element-property :contents-begin context)
                               (org-element-property :contents-end context))))
-                (yx/org--element-descendant-of 'item context))  ; Element in list item, e.g. a link
+                (x-org--element-descendant-of 'item context))  ; Element in list item, e.g. a link
             ;; Non-empty item: Add new item.
             (org-insert-item)
           ;; Empty item: Close the list.
@@ -255,5 +255,5 @@ appropriate.  In tables, insert a new row or end the table."
       ;; All other cases: call `org-return'.
       (org-return)))))
 
-(provide 'org-x)
-;;; org-x.el ends here
+(provide 'x-org)
+;;; x-org.el ends here

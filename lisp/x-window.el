@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-08 23:21:39
-;; Modified: <2024-06-11 21:26:42 yangx>
+;; Modified: <2024-06-21 10:28:02 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -11,37 +11,37 @@
 ;;
 
 ;;; Code:
-(require 'common-x)
+(require 'x-common)
 
 ;;;###autoload
-(defmacro yx/window-with-other (&rest body)
+(defmacro x-window-with-other (&rest body)
   "Execute forms in BODY in the other-window."
   `(unless (one-window-p)
      (with-selected-window (other-window-for-scrolling)
        ,@body)))
 
 ;;;###autoload
-(defun yx/window-other-isearch-forward (regexp-p)
+(defun x-window-other-isearch-forward (regexp-p)
   (interactive "P")
-  (yx/window-with-other (isearch-forward regexp-p)))
+  (x-window-with-other (isearch-forward regexp-p)))
 
 ;;;###autoload
-(defun yx/window-other-isearch-backward (regexp-p)
+(defun x-window-other-isearch-backward (regexp-p)
   (interactive "P")
-  (yx/window-with-other (isearch-backward regexp-p)))
+  (x-window-with-other (isearch-backward regexp-p)))
 
 ;;;###autoload
-(defun yx/window-other-find-file ()
+(defun x-window-other-find-file ()
   "Find file in other window."
   (interactive)
   (cond
    ((one-window-p t)
     (call-interactively #'find-file-other-window))
    (t
-    (yx/window-with-other (call-interactively #'find-file)))))
+    (x-window-with-other (call-interactively #'find-file)))))
 
 ;;;###autoload
-(defun yx/window-other-mru ()
+(defun x-window-other-mru ()
   "Select the most recently used window on this frame."
   (interactive)
   (when-let ((mru-window
@@ -50,7 +50,7 @@
     (select-window mru-window)))
 
 ;;;###autoload
-(defun yx/window-shell-or-term-p (buffer &rest _)
+(defun x-window-shell-or-term-p (buffer &rest _)
   "Check if BUFFER is a shell or terminal.
 This is a predicate function for `buffer-match-p', intended for
 use in `display-buffer-alist'."
@@ -60,19 +60,19 @@ use in `display-buffer-alist'."
            (derived-mode-p 'eshell-mode 'shell-mode 'comint-mode 'fundamental-mode)))))
 
 ;;;###autoload
-(defun yx/window-display-buffer-below-or-pop (&rest args)
+(defun x-window-display-buffer-below-or-pop (&rest args)
   "Display buffer below current window or pop a new window.
+
 The criterion for choosing to display the buffer below the
 current one is a non-nil return value for
-`yx/common-window-small-p' or `yx/common-three-or-more-windows-p'.
-
+`x-common-window-small-p' or `x-common-three-or-more-windows-p'.
 Apply ARGS expected by the underlying `display-buffer' functions.
 
 This as the action function in a `display-buffer-alist' entry."
   (let ((functions (list
                     #'display-buffer-reuse-mode-window
-                    (if (or (yx/common-window-small-p)
-                            (yx/common-three-or-more-windows-p))
+                    (if (or (x-common-window-small-p)
+                            (x-common-three-or-more-windows-p))
                         #'display-buffer-below-selected
                       #'display-buffer-pop-up-window))))
     (catch 'success
@@ -80,5 +80,5 @@ This as the action function in a `display-buffer-alist' entry."
         (when (apply fn args)
           (throw 'success fn))))))
 
-(provide 'window-x)
+(provide 'x-window)
 ;;; window-x.el ends here

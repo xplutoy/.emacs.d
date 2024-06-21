@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:17:53
-;; Modified: <2024-06-20 14:02:51 yangx>
+;; Modified: <2024-06-21 09:51:52 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -28,7 +28,7 @@
         (setq face-font-rescale-alist '(("LXGW WenKai Mono"  . 1.0)))
         (cl-loop for font in '("LXGW WenKai Mono" "Microsoft Yahei" "PingFang SC")
                  when (x-list-fonts font)
-                 return (set-fontset-font t '(#x4e00 . #x9fff) font))
+                 return (set-fontset-font t 'han (font-spec :family font)))
         (cl-loop for font in '("Segoe UI Symbol" "Symbola" "Symbol")
                  when (x-list-fonts font)
                  return (set-fontset-font t 'symbol (font-spec :family font) nil 'prepend))
@@ -58,33 +58,33 @@
   (setq ef-themes-mixed-fonts t
         ef-themes-variable-pitch-ui t))
 
-(use-package modeline-x
+(use-package x-modeline
   :ensure nil
   :demand t
   :config
   (setq mode-line-right-align-edge 'right-margin)
   (setq-default mode-line-format
                 '("%e"
-                  yx-modeline-kbd-macro
-                  yx-modeline-narrow
-                  yx-modeline-buffer-status
-                  yx-modeline-window-dedicated-status
-                  yx-modeline-input-method
+                  x-modeline-kbd-macro
+                  x-modeline-narrow
+                  x-modeline-buffer-status
+                  x-modeline-window-dedicated-status
+                  x-modeline-input-method
                   "  "
-                  yx-modeline-buffer-identification
+                  x-modeline-buffer-identification
                   "  "
-                  yx-modeline-major-mode
-                  yx-modeline-process
+                  x-modeline-major-mode
+                  x-modeline-process
                   "  "
-                  yx-modeline-vc-branch
+                  x-modeline-vc-branch
                   "  "
-                  yx-modeline-eglot
+                  x-modeline-eglot
                   "  "
-                  yx-modeline-flymake
+                  x-modeline-flymake
                   "  "
                   mode-line-format-right-align
                   "  "
-                  yx-modeline-misc-info
+                  x-modeline-misc-info
                   "  "
                   mode-line-end-spaces)))
 
