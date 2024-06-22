@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:04:53
-;; Modified: <2024-06-21 11:46:57 yangx>
+;; Modified: <2024-06-23 01:04:08 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -35,11 +35,12 @@
   :hook ((org-mode . olivetti-mode)
          (org-agenda-mode . olivetti-mode))
   :init
-  (setq olivetti-style nil
-        olivetti-mode-map nil)
-  :config
-  (keymap-local-unset "<left-margin> <mouse-1>")
-  (keymap-local-unset "<right-margin> <mouse-1>"))
+  (setq olivetti-style nil)
+  (setq olivetti-mode-map nil)
+  (add-hook 'olivetti-mode-hook
+            (lambda ()
+              (keymap-local-set "<left-margin> <mouse-1>" #'ignore)
+              (keymap-local-set "<right-margin> <mouse-1>" #'ignore))))
 
 (use-package elfeed
   :init
@@ -59,6 +60,7 @@
           ("https://planet.emacslife.com/atom.xml" emacs)
           ("https://manateelazycat.github.io/feed.xml" emacs)))
   (setq elfeed-search-filter "@3-months-ago +unread")
+  (setq elfeed-search-title-max-width 89)
   (setq elfeed-search-print-entry-function #'x-elfeed-search-print-entry)
   :hook (elfeed-show . olivetti-mode)
   :config

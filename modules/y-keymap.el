@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:08:47
-;; Modified: <2024-06-21 10:29:49 yangx>
+;; Modified: <2024-06-23 00:59:24 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -17,8 +17,8 @@
 
 ;; unset boring keybindings
 (keymap-global-set "<pinch>" #'ignore)
-(keymap-global-unset "C-<wheel-up>" #'ignore)
-(keymap-global-unset "C-<wheel-down>" #'ignore)
+(keymap-global-set "C-<wheel-up>" #'ignore)
+(keymap-global-set "C-<wheel-down>" #'ignore)
 
 (defvar-keymap yx/file-prefix-map
   :doc "Prefix map for file."
@@ -82,9 +82,7 @@
   "d"   #'org-ql-find-in-org-directory
   "s"   #'org-ql-search
   "v"   #'org-ql-view
-  "k"   #'which-key-show-full-major-mode
-  "C-a" #'ace-link-addr
-  "C-l" #'ace-link)
+  "k"   #'which-key-show-full-major-mode)
 
 (keymap-global-set "C-c q" yx/ctrl-c-q-prefix-map)
 
@@ -212,6 +210,8 @@
            ("C-c r"     . query-replace-regexp)
            ("C-c z"     . hs-toggle-hiding)
            ("C-c C-z"   . hs-show-all)
+           ("C-c l o"   . link-hint-open-link)
+           ("C-c l c"   . link-hint-copy-link)
            ("C-x !"     . delete-other-windows-vertically)
            ("C-x a a"   . align)
            ("C-x a r"   . align-regexp)

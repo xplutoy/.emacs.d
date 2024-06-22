@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:57:14
-;; Modified: <2024-06-19 14:56:03 yangx>
+;; Modified: <2024-06-22 09:24:43 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -72,9 +72,16 @@
   :config
   (keymap-set helpful-mode-map "q" #'kill-buffer-and-window))
 
-(use-package ace-link
-  :defer 5
-  :config (ace-link-setup-default))
+(use-package link-hint
+  :config
+  (setq link-hint-action-fallback-commands
+        (list :open (lambda ()
+                      (condition-case _
+                          (progn
+                            (embark-dwim)
+                            t)
+                        (error
+                         nil))))))
 
 (use-package command-log-mode
   :custom

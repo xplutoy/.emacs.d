@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:59:41
-;; Modified: <2024-06-21 14:06:10 yangx>
+;; Modified: <2024-06-22 09:21:23 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -297,7 +297,7 @@
          (yaml-ts-mode . combobulate-mode)
          (json-ts-mode . combobulate-mode))
   :custom
-  (combobulate-key-prefix "C-c l o"))
+  (combobulate-key-prefix "C-x c o"))
 
 (use-package color-rg
   ;; :vc (:url "https://github.com/manateelazycat/color-rg")
