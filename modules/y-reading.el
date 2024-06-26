@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:04:53
-;; Modified: <2024-06-23 01:04:08 yangx>
+;; Modified: <2024-06-24 00:19:05 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -60,7 +60,7 @@
           ("https://planet.emacslife.com/atom.xml" emacs)
           ("https://manateelazycat.github.io/feed.xml" emacs)))
   (setq elfeed-search-filter "@3-months-ago +unread")
-  (setq elfeed-search-title-max-width 89)
+  (setq elfeed-search-title-max-width 79)
   (setq elfeed-search-print-entry-function #'x-elfeed-search-print-entry)
   :hook (elfeed-show . olivetti-mode)
   :config

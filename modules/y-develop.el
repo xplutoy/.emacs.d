@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:59:41
-;; Modified: <2024-06-22 09:21:23 yangx>
+;; Modified: <2024-06-26 23:49:31 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -15,7 +15,10 @@
   :ensure nil
   :custom
   (gdb-show-main t)
-  (gdb-many-windows t))
+  (gdb-many-windows t)
+  (gdb-delete-out-of-scope nil)
+  (gdb-use-colon-colon-notation t)
+  (gdb-restore-window-configuration-after-quit t))
 
 (use-package gud
   :ensure nil
@@ -196,13 +199,11 @@
   (diff-hl-flydiff-mode +1)
   (global-diff-hl-show-hunk-mouse-mode -1))
 
-(use-package rainbow-mode
-  :hook
-  (css-base-mode . rainbow-mode)
-  (emacs-lisp-mode . rainbow-mode)
-  ((help-mode helpful-mode) . rainbow-mode)
-  :custom
-  (rainbow-x-colors nil))
+(use-package colorful-mode
+  :hook ((help-mode helpful-mode prog-mode) . colorful-mode)
+  :init
+  (setq colorful-use-prefix nil)
+  (setq-default colorful-mode-map nil))
 
 (use-package hl-todo
   :hook ((text-mode prog-mode) . hl-todo-mode)

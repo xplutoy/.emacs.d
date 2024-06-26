@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 13:24:59
-;; Modified: <2024-06-21 09:48:06 yangx>
+;; Modified: <2024-06-26 21:40:49 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -108,8 +108,7 @@
   (org-fontify-quote-and-verse-blocks t)
   (org-fontify-whole-block-delimiter-line t)
 
-  (org-refile-targets '((nil :maxlevel . 3)
-                        (org-agenda-files :maxlevel . 3)))
+  (org-refile-targets '((nil :maxlevel . 2)))
   (org-refile-use-outline-path 'file)
   (org-refile-allow-creating-parent-nodes 'confirm)
 
@@ -211,8 +210,7 @@
                                 "......"
                                 "---------------------------------")))
   (org-agenda-current-time-string "Now - - - - - - - - - - - - - - - - - - - - -")
-  (org-agenda-diary-file
-   (expand-file-name "diary.org" yx/org-dir))
+  (org-agenda-diary-file (expand-file-name "diary.org" yx/org-dir))
   (org-agenda-include-diary t)
   (org-agenda-show-future-repeats 'next)
   (org-agenda-format-date 'x-org-agenda-format-date-aligned)
