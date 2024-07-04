@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:32:39
-;; Modified: <2024-06-21 14:06:34 yangx>
+;; Modified: <2024-06-27 00:00:44 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -230,6 +230,7 @@
   (ispell-alternate-dictionary
    (nol-expand-etc "google-10000-english-no-swears.txt"))
   (ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))
+  (flyspell-check-changes t)
   (flyspell-issue-message-flag nil)
   :config
   (keymap-unset flyspell-mode-map "C-,")

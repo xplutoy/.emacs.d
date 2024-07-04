@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:57:14
-;; Modified: <2024-06-22 09:24:43 yangx>
+;; Modified: <2024-07-04 19:18:24 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -148,11 +148,15 @@
   (pyim-candidates-search-buffer-p nil)
   (pyim-dcache-backend 'pyim-dregcach)
   (pyim-indicator-list '(pyim-indicator-with-modeline))
-  (pyim-english-input-switch-functions '(pyim-probe-auto-english
-                                         pyim-probe-program-mode
-                                         pyim-probe-isearch-mode
-                                         pyim-probe-org-latex-mode
-                                         pyim-probe-org-structure-template))
+  (pyim-english-input-switch-functions
+   '(pyim-probe-auto-english
+     pyim-probe-program-mode
+     pyim-probe-isearch-mode
+     pyim-probe-org-latex-mode
+     pyim-probe-org-structure-template))
+  (pyim-punctuation-half-width-functions
+   '(pyim-probe-punctuation-line-beginning
+     pyim-probe-punctuation-after-punctuation))
   :config
   (require 'pyim-dregcache)
   (require 'pyim-cstring-utils)
@@ -241,6 +245,14 @@
       ("m" "Modeline" emms-mode-line-mode)
       ("M" "Current info" emms-show)
       ("e" "Emms" emms)]]))
+
+(use-package ready-player
+  :ensure nil
+  :init
+  (unless (package-installed-p (intern "ready-player"))
+    (package-vc-install "https://github.com/xenodium/ready-player"))
+  :config
+  (ready-player-add-to-auto-mode-alist))
 
 (provide 'y-misc)
 ;;; y-misc.el ends here

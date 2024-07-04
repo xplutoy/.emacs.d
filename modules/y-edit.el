@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:56:55
-;; Modified: <2024-06-08 18:50:18 yangx>
+;; Modified: <2024-06-27 14:59:20 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -95,6 +95,7 @@
               ("-" . puni-contract-region)
               ("!" . shell-command-on-region)
               ("@" . apply-macro-to-region-lines)
+              ("×" . pyim-create-word-from-selection)
               ("*" . pyim-create-word-from-selection)
               ("U" . upcase-region)
               ("D" . downcase-region)

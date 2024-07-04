@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 13:24:59
-;; Modified: <2024-06-26 21:40:49 yangx>
+;; Modified: <2024-07-02 08:27:58 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -255,6 +255,8 @@
   (org-document-title ((t (:height 1.5))))
   (org-drawer ((t (:height 0.85))))
   (org-special-keyword ((t (:height 0.85))))
+  (org-done ((t (:strike-through t))))
+  (org-headline-done ((t (:strike-through t))))
 
   :config
   (require 'org-habit)
@@ -265,7 +267,8 @@
     (variable-pitch-mode 1)
     (push 'cape-tex completion-at-point-functions)
     (modify-syntax-entry ?< "." org-mode-syntax-table)
-    (modify-syntax-entry ?> "." org-mode-syntax-table))
+    (modify-syntax-entry ?> "." org-mode-syntax-table)
+    (toggle-input-method))
   (add-hook 'org-mode-hook #'yx/org-mode-setup)
 
   (cond

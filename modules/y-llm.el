@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:57:53
-;; Modified: <2024-06-21 09:35:14 yangx>
+;; Modified: <2024-07-03 20:49:49 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -16,11 +16,19 @@
   (gptel-default-mode 'org-mode)
   (gptel-org-branching-context t)
   :config
-  (gptel-make-openai "Moonshot-AI"
+  (setq gptel-log-level 'debug)
+  (gptel-make-openai "Kimi"
     :host "api.moonshot.cn"
     :key (x-common-auth-get-field "api.moonshot.cn" :secret)
-    :stream t
-    :models '("moonshot-v1-32k" "moonshot-v1-128k"))
+    :models '("moonshot-v1-32k" "moonshot-v1-128k")
+    :stream t)
+  (setq gptel-model   "deepseek-chat"
+        gptel-backend (gptel-make-openai "DeepSeek"
+                        :host "api.deepseek.com"
+                        :endpoint "/chat/completions"
+                        :stream t
+                        :key (x-common-auth-get-field "api.deepseek.com" :secret)
+                        :models '("deepseek-chat" "deepseek-coder")))
   (add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
   (add-hook 'gptel-post-response-functions 'gptel-end-of-response))
 

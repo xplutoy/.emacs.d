@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:02:01
-;; Modified: <2024-06-20 14:25:10 yangx>
+;; Modified: <2024-06-28 23:15:18 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -119,6 +119,7 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
 (use-package markdown-mode
   :ensure t
   :mode (("README\\.md\\'" . gfm-mode))
+  :hook (markdown-mode . olivetti-mode)
   :init
   (setq markdown-command (cond
                           (IS-WIN "markdown-py")
