@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:32:39
-;; Modified: <2024-06-27 00:00:44 yangx>
+;; Modified: <2024-07-05 10:33:13 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -60,6 +60,7 @@
   (scroll-preserve-screen-position t)
   (inhibit-compacting-font-caches t)
   (debug-on-error init-file-debug) ;; --debug-init
+  (frame-title-format '("%b - GNU Emacs"))
   (other-window-scroll-default
    (lambda ()
      (or (get-mru-window nil nil 'not-this-one-dummy)
@@ -82,7 +83,7 @@
   (idle-update-delay 1.0)
   (shell-command-prompt-show-cwd t)
   (async-shell-command-display-buffer nil)
-  (kill-whole-line t)
+  (kill-whole-line nil)
   (track-eol t)
   (line-move-visual nil)
   (indent-tabs-mode nil)

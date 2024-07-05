@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:57:14
-;; Modified: <2024-07-04 19:18:24 yangx>
+;; Modified: <2024-07-05 09:59:48 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -248,6 +248,7 @@
 
 (use-package ready-player
   :ensure nil
+  :defer 5
   :init
   (unless (package-installed-p (intern "ready-player"))
     (package-vc-install "https://github.com/xenodium/ready-player"))

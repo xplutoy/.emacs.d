@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:59:41
-;; Modified: <2024-06-26 23:49:31 yangx>
+;; Modified: <2024-07-04 19:34:55 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -200,10 +200,13 @@
   (global-diff-hl-show-hunk-mouse-mode -1))
 
 (use-package colorful-mode
-  :hook ((help-mode helpful-mode prog-mode) . colorful-mode)
-  :init
-  (setq colorful-use-prefix nil)
-  (setq-default colorful-mode-map nil))
+  :defer 5
+  :custom
+  (colorful-use-prefix nil)
+  :config
+  (setq-default colorful-mode-map nil)
+  (appendq! global-colorful-modes '(help-mode helpful-mode))
+  (global-colorful-mode +1))
 
 (use-package hl-todo
   :hook ((text-mode prog-mode) . hl-todo-mode)

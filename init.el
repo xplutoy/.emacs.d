@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-09 03:37:21
-;; Modified: <2024-06-21 10:36:31 yangx>
+;; Modified: <2024-07-05 10:25:42 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -41,16 +41,17 @@
   (defalias 'nol-expand-var #'no-littering-expand-var-file-name)
   (no-littering-theme-backups))
 
-(defvar yx/org-dir "~/org-notes/")
-(defvar yx/zotero-root "~/Zotero/")
-
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (add-to-list 'load-path "~/.emacs.d/modules")
 (add-to-list 'load-path "~/.emacs.d/site-lisp")
 
 (require 'x-common)
 
-(x-common-collect-autoloads (expand-file-name "~/.emacs.d/lisp")
+(defvar yx/org-dir "~/org-notes/")
+(defvar yx/zotero-dir "~/Zotero/")
+(defvar yx/code-dir (cond (IS-WIN "D:/Codes/") (t "~/Codes")))
+
+(x-common-collect-autoloads "~/.emacs.d/lisp"
                             (nol-expand-var "lisp-autoload.el"))
 
 

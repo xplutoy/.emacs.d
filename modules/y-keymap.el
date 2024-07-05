@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:08:47
-;; Modified: <2024-06-23 00:59:24 yangx>
+;; Modified: <2024-07-05 10:33:41 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -109,8 +109,6 @@
            ("C-a" . org-agenda)
            ("c"   . org-capture)
            ("l"   . org-store-link)
-           ("d"   . dirvish-side)
-           ("C-d" . dirvish-quick-access)
            ("s"   . scratch-buffer)
            ("C-s" . x-scratch-buffer)
            ("z"   . zoom)
@@ -142,7 +140,6 @@
            ([remap describe-key]                  . helpful-key)                ; C-h k
            ([remap describe-command]              . helpful-command)            ; C-h x
            ([remap describe-variable]             . helpful-variable)           ; C-h v
-           ([remap list-directory]                . dirvish)                    ; C-x C-d
            ([remap dired-at-point]                . consult-dir)                ; C-x d
            ([remap keyboard-quit]                 . yx/keyboard-quit-dwim)      ; C-g
            ([remap kill-buffer]                   . x-simple-kill-buffer-current) ; C-x k
@@ -188,7 +185,6 @@
            ("M-s t"     . yx/hl-todo-rg-project)
            ("M-s M-t"   . hl-todo-occur)
            ("M-s f"     . consult-fd)
-           ("M-s M-f"   . dirvish-fd)
            ("M-s l"     . consult-line)
            ("M-s M l"   . consult-line-multi)
            ("M-s k"     . consult-focus-lines)
@@ -233,8 +229,8 @@
            ("M-c M-s" . symbols-outline-show)
            ("M-c M-e" . consult-compile-error))
 
-(set-register ?S '(buffer . "*scratch*"))
-(set-register ?I `(file . ,(expand-file-name "init.el" user-emacs-directory)))
+(set-register ?I `(file . "~/.emacs.d/init.el"))
+(set-register ?C '(file . yx/code-dir))
 
 (provide 'y-keymap)
 ;;; y-keymap.el ends here

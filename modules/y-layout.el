@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:00:36
-;; Modified: <2024-06-21 10:29:15 yangx>
+;; Modified: <2024-07-05 10:43:29 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -111,6 +111,46 @@
   (winner-boring-buffers-regexp "^\\*")
   :config
   (setq buffer-quit-function 'winner-undo))
+
+(use-package dired
+  :ensure nil
+  :bind (:map dired-mode-map
+              ("C-<return>" . dired-do-open)
+              ("C-+" . dired-create-empty-file))
+  :custom
+  (dired-dwim-target t)
+  (dired-vc-rename-file t)
+  (dired-mouse-drag-files t)
+  (dired-movement-style 'cycle)
+  (dired-ls-F-marks-symlinks t)
+  (dired-recursive-copies 'always)
+  (dired-recursive-deletes 'top)
+  (dired-create-destination-dirs 'ask)
+  (dired-auto-revert-buffer 'dired-buffer-stale-p)
+  (dired-kill-when-opening-new-dired-buffer t)
+  (dired-listing-switches "-laFGgh")
+  (wdired-create-parent-directories t)
+  (wdired-allow-to-change-permissions t)
+  :config
+  (defun yx/dired-setup ()
+    (setq dired-omit-files
+          (concat dired-omit-files "\\|^\\..*$"))
+    (setq-local mouse-1-click-follows-link 'double)
+    (dired-omit-mode 1)
+    (dired-hide-details-mode 1))
+  (add-hook 'dired-mode-hook 'yx/dired-setup)
+  (add-hook 'wdired-mode-hook 'highlight-changes-mode)
+  (put 'dired-find-alternate-file 'disabled nil))
+
+(use-package diredfl
+  :hook ((dired-mode . diredfl-mode)
+         (dirvish-directory-view-mode . diredfl-mode))
+  :config
+  (set-face-attribute 'diredfl-dir-name nil :bold t))
+
+(use-package casual-dired
+  :after dired
+  :bind (:map dired-mode-map ("C-o" . casual-dired-tmenu)))
 
 (use-package tab-line
   :ensure nil

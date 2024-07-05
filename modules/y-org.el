@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 13:24:59
-;; Modified: <2024-07-02 08:27:58 yangx>
+;; Modified: <2024-07-05 10:21:56 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -233,7 +233,7 @@
                            ("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00")))
   (org-columns-default-format "%50ITEM(Task) %2PRIORITY %10Effort(Effort){:} %10CLOCKSUM")
 
-  (org-cite-csl-styles-dir (expand-file-name "styles/" yx/zotero-root))
+  (org-cite-csl-styles-dir (expand-file-name "styles/" yx/zotero-dir))
   (org-cite-global-bibliography (list (expand-file-name "bibliography.bib" yx/org-dir)))
   (org-cite-export-processors '((latex biblatex)
                                 (t . (csl "ieee.csl"))))

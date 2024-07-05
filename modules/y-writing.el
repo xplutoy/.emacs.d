@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:02:01
-;; Modified: <2024-06-28 23:15:18 yangx>
+;; Modified: <2024-07-05 10:22:14 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -20,7 +20,7 @@
   (denote-known-keywords nil)
   (denote-date-prompt-use-org-read-date t)
   (denote-excluded-directories-regexp "data\\|scaffold")
-  (denote-prompts '(subdirectory title keywords))
+  (denote-prompts '(subdirectory title keywords signature))
   (denote-templates nil)
   :config
   (require 'denote-org-extras)
@@ -57,7 +57,7 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
   (citar-notes-paths `(,yx/org-dir))
-  (citar-library-paths `(,yx/zotero-root))
+  (citar-library-paths `(,yx/zotero-dir))
   (citar-at-point-function 'embark-act)
   (citar-bibliography org-cite-global-bibliography)
   :hook ((org-mode . citar-capf-setup)
