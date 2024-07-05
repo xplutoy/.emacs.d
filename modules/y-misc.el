@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:57:14
-;; Modified: <2024-07-05 09:59:48 yangx>
+;; Modified: <2024-07-05 21:12:24 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -20,42 +20,7 @@
 
 (use-package tldr)
 
-(use-package proxy-mode
-  :defer 3
-  :custom
-  (proxy-mode-env-http-service "127.0.0.1:7890")
-  :config
-  (let ((proxy-mode-proxy-type 'env-http-proxy))
-    (with-silent (proxy-mode +1))))
-
 (use-package posframe)
-
-(use-package engine-mode
-  :defer 3
-  :custom
-  (engine/keybinding-prefix "C-z /")
-  (engine/browser-function 'browse-url-generic)
-  :config
-  (defun yx/extract-name-from-url (url)
-    (let* ((host (url-host (url-generic-parse-url url)))
-           (host-trimmed (split-string host  "\\.")))
-      (car (last host-trimmed 2))))
-  (defun yx/define-enines (engines)
-    (dolist (engi engines)
-      (let* ((key  (car engi))
-             (url  (cadr engi))
-             (name (yx/extract-name-from-url url))
-             (symn (make-symbol name)))
-        (eval `(defengine ,symn ,url :keybinding ,key)))))
-  (yx/define-enines
-   '(("c" "https://github.com/search?q=%s")
-     ("g" "https://www.google.com/search?q=%s")
-     ("b" "https://cn.bing.com/search?q=%s&ensearch=1")
-     ("w" "https://zh.wikipedia.org/w/index.php?search=%s")
-     ("a" "https://www.wolframalpha.com/input/?i=%s")
-     ("z" "https://www.zhihu.com/search?q=%s")
-     ("d" "https://search.douban.com/book/subject_search?search_text=%s")))
-  (engine-mode +1))
 
 (use-package which-key
   :defer 5

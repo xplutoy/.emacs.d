@@ -71,6 +71,7 @@
   (keymap-set elfeed-show-mode-map "q" #'x-elfeed-kill-entry)
   (keymap-set elfeed-search-mode-map "m" (x-elfeed-tag-as 'star))
   (keymap-set elfeed-search-mode-map "l" (x-elfeed-tag-as 'readlater)))
+
 (use-package outli
   ;; :vc (:url "https://github.com/jdtsmith/outli")
   :ensure nil

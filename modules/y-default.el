@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:32:39
-;; Modified: <2024-07-05 10:33:13 yangx>
+;; Modified: <2024-07-05 11:42:54 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -168,6 +168,7 @@
   (auto-insert-directory (nol-expand-etc "templates/"))
   :config
   (x-auto-header-minor-mode +1))
+
 (use-package time
   :ensure nil
   :defer 3
@@ -339,6 +340,7 @@
   :custom
   (auto-revert-verbose nil)
   (revert-without-query '(".*"))
+  (auto-revert-avoid-polling t)
   (auto-revert-check-vc-info t)
   (global-auto-revert-non-file-buffers t))
 

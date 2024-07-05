@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-01 19:19:56
-;; Modified: <2024-06-21 10:52:20 yangx>
+;; Modified: <2024-07-05 21:15:32 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -164,7 +164,7 @@ When the region is active, comment its lines instead."
       (message "Not a file visiting buffer!"))))
 
 ;;;###autoload
-(defun yx/keyboard-quit-dwim ()
+(defun x-keyboard-quit-dwim ()
   "Do-What-I-Mean behaviour for a general `keyboard-quit'.
 
 The generic `keyboard-quit' does not do the expected thing when
@@ -201,6 +201,21 @@ number nor move point to the desired column.
   (if (eq selective-display (1+ (current-column)))
       (set-selective-display 0)
     (set-selective-display (or level (1+ (current-column))))))
+
+(defvar x-simple-proxy "127.0.0.1:7890")
+
+(defun x-simple-proxy-http-toggle ()
+  "Toggle HTTP/HTTPS proxy."
+  (interactive)
+  (if (not(bound-and-true-p url-proxy-services))
+      (progn
+	(setq url-proxy-services
+              `(("http" . ,x-simple-proxy)
+		("https" . ,x-simple-proxy)
+		("no_proxy" . "^\\(localhost\\|192.168.*\\|10.*\\)")))
+	(message "Current HTTP proxy is `%s'" x-simple-proxy))
+    (setq url-proxy-services nil)
+    (message "No HTTP proxy")))
 
 (provide 'x-simple)
 ;;; x-simple.el ends here

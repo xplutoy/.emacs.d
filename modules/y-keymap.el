@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:08:47
-;; Modified: <2024-07-05 10:33:41 yangx>
+;; Modified: <2024-07-05 21:15:32 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -55,6 +55,7 @@
   "M-f" #'burly-bookmark-frames)
 
 (keymap-global-set "C-c w" x-window-prefix-map)
+
 (defvar-keymap yx/note-prefix-map
   :doc "Prefix map for note taking"
   :name "Note"
@@ -141,7 +142,7 @@
            ([remap describe-command]              . helpful-command)            ; C-h x
            ([remap describe-variable]             . helpful-variable)           ; C-h v
            ([remap dired-at-point]                . consult-dir)                ; C-x d
-           ([remap keyboard-quit]                 . yx/keyboard-quit-dwim)      ; C-g
+           ([remap keyboard-quit]                 . x-keyboard-quit-dwim)      ; C-g
            ([remap kill-buffer]                   . x-simple-kill-buffer-current) ; C-x k
            ([remap save-buffers-kill-emacs]       . delete-frame)               ; s-q
            ([remap open-line]                     . x-simple-new-line-below)   ; C-o

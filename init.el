@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-09 03:37:21
-;; Modified: <2024-07-05 10:25:42 yangx>
+;; Modified: <2024-07-05 10:46:39 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -63,7 +63,6 @@
 (require 'y-edit)
 (require 'y-misc)
 (require 'y-layout)
-(require 'y-dired)
 (require 'y-llm)
 (require 'y-org)
 (require 'y-reading)
