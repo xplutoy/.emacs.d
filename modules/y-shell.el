@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 13:03:19
-;; Modified: <2024-06-21 09:35:33 yangx>
+;; Modified: <2024-07-07 15:15:46 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -67,9 +67,6 @@
     (keymap-set eshell-mode-map "M-h" #'consult-history)
     (set-window-fringes nil 0 0)
     (set-window-margins nil 1 nil)
-    (visual-line-mode +1)
-    (add-to-list 'completion-at-point-functions 'cape-elisp-symbol)
-    (add-to-list 'completion-at-point-functions 'cape-file)
     (setq-local corfu-auto nil
                 corfu-quit-at-boundary t
                 corfu-quit-no-match t)

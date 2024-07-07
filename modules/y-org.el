@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 13:24:59
-;; Modified: <2024-07-05 10:21:56 yangx>
+;; Modified: <2024-07-07 15:14:46 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -265,7 +265,6 @@
   (defun yx/org-mode-setup ()
     (auto-fill-mode -1)
     (variable-pitch-mode 1)
-    (push 'cape-tex completion-at-point-functions)
     (modify-syntax-entry ?< "." org-mode-syntax-table)
     (modify-syntax-entry ?> "." org-mode-syntax-table)
     (toggle-input-method))

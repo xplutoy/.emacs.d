@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 12:02:01
-;; Modified: <2024-07-05 10:22:14 yangx>
+;; Modified: <2024-07-07 15:15:27 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -90,9 +90,7 @@ This is equivalent to calling `denote' when `denote-prompts' is set to \\='(temp
          (LaTeX-mode . LaTeX-math-mode)
          (LaTeX-mode . TeX-fold-mode)
          (LaTeX-mode . TeX-source-correlate-mode)
-         (LaTeX-mode . (lambda ()
-                         (eglot-ensure)
-                         (push #'cape-tex completion-at-point-functions))))
+         (LaTeX-mode . eglot-ensure))
   :bind (:map LaTeX-mode-map
               ("s-/" . transform-previous-char))
   :config

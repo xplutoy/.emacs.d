@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:59:41
-;; Modified: <2024-07-04 19:34:55 yangx>
+;; Modified: <2024-07-07 15:16:48 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -266,6 +266,7 @@
 (use-package iedit
   :config
   (advice-add 'iedit-mode :around #'x-iedit-scoped))
+
 (use-package surround
   :bind-keymap ("C-'" . surround-keymap))
 
@@ -336,7 +337,7 @@
                 (list (cape-capf-super
                        #'eglot-completion-at-point
                        #'tempel-expand
-                       #'cape-file))))
+                       t))))
   (add-hook 'eglot-managed-mode-hook #'yx/eglot-capf)
   (defun yx/eglot-maybe-format-buffer ()
     (when (bound-and-true-p eglot-managed-p)

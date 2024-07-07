@@ -12,7 +12,7 @@
 
 ;;; Code:
 
-(defvar yx/font-h 150)
+(defvar yx/font-h 140)
 (defvar yx/d-font "JetBrains Mono")
 (defvar yx/f-font "IBM Plex Mono")
 (defvar yx/s-font "IBM Plex Serif")

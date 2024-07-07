@@ -43,11 +43,12 @@ Emacs 会优先到 HOME 环境变量指定的地址去寻找配置文件。
 
 ** 安装 rg/find/grep/git
 
-  #+begin_src shell 
+  #+begin_src shell
   winget install BurntSushi.ripgrep.GNU
   winget install GnuWin32.FindUtils
   winget install GnuWin32.Grep
   winget install --id Git.Git
+  winget install -e --id sharkdp.fd
   #+end_src
 
 

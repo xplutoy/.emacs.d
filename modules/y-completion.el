@@ -3,7 +3,7 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 11:51:58
-;; Modified: <2024-06-21 09:09:24 yangx>
+;; Modified: <2024-07-07 15:26:13 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -95,12 +95,10 @@
 
 (use-package cape
   :init
-  (setq cape-dabbrev-min-length 3)
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  :config
-  (cape-wrap-prefix-length #'cape-dict 4)
-  (cape-wrap-prefix-length #'cape-line 4))
+  (add-hook 'completion-at-point-functions #'cape-dict)
+  (add-hook 'completion-at-point-functions #'cape-keyword)
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file))
 
 (use-package corfu
   :hook ((text-mode prog-mode) . corfu-mode)
