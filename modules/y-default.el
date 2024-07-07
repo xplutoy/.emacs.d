@@ -3,7 +3,6 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 14:32:39
-;; Modified: <2024-07-05 11:42:54 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -190,12 +189,6 @@
   :ensure nil
   :custom
   (world-clock-time-format "%R %z (%Z)	%a %d %B"))
-
-(use-package time-stamp
-  :ensure nil
-  :hook (before-save . time-stamp)
-  :init
-  (setopt time-stamp-pattern "10/^[@#;\*].*[Mm]odified: <%%>$"))
 
 (use-package tempo
   :ensure nil

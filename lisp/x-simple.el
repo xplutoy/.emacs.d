@@ -3,7 +3,6 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-01 19:19:56
-;; Modified: <2024-07-05 21:15:32 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -204,6 +203,7 @@ number nor move point to the desired column.
 
 (defvar x-simple-proxy "127.0.0.1:7890")
 
+;;;###autoload
 (defun x-simple-proxy-http-toggle ()
   "Toggle HTTP/HTTPS proxy."
   (interactive)

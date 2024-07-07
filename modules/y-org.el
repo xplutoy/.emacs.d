@@ -3,7 +3,6 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-07 13:24:59
-;; Modified: <2024-07-07 15:14:46 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -108,7 +107,8 @@
   (org-fontify-quote-and-verse-blocks t)
   (org-fontify-whole-block-delimiter-line t)
 
-  (org-refile-targets '((nil :maxlevel . 2)))
+  (org-refile-targets '((nil :maxlevel . 2)
+                        (org-agenda-files :maxlevel . 2))
   (org-refile-use-outline-path 'file)
   (org-refile-allow-creating-parent-nodes 'confirm)
 
@@ -167,8 +167,7 @@
 
   (org-capture-bookmark nil)
   (org-capture-templates
-   '(("d" "工作完成" entry (file+olp+datetree "work.org" "工作完成") "* %?")
-     ("w" "工作待办" entry (file+headline "work.org" "工作待办") "* TODO %?" :prepend t)
+   '(("w" "工作待办" entry (file "work.org") "* TODO %?" :prepend t)
      ("t" "个人事务" entry (file+headline org-default-notes-file "个人事务") "* TODO [#B] %?" :prepend t)
      ("s" "未来想做" entry (file+headline org-default-notes-file "未来想做") "* SOMEDAY %?"   :prepend t)
      ("h" "习惯养成" entry (file+headline org-default-notes-file "习惯养成") "* NEXT %?"      :prepend t)))

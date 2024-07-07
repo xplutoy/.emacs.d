@@ -3,7 +3,6 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-09 00:40:03
-;; Modified: <2024-06-21 10:05:07 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:

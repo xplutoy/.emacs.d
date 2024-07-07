@@ -3,7 +3,6 @@
 ;; Author: yangxue <yangxue.cs@foxmail.com>
 ;; Copyright (C) 2024, yangxue, all right reserved.
 ;; Created: 2024-06-08 23:56:42
-;; Modified: <2024-06-21 09:19:59 yangx>
 ;; Licence: GPLv3
 
 ;;; Commentary:
@@ -24,7 +23,6 @@
   "\n* @author: " (user-full-name)
   "\n* @date: " (format-time-string "%F %T")
   "\n* @brief: " (skeleton-read "brief: ")
-  "\n* @modified: <>"
   "\n**************************************************\n*/"
   "\n\n#ifndef " str \n "#define " str
   "\n\n" @ _
@@ -35,7 +33,6 @@
   "/**\n***************************************************"
   "\n* @author: " (user-full-name)
   "\n* @date: " (format-time-string "%F %T")
-  "\n* @modified: <>"
   "\n**************************************************\n*/"
   "\n\n" @ _ "\n")
 
@@ -44,7 +41,6 @@
   "# --------------------------------------------------"
   "\n# Author: " (user-full-name)
   "\n# Date: " (format-time-string "%F %T")
-  "\n# Modified: <>\n#"
   "\n# Description: " (skeleton-read "Description: ")
   "\n#\n#\n"
   "# --------------------------------------------------"
@@ -56,7 +52,6 @@
   "\n\n;; Author: " (user-full-name) " <" (progn user-mail-address) ">"
   "\n;; Copyright (C) " (format-time-string "%Y") ", " (user-full-name) ", all right reserved."
   "\n;; Created: " (format-time-string "%F %T")
-  "\n;; Modified: <>"
   "\n;; Licence: GPLv3"
   "\n\n;;; Commentary:\n\n;; " @ _
   "\n\n;;; Code:"
